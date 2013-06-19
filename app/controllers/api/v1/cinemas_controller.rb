@@ -3,7 +3,7 @@ module Api
     class CinemasController < Api::V1::ApiController
       def show
         date = Date.current
-        @cinema = Cinema.includes(theaters: :functions).where(id: params[:id], functions: {date: date}).all
+        @cinema = Cinema.includes(theaters: :functions).where(id: params[:id], functions: {date: date}).order('theaters.name ASC').all
       end
       
       def show_cinemas
