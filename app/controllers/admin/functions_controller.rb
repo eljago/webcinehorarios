@@ -205,8 +205,8 @@ class Admin::FunctionsController < ApplicationController
             function_types << FunctionType.find_id_by_name("Sala XD")
             titulo.prepend("(Sala XD)-")
           end
-          function_types << FunctionType.find_id_by_name("Subtitulada") if titulo.include? "(Subtitulada)"
-          function_types << FunctionType.find_id_by_name("Doblada") if titulo.include? "(Doblada)"
+          function_types << FunctionType.find_id_by_name("Subtitulada") if ((titulo.include? "(Subtitulada)") || (titulo.include? "(Sub)"))
+          function_types << FunctionType.find_id_by_name("Doblada") if ((titulo.include? "(Doblada)") || (titulo.include? "(Dob)"))
           function_types << FunctionType.find_id_by_name("2D") if titulo.include? "2D"
 
           movieFunctions = Hash[:name, titulo]
