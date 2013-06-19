@@ -1,0 +1,17 @@
+<% if @show.videos.count > 0 %>
+	<table>
+	  <tr>
+	    <th>Name</th>
+	    <th>Imagen</th>
+	    <th>Video</th>
+	  </tr>
+
+	<% @show.videos.each do |video| %>
+	  <tr>
+	    <td><%= video.name %></td>
+	    <td><%= image_tag video.image %></td>
+	    <td><%= render 'embed_video', :code => video.code %></td>
+	  </tr>
+	<% end %>
+	</table>
+<% end %>

@@ -1,0 +1,22 @@
+<h1>Tickets de Contacto</h1>
+
+<table class="table">
+  <tr>
+    <th>Nombre</th>
+    <th>De</th>
+    <th>Asunto</th>
+    <th></th>
+  </tr>
+
+<% @contact_tickets.each do |contact_ticket| %>
+  <tr>
+    <td><%= contact_ticket.name %></td>
+    <td><%= contact_ticket.from %></td>
+    <td><%= contact_ticket.subject %></td>
+    <td><%= link_to [:admin, contact_ticket], class: 'btn' do %>
+				<i class="icon-external-link"></i> Mostrar
+			<% end %>
+		</td>
+  </tr>
+<% end %>
+</table>

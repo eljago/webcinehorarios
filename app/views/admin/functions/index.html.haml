@@ -1,0 +1,48 @@
+= render 'breadcrumbs'
+%h1
+	Funciones de
+	= @theater.name
+
+.functions
+	= link_to new_admin_theater_function_path(date: params[:date]), class: 'btn' do
+		%i.icon-plus
+		Nueva Función
+
+	= link_to 'Copiar Ultimo dia', {controller: 'functions', action: 'copy_last_day'}, method: :post, class: 'btn'
+	
+	= link_to 'Borrar día', {controller: 'functions', action: 'delete_day', date: params[:date]}, method: :post, class: 'btn'
+
+	- unless @theater.web_label.blank?
+		= link_to 'Get Datos De La Web', {controller: 'functions', action: 'new_parse', date: params[:date]}, method: :get, class: 'btn'
+	
+	- if (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
+		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "margin-top: 10px;"} do |f|
+			= f.hidden_field :date, value: params[:date]
+			= f.text_field :url, class: "input-xxlarge"
+			= f.submit "Parse URL"
+%br
+
+= render 'shared/date_pagination'
+%h2= I18n.localize(params[:date].to_date, format: :normal) if params[:date]
+
+%table.table
+	%tr
+		%th
+		%th Película
+		%th Tipo
+		%th Horario
+		%th
+		
+	- @functions.each do |function|
+		%tr
+			%td= image_tag function.show.image.smallest if function.show.image.smallest
+			%td{width: "100"}= function.show.name if function.show
+			%td{width: "100"}= function.function_types.map(&:name).join(', ')
+			%td= function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', ')
+			%td{width: "190"}
+				= link_to edit_admin_theater_function_path(@theater.id, function.id, date: params[:date]), class: 'btn' do
+					%i.icon-edit
+					Editar
+				= link_to admin_theater_function_path(@theater.id, function.id, date: params[:date]), class: 'btn btn-danger', method: :delete, data: { confirm: 'Está seguro?' } do
+					%i.icon-trash
+					Destruir

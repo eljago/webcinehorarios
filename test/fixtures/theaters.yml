@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  image: MyString
+  address: MyString
+  information: MyText
+  latitude: 1
+  longitude: 1
+  cinema: 
+  city: 
+
+two:
+  name: MyString
+  image: MyString
+  address: MyString
+  information: MyText
+  latitude: 1
+  longitude: 1
+  cinema: 
+  city: 

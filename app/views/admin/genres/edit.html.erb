@@ -1,0 +1,10 @@
+<h1>Editar Género</h1>
+
+<%= render 'form' %>
+
+<%= link_to [:admin, :genres], class: 'btn' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>
+<%= link_to [:admin, @genre], class: 'btn' do %>
+	<i class="icon-edit"></i> Mostrar
+<% end %>

@@ -1,0 +1,11 @@
+<p>
+  <b>Nombre:</b>
+  <%= @function_type.name %>
+</p>
+
+<%= link_to [:admin, :function_types], class: 'btn' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>
+<%= link_to [:edit, :admin, @function_type], class: 'btn' do %>
+	<i class="icon-edit"></i> Editar
+<% end %>

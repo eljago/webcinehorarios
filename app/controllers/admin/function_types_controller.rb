@@ -1,0 +1,49 @@
+class Admin::FunctionTypesController < ApplicationController
+  
+  before_filter :get_function_type, only: [:show, :edit, :update, :destroy]
+
+  def index
+    @function_types = FunctionType.all
+  end
+  
+  def show
+  end
+  
+  def new
+    @function_type = FunctionType.new
+  end
+  
+  def edit
+  end
+  
+  def create
+    @function_type = FunctionType.new(params[:function_type])
+
+    if @function_type.save
+      redirect_to [:admin, :function_types], notice: 'Function Type was successfully created.'
+    else
+      render action: "new"
+    end
+  end
+  
+  def update
+
+    if @function_type.update_attributes(params[:function_type])
+      redirect_to [:admin, :function_types], notice: 'Function Type was successfully updated.'
+    else
+      render action: "edit"
+    end
+  end
+  
+  def destroy
+    @function_type.destroy
+
+    redirect_to [:admin, :function_types]
+  end
+  
+  private
+  
+  def get_function_type
+    @function_type = FunctionType.find(params[:id])
+  end
+end

@@ -1,0 +1,34 @@
+<%= render 'breadcrumbs' %>
+<h1>Shows</h1>
+
+<%= link_to [:new, :admin, :show], class: 'btn' do %>
+	<i class="icon-plus"></i> Nuevo Show
+<% end %>
+
+<%= render 'shared/letter_pagination' %>
+
+<table class="table">
+  <tr>
+		<th>Activo</th>
+    <th>Nombre</th>
+    <th>Imagen</th>
+    <th>Duración</th>
+    <th>Estreno</th>
+    <th>Rating</th>
+    <th></th>
+  </tr>
+
+<% @shows.each do |show| %>
+  <tr>
+    <td><%= show.active %></td>
+    <td><%= show.name %></td>
+    <td><%= link_to image_tag(show.image, size: "70x100"), show.image.to_s if show.image %></td>
+    <td><%= show.duration %></td>
+    <td><%= show.debut %></td>
+    <td><%= show.rating %></td>
+		<td><%= render_index_actions [show] %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />

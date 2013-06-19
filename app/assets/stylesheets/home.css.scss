@@ -1,0 +1,76 @@
+
+body#webpage{
+	font-family: 'Helvetica';
+	background-color: #E8EDD5;
+	padding-top: 60px;
+
+	#app-store {
+	  background: url(appstoredownload.png) no-repeat;
+	  display: block;
+	  height: 64px;
+	  margin: 20px auto;
+		width: 197px;
+		border-radius: 15px;
+		border-style: solid;
+		border-width: 2px;
+		border-color: black;
+	}
+	.sidebar {
+		background: url(webfront.png) no-repeat center top;
+	  float: left;
+	  margin: 30px 0 40px 30px;
+	  padding: 650px 0 0;
+	  width: 325px;
+	}
+
+	div.gallery{
+		width: 350px;
+		background-color: #E73622;
+		border-radius: 15px;
+		padding: 20px 0;
+		border-style: solid;
+		border-width: 2px;
+		margin: 0 auto;
+		
+		img{
+			margin: auto;
+		}
+	}
+	
+	div.form-actions{
+		background-color: transparent;
+		border-color: transparent;
+	}
+
+	div.navbar-inner{
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		div.container{
+			width: 960px;
+			a.brand{
+				text-align: center;
+				width: 100%;
+				padding: 0;
+				margin: 20px auto;
+				font-size: 35px;
+			}
+			div.row ul{
+				
+				a{
+					font-size: 20px;
+				}
+			}
+		}
+	}
+	
+	div#maincontent{
+		div.container{
+			font-size: 20px;
+			line-height: 25px;
+			
+			div.span7{
+				margin-top: 20px;
+			}
+		}
+	}
+}

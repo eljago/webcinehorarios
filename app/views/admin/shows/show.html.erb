@@ -1,0 +1,53 @@
+<%= render 'breadcrumbs' %>
+
+<p>
+  <b>Nombre:</b>
+  <%= @show.name %>
+</p>
+
+<p>
+  <b>Imagen:</b>
+  <%= link_to image_tag(@show.image, size: "70x100"), @show.image.to_s if @show.image %>
+</p>
+
+<p>
+  <b>Información:</b>
+  <%= @show.information %>
+</p>
+
+<p>
+  <b>Duración:</b>
+  <%= @show.duration %>
+</p>
+
+<p>
+  <b>Nombre Original:</b>
+  <%= @show.name_original %>
+</p>
+
+<p>
+  <b>Estreno:</b>
+  <%= @show.debut %>
+</p>
+
+<p>
+  <b>Rating:</b>
+  <%= @show.rating %>
+</p>
+
+<p><b>Géneros:</b>
+	<% @show.genres.each do |genre|  %>
+		<%= "#{genre.name} - " %>
+	<% end %>
+</p>
+
+<%= render 'show_person_roles' %>
+<%= render 'images' %>
+<%= render 'videos' %>
+
+<%= link_to [:admin, :shows], class: 'btn' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>
+<%= link_to [:edit, :admin, @show], class: 'btn' do %>
+	<i class="icon-edit"></i> Editar
+<% end %>

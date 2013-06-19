@@ -1,0 +1,23 @@
+<div class="pagination letter_pagination">
+  <ul>
+		<% ('A'..'Z').each do |letter| %>
+    <li>
+			<% if letter == params[:letter] || (letter == 'A' && params[:letter].blank?) %>
+				<%= link_to letter, {controller: params[:controller], action: params[:action], letter: letter}, class: "selected" %>
+			<% else %>
+				<%= link_to letter, {controller: params[:controller], action: params[:action], letter: letter} %>
+			<% end %>
+		</li>
+  	<% end %>
+		<% ('0'..'9').each do |letter| %>
+    <li>
+			<% if letter == params[:letter] %>
+				<%= link_to letter, {controller: params[:controller], action: params[:action], letter: letter}, class: "selected" %>
+			<% else %>
+				<%= link_to letter, {controller: params[:controller], action: params[:action], letter: letter} %>
+			<% end %>
+		</li>
+  	<% end %>
+		<br />
+	</ul>
+</div>

@@ -1,0 +1,5 @@
+<% navigation_add 'Cines', admin_cinemas_path %>
+<% if @theater %>
+	<% navigation_add @theater.cinema.name, admin_cinema_theaters_path(@theater.cinema) if @theater.cinema %>
+	<% navigation_add @theater.name, [:admin, @theater, :functions] %>
+<% end %>

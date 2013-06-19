@@ -1,0 +1,12 @@
+
+<p>
+  <b>Nombre:</b>
+  <%= @genre.name %>
+</p>
+
+<%= link_to [:admin, :genres], class: 'btn' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>
+<%= link_to [:edit, :admin, @genre], class: 'btn' do %>
+	<i class="icon-edit"></i> Editar
+<% end %>

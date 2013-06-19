@@ -1,0 +1,24 @@
+
+<p>
+  <b>Nombre:</b>
+  <%= @contact_ticket.name %>
+</p>
+
+<p>
+  <b>De:</b>
+  <%= @contact_ticket.from %>
+</p>
+
+<p>
+  <b>Asunto:</b>
+  <%= @contact_ticket.subject %>
+</p>
+
+<p>
+  <b>Contenido:</b>
+  <%= @contact_ticket.content %>
+</p>
+
+<%= link_to admin_contact_tickets_path, class: 'btn' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>

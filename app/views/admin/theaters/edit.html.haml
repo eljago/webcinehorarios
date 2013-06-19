@@ -1,0 +1,12 @@
+= render 'breadcrumbs'
+%h1 Editar Complejo
+
+= render 'form'
+
+= link_to [:admin, @theaterable, :theaters], class: 'btn' do
+	%i.icon-arrow-left
+	Volver
+	
+= link_to [:admin, @theaterable, @theater], class: 'btn' do
+	%i.icon-edit
+	Mostrar

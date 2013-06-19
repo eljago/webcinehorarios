@@ -1,0 +1,19 @@
+<% if @show.images.count > 0 %>
+	<table>
+	  <tr>
+	    <th>Name</th>
+	    <th>Imagen</th>
+	  </tr>
+
+	<% @show.images.each do |image| %>
+	  <tr>
+	    <td><%= image.name %></td>
+			<% if image.image_url %>
+	    	<td><%= image_tag(image.image_url) %></td>
+			<% else %>
+	    	<td><%= 'Imágen Inválida' %></td>
+			<% end %>
+	  </tr>
+	<% end %>
+	</table>
+<% end %>

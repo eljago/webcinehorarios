@@ -1,0 +1,20 @@
+<fieldset class="show_person_role">
+	<div class="destroy">
+		<%= f.hidden_field :_destroy %>
+		<button class="close remove_fields">&times;</button>
+	</div>
+	<%= f.association :person, collection: Person.order('people.name ASC').all, :input_html => { :class => "chzn-select" } %>
+	<div class="roles">
+		<%= f.check_box :director %> Director
+		<% if f.object.new_record? %>
+			<%= f.check_box :actor, {checked: true} %>
+		<% else %>
+			<%= f.check_box :actor %>
+		<% end %>
+		Actor
+		<%= f.check_box :writer %> Escritor
+		<%= f.check_box :creator %> Creador
+		<%= f.check_box :producer %> Productor
+	</div>
+	<%= f.input :character %>
+</fieldset>

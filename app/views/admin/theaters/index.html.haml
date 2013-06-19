@@ -1,0 +1,28 @@
+= render 'breadcrumbs'
+%h1 Complejos
+
+%table.table
+	%tr
+		%th Nombre
+		%th Latitud
+		%th Longitud
+		%th
+		
+	- @theaters.each do |theater|
+		%tr
+		- if params[:cinema_id]
+			%td= link_to theater.name, [:admin, theater, :functions]
+		- elsif params[:city_id]
+			- if theater.cinema
+				%td= link_to "#{theater.cinema.name} - #{theater.name}", [:admin, theater, :functions] && theater.name
+			- else
+				%td= link_to theater.name, [:admin, theater, :functions]
+		%td= theater.latitude
+		%td= theater.longitude
+		%td= render_index_actions [@theaterable, theater]
+	
+%br
+
+= link_to [:new, :admin, @theaterable, :theater], class: 'btn' do
+	%i.icon-plus
+	Nuevo Complejo

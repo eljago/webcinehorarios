@@ -1,0 +1,21 @@
+<%= form_tag admin_theater_create_parse_path, method: :put do %>
+
+	<h1><%= @theater.name %></h1>
+	<% @functionsArray.each_with_index do |item, index| %>
+		<%= simple_fields_for "function_#{index}" do |b| %>
+		
+			<%= b.hidden_field :date, value: @date.to_date %>
+			<%= b.collection_select :show_id, @shows, :id, :name, {}, { class: "chzn-select" } %>
+			<%= item[:name] %>
+			<%= b.text_field :horarios, value: item[:showtimes], class: 'input-xxlarge no-bottom-margin' %><br />
+			<%= b.collection_check_boxes :function_types, @function_types, :id, :name, checked: item[:function_types], :item_wrapper_class => "checkbox_container" %>
+			<br /><br />
+		<% end %>
+	<% end %>
+	<%= hidden_field_tag :count, @functionsArray.size %>
+	<%= hidden_field_tag :date, @date.to_date %>
+	
+	<div class="form-actions">
+	  <%= submit_tag :submit, class: 'btn btn-primary'  %>
+	</div>
+<% end %>

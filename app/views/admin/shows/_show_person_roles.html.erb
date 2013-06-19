@@ -1,0 +1,20 @@
+<% @participants.each do |role, participant| %>
+	<% if participant.count > 0 %>
+		<h3><%= "#{role.to_s.capitalize}:" %></h3>
+		<table>
+		  <tr>
+				<th></th>
+		    <th>Name</th>
+				<th>Personaje</th>
+		  </tr>
+
+		<% participant.each do |show_role_tag| %>
+		  <tr>
+				<td><%= image_tag show_role_tag.person.image, size: "70x100" %></td>
+		    <td><%= show_role_tag.person.name %></td>
+				<td><%= show_role_tag.character %></td>
+		  </tr>
+		<% end %>
+		</table>
+	<% end %>
+<% end %>

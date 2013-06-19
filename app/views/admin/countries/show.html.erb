@@ -1,0 +1,12 @@
+<%= render 'breadcrumbs' %>
+<p>
+  <b>Nombre:</b>
+  <%= @country.name %>
+</p>
+
+<%= link_to admin_countries_path, class: 'btn' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>
+<%= link_to [:edit, :admin, @country], class: 'btn' do %>
+	<i class="icon-edit"></i> Editar
+<% end %>

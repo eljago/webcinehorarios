@@ -1,0 +1,29 @@
+= render 'breadcrumbs'
+
+%p
+	%b Nombre:
+	= @theater.name
+
+%p
+	%b Dirección:
+	= @theater.address
+
+%p
+	%b Información:
+	= @theater.information
+
+%p
+	%b Latitud:
+	= @theater.latitude
+
+%p
+	%b Longitud:
+	= @theater.longitude
+
+= link_to [:admin, @theaterable, :theaters], class: 'btn' do
+	%i.icon-arrow-left
+	Volver
+
+= link_to [:edit, :admin, @theaterable, @theater], class: 'btn' do
+	%i.icon-edit
+	Editar

@@ -1,0 +1,15 @@
+= simple_form_for [:admin, @theaterable, @theater] do |f|
+	= f.error_notification
+	
+	.form-inputs
+		= f.input :name
+		= f.input :web_label
+		= f.input :address
+		= f.input :information
+		= f.input :latitude
+		= f.input :longitude
+		= f.association :city, as: :radio_buttons
+		= f.association :cinema, as: :radio_buttons
+
+	.form-actions
+		= f.button :submit, class: 'btn btn-primary'

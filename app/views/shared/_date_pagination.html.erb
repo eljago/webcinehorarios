@@ -1,0 +1,12 @@
+<div class="pagination date_pagination">
+  <ul>
+		<% (@dates_array).each do |date| %>
+				<li>
+			<% if date == params[:date].to_date %>
+				<%= link_to I18n.localize(date, format: :short), {controller: params[:controller], action: params[:action], date: date}, class: "selected" %>
+			<% else %>
+				<%= link_to I18n.localize(date, format: :short), {controller: params[:controller], action: params[:action], date: date}%>
+			<% end %></li>
+  	<% end %>
+	</ul>
+</div>
