@@ -1,24 +1,28 @@
 = render 'breadcrumbs'
 
-%p
-	%b Nombre:
-	= @theater.name
+.row-fluid
+	.span2 Nombre:
+	.span10= @theater.name
 
-%p
-	%b Dirección:
-	= @theater.address
+.row-fluid
+	.span2 Dirección:
+	.span10= @theater.address
 
-%p
-	%b Información:
-	= @theater.information
+.row-fluid
+	.span2 Información:
+	.span10= @theater.information
 
-%p
-	%b Latitud:
-	= @theater.latitude
+.row-fluid
+	.span2 Latitud:
+	.span10= @theater.latitude
 
-%p
-	%b Longitud:
-	= @theater.longitude
+.row-fluid
+	.span2 Longitud:
+	.span10= @theater.longitude
+
+.row-fluid
+	.span2 Nombre:
+	.span10= @theater.name
 
 = link_to [:admin, @theaterable, :theaters], class: 'btn' do
 	%i.icon-arrow-left

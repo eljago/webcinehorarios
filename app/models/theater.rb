@@ -8,4 +8,13 @@ class Theater < ActiveRecord::Base
   validates :name, :presence => :true
   
   accepts_nested_attributes_for :functions
+  
+  def self.find_id_by_name name
+    theater = where(name: name).all.first
+    if theater
+      theater.id
+    else
+      0
+    end
+  end
 end

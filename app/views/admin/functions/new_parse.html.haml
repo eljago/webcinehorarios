@@ -1,0 +1,14 @@
+= render 'breadcrumbs'
+
+%h1 Nueva Función
+
+- if @theater.cinema.id == 1
+	= render 'parse_cinemark'
+- elsif @theater.cinema.id == 2
+	= render 'parse_hoyts'
+- elsif (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
+	= render 'parse_cineplanet'
+
+= link_to admin_theater_functions_path(@theater, date: @date), class: 'btn' do
+	%i.icon-arrow-left
+	Volver

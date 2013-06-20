@@ -34,10 +34,14 @@ class Admin::FunctionsController < ApplicationController
     create_showtimes @function, params[:horarios]
     create_extra_showtimes_from_params
     
-    if @function.save
-      redirect_to admin_theater_functions_path(date: @function.date), notice: 'Funcion creada con exito.'
+    if params[:horarios].blank?
+      redirect_to admin_theater_functions_path(date: @function.date), notice: 'Funciones creadas con exito, pero en el día actual no.'
     else
-      render action: "new"
+      if @function.save
+        redirect_to admin_theater_functions_path(date: @function.date), notice: 'Funciones creadas con exito.'
+      else
+        render action: "new"
+      end
     end
   end
   
@@ -127,8 +131,22 @@ class Admin::FunctionsController < ApplicationController
         end
         count = count + 1
       end
-    elsif @theater.cinema.id == 3
-      
+    elsif (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
+      count = 0
+      while hash = params[:theaters]["theater_#{count}"]
+        count2 = 0
+        theater = Theater.find(hash[:theater_id])
+        while hash2 = hash["function_#{count2}"]
+          function = theater.functions.new
+          function.show_id = params[:show_id]
+          function.function_type_ids = params[:function_types][:function_types]
+          function.date = hash2[:date]
+          create_showtimes function, hash2[:horarios]
+          function.save
+          count2 = count2 + 1
+        end
+        count = count + 1
+      end
     end
     redirect_to admin_theater_functions_path(date: params[:date]), notice: "Exito"
   end
@@ -156,9 +174,10 @@ class Admin::FunctionsController < ApplicationController
     date = @function.date
     7.times do |n|
       horarios = params["horarios_extra_#{n}"]
+      date = date.next
       unless horarios.blank?
         function = @theater.functions.new
-        function.date = (date = date.next)
+        function.date = date
         function.function_types = @function.function_types
         function.show_id = @function.show_id
         horarios.gsub(/\s{3,}|( - )|(, )/, "a").split("a").each do |h|
@@ -208,34 +227,25 @@ class Admin::FunctionsController < ApplicationController
           function_types << FunctionType.find_id_by_name("Subtitulada") if ((titulo.include? "(Subtitulada)") || (titulo.include? "(Sub)"))
           function_types << FunctionType.find_id_by_name("Doblada") if ((titulo.include? "(Doblada)") || (titulo.include? "(Dob)"))
           function_types << FunctionType.find_id_by_name("2D") if titulo.include? "2D"
+          function_types << FunctionType.find_id_by_name("Premier") if ((titulo.include? "PR") && !function_types.include?(FunctionType.find_id_by_name("Premier")))
 
           movieFunctions = Hash[:name, titulo]
           movieFunctions[:function_types] = function_types
-          
           
           movieFunctions[:functions] = []
 
           item.css('tr').each do |tr|
             tds = tr.css('td')
-            dia = tds[0].css('strong').text.split("-") # => ["14","jun:"]
-            diaweb = dia[0].to_i
-            diaparams = @date.to_date.day
-            mesweb = dia[1][0..2]
-            mesparams = I18n.localize(date, format: :short).split(" ").last 
+            diaArray = tds[0].css('strong').text.split("-") # => ["14","jun:"]
+            dia = diaArray[0].to_i
 
-            if (diaparams <= diaweb && mesweb == mesparams) || (diaparams > diaweb && mesweb != mesparams)
+            unless (1..9).include? (date.day - dia)
               horarios = tds[1].text.gsub!(/\s+/, ', ')
               
-              function = Hash[:day, dia.join("-")]
+              function = Hash[:day, diaArray.join("-")]
               function[:horarios] = horarios
-              mes = 0
-              if mesweb == mesparams
-                mes = date.month
-              else
-                mes = date.next_month.month
-              end
               
-              function[:date] = Date.new(date.year, mes, diaweb)
+              function[:date] = date.advance_to_day(dia)
               movieFunctions[:functions] << function
             end
           end
@@ -293,19 +303,33 @@ class Admin::FunctionsController < ApplicationController
         page = Nokogiri::HTML(s)
         
         @functionsArray = []
+        date = @date.to_date
+        
+        @name_pelicula = page.css('div[class="superior titulo-tamano-superior-modificado"]').text
+        @function_types_detected = []
+        @function_types_detected << FunctionType.find_id_by_name("Subtitulada") if @name_pelicula.include? "Subtitulada"
+        @function_types_detected << FunctionType.find_id_by_name("Doblada") if @name_pelicula.include? "Doblada"
+        @function_types_detected << FunctionType.find_id_by_name("3D") if @name_pelicula.include? "3D"
+        @function_types_detected << FunctionType.find_id_by_name("Prime") if @name_pelicula.include? "PRIME"
+        
         
         name = ""
+        count = -1
         lista = page.css("div.contenedor-lista-peliculas2 div.texto-lista").each_with_index do |div, index|
           strong = div.css("strong").text
           if strong.blank?
             if spans = div.css('span.flotar-izquierda')
               
               dia = spans[0].text.split(" ").last.to_i
-              horarios = spans[1].text
-              @functionsArray << {theater: name, date: @date.to_date.change(day: dia).to_s, horarios: horarios}
+              horarios = spans[1].text.gsub(/\s{3,}|( - )|(, )/, "a").split("a").join(", ")
+              unless (1..9).include? (date.day - dia)
+                @functionsArray[count][:functions] << { date: date.advance_to_day(dia), horarios: horarios }
+              end
             end
           else
+            count = count + 1
             name = strong
+            @functionsArray << { theater: name, functions: [] }
           end
         end
       end

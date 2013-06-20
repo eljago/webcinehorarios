@@ -3,6 +3,9 @@ class FunctionType < ActiveRecord::Base
   
   has_and_belongs_to_many :functions
   
+  validates :name, presence: :true, uniqueness: true
+  
+  
   def self.find_id_by_name name
     function_type = where(name: name).all.first
     if function_type

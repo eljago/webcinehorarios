@@ -1,0 +1,15 @@
+%h1 Tickets de Contacto
+
+%table.table
+	%tr
+		%th Nombre
+		%th De
+		%th Asunto
+		%th
+
+	- @contact_tickets.each do |contact_ticket|
+		%tr
+			%td= contact_ticket.name
+			%td= contact_ticket.from
+			%td= contact_ticket.subject
+			%td= render_index_actions [contact_ticket], only: [:show]

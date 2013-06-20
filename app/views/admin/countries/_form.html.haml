@@ -1,0 +1,8 @@
+= simple_form_for [:admin, @country] do |f|
+	= f.error_notification
+
+	.form-inputs
+		= f.input :name, label: 'Nombre'
+		
+	.form-actions
+		= f.button :submit, 'Guardar', class: 'btn btn-primary'

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+%html
+	%head
+		%title Webcinehorarios
+		= stylesheet_link_tag    "application", :media => "all"
+		= javascript_include_tag "application"
+		= csrf_meta_tags
+		
+	%body#webpage
+		= render 'layouts/analytics' if Rails.env.production?
+		%div{class: "navbar navbar-fixed-top"}
+			.navbar-inner
+				.container
+					.row
+						.span5
+							= link_to "Cine Horarios", root_path, class: "brand"
+
+						.span7
+							.nav-collapse
+								%ul.nav
+									%li
+										= link_to root_path do
+											%i.icon-home
+											Inicio
+									%li
+										= link_to contact_path do
+											%i.icon-edit
+											Contacto
+											
+		#maincontent
+			.container
+				.row
+					.span5
+						.sidebar
+					.span7
+						= yield

@@ -1,2 +1,30 @@
-- @functionsArray.each do |f|
-	= f
+= form_tag admin_theater_create_parse_path, method: :put do
+
+	%h3= @name_pelicula
+	%h3= @theater.name
+	= select_tag "show_id", options_from_collection_for_select(@shows, :id, :name), class: "chzn-select"
+	= simple_fields_for "function_types" do |a|
+		= a.collection_check_boxes :function_types, @function_types, :id, :name, checked: @function_types_detected, :item_wrapper_class => "checkbox_container"
+	%br
+	%br
+	= simple_fields_for :theaters do |a|
+		- @functionsArray.each_with_index do |item, index|
+			= a.simple_fields_for "theater_#{index}" do |b|
+		
+				= b.collection_select :theater_id, @theater.cinema.theaters, :id, :name, {selected: Theater.find_id_by_name(item[:theater])}, { class: "chzn-select" }
+				%strong
+					= item[:theater]
+				%br
+				%br
+				- item[:functions].each_with_index do |function, index2|
+					= b.simple_fields_for "function_#{index2}" do |f|
+						= function[:day]
+						= function[:date]
+						= f.hidden_field :date, value: function[:date]
+						= f.text_field :horarios, value: function[:horarios], class: 'input-xxlarge no-bottom-margin'
+						%br
+				%br
+	= hidden_field_tag :date, @date
+	
+	.form-actions
+		= submit_tag :submit, class: 'btn btn-primary'
