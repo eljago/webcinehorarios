@@ -19,4 +19,24 @@ div.page-content{
 	border-style:solid;
 	border-width:1px;
 	border-radius: 15px;
+	width: 800px;
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+	
 }
+
+h1{
+	width: 800px;
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+ 
+.portada{
+	margin-bottom: 20px;
+	display: block;
+	margin-right: auto;
+	margin-left: auto;
+}
+	

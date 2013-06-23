@@ -11,7 +11,7 @@
     <%= f.input :information %>
 		<%= f.association :genres, collection: Genre.all(order: 'name'), as: :check_boxes %>
 		<%= f.input :debut, include_blank: true %>
-		<%= f.input :rating, collection: [['G', 'G'],['PG', 'PG'], ['PG-13', 'PG-13'], ['R', 'R'], ['NC-17', 'NC-17'], ['13+', '13+'], ['14+', '14+'], ['15+', '15+'], ['16+', '16+'], ['18+', '18+']], :as => :radio_buttons, :item_wrapper_class => 'inline' %>
+		<%= f.input :rating, collection: [['TE', 'TE'],['TE+7', 'TE+7'], ['13+', '13+'], ['14+', '14+'], ['15+', '15+'], ['16+', '16+'], ['18+', '18+']], :as => :radio_buttons, :item_wrapper_class => 'inline' %>
 		
 		<h3>Personas:</h3>
 		<%= f.fields_for :show_person_roles do |b| %>

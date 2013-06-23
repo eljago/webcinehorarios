@@ -180,12 +180,7 @@ class Admin::FunctionsController < ApplicationController
         function.date = date
         function.function_types = @function.function_types
         function.show_id = @function.show_id
-        horarios.gsub(/\s{3,}|( - )|(, )/, "a").split("a").each do |h|
-          unless h == ""
-            horaminuto = h.split(":")
-            function.showtimes << Showtime.find_or_create_by_time(time: Time.new.utc.change(year:2000, month: 1, day: 1, hour: horaminuto[0], min: horaminuto[1], sec: 00))
-          end
-        end
+        create_showtimes function, horarios
         function.save
       end
     end
@@ -308,9 +303,10 @@ class Admin::FunctionsController < ApplicationController
         @name_pelicula = page.css('div[class="superior titulo-tamano-superior-modificado"]').text
         @function_types_detected = []
         @function_types_detected << FunctionType.find_id_by_name("Subtitulada") if @name_pelicula.include? "Subtitulada"
-        @function_types_detected << FunctionType.find_id_by_name("Doblada") if @name_pelicula.include? "Doblada"
+        @function_types_detected << FunctionType.find_id_by_name("Doblada") if ((@name_pelicula.include? "Doblada") || (@name_pelicula.include? "Doblado"))
         @function_types_detected << FunctionType.find_id_by_name("3D") if @name_pelicula.include? "3D"
         @function_types_detected << FunctionType.find_id_by_name("Prime") if @name_pelicula.include? "PRIME"
+        @function_types_detected << FunctionType.find_id_by_name("HD") if @name_pelicula.include? "HD"
         
         
         name = ""

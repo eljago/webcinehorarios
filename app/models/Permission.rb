@@ -9,16 +9,8 @@ class Permission
     allow 'api/v1/functions', [:index, :show_functions]
     allow :home, [:index, :contact, :create_contact]
     allow 'admin/sessions', [:new, :create, :destroy, :facebook_create]
-    allow 'admin/dashboard', :index
-    if user
-      allow 'admin/cities', [:new, :create, :edit, :update, :index, :show, :destroy]
-      allow 'admin/countries', [:new, :create, :edit, :update, :index, :show, :destroy]
-      allow 'admin/users', [:edit, :update]
-      allow 'admin/pages', [:new, :create, :edit, :update, :index, :show, :destroy]
-      allow 'admin/images', [:new, :create, :edit, :update, :index, :show, :destroy]
-      allow 'admin/contact_tickets', [:new, :create, :edit, :update, :index, :show, :destroy]
-      allow_all if user.admin?
-    end
+        
+    allow_all if user.admin?
   end
   
   def allow?(controller, action)

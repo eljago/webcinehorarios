@@ -1,10 +1,18 @@
 require 'api_constraints'
 
 Webcinehorarios::Application.routes.draw do
+  
+  root :to => 'home#index', ventana: 'inicio'
+  get 'contacto' => 'home#contact', as: 'contact', ventana: 'contacto'
+  post 'contacto' => 'home#create_contact', as: 'contact', ventana: 'contacto'
+  
+  mount Resque::Server, :at => "/resque"
+  
   match 'auth/:provider/callback', to: 'admin/sessions#facebook_create'
   match 'auth/failure', to: redirect('/admin')
 
   namespace :api, defaults: { format: 'json' } do
+    
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :cinemas, only: [:show]
 
@@ -64,11 +72,5 @@ Webcinehorarios::Application.routes.draw do
       match 'create_facebook' => 'shows#create_facebook'
     end
   end
-  
-  root :to => 'home#index', ventana: 'inicio'
-  get 'contacto' => 'home#contact', as: 'contact', ventana: 'contacto'
-  post 'contacto' => 'home#create_contact', as: 'contact', ventana: 'contacto'
-  
-  mount Resque::Server, :at => "/resque"
 
 end
