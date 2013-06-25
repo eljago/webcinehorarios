@@ -36,7 +36,7 @@ class Admin::ShowsController < ApplicationController
       end
     end
     @show = Show.new(params[:show])
-    if params[:show][:remote_image_url] != ""
+    if params[:create_facebook] && params[:create_facebook] == "1" && params[:show][:remote_image_url] != ""
       create_facebook
     end
     
