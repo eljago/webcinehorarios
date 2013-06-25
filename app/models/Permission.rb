@@ -10,7 +10,9 @@ class Permission
     allow :home, [:index, :contact, :create_contact]
     allow 'admin/sessions', [:new, :create, :destroy, :facebook_create]
         
-    allow_all if user.admin?
+    if user
+      allow_all if user.admin?
+    end
   end
   
   def allow?(controller, action)
