@@ -10,7 +10,6 @@
 			%br
 			= b.collection_check_boxes :function_types, @function_types, :id, :name, checked: item[:function_types], :item_wrapper_class => "checkbox_container"
 			%br
-			%br
 			- item[:functions].each_with_index do |function, index2|
 				= b.simple_fields_for "function_#{index2}" do |f|
 					= function[:day]

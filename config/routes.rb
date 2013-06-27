@@ -11,6 +11,7 @@ Webcinehorarios::Application.routes.draw do
   match 'auth/:provider/callback', to: 'admin/sessions#facebook_create'
   match 'auth/failure', to: redirect('/admin')
 
+  # API
   namespace :api, defaults: { format: 'json' } do
     
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
@@ -38,6 +39,7 @@ Webcinehorarios::Application.routes.draw do
     end
   end
   
+  # ADMIN
   namespace :admin do
 
     resources :cinemas, except: :show do
