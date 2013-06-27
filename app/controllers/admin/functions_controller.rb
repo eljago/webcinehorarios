@@ -201,17 +201,17 @@ class Admin::FunctionsController < ApplicationController
           titulo = item.text.gsub!(/\s+/, ' ')[0..50]
           img = item.css('img[alt="Sala Premium"]')
           unless img.blank?
-            function_types << FunctionType.find_id_by_name("Premier")
+            function_types << find_function_type_id(@function_types, "Premier")
             titulo.prepend("(Premier)-")
           end
           img = item.css('img[alt="Película 3D"]')
           unless img.blank?
-            function_types << FunctionType.find_id_by_name("3D")
+            function_types << find_function_type_id(@function_types, "3D")
             titulo.prepend("(3D)-")
           end
           img = item.css('img[alt="Sala XD"]')
           unless img.blank?
-            function_types << FunctionType.find_id_by_name("Sala XD")
+            function_types << find_function_type_id(@function_types, "Sala XD")
             titulo.prepend("(Sala XD)-")
           end
           function_types << find_function_type_id(@function_types, "Subtitulada") if ((titulo.include? "(Subtitulada)") || (titulo.include? "(Sub)"))
