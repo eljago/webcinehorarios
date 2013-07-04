@@ -10,13 +10,12 @@
 		
 	- @theaters.each do |theater|
 		%tr
-		- if params[:cinema_id]
+		- if params[:cinema_id] && theater.city
+			%td= link_to "#{theater.city.name} - #{theater.name}", [:admin, theater, :functions]
+		- elsif params[:city_id] && theater.cinema
+			%td= link_to "#{theater.cinema.name} - #{theater.name}", [:admin, theater, :functions]
+		- else
 			%td= link_to theater.name, [:admin, theater, :functions]
-		- elsif params[:city_id]
-			- if theater.cinema
-				%td= link_to "#{theater.cinema.name} - #{theater.name}", [:admin, theater, :functions] && theater.name
-			- else
-				%td= link_to theater.name, [:admin, theater, :functions]
 		%td= theater.latitude
 		%td= theater.longitude
 		%td= render_index_actions [@theaterable, theater]

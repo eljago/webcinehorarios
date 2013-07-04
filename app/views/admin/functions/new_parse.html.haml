@@ -4,7 +4,7 @@
 
 - if @theater.cinema.id == 1
 	= render 'parse_cinemark'
-- elsif @theater.cinema.id == 2
+- elsif @theater.cinema.id == 2 || (Rails.env.production? && @theater.cinema.id == 4) || (Rails.env.development? && @theater.cinema.id == 3)
 	= render 'parse_hoyts'
 - elsif (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
 	= render 'parse_cineplanet'

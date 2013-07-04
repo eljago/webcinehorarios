@@ -15,7 +15,7 @@
 	- unless @theater.web_label.blank?
 		= link_to 'Get Datos De La Web', {controller: 'functions', action: 'new_parse', date: params[:date]}, method: :get, class: 'btn'
 	
-	- if (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
+	- if @theater.cinema && ((Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4))
 		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "margin-top: 10px;"} do |f|
 			= f.hidden_field :date, value: params[:date]
 			= f.text_field :url, class: "input-xxlarge"

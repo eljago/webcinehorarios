@@ -31,8 +31,8 @@ class Admin::FunctionsController < ApplicationController
   
   def create
     @function = @theater.functions.new(params[:function])
-    create_showtimes @function, params[:horarios]
-    create_extra_showtimes_from_params
+    Function.create_showtimes @function, params[:horarios]
+    Function.Function.create_extra_showtimes_from_params
     
     if params[:horarios].blank?
       redirect_to admin_theater_functions_path(date: @function.date), notice: 'Funciones creadas con exito, pero en el día actual no.'
@@ -49,7 +49,7 @@ class Admin::FunctionsController < ApplicationController
     @function.assign_attributes(params[:function])
     if (params[:horarios].gsub(/\s{3,}|( - )|(, )/, ", ") != @function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', '))
       @function.showtimes = []
-      create_showtimes @function, params[:horarios]
+      Function.create_showtimes @function, params[:horarios]
     end
     
     if @function.save
@@ -93,11 +93,13 @@ class Admin::FunctionsController < ApplicationController
     @function_types = FunctionType.order(:name).all
     @shows = Show.order(:name).select('shows.id, shows.name').all
     @date = params[:date] if params[:date]
-    if @theater.cinema.id == 2 || @theater.cinema.id == 1
+    if @theater.cinema.id == 2 || @theater.cinema.id == 1 || 
+      (Rails.env.production? && @theater.cinema.id == 4) || (Rails.env.development? && @theater.cinema.id == 3)
+      
       parse_cine @theater.cinema.id
     elsif (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
       @date = params[:new_parse][:date]
-      parse_cine 3
+      parse_cine @theater.cinema.id
     else
       redirect_to [:admin, :cinemas], alert: "operación no habilitada para #{@theater.cinema.name}"
     end
@@ -105,7 +107,7 @@ class Admin::FunctionsController < ApplicationController
   def create_parse
     @theater = Theater.find(params[:theater_id])
     
-    if @theater.cinema.id == 1 || @theater.cinema.id == 2
+    if @theater.cinema.id == 1 || @theater.cinema.id == 2 || (Rails.env.production? && @theater.cinema.id == 4) || (Rails.env.development? && @theater.cinema.id == 3)
       count = 0
       while hash = params["movie_#{count}"]
         count2 = 0
@@ -115,7 +117,7 @@ class Admin::FunctionsController < ApplicationController
             function.show_id = hash[:show_id]
             function.function_type_ids = hash[:function_types]
             function.date = hash2[:date]
-            create_showtimes function, hash2[:horarios]
+            Function.create_showtimes function, hash2[:horarios]
             function.save
           end
           count2 = count2 + 1
@@ -133,7 +135,7 @@ class Admin::FunctionsController < ApplicationController
             function.show_id = params[:show_id]
             function.function_type_ids = params[:function_types][:function_types]
             function.date = hash2[:date]
-            create_showtimes function, hash2[:horarios]
+            Function.create_showtimes function, hash2[:horarios]
             function.save
           end
           count2 = count2 + 1
@@ -155,36 +157,13 @@ class Admin::FunctionsController < ApplicationController
     @theater = Theater.find(params[:theater_id])
   end
   
-  # SHOWTIMES METHODS
-  def create_showtimes(function, horarios)
-    horarios.gsub(/\s{3,}|( - )|(, )/, "a").split("a").each do |h|
-      if h.size >= 5
-        horaminuto = h.split(":")
-        function.showtimes << Showtime.find_or_create_by_time(time: Time.new.utc.change(year:2000, month: 1, day: 1, hour: horaminuto[0], min: horaminuto[1], sec: 00))
-      end
-    end
-  end
-  def create_extra_showtimes_from_params
-    date = @function.date
-    7.times do |n|
-      horarios = params["horarios_extra_#{n}"]
-      date = date.next
-      if horarios.size >= 5
-        function = @theater.functions.new
-        function.date = date
-        function.function_types = @function.function_types
-        function.show_id = @function.show_id
-        create_showtimes function, horarios
-        function.save
-      end
-    end
-  end
+  
   
   # GET DATOS DE LA WEB Y SETEA FUNCTIONSARRAY PARA ARMAR EL VIEW THEATERS/XX/NEW_PARSE.HTML.ERB
   def parse_cine cod
-    case cod
+    case
       # CINEMARK
-    when 1
+    when 1 == cod
       if !@theater.web_label.blank? && @date
         url = "http://www.cinemark.cl/DetalleCine.aspx?cinema=#{@theater.web_label}"
         s = open(url).read
@@ -246,7 +225,7 @@ class Admin::FunctionsController < ApplicationController
       end
     
       # CINE HOYTS
-    when 2
+    when cod == 2 || (Rails.env.production? && cod == 4) || (Rails.env.development? && cod == 3)
       if !@theater.web_label.blank? && @date
         date = @date.to_date
         times = 8 - (date - Date.current).to_i
@@ -308,7 +287,7 @@ class Admin::FunctionsController < ApplicationController
       end
     
       # CINEPLANET
-    when 3
+    when (Rails.env.production? && cod == 3) || (Rails.env.development? && cod == 4)
       if @date && url = params[:new_parse][:url]
         s = open(url).read
         s.gsub!('&nbsp;', ' ') 
