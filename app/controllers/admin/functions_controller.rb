@@ -32,7 +32,7 @@ class Admin::FunctionsController < ApplicationController
   def create
     @function = @theater.functions.new(params[:function])
     Function.create_showtimes @function, params[:horarios]
-    Function.Function.create_extra_showtimes_from_params
+    Function.create_extra_showtimes_from_params
     
     if params[:horarios].blank?
       redirect_to admin_theater_functions_path(date: @function.date), notice: 'Funciones creadas con exito, pero en el día actual no.'
