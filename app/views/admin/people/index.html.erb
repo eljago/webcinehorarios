@@ -16,7 +16,7 @@
 <% @people.each do |person| %>
   <tr>
     <td><%= person.name %></td>
-	<td><%= link_to image_tag(person.image, size: "70x100"), person.image.to_s if person.image %></td>
+	<td><%= link_to image_tag(person.image.smallest), person.image.to_s if person.image %></td>
 	<td><%= render_index_actions [person] %></td>
   </tr>
 <% end %>

@@ -10,7 +10,7 @@
 
 		<% participant.each do |show_role_tag| %>
 		  <tr>
-				<td><%= image_tag show_role_tag.person.image, size: "70x100" %></td>
+				<td><%= image_tag show_role_tag.person.image.smallest %></td>
 		    <td><%= show_role_tag.person.name %></td>
 				<td><%= show_role_tag.character %></td>
 		  </tr>

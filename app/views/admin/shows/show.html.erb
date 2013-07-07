@@ -7,7 +7,7 @@
 
 <p>
   <b>Imagen:</b>
-  <%= link_to image_tag(@show.image, size: "70x100"), @show.image.to_s if @show.image %>
+  <%= link_to image_tag(@show.image.smallest), @show.image.to_s if @show.image %>
 </p>
 
 <p>

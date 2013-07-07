@@ -9,7 +9,7 @@
 	  <tr>
 	    <td><%= image.name %></td>
 			<% if image.image_url %>
-	    	<td><%= image_tag(image.image_url) %></td>
+	    	<td><%= image_tag(image.image.smaller) %></td>
 			<% else %>
 	    	<td><%= 'Imágen Inválida' %></td>
 			<% end %>

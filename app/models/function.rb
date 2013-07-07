@@ -15,7 +15,7 @@ class Function < ActiveRecord::Base
       end
     end
   end
-  def self.create_extra_showtimes_from_params(function, theater)
+  def self.create_extra_showtimes_from_params(function, theater, params)
     date = function.date
     7.times do |n|
       horarios = params["horarios_extra_#{n}"]
