@@ -41,7 +41,7 @@ class Admin::ShowsController < ApplicationController
     end
     
     if @show.save
-      redirect_to [:admin, :shows], notice: 'Show was successfully created.'
+      redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully created.'
     else
       render action: "new"
     end
@@ -61,7 +61,7 @@ class Admin::ShowsController < ApplicationController
     end
     
     if @show.update_attributes(params[:show])
-      redirect_to [:admin, :shows], notice: 'Show was successfully updated.'
+      redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully updated.'
     else
       render action: "edit"
     end
