@@ -1,1 +1,17 @@
-%strong Admin Home
+- @cinemas.each do |cinema|
+	%h4= cinema.name
+	%table.table
+		%tr
+			%th Theater
+			- 7.times do |n|
+				%th= l Date.current + n, format: :short
+		
+		- cinema.theaters.each do |theater|
+			%tr
+				%td= link_to theater.name, [:admin, theater, :functions]
+				- hash = theater.functions.count(group: :date)
+				- 7.times do |n|
+					- if hash[Date.current + n].blank?
+						%td 0
+					- else
+						%td= hash[Date.current + n]

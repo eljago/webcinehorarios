@@ -6,6 +6,10 @@ class Function < ActiveRecord::Base
   has_and_belongs_to_many :function_types
   has_and_belongs_to_many :showtimes
   
+  validates :show, presence: :true
+  validates :theater, presence: :true
+  validates :date, presence: :true
+  
   # SHOWTIMES METHODS
   def self.create_showtimes(function, horarios)
     horarios.gsub(/\s{3,}|( - )|(, )/, "a").split("a").each do |h|

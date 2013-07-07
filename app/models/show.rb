@@ -2,15 +2,16 @@ class Show < ActiveRecord::Base
   attr_accessible :show_person_roles_attributes, :genre_ids, :active, :year, :debut, :name, :image, :information, 
   :duration, :name_original, :rating, :remote_image_url, :images_attributes, :videos_attributes, :facebook_id
   
-  has_many :images, as: :imageable, :dependent => :destroy
+  has_many :images, as: :imageable, dependent: :destroy
   has_and_belongs_to_many :genres
-  has_many :functions, :dependent => :destroy
-  has_many :videos, as: :videoable, :dependent => :destroy
-  has_many :show_person_roles, :dependent => :destroy
+  has_many :functions, dependent: :destroy
+  has_many :videos, as: :videoable, dependent: :destroy
+  has_many :show_person_roles, dependent: :destroy
   has_many :people, through: :show_person_roles
-  has_many :comments, :dependent => :destroy
+  has_many :comments, dependent: :destroy
   
-  validates :name, :presence => :true
+  validates :name, presence: :true
+  validates :remote_image_url, presence: :true
   
   accepts_nested_attributes_for :images, allow_destroy: true
   accepts_nested_attributes_for :videos, allow_destroy: true
