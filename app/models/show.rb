@@ -11,7 +11,6 @@ class Show < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   
   validates :name, presence: :true
-  validates :remote_image_url, presence: :true
   
   accepts_nested_attributes_for :images, allow_destroy: true
   accepts_nested_attributes_for :videos, allow_destroy: true
