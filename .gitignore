@@ -29,3 +29,6 @@ public/assets/
 public/uploads/
 public/images/
 public/covers/
+
+# Redis Snapshot file
+dump.rdb
