@@ -11,17 +11,19 @@ Webcinehorarios::Application.routes.draw do
   match 'auth/:provider/callback', to: 'admin/sessions#facebook_create'
   match 'auth/failure', to: redirect('/admin')
 
-  # API
+  ##### API #####
   namespace :api, defaults: { format: 'json' } do
-
+    
+    ##### V2 #####
     scope module: :v2, constraints: ApiConstraints.new(version: 2) do
       resources :cinemas, only: [:show]
 
       get 'billboard' => 'shows#billboard'
+      get 'detailed_billboard' => 'shows#detailed_billboard'
       get 'premieres' => 'shows#premieres'
       get 'comingsoon' => 'shows#comingsoon'
       
-      resources :shows, only: :show do
+      resources :shows, only: [] do
         resources :comments, only: :create
         get 'show_cinemas' => 'cinemas#show_cinemas'
         get 'show_functions' => 'functions#show_functions'
@@ -37,6 +39,8 @@ Webcinehorarios::Application.routes.draw do
         resources :functions, only: :index
       end
     end
+    
+    ##### V1 ######
     scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true) do
       resources :cinemas, only: [:show]
 

@@ -17,10 +17,12 @@ module Api
         .order("debut ASC").all
       end
       
-      def show
-        @show = Show.select('shows.id, shows.name, shows.image, shows.duration, 
-        shows.name_original, shows.information, shows.debut, shows.rating, shows.year, shows.facebook_id')
-        .includes(:show_person_roles => :person).find(params[:id])
+      def detailed_billboard
+        date = Date.current
+        @shows = Show.joins(:functions).where(active: true, functions: {date: date}).includes(:genres)
+        .select('shows.id, shows.name, shows.image, shows.duration, 
+          shows.name_original, shows.information, shows.debut, shows.rating, shows.year')
+        .order("debut DESC").uniq.all
       end
       
     end
