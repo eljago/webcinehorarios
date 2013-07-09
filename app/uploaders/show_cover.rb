@@ -1,13 +1,34 @@
 # encoding: utf-8
 
-class ShowCover < CoverUploader
-	
+class ShowCover < CarrierWave::Uploader::Base
+  include ::CarrierWave::Backgrounder::Delay
+  include CarrierWave::MimeTypes
+  include CarrierWave::MiniMagick
+  
+  storage :file
+  
+  def extension_white_list
+    %w(jpg jpeg gif png)
+  end
+
+  def store_dir
+    "uploads/covers/#{model.class.to_s.underscore}/#{model.id}"
+  end
+  
+  def filename
+    @name ||= "#{secure_filename}.png" if original_filename
+  end
   def default_url
     "/assets/showCover.png"
   end
+
+
+  process convert: 'png'
+  process :set_content_type
   
   process :resize_to_fit => [640,960]
   process :optimize
+  
   version :small do
     process :resize_to_fit => [320,480]
     process :optimize
@@ -17,7 +38,28 @@ class ShowCover < CoverUploader
     process :optimize
   end
   version :smallest do
-    process :resize_to_fit => [80,120]
     process :optimize
+    process :resize_to_fit => [80,120]
+  end
+
+  
+  private
+  
+  def optimize
+    manipulate!(:format => 'png') do |img|
+      img.strip
+      img.combine_options do |c|
+        c.quality "90"
+        c.depth "8"
+        c.interlace "plane"
+      end
+      img
+    end
+  end
+
+  def secure_filename
+    ivar = "@#{mounted_as}_a310d61f534ae85c02ei699fac4c4a5998f89517dd75ee24aar"
+    token = model.instance_variable_get(ivar)
+    token ||= model.instance_variable_set(ivar, SecureRandom.hex(4))
   end
 end
