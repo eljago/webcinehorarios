@@ -193,8 +193,8 @@ class Admin::FunctionsController < ApplicationController
             function_types << find_function_type_id(@function_types, "Sala XD")
             titulo.prepend("(Sala XD)-")
           end
-          function_types << find_function_type_id(@function_types, "Subtitulada") if ((titulo.include? "(Subtitulada)") || (titulo.include? "(Sub)"))
-          function_types << find_function_type_id(@function_types, "Doblada") if ((titulo.include? "(Doblada)") || (titulo.include? "(Dob)"))
+          function_types << find_function_type_id(@function_types, "Subtitulada") if ((titulo.include? "Subtitulada") || (titulo.include? "(Sub)"))
+          function_types << find_function_type_id(@function_types, "Doblada") if ((titulo.include? "Doblada") || (titulo.include? "(Dob)"))
           function_types << find_function_type_id(@function_types, "2D") if titulo.include? "2D"
           function_types << find_function_type_id(@function_types, "Premier") if ((titulo.include? "PR") && !function_types.include?(find_function_type_id(@function_types, "Premier")))
 

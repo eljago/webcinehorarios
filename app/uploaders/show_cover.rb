@@ -24,7 +24,6 @@ class ShowCover < CarrierWave::Uploader::Base
 
 
   process convert: 'png'
-  process :set_content_type
   
   process :resize_to_fit => [640,960]
   process :optimize
@@ -42,11 +41,12 @@ class ShowCover < CarrierWave::Uploader::Base
     process :resize_to_fit => [80,120]
   end
 
+  process :set_content_type
   
   private
   
   def optimize
-    manipulate!(:format => 'png') do |img|
+    manipulate! do |img|
       img.strip
       img.combine_options do |c|
         c.quality "90"

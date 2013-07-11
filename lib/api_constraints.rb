@@ -5,6 +5,10 @@ class ApiConstraints
   end
   
   def matches?(req)
-    @default || req.headers['APIV'].include?("application/cinehorarios.ios.v#{@version}")
+    if req.headers['APIV']
+      @default || req.headers['APIV'].include?("application/cinehorarios.ios.v#{@version}")
+    else
+      @default
+    end
   end
 end

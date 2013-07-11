@@ -22,7 +22,7 @@
   <tr>
     <td><%= show.active %></td>
     <td><%= show.name %></td>
-    <td><%= link_to image_tag(show.image.smallest), show.image.to_s if show.image %></td>
+    <td><%= link_to image_tag(show.image.smallest, size: '30x20'), show.image.to_s if show.image %></td>
     <td><%= show.duration %></td>
     <td><%= show.debut %></td>
     <td><%= show.rating %></td>
