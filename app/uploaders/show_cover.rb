@@ -2,7 +2,6 @@
 
 class ShowCover < CarrierWave::Uploader::Base
   include ::CarrierWave::Backgrounder::Delay
-  include CarrierWave::MimeTypes
   include CarrierWave::MiniMagick
   
   storage :file
@@ -22,40 +21,45 @@ class ShowCover < CarrierWave::Uploader::Base
     "/assets/showCover.png"
   end
 
-
-  process convert: 'png'
-  
   process :resize_to_fit => [640,960]
+  process convert: 'png'
   process :optimize
   
   version :small do
     process :resize_to_fit => [320,480]
+    process convert: 'png'
     process :optimize
   end
   version :smaller do
     process :resize_to_fit => [160,240]
+    process convert: 'png'
     process :optimize
   end
   version :smallest do
-    process :optimize
     process :resize_to_fit => [80,120]
+    process convert: 'png'
+    process :optimize
   end
-
-  process :set_content_type
   
   private
   
   def optimize
     manipulate! do |img|
+      img.format 'png'
       img.strip
       img.combine_options do |c|
         c.quality "90"
         c.depth "8"
         c.interlace "plane"
       end
+      if model
+        model.width = img[:width]
+        model.height = img[:height]
+      end
       img
     end
   end
+  
 
   def secure_filename
     ivar = "@#{mounted_as}_a310d61f534ae85c02ei699fac4c4a5998f89517dd75ee24aar"

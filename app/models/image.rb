@@ -1,5 +1,5 @@
 class Image < ActiveRecord::Base
-  attr_accessible :name, :image, :remote_image_url
+  attr_accessible :name, :image, :remote_image_url, :width, :height
   
   belongs_to :imageable, polymorphic: true
   

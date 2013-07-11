@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627033923) do
+ActiveRecord::Schema.define(:version => 20130711025026) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -114,6 +114,8 @@ ActiveRecord::Schema.define(:version => 20130627033923) do
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
     t.string   "image_tmp"
+    t.integer  "width"
+    t.integer  "height"
   end
 
   add_index "images", ["imageable_id", "imageable_type"], :name => "index_images_on_imageable_id_and_imageable_type"
