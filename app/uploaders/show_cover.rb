@@ -52,10 +52,6 @@ class ShowCover < CarrierWave::Uploader::Base
         c.depth "8"
         c.interlace "plane"
       end
-      if model
-        model.width = img[:width]
-        model.height = img[:height]
-      end
       img
     end
   end
