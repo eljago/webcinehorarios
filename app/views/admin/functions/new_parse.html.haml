@@ -7,7 +7,10 @@
 - elsif @theater.cinema.id == 2 || (Rails.env.production? && @theater.cinema.id == 4) || (Rails.env.development? && @theater.cinema.id == 3)
 	= render 'parse_hoyts'
 - elsif (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
-	= render 'parse_cineplanet'
+	-if @parse_movie
+		= render 'parse_cineplanet_cinemas'
+	-else
+		= render 'parse_cineplanet_movie'
 
 = link_to admin_theater_functions_path(@theater, date: @date), class: 'btn' do
 	%i.icon-arrow-left

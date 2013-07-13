@@ -2,7 +2,6 @@
 # encoding: utf-8
 
 class Admin::FunctionsController < ApplicationController
-  require 'nokogiri'
   
   before_filter :get_theater, only: [:new, :create, :copy_last_day, :delete_day]
   before_filter :get_function, only: [:edit, :update, :destroy]
@@ -19,7 +18,7 @@ class Admin::FunctionsController < ApplicationController
     
     @functions = @theater.functions.includes(:show, :showtimes, :function_types)
     .where('date = ?',params[:date])
-    .order("functions.created_at, showtimes.time")
+    .order("functions.show_id DESC")
   end
   
   def new
@@ -98,8 +97,9 @@ class Admin::FunctionsController < ApplicationController
       
       parse_cine @theater.cinema.id
     elsif (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
-      @date = params[:new_parse][:date]
-      parse_cine @theater.cinema.id
+      @date = params[:new_parse][:date] unless params[:new_parse].blank?
+      @date = params[:date] unless @date
+      parse_cine @theater.cinema_id
     else
       redirect_to [:admin, :cinemas], alert: "operación no habilitada para #{@theater.cinema.name}"
     end
@@ -107,7 +107,7 @@ class Admin::FunctionsController < ApplicationController
   def create_parse
     @theater = Theater.find(params[:theater_id])
     
-    if @theater.cinema.id == 1 || @theater.cinema.id == 2 || (Rails.env.production? && @theater.cinema.id == 4) || (Rails.env.development? && @theater.cinema.id == 3)
+    if @theater.cinema_id == 1 || @theater.cinema_id == 2 || (Rails.env.production? && @theater.cinema_id == 4) || (Rails.env.development? && @theater.cinema_id == 3)
       count = 0
       while hash = params["movie_#{count}"]
         count2 = 0
@@ -124,7 +124,7 @@ class Admin::FunctionsController < ApplicationController
         end
         count = count + 1
       end
-    elsif (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
+    elsif (Rails.env.production? && @theater.cinema_id == 3) || (Rails.env.development? && @theater.cinema_id == 4)
       count = 0
       while hash = params[:theaters]["theater_#{count}"]
         count2 = 0
@@ -288,7 +288,8 @@ class Admin::FunctionsController < ApplicationController
     
       # CINEPLANET
     when (Rails.env.production? && cod == 3) || (Rails.env.development? && cod == 4)
-      if @date && url = params[:new_parse][:url]
+      url = params[:new_parse][:url] unless params[:new_parse].blank?
+      if @date && url
         s = open(url).read
         s.gsub!('&nbsp;', ' ') 
         page = Nokogiri::HTML(s)
@@ -324,6 +325,8 @@ class Admin::FunctionsController < ApplicationController
             @functionsArray << { theater: name, functions: [] }
           end
         end
+      elsif @date
+        @parse_movie = true
       end
     else
       redirect_to [:admin, :cinemas], alert: "operacion inválida para #{@theater.cinema.name}"
