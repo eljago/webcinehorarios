@@ -19,17 +19,17 @@ class Function < ActiveRecord::Base
       end
     end
   end
-  def self.create_extra_showtimes_from_params(function, theater, params)
-    date = function.date
+  def self.create_extra_showtimes_from_params(func, theater, params)
+    date = func.date
     7.times do |n|
       horarios = params["horarios_extra_#{n}"]
       date = date.next
       if horarios.size >= 5
         function = theater.functions.new
         function.date = date
-        function.function_types = function.function_types
-        function.show_id = function.show_id
-        create_showtimes function, horarios
+        function.function_types = func.function_types
+        function.show_id = func.show_id
+        Function.create_showtimes function, horarios
         function.save
       end
     end

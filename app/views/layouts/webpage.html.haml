@@ -5,31 +5,108 @@
 		= stylesheet_link_tag    "application", :media => "all"
 		= javascript_include_tag "application"
 		= csrf_meta_tags
+		%link{:href => "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", :rel => "stylesheet", :type => "text/css"}/
 		
-	%body#webpage
+	%body
+		%a.scrolltop{:href => "#"}
+			%span up
+			
 		= render 'layouts/analytics' if Rails.env.production?
-		%div{class: "navbar navbar-fixed-top"}
+		
+		/ begins navbar
+		.navbar.navbar-fixed-top
 			.navbar-inner
 				.container
-					.row
-						.span5
-							= link_to (image_tag "cinehorarioslogo.png"), root_url, class: "brand"
-
-						.span7
-							.nav-collapse
-								%ul.nav
+					%a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
+						%span.icon-bar
+						%span.icon-bar
+						%span.icon-bar
+					%a.brand.scroller{"data-section" => "body", :href => "index.html"}
+						= image_tag 'logo.png', alt: 'logo'
+					.nav-collapse.collapse
+						%ul.nav.pull-right
+							%li
+								%a.scroller{"data-section" => "#features", :href => "#"} Características
+							%li
+								%a.scroller{"data-section" => "#pricing", :href => "#"} Pricing
+							%li
+								%a.scroller{"data-section" => "#footer", :href => "#"} Contacto
+							%li
+								%a{:href => "blog.html"} Blog
+							%li.dropdown
+								%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+									Links
+									%b.caret
+								%ul.dropdown-menu
 									%li
-										= link_to root_path do
-											%i.icon-home
-											Inicio
+										%a{:href => "features.html"} Features
 									%li
-										= link_to contact_path do
-											%i.icon-edit
-											Contacto
+										%a{:href => "pricing.html"} Pricing
 									%li
-										= link_to 'https://www.facebook.com/AppCineHorarios', html_options = {target: '_blank'} do
-											%i.icon-facebook
+										%a{:href => "portfolio.html"} Portfolio
+									%li
+										%a{:href => "coming-soon.html"} Coming Soon
+									%li
+										%a{:href => "aboutus.html"} About us
+									%li
+										%a{:href => "contact.html"} Contact us
+									%li
+										%a{:href => "faq.html"} FAQ
+							/ %li
+							/ 	%a.btn-header{:href => "signup.html"} Sign up
+							/ %li
+							/ 	%a.btn-header{:href => "signin.html"} Sign in
+		/ ends navbar
 											
-		#maincontent
+		= yield
+		
+		/ starts footer
+		#footer
 			.container
-				= yield
+				.row
+					.span8
+						%h3 Contacto
+						.blog_post
+							.row
+								.span2
+									%a{:href => "blog.html"}= image_tag 'pic_contact.png', alt: 'post image'
+								.span4
+									.title
+										Queremos conocer tu opinión
+									.intro
+										Cualquier problema, duda, o sugerencia, no dudes en ponerte en contacto con nosotros a través del siguiente formulario.
+									/ .date
+									/ 	Oct 22. 2012
+					.span4.contact_us
+						%h4 Todos los campos son obligatorios
+						%br
+						%form.form-horizontal
+							.field
+								.label_field
+									%label{:for => "inputName"} Nombre
+								%input#inputName{:type => "text"}/
+							.field
+								.label_field
+									%label{:for => "inputEmail"} Email
+								%input#inputEmail{:type => "text"}/
+							.field
+								.label_field
+									%label{:for => "inputCity"} Asunto
+								%input#inputCity{:type => "text"}/
+							.field
+								.label_field
+									%label{:for => "inputComment"} Comentario
+								%textarea{:name => "comments"}
+							%button.btn{:type => "submit"} Enviar
+				%hr/
+				.row.copyright
+					.span5
+						%h3 Social
+						%a.social.fb{href: "#"}
+							%i.i_facebook
+						%a.social.tw{href: "#"}
+							%i.i_twitter
+					/ .span2.offset5.copy
+					/ 	%p 2013 - Cine Horarios
+		
+		

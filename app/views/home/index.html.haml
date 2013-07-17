@@ -1,5 +1,78 @@
-= image_tag 'facebook_background.png', class: 'portada'
+#hero
+	.container
+		/ starts carousel
+		.row.animated.fadeInDown
+			.span12
+				#myCarousel.carousel.slide
+					/ carousel items
+					.carousel-inner
+						/ slide
+						.active.item.slide2
+							.row
+								.span4.animated.fadeInUpBig
+									%h1= "La Aplicación definitiva de Cines Chilenos"
+									%p
+										= "Los horarios de exhibición de las películas en Cartelera en los diferentes cines Chilenos en la palma de su mano."
+									%a.btn.btn-success.btn-large.scroller{"data-section" => "#features", :href => "#"}
+										= "Vea las Características"
+								.span6.animated.fadeInDownBig= image_tag 'isometric_iphone.jpg'
+						/ slide
+						.item.slide1
+							.row
+								.span6{style: "text-align: center"}= image_tag 'Apple-App-Store.png', alt: 'slide1'
+								.span4
+									%h1
+										¡ Disponible ahora en el App Store !
+									%p
+										= "Cine Horarios está disponible para que pueda descargarla directamente en desde su dispositivo iPhone o iPod Touch a través de la App Store."
+									%a.btn.btn-success.btn-large{:href => "http://itunes.com/apps/cinehorarios"}
+										Descárgela Ahora!
+																
+						.item.slide3.animated.fadeInUpBig= image_tag 'slide3.png'
+					/ Carousel nav
+					%a.carousel-control.left{"data-slide" => "prev", :href => "#myCarousel"} ‹
+					%a.carousel-control.right{"data-slide" => "next", :href => "#myCarousel"} ›
+					
+#intro
+	.container
+		%h1
+			Elige la película, cine, y horario que más te convenga.
+			%br
+			Nunca ha sido tan fácil.
 
-%h1= @page.title
-.page-content
-	= simple_format @page.content
+/ features
+#features
+	.container
+		/ header
+		%h2.section_header
+			%hr.left.visible-desktop
+				%span= "Características"
+				%hr.right.visible-desktop
+		/ feature list
+		.row
+			.span4.feature
+				= image_tag 'iphone_funciones.jpg', class: 'thumb'
+				%h3
+					%i.i_cloud
+					= "Cine Horarios!"
+				%p.description
+					= "Horarios de exhibición de todas las películas en los principales cines de Chile."
+				/ %a.btn.btn-default{:href => "#"} more
+				
+			.span4.feature
+				= image_tag 'iphone_cartelera.jpg', class: 'thumb'
+				%h3
+					%i.i_chart
+					= "Cartelera y Próximos Estrenos"
+				%p.description
+					= "Búsqueda de los horarios a partir de la cartelera semanal. Seleccione una películas para encontrar el cine y la hora que más le acomode. También podrá ver los próximos estrenos"
+				/ %a.btn.btn-default{:href => "#"} more
+				
+			.span4.feature
+				= image_tag 'iphone_detalle.jpg', class: 'thumb'
+				%h3
+					%i.i_movil
+					= "Detalle de Películas"
+				%p.description
+					= "Podrá ver la ficha de cada película que incluye la sinópsis, imágenes, trailers, elenco y más."
+				/ %a.btn.btn-default{:href => "#"} more

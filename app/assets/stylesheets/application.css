@@ -12,7 +12,7 @@
  *= require chosen
  *= require_tree .
  */
-
+/*
 div.page-content{
 	background-color: white;
 	padding: 15px;
@@ -32,11 +32,4 @@ h1{
 	margin-right: auto;
 	margin-left: auto;
 }
- 
-.portada{
-	margin-bottom: 20px;
-	display: block;
-	margin-right: auto;
-	margin-left: auto;
-}
-	
+	*/
