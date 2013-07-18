@@ -1,16 +1,16 @@
 - @cinemas.each do |cinema|
 	%h4= cinema.name
-	%table.table
+	%table.table.table-bordered.table-condensed
 		%tr
-			%th Theater
-			- 7.times do |n|
+			%th{style: "width: 150px;"} Theater
+			- 8.times do |n|
 				%th= l Date.current + n, format: :short
 		
 		- cinema.theaters.each do |theater|
 			%tr
 				%td= link_to theater.name, [:admin, theater, :functions]
 				- hash = theater.functions.count(group: :date)
-				- 7.times do |n|
+				- 8.times do |n|
 					- if hash[Date.current + n].blank?
 						%td= link_to 0, admin_theater_functions_path(theater, date: Date.current + n)
 					- else

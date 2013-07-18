@@ -8,11 +8,63 @@
 
 	%body#admin
 		.container
-			.row-fluid
-				.span2
-					= render 'layouts/menu_fixed'
-				.span10
-					= render 'layouts/user_login'
-					= render_navigation
-					= render 'layouts/messages'
-					= yield
+			%a.scrolltop{:href => "#"}
+				%span up
+			
+			/ begins navbar
+			.navbar.navbar-fixed-top
+				.navbar-inner
+					.container
+						%a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
+							%span.icon-bar
+							%span.icon-bar
+							%span.icon-bar
+						.nav-collapse.collapse
+							- if current_user
+								- if current_user.admin?
+									%ul.nav.pull-right
+										%li
+											= link_to admin_path do
+												%i.icon-home
+												Inicio
+										%li
+											= link_to admin_users_path do
+												%i.icon-folder-close-alt
+												Users
+										%li
+											= link_to admin_contact_tickets_path do
+												%i.icon-tag
+												Contactos
+										%li
+											= link_to admin_opinions_path do
+												%i.icon-comments
+												Opiniones
+										%li
+											= link_to admin_countries_path do
+												%i.icon-globe
+												Países
+										%li
+											= link_to admin_cinemas_path do
+												%i.icon-building
+												Cines
+										%li
+											= link_to admin_shows_path do
+												%i.icon-film
+												Shows
+										%li
+											= link_to admin_genres_path do
+												%i.icon-comments
+												Géneros
+										%li
+											= link_to admin_function_types_path do
+												%i.icon-bookmark
+												Tipos de Función
+										%li
+											= link_to admin_people_path do
+												%i.icon-group
+												Personas
+												
+			= render 'layouts/user_login'
+			= render_navigation
+			= render 'layouts/messages'
+			= yield
