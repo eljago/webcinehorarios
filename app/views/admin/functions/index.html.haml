@@ -10,21 +10,21 @@
 
 	= link_to 'Copiar Ultimo dia', {controller: 'functions', action: 'copy_last_day'}, method: :post, class: 'btn'
 	
-	= link_to 'Borrar día', {controller: 'functions', action: 'delete_day', date: params[:date]}, method: :post, class: 'btn'
+	= link_to 'Borrar día', {controller: 'functions', action: 'delete_day', date: params[:date]}, data: { confirm: 'Está seguro?' }, method: :post, class: 'btn'
 
 	- unless @theater.web_label.blank?
-		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "margin-top: 10px;"} do |f|
+		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
 			= f.hidden_field :date, value: params[:date]
-			= f.text_field :times, class: "input-mini"
+			= f.text_field :times, class: "input-mini", style: "margin-top: 10px"
 			= f.submit "Get From Web"
 		/ = link_to 'Get Datos De La Web', {controller: 'functions', action: 'new_parse', date: params[:date]}, method: :get, class: 'btn'
 	
 	- if @theater.cinema && ((Rails.env.production? && @theater.cinema_id == 3) || (Rails.env.development? && @theater.cinema_id == 4))
 		= link_to 'Get Datos Ajax', {controller: 'functions', action: 'new_parse', date: params[:date]}, method: :get, class: 'btn'
-		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "margin-top: 10px;"} do |f|
+		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
 			= f.hidden_field :date, value: params[:date]
-			= f.text_field :times, class: "input-mini"
-			= f.text_field :url, class: "input-xxlarge"
+			= f.text_field :times, class: "input-mini", style: "margin-top: 10px"
+			= f.text_field :url, class: "input-xlarge", style: "margin-top: 10px"
 			= f.submit "Parse URL"
 
 = render 'shared/date_pagination'
