@@ -68,6 +68,8 @@ Webcinehorarios::Application.routes.draw do
   
   # ADMIN
   namespace :admin do
+    
+    resources :opinions
 
     resources :cinemas, except: :show do
       resources :theaters

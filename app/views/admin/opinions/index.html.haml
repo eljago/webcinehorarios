@@ -1,0 +1,20 @@
+%h1 Opiniones
+
+%table.table
+	%tr
+		%th Autor
+		%th Fecha
+		%th Comentario
+		%th 
+		
+	- @opinions.each do |opinion|
+		%tr
+			%td= opinion.author
+			%td= opinion.date
+			%td= opinion.comment
+			%td= render_index_actions [opinion], only: [:show, :edit, :destroy]
+%br
+
+= link_to new_admin_opinion_path, class: 'btn' do
+	%i.icon-plus
+	Nueva Opinion

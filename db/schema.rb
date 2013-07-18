@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130711025026) do
+ActiveRecord::Schema.define(:version => 20130718005929) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -119,6 +119,12 @@ ActiveRecord::Schema.define(:version => 20130711025026) do
   end
 
   add_index "images", ["imageable_id", "imageable_type"], :name => "index_images_on_imageable_id_and_imageable_type"
+
+  create_table "opinions", :force => true do |t|
+    t.string "author"
+    t.text   "comment"
+    t.date   "date"
+  end
 
   create_table "pages", :force => true do |t|
     t.string   "permalink"
