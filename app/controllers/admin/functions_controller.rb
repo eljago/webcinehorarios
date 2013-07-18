@@ -87,23 +87,34 @@ class Admin::FunctionsController < ApplicationController
   end
 
   # GET DATOS DE LA WEB
+  # NEW PARSE
   def new_parse
     @theater = Theater.find(params[:theater_id])
     @function_types = FunctionType.order(:name).all
     @shows = Show.order(:name).select('shows.id, shows.name').all
-    @date = params[:date] if params[:date]
+    @date = params[:new_parse][:date] if params[:new_parse][:date]
     if @theater.cinema.id == 2 || @theater.cinema.id == 1 || 
       (Rails.env.production? && @theater.cinema.id == 4) || (Rails.env.development? && @theater.cinema.id == 3)
       
-      parse_cine @theater.cinema.id
+      if params[:new_parse][:times].blank?
+        parse_cine @theater.cinema.id, 7
+      else
+        parse_cine @theater.cinema.id, params[:new_parse][:times].to_i
+      end
     elsif (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
       @date = params[:new_parse][:date] unless params[:new_parse].blank?
       @date = params[:date] unless @date
-      parse_cine @theater.cinema_id
+      if params[:new_parse][:times].blank?
+        parse_cine @theater.cinema.id, 7
+      else
+        parse_cine @theater.cinema.id, params[:new_parse][:times].to_i
+      end
     else
       redirect_to [:admin, :cinemas], alert: "operación no habilitada para #{@theater.cinema.name}"
     end
   end
+  
+  # CREATE PARSE
   def create_parse
     @theater = Theater.find(params[:theater_id])
     
@@ -160,7 +171,7 @@ class Admin::FunctionsController < ApplicationController
   
   
   # GET DATOS DE LA WEB Y SETEA FUNCTIONSARRAY PARA ARMAR EL VIEW THEATERS/XX/NEW_PARSE.HTML.ERB
-  def parse_cine cod
+  def parse_cine cod, times
     case
       # CINEMARK
     when 1 == cod
@@ -203,7 +214,13 @@ class Admin::FunctionsController < ApplicationController
           
           movieFunctions[:functions] = []
 
+          count = 0
           item.css('tr').each do |tr|
+            puts count
+            puts times
+            if count >= times
+              break
+            end
             tds = tr.css('td')
             diaArray = tds[0].css('strong').text.split("-") # => ["14","jun:"]
             dia = diaArray[0].to_i
@@ -217,6 +234,7 @@ class Admin::FunctionsController < ApplicationController
               function[:date] = date.advance_to_day(dia)
               movieFunctions[:functions] << function
             end
+            count = count + 1
           end
           @functionsArray << movieFunctions
         end
@@ -228,7 +246,6 @@ class Admin::FunctionsController < ApplicationController
     when cod == 2 || (Rails.env.production? && cod == 4) || (Rails.env.development? && cod == 3)
       if !@theater.web_label.blank? && @date
         date = @date.to_date
-        times = 8 - (date - Date.current).to_i
         @functionsArray = []
         function_helper = nil
         
@@ -265,6 +282,7 @@ class Admin::FunctionsController < ApplicationController
                   function_types << find_function_type_id(@function_types, "Subtitulada") if text_name.text.include? '(SUBT)'
                   function_types << find_function_type_id(@function_types, "3D") if text_name.text.include? '3D'
                   function_types << find_function_type_id(@function_types, "Premium") if text_name.text.include? 'PREMIUM'
+                  function_types << find_function_type_id(@function_types, "4DX") if text_name.text.include? '4DX'
                   function_helper[:function_types] = function_types
                   
                   @functionsArray << function_helper
