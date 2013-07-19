@@ -1,0 +1,42 @@
+= form_for [:admin, @contact_ticket], html: { class: "form form-horizontal"} do |f|
+	- flash.each do |name, msg|
+		- if name != :notice && msg.is_a?(String)
+			%div{:class => "alert alert-error"}
+				%a.close{"data-dismiss" => "alert"} ×
+				= content_tag :div, msg, :id => "flash_error"
+				
+	.field
+		.label_field
+			= f.label :name, 'Name'
+		- if params[:contact_ticket]
+			= f.text_field :name, value: params[:contact_ticket][:name]
+		- else
+			= f.text_field :name
+	%br
+	.field
+		.label_field
+			= f.label :from, 'Email'
+		- if params[:contact_ticket]
+			= f.text_field :from, value: params[:contact_ticket][:from]
+		- else
+			= f.text_field :from
+		
+	%br
+	.field
+		.label_field
+			= f.label :subject, 'Asunto'
+		- if params[:contact_ticket]
+			= f.text_field :subject, value: params[:contact_ticket][:subject]
+		- else
+			= f.text_field :subject
+		
+	%br
+	.field
+		.label_field
+			= f.label :content, 'Comentario'
+		- if params[:contact_ticket]
+			= f.text_area :content, value: params[:contact_ticket][:content]
+		- else
+			= f.text_area :content
+	%br
+	%button.btn{:type => "submit"} Enviar

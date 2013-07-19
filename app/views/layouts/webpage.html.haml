@@ -1,112 +1,22 @@
 <!DOCTYPE html>
 %html
 	%head
-		%title Webcinehorarios
+		%title Cine Horarios
+		%meta{:content => "width=device-width, initial-scale=1.0, maximum-scale=1.0", :name => "viewport"}/
 		= stylesheet_link_tag    "application", :media => "all"
 		= javascript_include_tag "application"
 		= csrf_meta_tags
+		= favicon_link_tag 'favicon.ico'
 		%link{:href => "http://fonts.googleapis.com/css?family=Lato:300,400,700,900,300italic,400italic,700italic,900italic", :rel => "stylesheet", :type => "text/css"}/
 		
 	%body
 		%a.scrolltop{:href => "#"}
-			%span up
+			= image_tag 'web_up.png'
 			
 		= render 'layouts/analytics' if Rails.env.production?
 		
-		/ begins navbar
-		.navbar.navbar-fixed-top
-			.navbar-inner
-				.container
-					%a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
-						%span.icon-bar
-						%span.icon-bar
-						%span.icon-bar
-					%a.brand.scroller{"data-section" => "body", :href => "index.html"}
-						= image_tag 'logo.png', alt: 'logo'
-					.nav-collapse.collapse
-						%ul.nav.pull-right
-							%li
-								%a.scroller{"data-section" => "#features", :href => "#"} Características
-							%li
-								%a.scroller{"data-section" => "#pricing", :href => "#"} Pricing
-							%li
-								%a.scroller{"data-section" => "#footer", :href => "#"} Contacto
-							%li
-								%a{:href => "blog.html"} Blog
-							%li.dropdown
-								%a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-									Links
-									%b.caret
-								%ul.dropdown-menu
-									%li
-										%a{:href => "features.html"} Features
-									%li
-										%a{:href => "pricing.html"} Pricing
-									%li
-										%a{:href => "portfolio.html"} Portfolio
-									%li
-										%a{:href => "coming-soon.html"} Coming Soon
-									%li
-										%a{:href => "aboutus.html"} About us
-									%li
-										%a{:href => "contact.html"} Contact us
-									%li
-										%a{:href => "faq.html"} FAQ
-							/ %li
-							/ 	%a.btn-header{:href => "signup.html"} Sign up
-							/ %li
-							/ 	%a.btn-header{:href => "signin.html"} Sign in
-		/ ends navbar
+		= render 'layouts/navbar'
 											
 		= yield
 		
-		/ starts footer
-		#footer
-			.container
-				.row
-					.span8
-						%h3 Contacto
-						.blog_post
-							.row
-								.span2
-									%a{:href => "blog.html"}= image_tag 'pic_contact.png', alt: 'post image'
-								.span4
-									.title
-										Queremos conocer tu opinión
-									.intro
-										Cualquier problema, duda, o sugerencia, no dudes en ponerte en contacto con nosotros a través del siguiente formulario.
-									/ .date
-									/ 	Oct 22. 2012
-					.span4.contact_us
-						%h4 Todos los campos son obligatorios
-						%br
-						%form.form-horizontal
-							.field
-								.label_field
-									%label{:for => "inputName"} Nombre
-								%input#inputName{:type => "text"}/
-							.field
-								.label_field
-									%label{:for => "inputEmail"} Email
-								%input#inputEmail{:type => "text"}/
-							.field
-								.label_field
-									%label{:for => "inputCity"} Asunto
-								%input#inputCity{:type => "text"}/
-							.field
-								.label_field
-									%label{:for => "inputComment"} Comentario
-								%textarea{:name => "comments"}
-							%button.btn{:type => "submit"} Enviar
-				%hr/
-				.row.copyright
-					.span5
-						%h3 Social
-						%a.social.fb{href: "#"}
-							%i.i_facebook
-						%a.social.tw{href: "#"}
-							%i.i_twitter
-					/ .span2.offset5.copy
-					/ 	%p 2013 - Cine Horarios
-		
-		
+		= render 'layouts/footer'

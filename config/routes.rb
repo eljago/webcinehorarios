@@ -2,9 +2,7 @@ require 'api_constraints'
 
 Webcinehorarios::Application.routes.draw do
   
-  root :to => 'home#index', ventana: 'inicio'
-  get 'contacto' => 'home#contact', as: 'contact', ventana: 'contacto'
-  post 'contacto' => 'home#create_contact', as: 'contact', ventana: 'contacto'
+  root :to => 'home#index'
   
   mount Resque::Server, :at => "/resque"
   
@@ -76,7 +74,7 @@ Webcinehorarios::Application.routes.draw do
     end
     
     get '' => 'dashboard#index', as: '/'
-    resources :contact_tickets, only: [:index, :show]
+    resources :contact_tickets, only: [:index, :show, :create]
     resources :users, :sessions, :genres, :function_types, :people
     resources :pages do
       resources :images

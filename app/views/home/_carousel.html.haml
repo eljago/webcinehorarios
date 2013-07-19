@@ -1,0 +1,32 @@
+/ starts carousel
+.row.animated.fadeInDown
+	.span12
+		#myCarousel.carousel.slide
+			/ carousel items
+			.carousel-inner
+				.active.item.slide2
+					.row
+						.span4.animated.fadeInUpBig
+							%h1= "La Aplicación definitiva de Cines Chilenos"
+							%p
+								= "Cine Horarios es la aplicación preferida para ver los horarios de las películas que se presentan en los cines Chilenos."
+							%a.btn.btn-success.btn-large.scroller{"data-section" => "#features", :href => "#"}
+								= "Vea las Características"
+						.span6.animated.fadeInDownBig= image_tag 'isometric_iphone.jpg'
+
+				.item.slide1
+					.row
+						.span6{style: "text-align: center"}= image_tag 'Apple-App-Store.jpg', alt: 'slide1'
+						.span4
+							%h1
+								¡ Disponible ahora en el App Store !
+							%p
+								= "Cine Horarios está disponible para ser descargada directamente a su dispositivo iPhone o iPod Touch a través de la App Store."
+							%a.btn.btn-success.btn-large{:href => "http://itunes.com/apps/cinehorarios"}
+								Descárgela Ahora!
+
+				.item.slide3.animated.fadeInUpBig
+					= render 'opinions'
+
+			%a.carousel-control.left{"data-slide" => "prev", :href => "#myCarousel"} ‹
+			%a.carousel-control.right{"data-slide" => "next", :href => "#myCarousel"} ›

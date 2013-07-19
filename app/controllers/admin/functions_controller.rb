@@ -47,6 +47,8 @@ class Admin::FunctionsController < ApplicationController
   def update
     @function.assign_attributes(params[:function])
     if (params[:horarios].gsub(/\s{3,}|( - )|(, )/, ", ") != @function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', '))
+      puts @function.showtimes
+      puts params[:horarios]
       @function.showtimes = []
       Function.create_showtimes @function, params[:horarios]
     end
@@ -216,8 +218,7 @@ class Admin::FunctionsController < ApplicationController
 
           count = 0
           item.css('tr').each do |tr|
-            puts count
-            puts times
+            
             if count >= times
               break
             end

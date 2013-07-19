@@ -1,0 +1,15 @@
+.row.opinion{
+	.span5{
+		p.comment{
+			text-align: center;
+			color: red;
+			font: italic normal 12px/30px Georgia, serif;
+		}
+		p.author{
+			font: bold 12px/30px Georgia, serif;
+		}
+	}
+}
+#flash_success{
+	text-align: center;
+}
