@@ -1,10 +1,13 @@
 %h1 Tickets de Contacto
 
+= will_paginate @contact_tickets, previous_label: h("<"), next_label: h(">"), renderer: BootstrapPagination::Rails
+
 %table.table
 	%tr
 		%th Nombre
 		%th De
 		%th Asunto
+		%th Fecha
 		%th
 
 	- @contact_tickets.each do |contact_ticket|
@@ -12,4 +15,5 @@
 			%td= contact_ticket.name
 			%td= contact_ticket.from
 			%td= contact_ticket.subject
+			%td= I18n.localize(contact_ticket.created_at, format: :long)
 			%td= render_index_actions [contact_ticket], only: [:show]

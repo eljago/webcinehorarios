@@ -1,7 +1,7 @@
 class Admin::ContactTicketsController < ApplicationController
 
   def index
-    @contact_tickets = ContactTicket.all
+    @contact_tickets = ContactTicket.order('created_at DESC').page(params[:page]).per_page(10)
   end
   
   def show
