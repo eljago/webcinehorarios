@@ -14,6 +14,8 @@ class Admin::ContactTicketsController < ApplicationController
       # send mail using resque
       # Resque.enqueue(SendContactTicket, @contact_ticket.name, @contact_ticket.from, @contact_ticket.subject, @contact_ticket.content)
       
+      ContactMailer.cinehorarios_contacto(@contact_ticket).deliver
+      
       redirect_to root_url, notice: 'Su mensaje ha sido enviado exitosamente'
     else
       session[:contact_ticket] = @contact_ticket

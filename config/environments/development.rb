@@ -24,8 +24,8 @@ Webcinehorarios::Application.configure do
     domain: "cinehorarios.cl",
     authentication: "plain",
     enable_starttls_auto: true,
-    user_name: ENV["GMAILUSER"],
-    password: ENV["GMAILPASS"]
+    user_name: ENV["MAIL_ACCOUNT"],
+    password: ENV["MAIL_PASSWORD"]
   }
   
   # Print deprecation notices to the Rails logger

@@ -31,7 +31,6 @@ end
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
-  gem 'bootstrap-sass-rails'
   gem 'font-awesome-sass-rails'
   gem 'coffee-rails', '~> 3.2.1'
   
