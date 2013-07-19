@@ -5,7 +5,7 @@ class Admin::SessionsController < ApplicationController
   end
   
   def create
-    user = User.find_by_name(params[:name])
+    user = User.find_by_email(params[:email])
     if user && user.authenticate(params[:password])
       if Rails.env.production?
         redirect_to "/auth/facebook"
