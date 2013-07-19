@@ -1,4 +1,4 @@
-= form_for [:admin, @contact_ticket], html: { class: "form form-horizontal"} do |f|
+= form_for [:admin, @contact_ticket], html: { id: "contact_form", class: "form form-horizontal"} do |f|
 	- flash.each do |name, msg|
 		- if name != :notice && msg.is_a?(String)
 			%div{:class => "alert alert-error"}
@@ -7,7 +7,7 @@
 				
 	.field
 		.label_field
-			= f.label :name, 'Name'
+			= f.label :name, 'Nombre'
 		- if params[:contact_ticket]
 			= f.text_field :name, value: params[:contact_ticket][:name]
 		- else

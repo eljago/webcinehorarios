@@ -510,13 +510,13 @@ input[type="color"]:focus,
 	color: black;
 }
 #footer .contact_us .field textarea {
-	height: 65px;
+	height: 100px;
 }
 #footer .contact_us .field select {
 	width: 205px;
 }
 #footer .contact_us button[type="submit"] {
-	margin-left: 220px;
+	margin-left: 244px;
 }
 #footer hr {
 	border-top: 1px solid white;
