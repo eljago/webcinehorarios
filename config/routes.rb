@@ -76,9 +76,7 @@ Webcinehorarios::Application.routes.draw do
     get '' => 'dashboard#index', as: '/'
     resources :contact_tickets, only: [:index, :show, :create]
     resources :users, :sessions, :genres, :function_types, :people
-    resources :pages do
-      resources :images
-    end
+
     resources :countries do
       resources :cities
     end

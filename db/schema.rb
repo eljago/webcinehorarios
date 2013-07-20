@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130718005929) do
+ActiveRecord::Schema.define(:version => 20130720003944) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -125,16 +125,6 @@ ActiveRecord::Schema.define(:version => 20130718005929) do
     t.text   "comment"
     t.date   "date"
   end
-
-  create_table "pages", :force => true do |t|
-    t.string   "permalink"
-    t.text     "content"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.string   "title"
-  end
-
-  add_index "pages", ["permalink"], :name => "index_pages_on_permalink"
 
   create_table "people", :force => true do |t|
     t.string   "name"
