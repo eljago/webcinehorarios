@@ -15,8 +15,9 @@ class Permission
     allow 'api/v2/cinemas', [:show, :show_cinemas]
     allow 'api/v2/functions', [:index, :show_functions]
     
-    allow :home, [:index, :contact, :create_contact]
+    allow :home, [:index]
     allow 'admin/sessions', [:new, :create, :destroy, :facebook_create]
+    allow 'admin/contact_tickets', [:create]
         
     if user
       allow_all if user.admin?
