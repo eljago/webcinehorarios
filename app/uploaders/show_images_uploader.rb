@@ -12,7 +12,7 @@ class ShowImagesUploader < CarrierWave::Uploader::Base
   end
 
   def store_dir
-    "uploads/covers/#{model.class.to_s.underscore}/#{model.id}"
+    "uploads/images/#{model.class.to_s.underscore}/#{model.id}"
   end
   
   def default_url
