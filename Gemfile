@@ -68,6 +68,8 @@ gem 'oj'
 gem 'rvm-capistrano'
 gem 'capistrano'
 
+gem 'figaro'
+
 # To use debugger
 # gem 'debugger'
 

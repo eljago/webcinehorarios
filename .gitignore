@@ -23,7 +23,6 @@ doc/
 .idea
 
 /config/database.yml
-/config/application.yml
 
 public/assets/
 public/uploads/
@@ -32,3 +31,6 @@ public/covers/
 
 # Redis Snapshot file
 dump.rdb
+
+# Ignore application configuration
+/config/application.yml

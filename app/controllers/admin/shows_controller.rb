@@ -86,9 +86,9 @@ class Admin::ShowsController < ApplicationController
       mensaje = params[:show][:name]
       
       if (current_user.facebook.access_token != nil)
-        graph = Koala::Facebook::API.new(current_user.facebook.get_page_access_token(APP_CONFIG['FACEBOOK_CINEHORARIOS_PAGE_ID']))
+        graph = Koala::Facebook::API.new(current_user.facebook.get_page_access_token(ENV['FACEBOOK_CINEHORARIOS_PAGE_ID']))
         response = graph.put_picture("#{image_url}",
-          { message: mensaje },APP_CONFIG['FACEBOOK_CINEHORARIOS_ALBUM_ID'])
+          { message: mensaje },ENV['FACEBOOK_CINEHORARIOS_ALBUM_ID'])
         @show.facebook_id = response["id"]
       end
     end
