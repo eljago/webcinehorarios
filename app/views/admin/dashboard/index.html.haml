@@ -13,6 +13,8 @@
 				- hash = theater.functions.count(group: :date)
 				- 8.times do |n|
 					- if hash[Date.current + n].blank?
-						%td= link_to 0, admin_theater_functions_path(theater, date: Date.current + n)
+						%td.admin-td{onclick: "location.href= '#{admin_theater_functions_path(theater, date: Date.current + n)}'"}
+							0
 					- else
-						%td= link_to hash[Date.current + n], admin_theater_functions_path(theater, date: Date.current + n)
+						%td.admin-td{onclick: "location.href= '#{admin_theater_functions_path(theater, date: Date.current + n)}'"}
+							=hash[Date.current + n]

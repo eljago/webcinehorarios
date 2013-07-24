@@ -29,6 +29,15 @@ body#admin{
 			color: white;
 			background: url("nav_bg.png") 0 0 repeat;
 		}
+		.admin-td{
+			font-weight: bold;
+			cursor: pointer;
+			color: #0088cc
+		}
+		.admin-td:hover{
+			color: white;
+			background-color: #0088cc;
+		}
 	}
 	
 	select.date{
