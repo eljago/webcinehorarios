@@ -29,8 +29,8 @@ Webcinehorarios::Application.routes.draw do
         get 'show_theaters_joins' => 'theaters#show_theaters_joins'
       end
       
-      resources :countries, only: [] do
-        resources :cities, only: :index
+      resources :countries, only: [:index] do
+        resources :cities, only: [:index]
       end
       
       resources :theaters, only: [] do
@@ -77,6 +77,9 @@ Webcinehorarios::Application.routes.draw do
     resources :contact_tickets, only: [:index, :show, :create]
     resources :users, :sessions, :genres, :function_types, :people
 
+    resources :channels do
+      resources :programs
+    end
     resources :countries do
       resources :cities
     end

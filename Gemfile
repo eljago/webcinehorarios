@@ -5,8 +5,8 @@ gem 'rails', '3.2.13'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'nokogiri'
-
+gem 'nokogiri', require: false
+gem 'whenever', require: false
 gem 'haml'
 
 group :development do

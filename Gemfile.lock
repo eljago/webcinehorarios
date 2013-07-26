@@ -62,6 +62,7 @@ GEM
       coffee-rails (>= 3.2)
       railties (>= 3.0)
       sass-rails (>= 3.2)
+    chronic (0.9.1)
     coderay (1.0.9)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -222,6 +223,9 @@ GEM
     uniform_notifier (1.2.0)
     vegas (0.1.11)
       rack (>= 1.0.0)
+    whenever (0.8.4)
+      activesupport (>= 2.3.4)
+      chronic (>= 0.6.3)
     will_paginate (3.0.4)
     will_paginate-bootstrap (0.2.2)
       will_paginate (>= 3.0.3)
@@ -265,6 +269,7 @@ DEPENDENCIES
   simple_form
   sqlite3
   uglifier (>= 1.0.3)
+  whenever
   will_paginate (~> 3.0)
   will_paginate-bootstrap
   wirb

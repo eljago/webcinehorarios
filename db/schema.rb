@@ -11,12 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130720003944) do
+ActiveRecord::Schema.define(:version => 20130724144437) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+  end
+
+  create_table "channels", :force => true do |t|
+    t.string   "name"
+    t.integer  "vtr"
+    t.integer  "directv"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "cinemas", :force => true do |t|
@@ -138,6 +146,16 @@ ActiveRecord::Schema.define(:version => 20130720003944) do
     t.datetime "updated_at",  :null => false
     t.string   "image_tmp"
   end
+
+  create_table "programs", :force => true do |t|
+    t.datetime "time"
+    t.string   "name"
+    t.integer  "channel_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "programs", ["channel_id"], :name => "index_programs_on_channel_id"
 
   create_table "show_person_roles", :force => true do |t|
     t.integer  "person_id"

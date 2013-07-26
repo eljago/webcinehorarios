@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  time: 2013-07-24 10:45:30
+  name: MyString
+  channel: 
+
+two:
+  time: 2013-07-24 10:45:30
+  name: MyString
+  channel: 

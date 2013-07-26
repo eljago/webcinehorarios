@@ -19,7 +19,11 @@ class ApplicationController < ActionController::Base
   
   def authorize
     if !current_permission.allow?(params[:controller], params[:action])
-      redirect_to new_admin_session_path, alert: 'Not authorized'
+      if params[:controller].split('/').first == "api"
+        render :text => "404 Not Found", :status => 404
+      else
+        redirect_to new_admin_session_path, alert: 'Not authorized'
+      end
     end
   end
 end

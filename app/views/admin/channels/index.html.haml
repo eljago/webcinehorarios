@@ -1,0 +1,20 @@
+%h1 Canales
+
+%table.table
+	%tr
+		%th Nombre
+		%th VTR
+		%th DIRECTV
+		%th
+
+	- @channels.each do |channel|
+		%tr
+			%td= link_to channel.name, admin_channel_programs_path(channel)
+			%td= channel.vtr
+			%td= channel.directv
+			%td= render_index_actions [channel], only: [:edit, :destroy]
+%br
+
+= link_to new_admin_channel_path, class: 'btn' do
+	%i.icon-plus
+	Nuevo Canal
