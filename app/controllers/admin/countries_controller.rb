@@ -20,7 +20,12 @@ class Admin::CountriesController < ApplicationController
     @country = Country.new(params[:country])
 
     if @country.save
-      redirect_to [:admin, :countries], notice: 'Country was successfully created.'
+      respond_to do |format|
+        format.html do
+          redirect_to [:admin, :countries], notice: 'Country was successfully created.'
+        end
+        format.js
+      end
     else
       render action: "new"
     end

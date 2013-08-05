@@ -1,6 +1,10 @@
 = render 'breadcrumbs'
 %h1 Países
 
+= link_to new_admin_country_path, remote: true, id: "new_link", class: 'btn' do
+	%i.icon-plus
+	Nuevo País
+
 %table.table
 	%tr
 		%th Nombre
@@ -10,9 +14,3 @@
 		%tr
 			%td= link_to country.name, admin_country_cities_path(country)
 			%td= render_index_actions [country], only: [:edit, :destroy]
-
-%br
-
-= link_to new_admin_country_path, class: 'btn' do
-	%i.icon-plus
-	Nuevo País

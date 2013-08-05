@@ -1,8 +1,6 @@
-= simple_form_for [:admin, @country] do |f|
+= simple_form_for [:admin, @country], remote: true do |f|
 	= f.error_notification
 
-	.form-inputs
-		= f.input :name, label: 'Nombre'
-		
-	.form-actions
-		= f.button :submit, 'Guardar', class: 'btn btn-primary'
+	= f.input :name, label: 'Nombre'
+
+	= f.button :submit, 'Guardar', class: 'btn btn-primary'

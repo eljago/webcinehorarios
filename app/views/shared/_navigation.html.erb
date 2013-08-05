@@ -1,5 +1,9 @@
 <ul class="breadcrumb">
-  <% nav.each do |n| %>
-    <li><%= link_to n[:title], n[:url], class: 'btn' %><span class="divider"> /</span></li>
+  <% nav.each_with_index do |n, i| %>
+		<% if i == nav.count-1 %>
+			<li><%= link_to n[:title], n[:url] %></li>
+		<% else %>
+			<li><%= link_to n[:title], n[:url] %><span class="divider"> /</span></li>
+		<% end %>
   <% end %>
 </ul>
