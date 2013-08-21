@@ -7,7 +7,7 @@
 
 	- @function_types.each do |function_type|
 		%tr
-			%td= function_type.name
+			%td= link_to function_type.name, [:admin, function_type, :parse_detector_types]
 			%td= render_index_actions [function_type], only: [:edit, :destroy]
 
 %br

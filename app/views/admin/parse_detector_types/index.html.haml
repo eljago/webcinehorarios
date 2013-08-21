@@ -1,0 +1,21 @@
+%h1
+	PDT de
+	= @function_type.name
+
+%table.table
+	%tr
+		%th Nombre
+		%th Cine
+		%th
+		
+	- @parse_detector_types.each do |parse_detector_type|
+		%tr
+			%td= parse_detector_type.name
+			%td= parse_detector_type.cinema.name
+			%td= render_index_actions [@function_type, parse_detector_type]
+	
+%br
+
+= link_to new_admin_function_type_parse_detector_type_path(@function_type), class: 'btn' do
+	%i.icon-plus
+	Nuevo PDT

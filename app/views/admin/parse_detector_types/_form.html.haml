@@ -1,0 +1,9 @@
+= simple_form_for [:admin, @function_type, @parse_detector_type] do |f|
+	= f.error_notification
+	
+	.form-inputs
+		= f.input :name
+		= f.association :cinema, as: :radio_buttons
+
+	.form-actions
+		= f.button :submit, class: 'btn btn-primary'

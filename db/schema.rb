@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130724144437) do
+ActiveRecord::Schema.define(:version => 20130821200615) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -133,6 +133,15 @@ ActiveRecord::Schema.define(:version => 20130724144437) do
     t.text   "comment"
     t.date   "date"
   end
+
+  create_table "parse_detector_types", :force => true do |t|
+    t.string  "name"
+    t.integer "function_type_id"
+    t.integer "cinema_id"
+  end
+
+  add_index "parse_detector_types", ["cinema_id"], :name => "index_parse_detector_types_on_cinema_id"
+  add_index "parse_detector_types", ["function_type_id"], :name => "index_parse_detector_types_on_function_type_id"
 
   create_table "people", :force => true do |t|
     t.string   "name"
