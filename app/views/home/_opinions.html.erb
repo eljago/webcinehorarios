@@ -1,0 +1,24 @@
+<div class="opinions">
+	<div class="row opinion">
+		<div class="col-md-4 col-md-offset-2">
+			<p class="comment"><%= "\"#{@opinions[0].comment}\"" if @opinions[0] %></p>
+			<p class="author"><%= " - #{@opinions[0].author}" if @opinions[0] %></p>
+		</div>
+
+		<div class="col-md-4">
+			<p class="comment"><%= "\"#{@opinions[1].comment}\"" if @opinions[1] %></p>
+			<p class="author"><%= " - #{@opinions[1].author}" if @opinions[1] %></p>
+		</div>
+	</div>
+	<br/>
+	<div class="row opinion">
+		<div class="col-md-4 col-md-offset-2">
+			<p class="comment"><%= "\"#{@opinions[2].comment}\"" if @opinions[2] %></p>
+			<p class="author"><%= " - #{@opinions[2].author}" if @opinions[2] %></p>
+		</div>
+		<div class="col-md-4">
+			<p class="comment"><%= "\"#{@opinions[3].comment}\"" if @opinions[3] %></p>
+			<p class="author"><%= " - #{@opinions[3].author}" if @opinions[3] %></p>
+		</div>
+	</div>
+</div>

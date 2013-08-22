@@ -16,10 +16,10 @@ class Admin::ContactTicketsController < ApplicationController
       
       ContactMailer.cinehorarios_contacto(@contact_ticket).deliver
       
-      redirect_to root_url, notice: 'Su mensaje ha sido enviado exitosamente. Muchas gracias por ponerse en contacto con nosotros.'
+      redirect_to root_url, notice: 'Muchas gracias por ponerse en contacto con nosotros.'
     else
       session[:contact_ticket] = @contact_ticket
-      redirect_to root_url(anchor: "contacto"), flash: { error: "Llene los campos correctamente" }
+      redirect_to root_url(anchor: "contact"), flash: { error: "Llene los campos correctamente" }
     end
   end
 end

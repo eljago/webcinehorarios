@@ -8,15 +8,15 @@
 		= f.association :show, collection: Show.order('shows.name ASC').all, :input_html => { :class => "chzn-select" }
 		= f.association :function_types, as: :check_boxes
 		
-		.row-fluid
-			.span4{style: "text-align: right;"}= I18n.localize(date, format: :long)
-			.span8= text_field_tag :horarios, @function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', '), class: 'input-xxlarge'
+		.row
+			.col-md-4{style: "text-align: right;"}= I18n.localize(date, format: :long)
+			.col-md-8= text_field_tag :horarios, @function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', '), class: 'input-xxlarge'
 
 	- if params[:action] == "new"
 		- 7.times do |n|
-			.row-fluid
-				.span4{style: "text-align: right;"}= I18n.localize(date = date.next, format: :long)
-				.span8= text_field_tag "horarios_extra_#{n}", "", class: 'input-xxlarge'
+			.row
+				.col-md-4{style: "text-align: right;"}= I18n.localize(date = date.next, format: :long)
+				.col-md-8= text_field_tag "horarios_extra_#{n}", "", class: 'input-xxlarge'
 
 	.form-actions
 		= f.button :submit, class: 'btn btn-primary'

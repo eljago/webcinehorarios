@@ -1,0 +1,68 @@
+<h1>CONTACTO</h1>
+<br />
+
+<%= form_for [:admin, @contact_ticket], html: { role: 'form', class: "form-horizontal"} do |f| %>
+	<% flash.each do |name, msg| %>
+		<% if name != :notice && msg.is_a?(String) %>
+			<div class="alert alert-danger alert-dismissable">
+  			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<%= content_tag :div, :id => "flash_error" do %>
+					<strong>Error!</strong><%= "  #{msg}" %>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>
+				
+	<div class="form-group">
+		<%= f.label :name, 'Nombre:', class: "col-lg-3 control-label" %>
+		<div class="col-lg-9">
+			<% if params[:contact_ticket] %>
+				<%= f.text_field :name, value: params[:contact_ticket][:name], class: "form-control", placeholder: 'Nombre' %>
+			<% else %>
+				<%= f.text_field :name, class: "form-control", placeholder: 'Nombre' %>
+			<% end %>
+		</div>
+	</div>
+	<br />
+	<div class="form-group">
+		<%= f.label :from, 'Email:', class: "col-lg-3 control-label" %>
+		<div class="col-lg-9">
+			<% if params[:contact_ticket] %>
+				<%= f.text_field :from, value: params[:contact_ticket][:from], class: "form-control", placeholder: 'Email' %>
+			<% else %>
+				<%= f.text_field :from, class: "form-control", placeholder: 'Email' %>
+			<% end %>
+		</div>
+	</div>
+	<br />
+	<div class="form-group">
+		<%= f.label :subject, 'Asunto:', class: "col-lg-3 control-label" %>
+		<div class="col-lg-9">
+			<% if params[:contact_ticket] %>
+				<%= f.text_field :subject, value: params[:contact_ticket][:subject], class: "form-control", placeholder: 'Asunto' %>
+			<% else %>
+				<%= f.text_field :subject, class: "form-control", placeholder: 'Asunto' %>
+			<% end %>
+		</div>
+	</div>
+	<br />
+	<div class="form-group">
+		<%= f.label :content, 'Comentario:', class: "col-lg-3 control-label" %>
+		<div class="col-lg-9">
+			<% if params[:contact_ticket] %>
+				<%= f.text_area :content, value: params[:contact_ticket][:content], class: "form-control", rows: "6" %>
+			<% else %>
+				<%= f.text_area :content, class: "form-control", rows: "6" %>
+			<% end %>
+		</div>
+	</div>
+	<br />
+	<div class="form-group">
+    <div class="col-lg-offset-3 col-lg-9">
+      <button type="submit" class="btn btn-default" data-loading-text="Enviando...">Enviar</button>
+    </div>
+  </div>
+<% end %>
+
+<br />
+<br />

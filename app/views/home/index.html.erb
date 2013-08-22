@@ -1,0 +1,32 @@
+<div class="container">
+	<% flash.each do |name, msg| %>
+		<% if name == :notice && msg.is_a?(String) %>
+			<div class="alert alert-success">
+				<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				<%= content_tag :div, :id => "flash_success" do %>
+					<strong>Mensaje enviado exitosamente</strong><%= "  #{msg}" %>
+				<% end %>
+			</div>
+		<% end %>
+	<% end %>
+	<%= render 'carousel' %>
+</div>
+
+<div id="features">
+	<div class="container">
+		<%= render 'features' %>
+	</div>
+</div>
+
+<div id="contact">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<%= render 'contact' %>
+			</div>
+			<div class="col-md-6">
+				
+			</div>
+		</div>
+	</div>
+</div>

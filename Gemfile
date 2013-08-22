@@ -41,11 +41,13 @@ group :assets do
   gem 'chosen-rails'
 end
 
+gem 'bootstrap-sass-rails', :git => 'git://github.com/yabawock/bootstrap-sass-rails.git', :tag => 'v3.0.0.2'
+gem "font-awesome-rails"
+
 gem 'jquery-rails'
 gem 'simple_form'
 
 gem 'will_paginate', '~> 3.0'
-gem 'will_paginate-bootstrap'
 
 # gems used for image uploading
 gem 'carrierwave', :github => "jnicklas/carrierwave"
@@ -73,7 +75,6 @@ gem 'figaro'
 # gem 'debugger'
 
 gem 'resque', :require => "resque/server"
-
 
 gem 'omniauth-facebook', '1.4.0'
 gem 'koala'

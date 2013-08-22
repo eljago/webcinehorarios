@@ -1,10 +1,10 @@
 <% if options[:only].include?(:show) %>
-	<%= link_to arr, class: 'btn' do %>
+	<%= link_to arr, class: 'btn btn-default' do %>
 		<i class="icon-external-link"></i> Mostrar
 	<% end %>
 <% end %>
 <% if options[:only].include?(:edit) %>
-	<%= link_to [:edit].concat(arr), class: 'btn' do %>
+	<%= link_to [:edit].concat(arr), class: 'btn btn-default' do %>
 		<i class="icon-edit"></i> Editar
 	<% end %>
 <% end %>
