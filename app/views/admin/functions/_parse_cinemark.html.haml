@@ -4,7 +4,7 @@
 	- @functionsArray.each_with_index do |item, index|
 		= simple_fields_for "movie_#{index}" do |b|
 		
-			= b.collection_select :show_id, @shows, :id, :name, {}, { class: "chzn-select" }
+			= b.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" }
 			%strong
 				= item[:name]
 			%br

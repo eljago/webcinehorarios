@@ -15,17 +15,24 @@
 	- unless @theater.web_label.blank?
 		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
 			= f.hidden_field :date, value: params[:date]
-			= f.text_field :times, class: "input-mini", style: "margin-top: 10px"
-			= f.submit "Get From Web"
-		/ = link_to 'Get Datos De La Web', {controller: 'functions', action: 'new_parse', date: params[:date]}, method: :get, class: 'btn'
-	
-	- if @theater.cinema && ((Rails.env.production? && @theater.cinema_id == 3) || (Rails.env.development? && @theater.cinema_id == 4))
-		= link_to 'Get Datos Ajax', {controller: 'functions', action: 'new_parse', date: params[:date]}, method: :get, class: 'btn'
+			= f.hidden_field :parse_type, value: 'day'
+			= f.submit "Parse dia", class: 'btn'
 		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
 			= f.hidden_field :date, value: params[:date]
-			= f.text_field :times, class: "input-mini", style: "margin-top: 10px"
-			= f.text_field :url, class: "input-xlarge", style: "margin-top: 10px"
-			= f.submit "Parse URL"
+			= f.hidden_field :parse_type, value: 'week'
+			= f.submit "Parse semana", class: 'btn'
+	
+	- if @theater.cinema.name == "Cineplanet"
+		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
+			= f.hidden_field :date, value: params[:date]
+			= f.hidden_field :parse_type, value: 'day'
+			= f.text_field :url, class: "input-mini", style: "margin-top: 10px"
+			= f.submit "Parse URL dia", class: 'btn'
+		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
+			= f.hidden_field :date, value: params[:date]
+			= f.hidden_field :parse_type, value: 'week'
+			= f.text_field :url, class: "input-mini", style: "margin-top: 10px"
+			= f.submit "Parse URL semana", class: 'btn'
 
 = render 'shared/date_pagination'
 %h2= I18n.localize(params[:date].to_date, format: :normal) if params[:date]

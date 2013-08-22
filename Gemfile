@@ -18,7 +18,6 @@ group :development do
   gem 'methodfinder'
   gem 'hirb'
   gem 'wirb'
-  gem 'fancy_irb'
   gem 'awesome_print'
 end
 gem 'rack-mini-profiler'

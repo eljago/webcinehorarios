@@ -94,27 +94,22 @@ class Admin::FunctionsController < ApplicationController
   # NEW PARSE
   def new_parse
     @theater = Theater.find(params[:theater_id])
+    @cinema = @theater.cinema
     @function_types = FunctionType.order(:name).all
     @shows = Show.order(:name).select('shows.id, shows.name').all
-    @date = params[:new_parse][:date] if params[:new_parse][:date]
-    if @theater.cinema.id == 2 || @theater.cinema.id == 1 || 
-      (Rails.env.production? && @theater.cinema.id == 4) || (Rails.env.development? && @theater.cinema.id == 3)
-      
-      if params[:new_parse][:times].blank?
-        parse_cine @theater.cinema.id, 7
+    @date = params[:new_parse][:date].to_date if params[:new_parse][:date]
+    unless @theater.web_label.blank?
+      if @cinema.name == "Cinemark"
+        parse_cinemark
+      elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
+        parse_cine @cinema.id, params[:new_parse][:times].to_i
+      elsif @cinema.name == "Cineplanet"
+        parse_cine @cinema.id, params[:new_parse][:times].to_i
       else
-        parse_cine @theater.cinema.id, params[:new_parse][:times].to_i
-      end
-    elsif (Rails.env.production? && @theater.cinema.id == 3) || (Rails.env.development? && @theater.cinema.id == 4)
-      @date = params[:new_parse][:date] unless params[:new_parse].blank?
-      @date = params[:date] unless @date
-      if params[:new_parse][:times].blank?
-        parse_cine @theater.cinema.id, 7
-      else
-        parse_cine @theater.cinema.id, params[:new_parse][:times].to_i
+        redirect_to [:admin, :cinemas], alert: "operación no habilitada para #{@cinema.name}"
       end
     else
-      redirect_to [:admin, :cinemas], alert: "operación no habilitada para #{@theater.cinema.name}"
+      redirect_to [:admin, :cinemas], alert: "#{@cinema.name} no tiene web label"
     end
   end
   
@@ -122,24 +117,26 @@ class Admin::FunctionsController < ApplicationController
   def create_parse
     @theater = Theater.find(params[:theater_id])
     
-    if @theater.cinema_id == 1 || @theater.cinema_id == 2 || (Rails.env.production? && @theater.cinema_id == 4) || (Rails.env.development? && @theater.cinema_id == 3)
+    if @theater.cinema.name == "Cinemark" || @theater.cinema.name == "Cine Hoyts" || @theater.cinema.name == "Cinemundo"
       count = 0
       while hash = params["movie_#{count}"]
-        count2 = 0
-        while hash2 = hash["function_#{count2}"]
-          if hash2[:horarios].size >= 5
-            function = @theater.functions.new
-            function.show_id = hash[:show_id]
-            function.function_type_ids = hash[:function_types]
-            function.date = hash2[:date]
-            Function.create_showtimes function, hash2[:horarios]
-            function.save
+        unless hash[:show_id].blank?
+          count2 = 0
+          while hash2 = hash["function_#{count2}"]
+            if hash2[:horarios].size >= 5
+              function = @theater.functions.new
+              function.show_id = hash[:show_id]
+              function.function_type_ids = hash[:function_types]
+              function.date = hash2[:date]
+              Function.create_showtimes function, hash2[:horarios]
+              function.save
+            end
+            count2 = count2 + 1
           end
-          count2 = count2 + 1
         end
         count = count + 1
       end
-    elsif (Rails.env.production? && @theater.cinema_id == 3) || (Rails.env.development? && @theater.cinema_id == 4)
+    elsif @theater.cinema.name = "Cineplanet"
       count = 0
       while hash = params[:theaters]["theater_#{count}"]
         count2 = 0
@@ -173,7 +170,144 @@ class Admin::FunctionsController < ApplicationController
   end
   
   
+  def parse_cinemark
+    url = "http://www.cinemark.cl/DetalleCine.aspx?cinema=#{@theater.web_label}"
+    s = open(url).read
+    s.gsub!('&nbsp;', ' ') 
+    page = Nokogiri::HTML(s) 
+    
+    @functionsArray = []
+    parse_detector_types = @cinema.parse_detector_types.all
+    parse_days = []
+    if params[:new_parse][:parse_type] == 'week'
+      (@date..@date.next_week(:wednesday)).each do |d|
+        parse_days << d.day
+      end
+    else
+      parse_days << @date.day
+    end
+
+    page.css('div.box_middle div[class="c73l bold h18"]').each_with_index do |item, index|
+      
+      detected_function_types = []
+      titulo = item.text.gsub!(/\s+/, ' ')[0..50]
+      img = item.css('img[alt="Sala Premium"]')
+      unless img.blank?
+        pdt = parse_detector_types.detect{ |p| p.name == 'Premier' }
+        unless pdt.blank?
+          detected_function_types << pdt.function_type_id
+          titulo.prepend("(Premier)-")
+        end
+      end
+      img = item.css('img[alt="Película 3D"]')
+      unless img.blank?
+        pdt = parse_detector_types.detect{ |p| p.name == '3D'}
+        unless pdt.blank?
+          detected_function_types << pdt.function_type_id
+          titulo.prepend("(3D)-")
+        end
+      end
+      img = item.css('img[alt="Sala XD"]')
+      unless img.blank?
+        pdt = parse_detector_types.detect{ |p| p.name == 'Sala XD'}
+        unless pdt.blank?
+          detected_function_types << pdt.function_type_id
+          titulo.prepend("(Sala XD)-")
+        end
+      end
+      parse_detector_types.each do |pdt|
+        if titulo.include?(pdt.name)
+          detected_function_types << pdt.function_type_id
+          titulo.prepend("(#{pdt.name})-")
+        end
+      end
+
+      movieFunctions = Hash[:name, titulo]
+      movieFunctions[:function_types] = detected_function_types
+      movieFunctions[:functions] = []
+
+      item.css('tr').each do |tr|
+        tds = tr.css('td')
+        diaArray = tds[0].css('strong').text.split("-") # => ["14","jun:"]
+        dia = diaArray[0].to_i
+
+        if parse_days.include?(dia)
+          function = Hash[:day, diaArray.join("-")]
+          horarios = tds[1].text.gsub!(/\s+/, ', ')
+          function[:horarios] = horarios
+          function[:date] = @date.advance_to_day(dia)
+          movieFunctions[:functions] << function
+        end
+      end
+      @functionsArray << movieFunctions
+    end
+  end
   
+  def parse_hoyts
+    @functionsArray = []
+    function_helper = nil
+    
+    parse_days = []
+    if params[:new_parse][:parse_type] == 'week'
+      (@date..@date.next_week(:wednesday)).each do |d|
+        parse_days << d.day
+      end
+    else
+      parse_days << @date.day
+    end
+    
+    parse_days.each do |parse_day| # LOOP START
+      
+      date_hoyts = parse_day.to_s.split("-").reverse.join("-")
+      url = "http://www.cinehoyts.cl/?mod=#{@theater.web_label}&fecha=#{date_hoyts}"
+      s = open(url).read
+      s.gsub!('&nbsp;', ' ')
+      page = Nokogiri::HTML(s)
+
+      page.css('table[width="440"] tr').each_with_index do |tr, index|
+        if index % 2 == 0
+          function_helper = nil
+          text_name = tr.css('td[width="241"] span')
+          if text_name
+            text_name_with_spaces = text_name.text.gsub!(/\s+/, ' ')
+            if text_name_with_spaces
+              titulo = text_name_with_spaces
+            else
+              titulo = text_name.text
+            end
+            @functionsArray.each_with_index do |item, index|
+              if item[:name] == titulo
+                function_helper = item
+                break
+              end
+            end
+            if function_helper == nil
+              function_helper = Hash[:name, titulo]
+              function_helper[:functions] = []
+              function_types = []
+              function_types << find_function_type_id(@function_types, "Español") if text_name.text.include? '(ESP)'
+              function_types << find_function_type_id(@function_types, "Subtitulada") if text_name.text.include? '(SUBT)'
+              function_types << find_function_type_id(@function_types, "3D") if text_name.text.include? '3D'
+              function_types << find_function_type_id(@function_types, "Premium") if text_name.text.include? 'PREMIUM'
+              function_types << find_function_type_id(@function_types, "4DX") if text_name.text.include? '4DX'
+              function_helper[:function_types] = function_types
+              
+              @functionsArray << function_helper
+            end
+          end
+        else
+          if tr.css('td[width="241"] font[color="white"]')
+            horarios = tr.css('td[width="241"] font[color="white"]').text.gsub!(/\s+/, ' ')
+            function = Hash[:date, date.to_s]
+            function[:horarios] = horarios
+            function_helper[:functions] << function
+          end
+        end
+      end
+      
+      date = date.next
+    end # END LOOP
+  end
   # GET DATOS DE LA WEB Y SETEA FUNCTIONSARRAY PARA ARMAR EL VIEW THEATERS/XX/NEW_PARSE.HTML.ERB
   def parse_cine cod, times
     case
