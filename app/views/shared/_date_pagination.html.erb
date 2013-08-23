@@ -1,5 +1,4 @@
-<div class="pagination date_pagination">
-  <ul>
+  <ul class="pagination date_pagination">
 		<% (@dates_array).each do |date| %>
 				<li>
 			<% if date == params[:date].to_date %>
@@ -9,4 +8,3 @@
 			<% end %></li>
   	<% end %>
 	</ul>
-</div>
