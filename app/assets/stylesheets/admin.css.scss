@@ -1,4 +1,8 @@
 body#admin{
+	font-family: Verdana;
+	background-image: image-url('content_bg.jpg');
+	background-repeat: repeat;
+	
 	table.table{
 		tr{
 			background-color: white;
@@ -23,6 +27,9 @@ body#admin{
 			background-color: white;
 		}
 	}
+	table.table, table.table th, table.table td{
+		border: 1px solid black;
+	}
 	.checkbox_container label {
 		padding-left: 10px;
 		padding-right: 20px;
@@ -32,8 +39,8 @@ body#admin{
 		background-color: #83afcc;
 		color: black;
 	}
-	table.table, table.table th, table.table td{
-		border: 1px solid black;
+	.letter_pagination a{
+		padding: 4px 9px;
 	}
 }
 //body#admin{

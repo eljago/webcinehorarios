@@ -1,40 +1,39 @@
-<%= simple_form_for [:admin, @show], html: { class: 'form-horizontal show_form' } do |f| %>
+<%= simple_form_for [:admin, @show], html: { class: 'form-horizontal show_form', role: 'form' } do |f| %>
   <%= f.error_notification %>
+			<div class="row">
+				<div class="col-md-5 col-md-offset-3">
+					<%= f.input :active %>
+			    <%= f.input :name, inline_label: 'Nombre:' %>
+			    <%= f.input :name_original %>
+					<%= f.input :remote_image_url, label: 'URL Imagen', input_html: { class: 'input-xxlarge' } %>
+					<%= f.input :year %>
+			    <%= f.input :duration %>
+			    <%= f.input :information, input_html: { rows: '10' } %>
+					<h3>Personas:</h3>
+					<%= f.fields_for :show_person_roles do |b| %>
+					  <%= render 'show_person_role_fields', f: b %>
+					<% end %>
+					<%= link_to_add_fields "Add Person", f, :show_person_roles %>
+					<h3>Imagenes:</h3>
+					<%= f.simple_fields_for :images do |b| %>
+					  <%= render 'image_fields', f: b %>
+					<% end %>
+					<%= link_to_add_fields "Add Image", f, :images %>
+					<h3>Videos:</h3>
+					<%= f.simple_fields_for :videos do |b| %>
+					  <%= render 'video_fields', f: b %>
+					<% end %>
+					<%= link_to_add_fields "Add Video", f, :videos %>
+				</div>
+				<div class="col-md-3">
+					<%= f.association :genres, collection: Genre.all(order: 'name'), as: :check_boxes %>
+					<%= f.input :debut, include_blank: true %>
+					<%= f.input :rating, collection: [['TE', 'TE'],['TE+7', 'TE+7'], ['13+', '13+'], ['14+', '14+'], ['15+', '15+'], ['16+', '16+'], ['18+', '18+']], :as => :radio_buttons, :item_wrapper_class => 'inline' %>
+			  </div>
+			</div>
 
-  <div class="form-inputs">
-		<%= f.input :active %>
-    <%= f.input :name, inline_label: 'Nombre:' %>
-    <%= f.input :name_original %>
-		<%= f.input :remote_image_url, label: 'URL Imagen', input_html: { class: 'input-xxlarge' } %>
-		<%= f.input :year %>
-    <%= f.input :duration %>
-    <%= f.input :information %>
-		<%= f.association :genres, collection: Genre.all(order: 'name'), as: :check_boxes %>
-		<%= f.input :debut, include_blank: true %>
-		<%= f.input :rating, collection: [['TE', 'TE'],['TE+7', 'TE+7'], ['13+', '13+'], ['14+', '14+'], ['15+', '15+'], ['16+', '16+'], ['18+', '18+']], :as => :radio_buttons, :item_wrapper_class => 'inline' %>
-		
-		<h3>Personas:</h3>
-		<%= f.fields_for :show_person_roles do |b| %>
-		  <%= render 'show_person_role_fields', f: b %>
-		<% end %>
-		<%= link_to_add_fields "Add Person", f, :show_person_roles %>
-		<h3>Imagenes:</h3>
-		<%= f.simple_fields_for :images do |b| %>
-		  <%= render 'image_fields', f: b %>
-		<% end %>
-		<%= link_to_add_fields "Add Image", f, :images %>
-		<h3>Videos:</h3>
-		<%= f.simple_fields_for :videos do |b| %>
-		  <%= render 'video_fields', f: b %>
-		<% end %>
-		<%= link_to_add_fields "Add Video", f, :videos %>
-		
-		<br />
-		Crear Facebook Image:
-		<%= check_box_tag :create_facebook %>
-  </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, class: 'btn btn-primary'  %>
-  </div>
+	<br />
+			
+	<%= f.button :submit, class: 'btn btn-primary'  %>
 <% end %>
