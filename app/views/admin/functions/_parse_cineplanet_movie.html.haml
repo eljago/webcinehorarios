@@ -10,8 +10,12 @@
 	= simple_fields_for :theaters do |a|
 		- @functionsArray.each_with_index do |item, index|
 			= a.simple_fields_for "theater_#{index}" do |b|
-		
-				= b.collection_select :theater_id, @theater.cinema.theaters, :id, :name, {selected: Theater.find_id_by_name(item[:theater])}, { class: "chzn-select" }
+				
+				- if item[:theater] == "Costanera Prime"
+					- selected_theaters = Theater.find_id_by_name(item[:theater])
+				- else
+					- selected_theaters = Theater.find_id_by_name('Costanera Center')
+				= b.collection_select :theater_id, @theater.cinema.theaters, :id, :name, {selected: selected_theaters}, { class: "chzn-select" }
 				%strong
 					= item[:theater]
 				%br

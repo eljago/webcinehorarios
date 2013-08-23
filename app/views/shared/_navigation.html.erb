@@ -1,9 +1,9 @@
-<ul class="breadcrumb">
+<ol class="breadcrumb">
   <% nav.each_with_index do |n, i| %>
 		<% if i == nav.count-1 %>
 			<li><%= link_to n[:title], n[:url] %></li>
 		<% else %>
-			<li><%= link_to n[:title], n[:url] %><span class="divider"> /</span></li>
+			<li><%= link_to n[:title], n[:url] %></li>
 		<% end %>
   <% end %>
-</ul>
+</ol>

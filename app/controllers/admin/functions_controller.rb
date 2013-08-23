@@ -98,11 +98,20 @@ class Admin::FunctionsController < ApplicationController
     @function_types = FunctionType.order(:name).all
     @shows = Show.order(:name).select('shows.id, shows.name').all
     @date = params[:new_parse][:date].to_date if params[:new_parse][:date]
+    parse_days = []
+    if params[:new_parse][:parse_type] == 'week'
+      (@date..@date.next_week(:wednesday)).each do |d|
+        parse_days << d
+      end
+    else
+      parse_days << @date
+    end
+    
     unless @theater.web_label.blank?
       if @cinema.name == "Cinemark"
-        parse_cinemark
+        parse_cinemark parse_days
       elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
-        parse_cine @cinema.id, params[:new_parse][:times].to_i
+        parse_hoyts parse_days
       elsif @cinema.name == "Cineplanet"
         parse_cine @cinema.id, params[:new_parse][:times].to_i
       else
@@ -170,7 +179,7 @@ class Admin::FunctionsController < ApplicationController
   end
   
   
-  def parse_cinemark
+  def parse_cinemark(parse_days)
     url = "http://www.cinemark.cl/DetalleCine.aspx?cinema=#{@theater.web_label}"
     s = open(url).read
     s.gsub!('&nbsp;', ' ') 
@@ -178,14 +187,6 @@ class Admin::FunctionsController < ApplicationController
     
     @functionsArray = []
     parse_detector_types = @cinema.parse_detector_types.all
-    parse_days = []
-    if params[:new_parse][:parse_type] == 'week'
-      (@date..@date.next_week(:wednesday)).each do |d|
-        parse_days << d.day
-      end
-    else
-      parse_days << @date.day
-    end
 
     page.css('div.box_middle div[class="c73l bold h18"]').each_with_index do |item, index|
       
@@ -231,7 +232,7 @@ class Admin::FunctionsController < ApplicationController
         diaArray = tds[0].css('strong').text.split("-") # => ["14","jun:"]
         dia = diaArray[0].to_i
 
-        if parse_days.include?(dia)
+        if parse_days.map(&:day).include?(dia)
           function = Hash[:day, diaArray.join("-")]
           horarios = tds[1].text.gsub!(/\s+/, ', ')
           function[:horarios] = horarios
@@ -243,22 +244,13 @@ class Admin::FunctionsController < ApplicationController
     end
   end
   
-  def parse_hoyts
+  def parse_hoyts(parse_days)
     @functionsArray = []
     function_helper = nil
     
-    parse_days = []
-    if params[:new_parse][:parse_type] == 'week'
-      (@date..@date.next_week(:wednesday)).each do |d|
-        parse_days << d.day
-      end
-    else
-      parse_days << @date.day
-    end
-    
     parse_days.each do |parse_day| # LOOP START
       
-      date_hoyts = parse_day.to_s.split("-").reverse.join("-")
+      date_hoyts = parse_day.to_s.split("-").reverse.join('-')
       url = "http://www.cinehoyts.cl/?mod=#{@theater.web_label}&fecha=#{date_hoyts}"
       s = open(url).read
       s.gsub!('&nbsp;', ' ')
@@ -298,14 +290,12 @@ class Admin::FunctionsController < ApplicationController
         else
           if tr.css('td[width="241"] font[color="white"]')
             horarios = tr.css('td[width="241"] font[color="white"]').text.gsub!(/\s+/, ' ')
-            function = Hash[:date, date.to_s]
+            function = Hash[:date, parse_day.to_s]
             function[:horarios] = horarios
             function_helper[:functions] << function
           end
         end
       end
-      
-      date = date.next
     end # END LOOP
   end
   # GET DATOS DE LA WEB Y SETEA FUNCTIONSARRAY PARA ARMAR EL VIEW THEATERS/XX/NEW_PARSE.HTML.ERB

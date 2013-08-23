@@ -10,7 +10,7 @@ class Theater < ActiveRecord::Base
   accepts_nested_attributes_for :functions
   
   def self.find_id_by_name name
-    theater = where(name: name).all.first
+    theater = where(name: name).first
     if theater
       theater.id
     else
