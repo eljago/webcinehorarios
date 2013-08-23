@@ -2,7 +2,7 @@
 
 	%h3= @name_pelicula
 	%h3= @theater.name
-	= select_tag "show_id", options_from_collection_for_select(@shows, :id, :name), class: "chzn-select"
+	= select_tag "show_id", options_from_collection_for_select(@shows, :id, :name), :prompt => "", class: "chzn-select"
 	= simple_fields_for "function_types" do |a|
 		= a.collection_check_boxes :function_types, @function_types, :id, :name, checked: @function_types_detected, :item_wrapper_class => "checkbox_container"
 	%br
@@ -12,10 +12,13 @@
 			= a.simple_fields_for "theater_#{index}" do |b|
 				
 				- if item[:theater] == "Costanera Prime"
-					- selected_theaters = Theater.find_id_by_name(item[:theater])
-				- else
 					- selected_theaters = Theater.find_id_by_name('Costanera Center')
-				= b.collection_select :theater_id, @theater.cinema.theaters, :id, :name, {selected: selected_theaters}, { class: "chzn-select" }
+				- else
+					- selected_theaters = Theater.find_id_by_name(item[:theater])
+				- if selected_theaters == 0
+					= b.collection_select :theater_id, @theater.cinema.theaters, :id, :name, {include_blank: true}, { class: "chzn-select" }
+				- else
+					= b.collection_select :theater_id, @theater.cinema.theaters, :id, :name, {selected: selected_theaters}, { class: "chzn-select" }
 				%strong
 					= item[:theater]
 				%br

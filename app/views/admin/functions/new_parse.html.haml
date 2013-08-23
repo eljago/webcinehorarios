@@ -7,7 +7,7 @@
 - elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
 	= render 'parse_hoyts'
 - elsif @cinema.name == "Cineplanet"
-	= render 'parse_cineplanet'
+	= render 'parse_cineplanet_movie'
 
 = link_to admin_theater_functions_path(@theater, date: @date), class: 'btn btn-default' do
 	%i.icon-arrow-left

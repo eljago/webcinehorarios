@@ -23,16 +23,22 @@
 			= f.submit "Parse semana", class: 'btn btn-primary'
 	
 	- if @theater.cinema.name == "Cineplanet"
-		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
-			= f.hidden_field :date, value: params[:date]
-			= f.hidden_field :parse_type, value: 'day'
-			= f.text_field :url, class: "input-mini", style: "margin-top: 10px"
-			= f.submit "Parse URL dia", class: 'btn btn-primary'
-		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
-			= f.hidden_field :date, value: params[:date]
-			= f.hidden_field :parse_type, value: 'week'
-			= f.text_field :url, class: "input-mini", style: "margin-top: 10px"
-			= f.submit "Parse URL semana", class: 'btn btn-primary'
+		%br
+			= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
+				= f.hidden_field :date, value: params[:date]
+				= f.hidden_field :parse_type, value: 'day'
+				Theater only?
+				= f.check_box :theater_only
+				= f.text_field :url, size: 70, style: "margin-top: 10px"
+				= f.submit "Parse URL dia", class: 'btn btn-primary'
+		%br
+			= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
+				= f.hidden_field :date, value: params[:date]
+				= f.hidden_field :parse_type, value: 'week'
+				Theater only?
+				= f.check_box :theater_only
+				= f.text_field :url, size: 70, style: "margin-top: 10px"
+				= f.submit "Parse URL semana", class: 'btn btn-primary'
 
 = render 'shared/date_pagination'
 %h2= I18n.localize(params[:date].to_date, format: :normal) if params[:date]
