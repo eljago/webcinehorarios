@@ -3,9 +3,9 @@
 %h1 Nueva Función
 
 - if @cinema.name == "Cinemark"
-	= render 'parse_cinemark'
+	= render 'parse_cinemark_hoyts'
 - elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
-	= render 'parse_hoyts'
+	= render 'parse_cinemark_hoyts'
 - elsif @cinema.name == "Cineplanet"
 	= render 'parse_cineplanet_movie'
 
