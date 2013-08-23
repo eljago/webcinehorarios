@@ -4,35 +4,35 @@
 	= @theater.name
 
 .functions
-	= link_to new_admin_theater_function_path(date: params[:date]), class: 'btn' do
+	= link_to new_admin_theater_function_path(date: params[:date]), class: 'btn btn-default' do
 		%i.icon-plus
 		Nueva Función
 
-	= link_to 'Copiar Ultimo dia', {controller: 'functions', action: 'copy_last_day'}, method: :post, class: 'btn'
+	= link_to 'Copiar Ultimo dia', {controller: 'functions', action: 'copy_last_day'}, method: :post, class: 'btn btn-default'
 	
-	= link_to 'Borrar día', {controller: 'functions', action: 'delete_day', date: params[:date]}, data: { confirm: 'Está seguro?' }, method: :post, class: 'btn'
+	= link_to 'Borrar día', {controller: 'functions', action: 'delete_day', date: params[:date]}, data: { confirm: 'Está seguro?' }, method: :post, class: 'btn btn-default'
 
 	- unless @theater.web_label.blank?
 		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
 			= f.hidden_field :date, value: params[:date]
 			= f.hidden_field :parse_type, value: 'day'
-			= f.submit "Parse dia", class: 'btn'
+			= f.submit "Parse dia", class: 'btn btn-primary'
 		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
 			= f.hidden_field :date, value: params[:date]
 			= f.hidden_field :parse_type, value: 'week'
-			= f.submit "Parse semana", class: 'btn'
+			= f.submit "Parse semana", class: 'btn btn-primary'
 	
 	- if @theater.cinema.name == "Cineplanet"
 		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
 			= f.hidden_field :date, value: params[:date]
 			= f.hidden_field :parse_type, value: 'day'
 			= f.text_field :url, class: "input-mini", style: "margin-top: 10px"
-			= f.submit "Parse URL dia", class: 'btn'
+			= f.submit "Parse URL dia", class: 'btn btn-primary'
 		= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f|
 			= f.hidden_field :date, value: params[:date]
 			= f.hidden_field :parse_type, value: 'week'
 			= f.text_field :url, class: "input-mini", style: "margin-top: 10px"
-			= f.submit "Parse URL semana", class: 'btn'
+			= f.submit "Parse URL semana", class: 'btn btn-primary'
 
 = render 'shared/date_pagination'
 %h2= I18n.localize(params[:date].to_date, format: :normal) if params[:date]
@@ -47,12 +47,12 @@
 		
 	- @functions.each do |function|
 		%tr
-			%td= image_tag function.show.image.smallest, size: '30x20' if function.show.image.smallest
+			%td= image_tag function.show.image.smallest, size: '80x120' if function.show.image.smallest
 			%td{width: "100"}= function.show.name if function.show
 			%td{width: "100"}= function.function_types.map(&:name).join(', ')
 			%td= function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', ')
-			%td{width: "190"}
-				= link_to edit_admin_theater_function_path(@theater.id, function.id, date: params[:date]), class: 'btn' do
+			%td{width: "200"}
+				= link_to edit_admin_theater_function_path(@theater.id, function.id, date: params[:date]), class: 'btn btn-default' do
 					%i.icon-edit
 					Editar
 				= link_to admin_theater_function_path(@theater.id, function.id, date: params[:date]), class: 'btn btn-danger', method: :delete, data: { confirm: 'Está seguro?' } do
