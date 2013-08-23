@@ -7,15 +7,20 @@ body#admin{
 			color: white;
 			background-color: #C03A2B;
 		}
-		.admin-td{
+		.dashboard{
 			font-weight: bold;
 			cursor: pointer;
-			color: #0088cc;
 			text-align: center;
 		}
-		.admin-td:hover{
+		.dashboard:hover{
 			color: white;
-			background-color: #0088cc;
+			background-color: #3399FF;
+		}
+		.no-functions{
+			background-color: #FCD9D9;
+		}
+		.has-functions{
+			background-color: white;
 		}
 	}
 	.checkbox_container label {
@@ -26,6 +31,9 @@ body#admin{
 	.pagination a.selected{
 		background-color: #83afcc;
 		color: black;
+	}
+	table.table, table.table th, table.table td{
+		border: 1px solid black;
 	}
 }
 //body#admin{
