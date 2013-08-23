@@ -1,6 +1,3 @@
-<h1>CONTACTO</h1>
-<br />
-
 <%= form_for [:admin, @contact_ticket], html: { role: 'form', class: "form-horizontal"} do |f| %>
 	<% flash.each do |name, msg| %>
 		<% if name != :notice && msg.is_a?(String) %>
@@ -64,5 +61,4 @@
   </div>
 <% end %>
 
-<br />
 <br />
