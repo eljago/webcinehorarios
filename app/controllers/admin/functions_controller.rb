@@ -139,8 +139,9 @@ class Admin::FunctionsController < ApplicationController
   # CREATE PARSE
   def create_parse
     @theater = Theater.find(params[:theater_id])
+    cinema_name = @theater.cinema.name
     
-    if @theater.cinema.name == "Cinemark" || @theater.cinema.name == "Cine Hoyts" || @theater.cinema.name == "Cinemundo"
+    if cinema_name == "Cinemark" || cinema_name == "Cine Hoyts" || cinema_name == "Cinemundo"
       count = 0
       while hash = params["movie_#{count}"]
         unless hash[:show_id].blank?
@@ -160,21 +161,24 @@ class Admin::FunctionsController < ApplicationController
         end
         count = count + 1
       end
-    elsif @theater.cinema.name = "Cineplanet"
+    elsif cinema_name = "Cineplanet"
+      save_update_parsed_show params[:show_id], params[:parsed_show_id], params[:parsed_show_show_id]
       count = 0
       while hash = params[:theaters]["theater_#{count}"]
         count2 = 0
-        theater = Theater.find(hash[:theater_id])
-        while hash2 = hash["function_#{count2}"]
-          if hash2[:horarios].size >= 5
-            function = theater.functions.new
-            function.show_id = params[:show_id]
-            function.function_type_ids = params[:function_types][:function_types]
-            function.date = hash2[:date]
-            Function.create_showtimes function, hash2[:horarios]
-            function.save
+        unless hash[:theater_id].blank?
+          theater = Theater.find(hash[:theater_id])
+          while hash2 = hash["function_#{count2}"]
+            if hash2[:horarios].size >= 5
+              function = theater.functions.new
+              function.show_id = params[:show_id]
+              function.function_type_ids = params[:function_types][:function_types]
+              function.date = hash2[:date]
+              Function.create_showtimes function, hash2[:horarios]
+              function.save
+            end
+            count2 = count2 + 1
           end
-          count2 = count2 + 1
         end
         count = count + 1
       end
@@ -335,6 +339,11 @@ class Admin::FunctionsController < ApplicationController
       @functionsArray = []
       
       @name_pelicula = page.css('div[class="superior titulo-tamano-superior-modificado"]').text
+      
+      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(@name_pelicula[0..10])
+      @parsed_show = Hash[:id, parsed_show.id]
+      @parsed_show[:show_id] = parsed_show.show_id
+      
       @function_types_detected = []
       parse_detector_types.each do |pdt|
         if @name_pelicula.include?(pdt.name)

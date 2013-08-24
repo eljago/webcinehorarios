@@ -2,7 +2,15 @@
 
 	%h3= @name_pelicula
 	%h3= @theater.name
-	= select_tag "show_id", options_from_collection_for_select(@shows, :id, :name), :prompt => "", class: "chzn-select"
+	
+	= hidden_field_tag :parsed_show_id, @parsed_show[:id]
+	- if @parsed_show[:show_id].blank?
+		= select_tag "show_id", options_from_collection_for_select(@shows, :id, :name), :prompt => "", class: "chzn-select"
+	- else
+		= hidden_field_tag :parsed_show_show_id, @parsed_show[:show_id]
+		= select_tag "show_id", options_from_collection_for_select(@shows, :id, :name, @parsed_show[:show_id].to_i), class: "chzn-select"
+		
+	
 	= simple_fields_for "function_types" do |a|
 		= a.collection_check_boxes :function_types, @function_types, :id, :name, checked: @function_types_detected, :item_wrapper_class => "checkbox_container"
 	%br
