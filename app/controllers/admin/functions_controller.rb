@@ -125,6 +125,17 @@ class Admin::FunctionsController < ApplicationController
     end
   end
   
+  def save_update_parsed_show show_id, parsed_show_id, parsed_show_show_id
+    parsed_show = ParsedShow.find(parsed_show_id)
+    if parsed_show_show_id.blank?
+      parsed_show.show_id = show_id
+      parsed_show.save
+    elsif parsed_show_show_id != show_id
+      parsed_show.show_id = show_id
+      parsed_show.save
+    end
+  end
+  
   # CREATE PARSE
   def create_parse
     @theater = Theater.find(params[:theater_id])
@@ -134,10 +145,11 @@ class Admin::FunctionsController < ApplicationController
       while hash = params["movie_#{count}"]
         unless hash[:show_id].blank?
           count2 = 0
+          save_update_parsed_show hash[:show_id], hash[:parsed_show_id], hash[:parsed_show_show_id]
           while hash2 = hash["function_#{count2}"]
             if hash2[:horarios].size >= 5
               function = @theater.functions.new
-              function.show_id = hash[:show_id]
+              function.show_id = hash[:show_id].to_i
               function.function_type_ids = hash[:function_types]
               function.date = hash2[:date]
               Function.create_showtimes function, hash2[:horarios]
@@ -194,6 +206,9 @@ class Admin::FunctionsController < ApplicationController
       
       detected_function_types = []
       titulo = item.text.gsub!(/\s+/, ' ')[0..50]
+      
+      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(titulo[0..10])
+      
       img = item.css('img[alt="Sala Premium"]')
       unless img.blank?
         pdt = parse_detector_types.detect{ |p| p.name == 'Premier' }
@@ -226,6 +241,8 @@ class Admin::FunctionsController < ApplicationController
       end
 
       movieFunctions = Hash[:name, titulo]
+      movieFunctions[:parsed_show] = Hash[:id, parsed_show.id]
+      movieFunctions[:parsed_show][:show_id] = parsed_show.show_id
       movieFunctions[:function_types] = detected_function_types
       movieFunctions[:functions] = []
 

@@ -9,6 +9,7 @@ class Show < ActiveRecord::Base
   has_many :show_person_roles, dependent: :destroy
   has_many :people, through: :show_person_roles
   has_many :comments, dependent: :destroy
+  has_many :parsed_shows, dependent: :destroy
   
   validates :name, presence: :true
   

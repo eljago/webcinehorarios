@@ -21,7 +21,7 @@ sudo update-rc.d redis_6379 defaults
 ### Crear tarea
 nohup rake resque:work QUEUE='*' RAILS_ENV=production &
 rake resque:work QUEUE='*' RAILS_ENV=production &
-== Cuando se muestren workers pero ya se hayan eliminado sus procesos, en reails console:
+== Cuando se muestren workers pero ya se hayan eliminado sus procesos, en rails console:
 Resque.workers.first.prune_dead_workers
 
 ## Dependencia de minimagick

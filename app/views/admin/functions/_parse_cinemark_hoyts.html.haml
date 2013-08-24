@@ -4,9 +4,14 @@
 	- @functionsArray.each_with_index do |item, index|
 		= simple_fields_for "movie_#{index}" do |b|
 			- if item[:functions].count > 0
-				= b.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" }
-				%strong
-					= item[:name]
+				= b.hidden_field :parsed_show_id, value: item[:parsed_show][:id]
+				- if item[:parsed_show][:show_id].blank?
+					= b.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" }
+				- else
+					= b.hidden_field :parsed_show_show_id, value: item[:parsed_show][:show_id]
+					= b.collection_select :show_id, @shows, :id, :name, {selected: item[:parsed_show][:show_id], include_blank: true}, { class: "chzn-select" }
+				
+				%strong= item[:name]
 				%br
 				= b.collection_check_boxes :function_types, @function_types, :id, :name, checked: item[:function_types], :item_wrapper_class => "checkbox_container"
 				%br
