@@ -286,6 +286,7 @@ class Admin::FunctionsController < ApplicationController
             else
               titulo = text_name.text
             end
+            # search if the same movie has been read on a previous date:
             @functionsArray.each_with_index do |item, index|
               if item[:name] == titulo
                 function_helper = item
@@ -296,6 +297,10 @@ class Admin::FunctionsController < ApplicationController
               function_helper = Hash[:name, titulo]
               function_helper[:functions] = []
               detected_function_types = []
+              
+              parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(titulo[0..10])
+              function_helper[:parsed_show] = Hash[:id, parsed_show.id]
+              function_helper[:parsed_show][:show_id] = parsed_show.show_id
               
               parse_detector_types.each do |pdt|
                 if titulo.include?(pdt.name)
