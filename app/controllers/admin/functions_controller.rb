@@ -209,7 +209,7 @@ class Admin::FunctionsController < ApplicationController
     page.css('div.box_middle div[class="c73l bold h18"]').each_with_index do |item, index|
       
       detected_function_types = []
-      titulo = item.text.gsub!(/\s+/, ' ')[0..50]
+      titulo = item.text.split.join(' ')[0..50]
       
       parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(titulo[0..10])
       
@@ -282,14 +282,8 @@ class Admin::FunctionsController < ApplicationController
       page.css('table[width="440"] tr').each_with_index do |tr, index|
         if index % 2 == 0
           function_helper = nil
-          text_name = tr.css('td[width="241"] span')
-          if text_name
-            text_name_with_spaces = text_name.text.gsub!(/\s+/, ' ')
-            if text_name_with_spaces
-              titulo = text_name_with_spaces
-            else
-              titulo = text_name.text
-            end
+          titulo = tr.css('td[width="241"] span').text.split.join(' ')
+          if titulo
             # search if the same movie has been read on a previous date:
             @functionsArray.each_with_index do |item, index|
               if item[:name] == titulo
@@ -338,7 +332,7 @@ class Admin::FunctionsController < ApplicationController
       
       @functionsArray = []
       
-      @name_pelicula = page.css('div[class="superior titulo-tamano-superior-modificado"]').text
+      @name_pelicula = page.css('div[class="superior titulo-tamano-superior-modificado"]').text.split.join(' ')
       
       parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(@name_pelicula[0..10])
       @parsed_show = Hash[:id, parsed_show.id]
