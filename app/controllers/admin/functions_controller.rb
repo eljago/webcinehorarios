@@ -161,7 +161,7 @@ class Admin::FunctionsController < ApplicationController
         end
         count = count + 1
       end
-    elsif cinema_name = "Cineplanet"
+    elsif cinema_name == "Cineplanet"
       save_update_parsed_show params[:show_id], params[:parsed_show_id], params[:parsed_show_show_id]
       count = 0
       while hash = params[:theaters]["theater_#{count}"]
