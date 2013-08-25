@@ -32,9 +32,10 @@ class Admin::ParseDetectorTypesController < ApplicationController
   end
   
   def update
-    @parse_detector_type = ParseDetectorType.find(params[:parse_detector_type_id])
+    @parse_detector_type = ParseDetectorType.find(params[:id])
+    @function_type = @parse_detector_type.function_type
     
-    if @theater.update_attributes(params[:parse_detector_type])
+    if @parse_detector_type.update_attributes(params[:parse_detector_type])
       redirect_to [:admin, @function_type, :parse_detector_types], notice: 'Parse Detector Type was successfully updated.'
     else
       render action: "edit"
