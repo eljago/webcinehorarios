@@ -4,10 +4,10 @@
 	%h3= @theater.name
 	
 	= hidden_field_tag :parsed_show_id, @parsed_show[:id]
+	= hidden_field_tag :parsed_show_show_id, @parsed_show[:show_id]
 	- if @parsed_show[:show_id].blank?
 		= select_tag "show_id", options_from_collection_for_select(@shows, :id, :name), :prompt => "", class: "chzn-select"
 	- else
-		= hidden_field_tag :parsed_show_show_id, @parsed_show[:show_id]
 		= select_tag "show_id", options_from_collection_for_select(@shows, :id, :name, @parsed_show[:show_id].to_i), class: "chzn-select"
 		
 	

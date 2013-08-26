@@ -5,10 +5,10 @@
 		= simple_fields_for "movie_#{index}" do |b|
 			- if item[:functions].count > 0
 				= b.hidden_field :parsed_show_id, value: item[:parsed_show][:id]
+				= b.hidden_field :parsed_show_show_id, value: item[:parsed_show][:show_id]
 				- if item[:parsed_show][:show_id].blank?
 					= b.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" }
 				- else
-					= b.hidden_field :parsed_show_show_id, value: item[:parsed_show][:show_id]
 					= b.collection_select :show_id, @shows, :id, :name, {selected: item[:parsed_show][:show_id], include_blank: true}, { class: "chzn-select" }
 				
 				%strong= item[:name]

@@ -49,8 +49,6 @@ class Admin::FunctionsController < ApplicationController
   def update
     @function.assign_attributes(params[:function])
     if (params[:horarios].gsub(/\s{3,}|( - )|(, )/, ", ") != @function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', '))
-      puts @function.showtimes
-      puts params[:horarios]
       @function.showtimes = []
       Function.create_showtimes @function, params[:horarios]
     end
@@ -82,7 +80,6 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def delete_day
-    puts 'testing'
     functions = Function.where(date: params[:date], theater_id: params[:theater_id])
     functions.each do |function|
       function.destroy
@@ -128,11 +125,12 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def save_update_parsed_show show_id, parsed_show_id, parsed_show_show_id
-    parsed_show = ParsedShow.find(parsed_show_id)
     if parsed_show_show_id.blank?
+      parsed_show = ParsedShow.find(parsed_show_id)
       parsed_show.show_id = show_id
       parsed_show.save
     elsif parsed_show_show_id != show_id
+      parsed_show = ParsedShow.find(parsed_show_id)
       parsed_show.show_id = show_id
       parsed_show.save
     end
@@ -213,7 +211,7 @@ class Admin::FunctionsController < ApplicationController
       detected_function_types = []
       titulo = item.text.split.join(' ')[0..50]
       
-      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(titulo[0..10])
+      parsed_show_name = titulo.gsub(" ","")
       
       img = item.css('img[alt="Sala Premium"]')
       unless img.blank?
@@ -239,12 +237,16 @@ class Admin::FunctionsController < ApplicationController
           titulo.prepend("(Sala XD)-")
         end
       end
+      
       parse_detector_types.each do |pdt|
         if titulo.include?(pdt.name)
           detected_function_types << pdt.function_type_id
           titulo.prepend("(#{pdt.name})-")
         end
+        parsed_show_name = parsed_show_name.gsub(pdt.name, "")
       end
+      
+      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
 
       movieFunctions = Hash[:name, titulo]
       movieFunctions[:parsed_show] = Hash[:id, parsed_show.id]
@@ -265,7 +267,7 @@ class Admin::FunctionsController < ApplicationController
           movieFunctions[:functions] << function
         end
       end
-      @functionsArray << movieFunctions
+      @functionsArray << movieFunctions if movieFunctions[:functions].count > 0
     end
   end
   
@@ -298,15 +300,18 @@ class Admin::FunctionsController < ApplicationController
               function_helper[:functions] = []
               detected_function_types = []
               
-              parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(titulo[0..10])
-              function_helper[:parsed_show] = Hash[:id, parsed_show.id]
-              function_helper[:parsed_show][:show_id] = parsed_show.show_id
+              parsed_show_name = titulo.gsub(" ","")
               
               parse_detector_types.each do |pdt|
                 if titulo.include?(pdt.name)
                   detected_function_types << pdt.function_type_id
                 end
+                parsed_show_name = parsed_show_name.gsub(pdt.name, "")
               end
+              
+              parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
+              function_helper[:parsed_show] = Hash[:id, parsed_show.id]
+              function_helper[:parsed_show][:show_id] = parsed_show.show_id
               
               function_helper[:function_types] = detected_function_types
               
@@ -335,10 +340,7 @@ class Admin::FunctionsController < ApplicationController
       @functionsArray = []
       
       @name_pelicula = page.css('div[class="superior titulo-tamano-superior-modificado"]').text.split.join(' ')
-      
-      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(@name_pelicula[0..10])
-      @parsed_show = Hash[:id, parsed_show.id]
-      @parsed_show[:show_id] = parsed_show.show_id
+      parsed_show_name = @name_pelicula.gsub(" ","")
       
       @function_types_detected = []
       parse_detector_types.each do |pdt|
@@ -346,7 +348,12 @@ class Admin::FunctionsController < ApplicationController
           @function_types_detected << pdt.function_type_id
           @name_pelicula.prepend("(#{pdt.name})-")
         end
+        parsed_show_name = parsed_show_name.gsub(pdt.name, "")
       end
+      
+      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
+      @parsed_show = Hash[:id, parsed_show.id]
+      @parsed_show[:show_id] = parsed_show.show_id
       
       count = -1
       ignore_theater = false
