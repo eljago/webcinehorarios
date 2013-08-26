@@ -100,8 +100,10 @@ class Admin::FunctionsController < ApplicationController
     @date = params[:new_parse][:date].to_date if params[:new_parse][:date]
     parse_days = []
     if params[:new_parse][:parse_type] == 'week'
-      (@date..@date.next_week(:wednesday)).each do |d|
-        parse_days << d
+      if @date.wday <= 3
+        parse_days = (@date..@date.next_day(3 - @date.wday)).to_a
+      else
+        parse_days = (@date..@date.next_week(:wednesday)).to_a
       end
     else
       parse_days << @date
