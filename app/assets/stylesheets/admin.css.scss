@@ -1,7 +1,12 @@
 body#admin{
-	font-family: Verdana;
+	font-family: 'Nunito', sans-serif;
+	font-size: 15px;
 	background-image: image-url('content_bg.jpg');
 	background-repeat: repeat;
+	
+	h1, h2, h3 ,h4, h5{
+		font-family: 'Nunito', sans-serif;
+	}
 	
 	table.table{
 		tr{
