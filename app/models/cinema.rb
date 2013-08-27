@@ -3,6 +3,7 @@ class Cinema < ActiveRecord::Base
   
   has_many :theaters, :dependent => :destroy
   has_many :parse_detector_types
+  has_and_belongs_to_many :function_types
 
   validates :name, :presence => :true
 

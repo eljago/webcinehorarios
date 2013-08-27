@@ -3,26 +3,31 @@
 	%h1= @theater.name
 	- @functionsArray.each_with_index do |item, index|
 		= simple_fields_for "movie_#{index}" do |b|
-			- if item[:functions].count > 0
-				= b.hidden_field :parsed_show_id, value: item[:parsed_show][:id]
-				= b.hidden_field :parsed_show_show_id, value: item[:parsed_show][:show_id]
-				- if item[:parsed_show][:show_id].blank?
-					= b.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" }
-				- else
-					= b.collection_select :show_id, @shows, :id, :name, {selected: item[:parsed_show][:show_id], include_blank: true}, { class: "chzn-select" }
-				
-				%strong= item[:name]
-				%br
-				= b.collection_check_boxes :function_types, @function_types, :id, :name, checked: item[:function_types], :item_wrapper_class => "checkbox_container"
-				%br
-				- item[:functions].each_with_index do |function, index2|
-					= b.simple_fields_for "function_#{index2}" do |f|
-						= function[:day] if @cinema.name == "Cinemark"
-						= function[:date]
-						= f.hidden_field :date, value: function[:date]
-						= f.text_field :horarios, value: function[:horarios], size: 100
-						%br
-				%br
+			.row
+				.col-sm-4
+					- if item[:functions].count > 0
+						= b.hidden_field :parsed_show_id, value: item[:parsed_show][:id]
+						= b.hidden_field :parsed_show_show_id, value: item[:parsed_show][:show_id]
+						- if item[:parsed_show][:show_id].blank?
+							= b.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" }
+						- else
+							= b.collection_select :show_id, @shows, :id, :name, {selected: item[:parsed_show][:show_id], include_blank: true}, { class: "chzn-select" }
+					%br
+					= b.collection_check_boxes :function_types, @function_types, :id, :name, checked: item[:function_types], :item_wrapper_class => "checkbox_line"
+					
+				.col-sm-8
+					%strong= item[:name]
+
+					- item[:functions].each_with_index do |function, index2|
+						= b.simple_fields_for "function_#{index2}" do |f|
+							.row
+								.col-sm-4{style: 'text-align: right'}
+									= function[:day] if @cinema.name == "Cinemark"
+									= function[:date]
+								.col-sm-8
+									= f.hidden_field :date, value: function[:date]
+									= f.text_field :horarios, value: function[:horarios], size: 60
+			%br
 	= hidden_field_tag :date, @date.to_date
 	
 	.form-actions

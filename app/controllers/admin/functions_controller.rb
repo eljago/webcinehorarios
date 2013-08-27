@@ -92,7 +92,7 @@ class Admin::FunctionsController < ApplicationController
   def new_parse
     @theater = Theater.find(params[:theater_id])
     @cinema = @theater.cinema
-    @function_types = FunctionType.order(:name).all
+    @function_types = @cinema.function_types.order(:name).all
     @shows = Show.order(:name).select('shows.id, shows.name').all
     @date = params[:new_parse][:date].to_date if params[:new_parse][:date]
     parse_days = []

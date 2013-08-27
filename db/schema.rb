@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130823213151) do
+ActiveRecord::Schema.define(:version => 20130827002429) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -33,6 +33,11 @@ ActiveRecord::Schema.define(:version => 20130823213151) do
     t.text     "information"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "cinemas_function_types", :id => false, :force => true do |t|
+    t.integer "cinema_id"
+    t.integer "function_type_id"
   end
 
   create_table "cities", :force => true do |t|

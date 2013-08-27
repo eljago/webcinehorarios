@@ -1,8 +1,9 @@
 = simple_form_for [:admin, @function_type] do |f|
-  = f.error_notification
+	= f.error_notification
 
-  .form-inputs
-    = f.input :name
+	.form-inputs
+		= f.input :name
+		= f.association :cinemas, as: :check_boxes
 
-  .form-actions
-    = f.button :submit, class: 'btn btn-primary'
+	.form-actions
+		= f.button :submit, class: 'btn btn-primary'
