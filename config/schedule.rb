@@ -23,6 +23,6 @@ set :environment, "development"
 
 set :output, "#{path}/log/cron.log"
 
-every every :day, :at => '5am' do
+every :day, :at => '5am' do
   rake "parse:metacritic"
 end
