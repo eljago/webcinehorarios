@@ -1,6 +1,7 @@
 class Show < ActiveRecord::Base
   attr_accessible :show_person_roles_attributes, :genre_ids, :active, :year, :debut, :name, :image, :information, 
-  :duration, :name_original, :rating, :remote_image_url, :images_attributes, :videos_attributes, :facebook_id
+  :duration, :name_original, :rating, :remote_image_url, :images_attributes, :videos_attributes,
+  :metacritic_url, :metacritic_score
   
   has_many :images, as: :imageable, dependent: :destroy
   has_and_belongs_to_many :genres

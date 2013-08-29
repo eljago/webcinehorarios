@@ -1,33 +1,27 @@
 
 namespace :parse do
-  desc "Parse Channels"
-  task :channels => :environment do
+  desc "Parse Metacritic"
+  task :metacritic => :environment do
     require 'nokogiri'
     require 'open-uri'
-    channels = Channel.all
-
-    channels.each do |channel|
-      URL = "http://www.directv.cl/guia/ChannelDetail.aspx?id=#{channel.directv}"
-      s = open(URL).read            # Separate these three lines to convert &nbsp;
-      s.gsub!('&nbsp;', ' ') 
-      page = Nokogiri::HTML(s)
-
-      n = "00"
-      while
-        time_li = page.css("li#ctl09_rptProgramming_ctl#{n}_liTime")
-        title_li = page.css("li#ctl09_rptProgramming_ctl#{n}_liTitle")
-        break if time_li.text == ""
-  
-        puts "#{n}: #{time_li.text} #{title_li.text.gsub!(/\s+/, ' ')}"
-        name = title_li.text.gsub!(/\s+/, ' ')
-        hourminute = time_li.text.split(":")
-        time = Time.current.change(hour: hourminute[0], minute: hourminute[1])
-  
-        channel.programs.new(name: name, time: time).save
-  
-        n = (n.to_i + 1).to_s
-        if n.size == 1
-          n = "0#{n}"
+    
+    date = Date.current
+    shows = Show.joins('left outer join functions on shows.id = functions.show_id')
+    .where('functions.date >= ? OR shows.debut > ?',date, date)
+    .select('shows.name, shows.metacritic_url').uniq.all
+    
+    shows.each do |show|
+      unless show.metacritic_url.blank?
+        puts show.metacritic_url
+        URL = show.metacritic_url
+        s = open(URL).read
+        s.gsub!('&nbsp;', ' ') 
+        page = Nokogiri::HTML(s)
+        
+        score = page.css(".main_details span.score_value").text.to_i
+        unless score == 0
+          show.metacritic_score = score
+          show.save
         end
       end
     end

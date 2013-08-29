@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130827002429) do
+ActiveRecord::Schema.define(:version => 20130829055332) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -202,13 +202,15 @@ ActiveRecord::Schema.define(:version => 20130827002429) do
     t.integer  "duration"
     t.string   "name_original"
     t.string   "rating"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.date     "debut"
     t.integer  "year"
     t.boolean  "active"
     t.string   "image_tmp"
     t.string   "facebook_id"
+    t.string   "metacritic_url"
+    t.integer  "metacritic_score", :limit => 1
   end
 
   create_table "showtimes", :force => true do |t|

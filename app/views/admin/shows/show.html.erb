@@ -35,6 +35,16 @@
   <%= @show.rating %>
 </p>
 
+<p>
+  <b>Metacritic URL:</b>
+  <%= @show.metacritic_url %>
+</p>
+
+<p>
+  <b>Metacritic Score:</b>
+  <%= @show.metacritic_score %>
+</p>
+
 <p><b>Géneros:</b>
 	<% @show.genres.each do |genre|  %>
 		<%= "#{genre.name} - " %>

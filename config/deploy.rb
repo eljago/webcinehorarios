@@ -1,6 +1,9 @@
 require "rvm/capistrano"
 require "bundler/capistrano"
 
+set :whenever_command, "bundle exec whenever"
+require "whenever/capistrano"
+
 # Require the recipes you need, comment out the ones you don't
 
 server "192.81.211.220", :web, :app, :db, primary: true
