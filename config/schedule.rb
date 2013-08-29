@@ -23,6 +23,8 @@ set :environment, "development"
 
 set :output, "#{path}/log/cron.log"
 
-every :day, :at => '5am' do
+hour = 5 + (Time.now.hour - Time.current.hour)
+
+every :day, :at => "#{hour}am" do
   rake "parse:metacritic"
 end
