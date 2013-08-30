@@ -45,6 +45,26 @@
   <%= @show.metacritic_score %>
 </p>
 
+<p>
+  <b>IMDB CODE:</b>
+  <%= @show.imdb_code %>
+</p>
+
+<p>
+  <b>IMDB Score:</b>
+  <%= @show.imdb_score %>
+</p>
+
+<p>
+  <b>Rotten Tomatoes URL:</b>
+  <%= @show.rotten_tomatoes_url %>
+</p>
+
+<p>
+  <b>Rotten Tomatoes Score:</b>
+  <%= @show.rotten_tomatoes_score %>
+</p>
+
 <p><b>Géneros:</b>
 	<% @show.genres.each do |genre|  %>
 		<%= "#{genre.name} - " %>
