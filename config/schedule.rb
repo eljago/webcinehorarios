@@ -27,4 +27,5 @@ hour = Time.current.change(hour: 5).utc.hour
 
 every :day, :at => "#{hour}am" do
   rake "parse:metacritic"
+  rake "cache:carrierwave_clean"
 end
