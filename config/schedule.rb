@@ -23,9 +23,7 @@ set :environment, "development"
 
 set :output, "#{path}/log/cron.log"
 
-hour = Time.current.change(hour: 5).utc.hour
-
-every :day, :at => "#{hour}am" do
+every :day, :at => "9am" do
   rake "parse:metacritic"
   rake "cache:carrierwave_clean"
 end
