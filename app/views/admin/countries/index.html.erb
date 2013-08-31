@@ -1,0 +1,24 @@
+<%= render 'breadcrumbs' %>
+<h1>Países</h1>
+
+<table class="table">
+	<tr>
+		<th>Nombre</th>
+		<th></th>
+	</tr>
+
+<% @countries.each do |country| %>
+	<tr>
+		<td>
+			<%= link_to country.name, admin_country_cities_path(country) %>
+		</td>
+		<td>
+			<%= render_index_actions [country], only: [:edit, :destroy] %>
+		</td>
+	</tr>
+<% end %>
+</table>
+
+<%= link_to new_admin_country_path, class: 'btn btn-default' do %>
+	<i class="icon-plus"></i> Nuevo País
+<% end %>

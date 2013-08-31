@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ApiKeyTest < ActiveSupport::TestCase
+class Admin::CountryTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

@@ -1,12 +1,10 @@
+# encoding: utf-8
 class Admin::CountriesController < ApplicationController
   
-  before_filter :get_country, only: [:show, :edit, :update, :destroy]
+  before_filter :get_country, only: [:edit, :update, :destroy]
   
   def index
     @countries = Country.all
-  end
-  
-  def show
   end
   
   def new
@@ -22,7 +20,7 @@ class Admin::CountriesController < ApplicationController
     if @country.save
       respond_to do |format|
         format.html do
-          redirect_to [:admin, :countries], notice: 'Country was successfully created.'
+          redirect_to [:admin, :countries], notice: 'País Actualizado Exitosamente.'
         end
         format.js
       end
@@ -33,7 +31,7 @@ class Admin::CountriesController < ApplicationController
   
   def update
     if @country.update_attributes(params[:country])
-      redirect_to [:admin, :countries], notice: 'Country was successfully updated.'
+      redirect_to [:admin, :countries], notice: 'País Actualizado Exitosamente.'
     else
       render action: "edit"
     end
