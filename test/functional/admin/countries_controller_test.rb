@@ -24,6 +24,10 @@ class Admin::CountriesControllerTest < ActionController::TestCase
 
     assert_redirected_to admin_countries_path
   end
+  test "should not save country without name" do
+    country = Country.new
+    assert !country.save, "Saved the country without a name"
+  end
 
   test "should get edit" do
     get :edit, id: @country
