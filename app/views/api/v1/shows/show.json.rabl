@@ -1,5 +1,5 @@
 object @show
-cache @show, expires_in: 1.hour
+cache ['v1', @show], expires_in: 1.hour
 attributes :id, :name, :image, :duration, :name_original, :information, :debut, :rating, :year, :facebook_id
 child :images do
 	attributes :name, :image

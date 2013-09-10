@@ -1,5 +1,5 @@
 object @show
-cache @show, expires_in: 1.hour
+cache ['v2', @show], expires_in: 1.hour
 attributes :id, :name, :image, :duration, :name_original, :information, :debut, :rating, :year, :imdb_score, :rotten_tomatoes_score, :metacritic_score
 child :images do
 	attributes :name, :image
