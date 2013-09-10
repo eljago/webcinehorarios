@@ -10,7 +10,7 @@ class Permission
 
     allow 'api/v2/countries', [:index]
     allow 'api/v2/cities', :index
-    allow 'api/v2/shows', [:billboard, :detailed_billboard, :premieres, :comingsoon]
+    allow 'api/v2/shows', [:billboard, :show, :premieres, :comingsoon]
     allow 'api/v2/comments', :create
     allow 'api/v2/theaters', :show_theaters_joins
     allow 'api/v2/cinemas', [:show, :show_cinemas]

@@ -17,11 +17,10 @@ Webcinehorarios::Application.routes.draw do
       resources :cinemas, only: [:show]
 
       get 'billboard' => 'shows#billboard'
-      get 'detailed_billboard' => 'shows#detailed_billboard'
       get 'premieres' => 'shows#premieres'
       get 'comingsoon' => 'shows#comingsoon'
       
-      resources :shows, only: [] do
+      resources :shows, only: :show do
         resources :comments, only: :create
         get 'show_cinemas' => 'cinemas#show_cinemas'
         get 'show_functions' => 'functions#show_functions'
