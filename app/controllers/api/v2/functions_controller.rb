@@ -5,6 +5,7 @@ module Api
       
       def index
         @functions = Function.includes(:show, :showtimes, :function_types)
+        .select('function_types.name, shows.id, shows.name, shows.image, shows.debut, showtimes.time')
           .order('shows.debut DESC, shows.id, showtimes.time ASC')
           .where(functions: { date: @date, theater_id: params[:theater_id] } ).all
       end

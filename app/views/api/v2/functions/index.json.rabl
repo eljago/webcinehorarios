@@ -2,15 +2,6 @@ object false
 node :date do
 	@date
 end
-child @functions do
-	collection @functions => :functions
-	child :function_types do
-		attributes :name
-	end
-	glue :show do
-		attributes :id, :name, :image
-	end
-	child :showtimes do
-		attributes :time
-	end
+node :functions do
+	partial "api/v2/functions/functions", object: @functions 
 end
