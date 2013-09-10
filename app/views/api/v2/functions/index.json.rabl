@@ -4,7 +4,6 @@ node :date do
 end
 child @functions do
 	collection @functions => :functions
-	cache ['v2',@functions], expires_in: 1.hour
 	child :function_types do
 		attributes :name
 	end
