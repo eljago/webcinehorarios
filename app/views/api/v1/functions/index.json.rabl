@@ -1,5 +1,5 @@
 collection @functions
-cache @functions, expires_in: 1.hour
+cache ['v1',@functions], expires_in: 1.hour
 attributes :date
 child :function_types do
 	attributes :name
