@@ -90,8 +90,14 @@
 	  </nav>
 		
 		<div class="container">
-			<%= render 'layouts/user_login' %>
-			<%= render_navigation %>
+			<div class="row">
+				<div class="col-sm-8">
+					<%= render_navigation %>
+				</div>
+				<div class="col-sm-4">
+					<%= render 'layouts/user_login' %>
+				</div>
+			</div>
 			<%= render 'layouts/messages' %>
 			<%= yield %>
 		</div>

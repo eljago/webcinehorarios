@@ -46,13 +46,15 @@
 %table.table
 	%tr
 		%th
+		%th
 		%th Película
 		%th Tipo
 		%th Horario
 		%th
 		
-	- @functions.each do |function|
+	- @functions.each_with_index do |function, index|
 		%tr
+			%td= (index+1)
 			%td= image_tag function.show.image.smallest, size: '80x120' if function.show.image.smallest
 			%td{width: "100"}= function.show.name if function.show
 			%td{width: "100"}= function.function_types.map(&:name).join(', ')
