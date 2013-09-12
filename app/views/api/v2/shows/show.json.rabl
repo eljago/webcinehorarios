@@ -5,7 +5,7 @@ glue :portrait_image do
 	attributes :image_url => :portrait_image
 end
 child :images do
-	attributes :name, :image_url
+	attributes :image_url
 end
 child :videos do
 	attributes :name, :code, :image_url
