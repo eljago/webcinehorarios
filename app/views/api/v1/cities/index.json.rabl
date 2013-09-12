@@ -1,5 +1,5 @@
 collection @cities
-cache @cities, expires_in: 1.hour
+cache ['v1', @cities], expires_in: 1.hour
 attributes :id, :name
 node :cinemas do |city|
 	@cinemas.map do |cinema|
