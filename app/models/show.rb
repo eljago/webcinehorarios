@@ -11,6 +11,7 @@ class Show < ActiveRecord::Base
   has_many :people, through: :show_person_roles
   has_many :comments, dependent: :destroy
   has_many :parsed_shows, dependent: :destroy
+  has_one :portrait_image, class_name: 'Image', foreign_key: :show_portrait_id
   
   validates :name, presence: :true
   
