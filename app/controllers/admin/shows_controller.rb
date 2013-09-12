@@ -84,10 +84,6 @@ class Admin::ShowsController < ApplicationController
   
   def destroy
     @show.destroy
-    if (current_user.facebook.access_token != nil)
-      graph = Koala::Facebook::API.new(current_user.facebook.get_page_access_token(469307943155757))
-      graph.delete_object(@show.facebook_id) if @show.facebook_id
-    end
     redirect_to [:admin, :shows]
   end
   

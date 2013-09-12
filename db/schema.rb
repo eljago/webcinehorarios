@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130911200622) do
+ActiveRecord::Schema.define(:version => 20130912044829) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -161,13 +161,8 @@ ActiveRecord::Schema.define(:version => 20130911200622) do
   create_table "people", :force => true do |t|
     t.string   "name"
     t.string   "image"
-    t.date     "birthdate"
-    t.date     "deathdate"
-    t.string   "birthplace"
-    t.integer  "height"
-    t.text     "information"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "image_tmp"
   end
 

@@ -21,7 +21,7 @@ class Admin::PeopleController < ApplicationController
     @person = Person.new(params[:person])
 
     if @person.save
-      redirect_to [:admin, :people], notice: 'Person was successfully created.'
+      redirect_to [:new, :admin, :person], notice: 'Person was successfully created.'
     else
       render action: "new"
     end
