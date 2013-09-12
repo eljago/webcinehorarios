@@ -5,7 +5,7 @@
 				<%= f.hidden_field :_destroy %>
 				<button class="close remove_fields">X</button>
 			</div>
-			<%= f.collection_select :person, Person.order('people.name ASC').all, :id, :name, {include_blank: true}, { class: "chzn-select", style: "width: 90%;" } %>
+			<%= f.collection_select :person_id, Person.order('people.name ASC').all, :id, :name, {include_blank: true}, { class: "chzn-select", style: "width: 90%;" } %>
 			
 		</div>
 		<div class="col-sm-3">
