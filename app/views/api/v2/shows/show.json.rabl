@@ -1,9 +1,6 @@
 object @show
 cache ['v2', @show], expires_in: 1.hour
 attributes :id, :name, :image_url, :duration, :name_original, :information, :debut, :rating, :year, :imdb_score, :rotten_tomatoes_score, :metacritic_score
-glue :portrait_image do
-	attributes :image_url => :portrait_image
-end
 child :images do
 	attributes :image_url
 end
