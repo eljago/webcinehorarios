@@ -20,7 +20,8 @@ module Api
       def show
         @show = Show.select('shows.id, shows.name, shows.image, shows.duration,
         shows.name_original, shows.information, shows.debut, shows.rating, shows.year,
-        shows.metacritic_score, shows.imdb_score, shows.rotten_tomatoes_score')
+        shows.metacritic_score, shows.imdb_score, shows.rotten_tomatoes_score,
+        shows.metacritic_url, shows.imdb_code, shows.rotten_tomatoes_url')
         .includes(:show_person_roles => :person).find(params[:id])
       end
       
