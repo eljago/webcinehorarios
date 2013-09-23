@@ -10,6 +10,18 @@ node :web_url do
 		@theater.web_url
 	end
 end
+node :address do
+	@theater.address
+end
+node :latitude do
+	@theater.latitude
+end
+node :longitude do
+	@theater.longitude
+end
+node :information do
+	@theater.information
+end
 node :functions do
 	partial "api/v2/functions/functions", object: @functions 
 end

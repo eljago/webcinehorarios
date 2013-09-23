@@ -9,7 +9,8 @@ module Api
           .order('shows.debut DESC, shows.id, showtimes.time ASC')
           .where(functions: { date: @date, theater_id: params[:theater_id] } ).all
           
-        @theater = Theater.includes(:cinema).select('theaters.web_url, cinema.name').where(id: params[:theater_id]).all.first
+        @theater = Theater.includes(:cinema).select('theaters.address, theaters.latitude, theaters.longitude, 
+        theaters.information, theaters.web_url, cinema.name').where(id: params[:theater_id]).all.first
         @cinema_name = @theater.cinema.name
       end
         
