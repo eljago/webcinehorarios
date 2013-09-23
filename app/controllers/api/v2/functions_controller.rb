@@ -8,6 +8,7 @@ module Api
         .select('function_types.name, shows.id, shows.name, shows.image, shows.debut, showtimes.time')
           .order('shows.debut DESC, shows.id, showtimes.time ASC')
           .where(functions: { date: @date, theater_id: params[:theater_id] } ).all
+        @functions_url = Theater.select(:web_url).where(id: params[:theater_id]).all.first.web_url
       end
         
       def show_functions

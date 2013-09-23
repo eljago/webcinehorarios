@@ -1,5 +1,5 @@
 class Theater < ActiveRecord::Base
-  attr_accessible :cinema_id, :city_id, :address, :information, :latitude, :longitude, :name, :web_label, :function_type_ids, :active
+  attr_accessible :cinema_id, :city_id, :address, :information, :latitude, :longitude, :name, :web_url, :function_type_ids, :active
   
   belongs_to :city
   belongs_to :cinema

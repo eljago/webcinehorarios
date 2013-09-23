@@ -106,7 +106,7 @@ class Admin::FunctionsController < ApplicationController
     end
     parse_detector_types = @cinema.parse_detector_types.all
     
-    unless @theater.web_label.blank?
+    unless @theater.web_url.blank?
       if @cinema.name == "Cinemark"
         parse_cinemark parse_days, parse_detector_types
       elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
@@ -118,7 +118,7 @@ class Admin::FunctionsController < ApplicationController
       if @cinema.name == "Cineplanet"
         parse_cineplanet parse_days, parse_detector_types
       else
-        redirect_to [:admin, :cinemas], alert: "#{@cinema.name} no tiene web label"
+        redirect_to [:admin, :cinemas], alert: "#{@theater.name} no tiene web label"
       end
     end
   end
@@ -198,7 +198,7 @@ class Admin::FunctionsController < ApplicationController
   
   
   def parse_cinemark(parse_days, parse_detector_types)
-    url = "http://www.cinemark.cl/DetalleCine.aspx?cinema=#{@theater.web_label}"
+    url = @theater.web_url
     s = open(url).read
     s.gsub!('&nbsp;', ' ') 
     page = Nokogiri::HTML(s) 
@@ -277,7 +277,7 @@ class Admin::FunctionsController < ApplicationController
     parse_days.each do |parse_day|
       
       date_hoyts = parse_day.to_s.split("-").reverse.join('-')
-      url = "http://www.cinehoyts.cl/?mod=#{@theater.web_label}&fecha=#{date_hoyts}"
+      url = "#{@theater.web_url}&fecha=#{date_hoyts}"
       s = open(url).read
       s.gsub!('&nbsp;', ' ')
       page = Nokogiri::HTML(s)
