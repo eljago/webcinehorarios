@@ -30,59 +30,90 @@
 								Inicio
 							<% end %>
 						</li>
-			      <li>
-							<%= link_to admin_users_path do %>
-								<i class="icon-user"></i>
-								Users
-							<% end %>
-						</li>
-			      <li>
-							<%= link_to admin_contact_tickets_path do %>
-								<i class="icon-tag"></i>
-								Contactos
-							<% end %>
-						</li>
-			      <li>
-							<%= link_to admin_opinions_path do %>
-								<i class="icon-comments"></i>
-								Opiniones
-							<% end %>
-						</li>
-			      <li>
-							<%= link_to admin_countries_path do %>
-								<i class="icon-globe"></i>
-								Países
-							<% end %>
-						</li>
-			      <li>
-							<%= link_to admin_cinemas_path do %>
-								<i class="icon-building"></i>
-								Cines
-							<% end %>
-						</li>
-			      <li>
-							<%= link_to admin_shows_path do %>
-								<i class="icon-film"></i>
-								Shows
-							<% end %>
-						</li>
-			      <li>
-							<%= link_to admin_genres_path do %>
-								<i class="icon-comments"></i>
-								Géneros
-							<% end %>
-						</li>
-			      <li>
-							<%= link_to admin_function_types_path do %>
-								<i class="icon-bookmark"></i>
-								Tipos de Función
-							<% end %>
-						</li>
+						<li class="dropdown">
+			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
+			        <ul class="dropdown-menu">
+					      <li>
+									<%= link_to admin_users_path do %>
+										<i class="icon-user"></i>
+										Users
+									<% end %>
+								</li>
+					      <li>
+									<%= link_to admin_contact_tickets_path do %>
+										<i class="icon-tag"></i>
+										Contactos
+									<% end %>
+								</li>
+					      <li>
+									<%= link_to admin_opinions_path do %>
+										<i class="icon-comments"></i>
+										Opiniones
+									<% end %>
+								</li>
+					      <li>
+									<%= link_to admin_countries_path do %>
+										<i class="icon-globe"></i>
+										Países
+									<% end %>
+								</li>
+					      <li>
+									<%= link_to admin_genres_path do %>
+										<i class="icon-comments"></i>
+										Géneros
+									<% end %>
+								</li>
+					      <li>
+									<%= link_to admin_function_types_path do %>
+										<i class="icon-bookmark"></i>
+										Tipos de Función
+									<% end %>
+								</li>
+			        </ul>
+			      </li>
 			      <li>
 							<%= link_to admin_people_path do %>
 								<i class="icon-group"></i>
-								Personas
+								Actores
 							<% end %>
+						</li>
+						<li class="dropdown">
+			        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-building"></i> Cines <b class="caret"></b></a>
+			        <ul class="dropdown-menu">
+					      <li>
+									<%= link_to admin_cinemas_path do %>
+										Todos
+									<% end %>
+								</li>
+								<% Cinema.all.each do |cinema| %>
+						      <li>
+										<%= link_to admin_cinema_theaters_path(cinema) do %>
+											<%= image_tag cinema.image, size: "20x20" %>
+											<%= cinema.name %>
+										<% end %>
+									</li>
+								<% end %>
+			    		</ul>
+						</li>
+						<li class="dropdown">
+			        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-film"></i> Shows <b class="caret"></b></a>
+			        <ul class="dropdown-menu">
+					      <li>
+									<%= link_to admin_shows_path do %>
+										Todos
+									<% end %>
+								</li>
+					      <li>
+									<%= link_to billboard_admin_shows_path do %>
+										Cartelera
+									<% end %>
+								</li>
+					      <li>
+									<%= link_to comingsoon_admin_shows_path do %>
+										Próximamente
+									<% end %>
+								</li>
+			    		</ul>
 						</li>
 			    </ul>
 			  </div>

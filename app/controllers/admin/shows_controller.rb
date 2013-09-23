@@ -91,6 +91,19 @@ class Admin::ShowsController < ApplicationController
     @show = Show.find(params[:id])
   end
   
+  def billboard
+    date = Date.current
+    @shows = Show.joins(:functions).where(active: true, functions: {date: date})
+    .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating')
+    .order("debut DESC").uniq.all
+  end
+  def comingsoon
+    date = Date.current
+    @shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', date, nil, true)
+    .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating')
+    .order("debut ASC").all
+  end
+  
   def create_facebook
     if Rails.env.production?
       image_url = params[:show][:remote_image_url]

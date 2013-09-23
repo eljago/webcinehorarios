@@ -11,7 +11,6 @@ module Api
           
         @theater = Theater.includes(:cinema).select('theaters.web_url, cinema.name').where(id: params[:theater_id]).all.first
         @cinema_name = @theater.cinema.name
-        puts @cinema_name
       end
         
       def show_functions

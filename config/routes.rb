@@ -97,6 +97,10 @@ Webcinehorarios::Application.routes.draw do
       post 'functions/delete_day' => 'functions#delete_day', as: 'functions_delete_day'
     end
     resources :shows do
+      collection do 
+        get 'billboard'
+        get 'comingsoon'
+      end 
       resources :comments, only: :index
       resources :images
       resources :functions
