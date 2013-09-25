@@ -3,27 +3,6 @@
   <b>Nombre:</b>
   <%= @person.name %>
 </p>
-
-<p>
-  <b>Fecha Nacimiento:</b>
-  <%= @person.birthdate %>
-</p>
-
-<p>
-  <b>Fecha Fallecimiento:</b>
-  <%= @person.deathdate %>
-</p>
-
-<p>
-  <b>Lugar de Nacimiento:</b>
-  <%= @person.birthplace %>
-</p>
-
-<p>
-  <b>Altura:</b>
-  <%= @person.height %>
-</p>
-
 <p>
   <b>Imagen:</b>
   <%= link_to image_tag(@person.image, size: "70x100"), @person.image.to_s if @person.image%>
