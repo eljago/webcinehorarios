@@ -106,20 +106,14 @@ class Admin::FunctionsController < ApplicationController
     end
     parse_detector_types = @cinema.parse_detector_types.all
     
-    unless @theater.web_url.blank?
-      if @cinema.name == "Cinemark"
-        parse_cinemark parse_days, parse_detector_types
-      elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
-        parse_hoyts parse_days, parse_detector_types
-      else
-        redirect_to [:admin, :cinemas], alert: "operación no habilitada para #{@cinema.name}"
-      end
+    if @cinema.name == "Cinemark"
+      parse_cinemark parse_days, parse_detector_types
+    elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
+      parse_hoyts parse_days, parse_detector_types
+    elsif @cinema.name == "Cineplanet"
+      parse_cineplanet parse_days, parse_detector_types
     else
-      if @cinema.name == "Cineplanet"
-        parse_cineplanet parse_days, parse_detector_types
-      else
-        redirect_to [:admin, :cinemas], alert: "#{@theater.name} no tiene web label"
-      end
+      redirect_to [:admin, :cinemas], alert: "operación no habilitada para #{@theater.name}"
     end
   end
   
