@@ -14,26 +14,25 @@ Webcinehorarios::Application.routes.draw do
     
     ##### V2 #####
     scope module: :v2, constraints: ApiConstraints.new(version: 2) do
-      resources :cinemas, only: [:show]
-
-      get 'billboard' => 'shows#billboard'
-      get 'premieres' => 'shows#premieres'
-      get 'comingsoon' => 'shows#comingsoon'
       
       resources :shows, only: :show do
         resources :comments, only: :create
+        collection do 
+          get 'billboard'
+          get 'comingsoon'
+        end 
         get 'show_cinemas' => 'cinemas#show_cinemas'
         get 'show_functions' => 'functions#show_functions'
         get 'show_cinemas_joins' => 'cinemas#show_cinemas_joins'
         get 'show_theaters_joins' => 'theaters#show_theaters_joins'
       end
       
-      resources :countries, only: [:index] do
-        resources :cities, only: [:index]
-      end
-      
       resources :theaters, only: [] do
         resources :functions, only: :index
+      end
+      resources :cinemas, only: [] do
+        resources :theaters, only: :index do
+        end
       end
     end
     

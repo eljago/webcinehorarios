@@ -2,6 +2,11 @@ module Api
   module V2
     class TheatersController < Api::V2::ApiController
       
+      def index
+        @theaters = Theater.where(cinema_id: params[:cinema_id]).select('theaters.id, theaters.name')
+          .order('theaters.name').all
+      end
+      
       def show_theaters_joins
         date = Date.current
 
