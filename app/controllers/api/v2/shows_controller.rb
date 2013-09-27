@@ -4,7 +4,6 @@ module Api
       
       def billboard
         date = Date.current
-        date = (date..date.next_week(:tuesday)) unless date.wday == 3
         @shows = Show.joins(:functions).where(active: true, functions: {date: date}).includes(:genres)
         .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating')
         .order("debut DESC").uniq.all
