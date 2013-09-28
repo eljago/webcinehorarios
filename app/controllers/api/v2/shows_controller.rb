@@ -3,8 +3,10 @@ module Api
     class ShowsController < Api::V2::ApiController
       
       def billboard
-        date = Date.current
-        @shows = Show.joins(:functions).where(active: true, functions: {date: date}).includes(:genres)
+        current_day = Date.current
+        date = current_day + ((3-current_day.wday) % 7)
+        @shows = Show.joins(:functions).where('shows.active = ? AND shows.debut <= ? AND functions.date = ?', true, date, current_day)
+        .includes(:genres)
         .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating')
         .order("debut DESC").uniq.all
       end
