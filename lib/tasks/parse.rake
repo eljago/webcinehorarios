@@ -18,7 +18,7 @@ namespace :parse do
         puts "\tparsing metacritic ..."
         URL = show.metacritic_url
         s = open(URL).read
-        s.gsub!('&nbsp;', ' ') 
+        s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
         page = Nokogiri::HTML(s)
         
         score = page.css(".main_details span.score_value").text.to_i
@@ -33,9 +33,9 @@ namespace :parse do
         puts "\tparsing imdb ..."
         URL = "http://m.imdb.com/title/#{show.imdb_code}/"
         s = open(URL).read
-        s.gsub!('&nbsp;', ' ') 
+        s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
         page = Nokogiri::HTML(s)
-        score = page.css("p.votes strong").text.to_f*10
+        score = page.css("p.votes strong").text.to_f*10.to_i
         unless score == 0
           puts "\t\timdb score: #{score}"
           show.imdb_score = score
@@ -47,7 +47,7 @@ namespace :parse do
         puts "\tparsing rotten tomatoes ..."
         URL = show.rotten_tomatoes_url
         s = open(URL).read
-        s.gsub!('&nbsp;', ' ') 
+        s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
         page = Nokogiri::HTML(s)
       
         score = page.css("#all-critics-numbers span#all-critics-meter").text.to_i
