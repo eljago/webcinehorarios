@@ -6,9 +6,5 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Page.delete_all
-Page.create!(permalink: 'contacto', title: 'Contacto', content: '');
-Page.create!(permalink: 'inicio', title: 'Inicio', content: '');
-
 User.delete_all
 User.create!(name: 'admin', email: 'admin@example.cl', password: 'admin123', password_confirmation: 'admin123', admin: true);

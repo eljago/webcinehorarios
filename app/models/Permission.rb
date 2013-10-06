@@ -1,16 +1,14 @@
 class Permission
   
   def initialize(user)
-    allow 'api/v1/shows', [:billboard, :show, :premieres, :comingsoon]
+    allow 'api/v1/shows', [:billboard, :show, :comingsoon]
     allow 'api/v1/cities', :index
-    allow 'api/v1/comments', :create
     allow 'api/v1/theaters', :show_theaters_joins
-    allow 'api/v1/cinemas', [:show, :show_cinemas]
+    allow 'api/v1/cinemas', [:show]
     allow 'api/v1/functions', [:index, :show_functions]
 
     allow 'api/v2/shows', [:billboard, :show, :comingsoon]
-    allow 'api/v2/comments', :create
-    allow 'api/v2/theaters', [:index, :show_theaters_joins]
+    allow 'api/v2/theaters', [:index, :show_theaters]
     allow 'api/v2/functions', [:index, :show_functions]
     
     allow :home, [:index]

@@ -16,15 +16,12 @@ Webcinehorarios::Application.routes.draw do
     scope module: :v2, constraints: ApiConstraints.new(version: 2) do
       
       resources :shows, only: :show do
-        resources :comments, only: :create
         collection do 
           get 'billboard'
           get 'comingsoon'
+          get ':show_id/show_theaters' => 'theaters#show_theaters'
+          get ':show_id/show_functions' => 'functions#show_functions'
         end 
-        get 'show_cinemas' => 'cinemas#show_cinemas'
-        get 'show_functions' => 'functions#show_functions'
-        get 'show_cinemas_joins' => 'cinemas#show_cinemas_joins'
-        get 'show_theaters_joins' => 'theaters#show_theaters_joins'
       end
       
       resources :theaters, only: [] do
@@ -45,10 +42,7 @@ Webcinehorarios::Application.routes.draw do
       get 'comingsoon' => 'shows#comingsoon'
       
       resources :shows, only: :show do
-        resources :comments, only: :create
-        get 'show_cinemas' => 'cinemas#show_cinemas'
         get 'show_functions' => 'functions#show_functions'
-        get 'show_cinemas_joins' => 'cinemas#show_cinemas_joins'
         get 'show_theaters_joins' => 'theaters#show_theaters_joins'
       end
       

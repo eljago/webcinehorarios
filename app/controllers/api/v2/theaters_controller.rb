@@ -7,7 +7,7 @@ module Api
           .order('theaters.name').all
       end
       
-      def show_theaters_joins
+      def show_theaters
         date = Date.current
 
         @theaters = Theater.joins(:functions).where(functions: {show_id: params[:show_id], date: date})
