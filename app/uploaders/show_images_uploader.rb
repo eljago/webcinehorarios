@@ -16,7 +16,7 @@ class ShowImagesUploader < CarrierWave::Uploader::Base
   end
   
   def default_url
-    "/assets/showCover.jpg"
+    "/assets/MissingPicture.jpg"
   end
 
   def filename
