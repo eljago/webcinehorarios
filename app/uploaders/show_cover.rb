@@ -21,22 +21,22 @@ class ShowCover < CarrierWave::Uploader::Base
     "/assets/MissingPicture.jpg"
   end
 
-  process :resize_to_fit => [640,960]
+  process :resize_to_fit => [1136,1136]
   process convert: 'png'
   process :optimize
   
   version :small do
-    process :resize_to_fit => [320,480]
+    process :resize_to_fit => [568,568]
     process convert: 'png'
     process :optimize
   end
   version :smaller do
-    process :resize_to_fit => [160,240]
+    process :resize_to_fit => [284,284]
     process convert: 'png'
     process :optimize
   end
   version :smallest do
-    process :resize_to_fit => [80,120]
+    process :resize_to_fit => [142,142]
     process convert: 'png'
     process :optimize
   end

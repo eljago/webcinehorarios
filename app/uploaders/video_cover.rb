@@ -12,14 +12,14 @@ class VideoCover < ImageUploader
   
 	process convert: 'jpg'
   
-  process :resize_to_fit => [960,960]
+  process :resize_to_fit => [640,640]
   process :optimize
   version :small do
-    process :resize_to_fit => [480,480]
+    process :resize_to_fit => [320,320]
     process :optimize
   end
   version :smaller do
-    process :resize_to_fit => [280,200]
+    process :resize_to_fit => [160,160]
     process :optimize
   end
 end

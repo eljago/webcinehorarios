@@ -23,16 +23,16 @@ class ShowImagesUploader < CarrierWave::Uploader::Base
     @name ||= "#{secure_filename}.jpg" if original_filename
   end
   
-  process :resize_to_fit => [960,960]
+  process :resize_to_fit => [1136,1136]
   process convert: 'jpg'
   process :optimize
   version :small do
-    process :resize_to_fit => [480,480]
+    process :resize_to_fit => [568,568]
     process convert: 'jpg'
     process :optimize
   end
   version :smaller do
-    process :resize_to_fit => [280,200]
+    process :resize_to_fit => [284,284]
     process convert: 'jpg'
     process :optimize
   end

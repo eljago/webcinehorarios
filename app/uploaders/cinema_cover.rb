@@ -6,10 +6,10 @@ class CinemaCover < CoverUploader
     "/assets/MissingPicture.jpg"
   end
   
-  process :resize_to_fit => [160,160]
+  process :resize_to_fit => [200,200]
   process :optimize
   version :small do
-    process :resize_to_fit => [80,80]
+    process :resize_to_fit => [100,100]
     process :optimize
   end
 end
