@@ -4,12 +4,6 @@ attributes :date
 child :function_types do
 	attributes :name
 end
-glue :show do
-	attributes :id, :name, :image
-	glue :portrait_image do
-		attributes :image_url => :portrait_image
-	end
-end
 child :showtimes do
 	attributes :time
 end
