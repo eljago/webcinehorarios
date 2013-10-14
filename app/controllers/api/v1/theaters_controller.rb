@@ -6,7 +6,8 @@ module Api
         date = Date.current
 
         @theaters = Theater.joins(:functions).where(functions: {show_id: params[:show_id], date: date})
-        .select('theaters.id, theaters.name, theaters.cinema_id').order('theaters.name ASC').uniq.all
+        .select('theaters.id, theaters.name, theaters.cinema_id').where('theaters.active = ?',true)
+        .order('theaters.name ASC').uniq.all
       end
     end
   end
