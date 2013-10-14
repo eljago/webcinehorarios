@@ -206,11 +206,11 @@ ActiveRecord::Schema.define(:version => 20130923024757) do
     t.string   "image_tmp"
     t.string   "facebook_id"
     t.string   "metacritic_url"
-    t.integer  "metacritic_score",      :limit => 1
+    t.integer  "metacritic_score",      :limit => 2
     t.string   "imdb_code"
-    t.integer  "imdb_score",            :limit => 1
+    t.integer  "imdb_score",            :limit => 2
     t.string   "rotten_tomatoes_url"
-    t.integer  "rotten_tomatoes_score", :limit => 1
+    t.integer  "rotten_tomatoes_score", :limit => 2
   end
 
   create_table "showtimes", :force => true do |t|

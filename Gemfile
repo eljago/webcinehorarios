@@ -19,6 +19,8 @@ group :development do
   gem 'hirb'
   gem 'wirb'
   gem 'awesome_print'
+  
+  gem 'railroady'
 end
 gem 'rack-mini-profiler'
 

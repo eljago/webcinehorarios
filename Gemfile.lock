@@ -178,6 +178,7 @@ GEM
       rack
     rack-test (0.6.2)
       rack (>= 1.0)
+    railroady (1.1.1)
     rails (3.2.13)
       actionmailer (= 3.2.13)
       actionpack (= 3.2.13)
@@ -276,6 +277,7 @@ DEPENDENCIES
   pg
   rabl
   rack-mini-profiler
+  railroady
   rails (= 3.2.13)
   resque
   rvm-capistrano
