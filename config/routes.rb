@@ -20,8 +20,9 @@ Webcinehorarios::Application.routes.draw do
           get 'billboard'
           get 'comingsoon'
           get ':show_id/show_theaters' => 'theaters#show_theaters'
+          get ':show_id/favorite_theaters' => 'theaters#favorite_theaters'
           get ':show_id/show_functions' => 'functions#show_functions'
-        end 
+        end
       end
       
       resources :theaters, only: [] do
