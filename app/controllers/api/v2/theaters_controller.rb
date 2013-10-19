@@ -20,7 +20,8 @@ module Api
         
         unless params[:favorites].blank?
           favorites = params[:favorites].split(',')
-          @favorite_theaters = Theater.includes(functions: [:show, :function_types, :showtimes])
+          @show = Show.find(params[:show_id])
+          @favorite_theaters = Theater.includes(:functions => [:function_types, :showtimes])
           .select('theaters.id, theaters.name, theaters.cinema_id')
           .where('theaters.active = ? AND theaters.id IN (?) AND functions.show_id = ? AND functions.date = ?', true, favorites, params[:show_id], date)
           .order('theaters.name ASC, showtimes.time ASC').uniq.all
