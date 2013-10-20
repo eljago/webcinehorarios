@@ -6,7 +6,7 @@
 				<div class="col-sm-8">
 					
 				  <div class="form-group">
-				    <%= f.label :name, 'Nombre:', class: 'col-sm-4 control-label' %>
+				    <%= f.label :name, 'Nombre:', include_blank: true, class: 'col-sm-4 control-label' %>
 						<div class="col-sm-7">
 				    	<%= f.text_field :name, class: 'form-control' %>
 				    </div>
@@ -53,7 +53,13 @@
 				    	<%= f.text_field :imdb_code, class: 'form-control' %>
 				    </div>
 				  </div>
-
+					
+				  <div class="form-group">
+				    <%= f.label :imdb_score, 'IMDb Score', class: 'col-sm-4 control-label' %>
+						<div class="col-sm-1">
+				    	<%= f.text_field :imdb_score, class: 'form-control' %>
+				    </div>
+				  </div>
 					
 				  <div class="form-group">
 				    <%= f.label :metacritic_url, 'Metacritic URL:', class: 'col-sm-4 control-label' %>
@@ -61,7 +67,13 @@
 				    	<%= f.text_field :metacritic_url, class: 'form-control' %>
 				    </div>
 				  </div>
-
+					
+				  <div class="form-group">
+				    <%= f.label :metacritic_score, 'Metacritic Score', class: 'col-sm-4 control-label' %>
+						<div class="col-sm-1">
+				    	<%= f.text_field :metacritic_score, class: 'form-control' %>
+				    </div>
+				  </div>
 					
 				  <div class="form-group">
 				    <%= f.label :rotten_tomatoes_url, 'Rotten Tomatoes URL:', class: 'col-sm-4 control-label' %>
@@ -69,15 +81,19 @@
 				    	<%= f.text_field :rotten_tomatoes_url, class: 'form-control' %>
 				    </div>
 				  </div>
+					
+				  <div class="form-group">
+				    <%= f.label :rotten_tomatoes_score, 'Rotten Tomatoes Score', class: 'col-sm-4 control-label' %>
+						<div class="col-sm-1">
+				    	<%= f.text_field :rotten_tomatoes_score, class: 'form-control' %>
+				    </div>
+				  </div>
 				</div>
 					
 				<div class="col-sm-3">
+				  <%= f.input :debut, include_blank: true %>
 					<%= f.input :rating, collection: [['TE', 'TE'],['TE+7', 'TE+7'], ['13+', '13+'], ['14+', '14+'], ['15+', '15+'], ['16+', '16+'], ['18+', '18+']], :as => :radio_buttons %>
 					<%= f.association :genres, collection: Genre.all(order: 'name'), as: :check_boxes %>
-					<%= f.input :debut, include_blank: true %>
-	    		<%= f.input :imdb_score %>
-	    		<%= f.input :metacritic_score %>
-	    		<%= f.input :rotten_tomatoes_score %>
 			  </div>
 			</div>
 			
