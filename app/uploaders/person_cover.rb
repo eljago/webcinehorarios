@@ -3,7 +3,7 @@
 class PersonCover < CoverUploader
 
   def default_url
-    "/assets/MissingPicture.jpg"
+    "/assets/MissingActor.jpg"
   end
   
   process :resize_to_fit => [1136,1136]
