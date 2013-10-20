@@ -25,6 +25,7 @@ class Admin::ShowsController < ApplicationController
   
   def edit
     @show = Show.find(params[:id])
+    @people = Person.order('people.name ASC').all
   end
   
   def create
