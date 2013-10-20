@@ -21,6 +21,7 @@ class Admin::ShowsController < ApplicationController
   
   def new
     @show = Show.new
+    @people = Person.order('people.name ASC').all
   end
   
   def edit
