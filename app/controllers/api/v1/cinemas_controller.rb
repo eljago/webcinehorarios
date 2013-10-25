@@ -2,8 +2,12 @@ module Api
   module V1
     class CinemasController < Api::V1::ApiController
       def show
-          @cinema = Cinema.includes(:theaters).where('theaters.cinema_id = ? AND theaters.active = ?',params[:id],true)
-          .order('theaters.name ASC').all
+        @cinema = Cinema.find(params[:id])
+        if params[:id] == "5"
+          @theaters = Theater.where(cinema_id: [5,6]).all
+        else
+          @theaters = Theater.where(cinema_id: params[:id]).all
+        end
       end
     end
   end
