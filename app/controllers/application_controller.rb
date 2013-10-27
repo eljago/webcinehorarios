@@ -14,7 +14,11 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   
   def current_permission
-    @current_permission ||= Permission.new(current_user)
+    if params[:theater_id].blank?
+      @current_permission ||= Permission.new(current_user)
+    else
+      @current_permission ||= Permission.new(current_user, params[:theater_id].to_i)
+    end
   end
   
   def authorize

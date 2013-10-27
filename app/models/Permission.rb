@@ -1,6 +1,6 @@
 class Permission
   
-  def initialize(user)
+  def initialize(user, theater_id = 0)
     allow 'api/v1/shows', [:billboard, :show, :comingsoon]
     allow 'api/v1/cities', :index
     allow 'api/v1/theaters', :show_theaters_joins
@@ -12,10 +12,13 @@ class Permission
     allow 'api/v2/functions', [:index, :show_functions]
     
     allow :home, [:index]
+    allow :cine, [:salaestrella]
     allow 'admin/sessions', [:new, :create, :destroy, :facebook_create]
     allow 'admin/contact_tickets', [:create]
         
     if user
+      allow 'admin/cines', [:index]
+      allow 'admin/functions', [:index, :new, :edit, :copy_last_day, :create, :destroy, :show] if user.theaters.map(&:id).include?(theater_id)
       allow_all if user.admin?
     end
   end

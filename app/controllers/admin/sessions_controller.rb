@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Admin::SessionsController < ApplicationController
 
   def new
@@ -7,14 +8,16 @@ class Admin::SessionsController < ApplicationController
   def create
     user = User.find_by_email(params[:email])
     if user && user.authenticate(params[:password])
-      if Rails.env.production?
-        redirect_to "/auth/facebook"
-      else
-        session[:user_id] = user.id
+      session[:user_id] = user.id
+      if user.admin?
         redirect_to admin_path
+      elsif !user.theaters.blank?
+        redirect_to admin_cines_path
+      else
+        redirect_to root_path, notice: 'No Está Autorizado'
       end
     else
-      flash.now.alert = 'Email or password is invalid'
+      flash.now.alert = 'Email o password inválido'
       render 'new'
     end
   end

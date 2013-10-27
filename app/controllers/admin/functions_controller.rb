@@ -40,6 +40,7 @@ class Admin::FunctionsController < ApplicationController
       if @function.save
         redirect_to admin_theater_functions_path(date: @function.date), notice: 'Funciones creadas con exito.'
       else
+        params[:date] = @function.date
         render action: "new"
       end
     end

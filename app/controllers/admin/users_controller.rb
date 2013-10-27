@@ -24,7 +24,7 @@ class Admin::UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    if @user.provider?
+    if current_user.admin?
       @user.attributes = params[:user]
       if @user.save(validate: false)
         redirect_to admin_path, notice: "Usuario Actualizado."

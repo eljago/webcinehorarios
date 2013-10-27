@@ -7,6 +7,7 @@
 		= f.input :password
 		= f.input :password_confirmation
 		= f.input :admin if current_user.admin?
+		= f.association :theaters, as: :check_boxes
 
 	.form-actions
 		= f.button :submit, class: 'btn btn-primary'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130923024757) do
+ActiveRecord::Schema.define(:version => 20131026210223) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -230,9 +230,11 @@ ActiveRecord::Schema.define(:version => 20130923024757) do
     t.datetime "updated_at",  :null => false
     t.string   "web_url"
     t.boolean  "active"
+    t.integer  "user_id"
   end
 
   add_index "theaters", ["city_id", "cinema_id"], :name => "index_theaters_on_city_id_and_cinema_id"
+  add_index "theaters", ["user_id"], :name => "index_theaters_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
