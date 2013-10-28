@@ -4,6 +4,11 @@
 
 %br
 
-= link_to [:admin, :users], class: 'btn btn-default' do
-	%i.icon-arrow-left
-	Volver
+- if current_user.admin?
+	= link_to [:admin, :users], class: 'btn btn-default' do
+		%i.icon-arrow-left
+		Volver
+- else
+	= link_to admin_cines_path, class: 'btn btn-default' do
+		%i.icon-arrow-left
+		Volver
