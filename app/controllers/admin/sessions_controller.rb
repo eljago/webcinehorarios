@@ -14,7 +14,7 @@ class Admin::SessionsController < ApplicationController
       elsif !user.theaters.blank?
         redirect_to admin_cines_path
       else
-        redirect_to root_path, notice: 'No Está Autorizado'
+        redirect_to root_path, error: 'No tiene cines'
       end
     else
       flash.now.alert = 'Email o password inválido'
@@ -30,6 +30,6 @@ class Admin::SessionsController < ApplicationController
   
   def destroy
     session[:user_id] = nil
-    redirect_to admin_path, notice: 'Logged out'
+    redirect_to new_admin_session_path, notice: 'Logged out'
   end
 end

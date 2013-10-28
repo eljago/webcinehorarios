@@ -1,5 +1,6 @@
 class Admin::UsersController < ApplicationController
-    
+  before_filter :check_user
+  
   def index
     @users = User.all
   end
@@ -33,7 +34,7 @@ class Admin::UsersController < ApplicationController
       end
     else
       if @user.update_attributes(params[:user])
-        redirect_to admin_path, notice: "Usuario Actualizado."
+        redirect_to admin_cines_path, notice: "Usuario Actualizado."
       else
         render "new"
       end
@@ -45,5 +46,13 @@ class Admin::UsersController < ApplicationController
     @user.destroy
 
     redirect_to [:admin, :users]
+  end
+  
+  private
+  
+  def check_user
+    if !current_user.admin? && current_user.id != User.find(params[:id]).id
+      redirect_to admin_cines_path, notice: 'No puede editar a otros usuarios'
+    end
   end
 end

@@ -1,0 +1,14 @@
+- content_for :title, "Sala Estrella"
+
+%h1 Horarios Sala Estrella:
+
+%table.table
+	- @functions.each do |function|
+		%tr
+			%td			
+				.row
+					.col-sm-2.imagen= image_tag function.show.image.smallest if function.show.image.smallest
+					.col-sm-10
+						%h3= function.show.name if function.show
+						%h4= function.function_types.map(&:name).join(', ')
+						%h4= function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', ')

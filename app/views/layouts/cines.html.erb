@@ -10,22 +10,8 @@
 		<%= favicon_link_tag 'favicon.ico' %>
 	</head>
 
-	<body id="admin">
-		
-		<% if current_user && current_user.admin? %>
-			<%= render 'layouts/navbar_application' %>
-		<% end %>
-		
+	<body id="cines">
 		<div class="container">
-			<div class="row">
-				<div class="col-sm-5">
-					<%= render_navigation if current_user && current_user.admin?%>
-				</div>
-				<div class="col-sm-5" style="float: right;">
-					<%= render 'layouts/user_login' %>
-				</div>
-			</div>
-			<%= render 'layouts/messages' %>
 			<%= yield %>
 		</div>
 	</body>

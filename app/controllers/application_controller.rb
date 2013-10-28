@@ -1,3 +1,4 @@
+# encoding: utf-8
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :authorize
@@ -14,11 +15,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   
   def current_permission
-    if params[:theater_id].blank?
-      @current_permission ||= Permission.new(current_user)
-    else
-      @current_permission ||= Permission.new(current_user, params[:theater_id].to_i)
-    end
+    @current_permission ||= Permission.new(current_user)
   end
   
   def authorize
@@ -26,7 +23,7 @@ class ApplicationController < ActionController::Base
       if params[:controller].split('/').first == "api"
         render :text => "404 Not Found", :status => 404
       else
-        redirect_to new_admin_session_path, alert: 'Not authorized'
+        redirect_to new_admin_session_path, alert: 'No está Autorizado'
       end
     end
   end
