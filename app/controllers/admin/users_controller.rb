@@ -27,7 +27,7 @@ class Admin::UsersController < ApplicationController
     if current_user.admin?
       @user.attributes = params[:user]
       if @user.save(validate: false)
-        redirect_to admin_path, notice: "Usuario Actualizado."
+        redirect_to admin_users_path, notice: "Usuario Actualizado."
       else
         render "new"
       end

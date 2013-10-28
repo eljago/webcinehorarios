@@ -18,7 +18,7 @@ class Permission
         
     if user
       allow 'admin/cines', [:index]
-      allow 'admin/functions', [:index, :new, :edit, :copy_last_day, :create, :destroy, :show] if user.theaters.map(&:id).include?(theater_id)
+      allow 'admin/functions', [:index, :new, :edit, :copy_last_day, :create, :destroy, :show] if user.theaters.map(&:slug).include?(theater_id)
       allow_all if user.admin?
     end
   end

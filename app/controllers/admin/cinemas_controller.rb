@@ -1,7 +1,7 @@
 class Admin::CinemasController < ApplicationController
 
   def index
-    @cinemas = Cinema.order('id').select('id, name, information, image').all
+    @cinemas = Cinema.order('id').select('id, name, information, image, slug').all
   end
   
   def new
@@ -9,7 +9,7 @@ class Admin::CinemasController < ApplicationController
   end
   
   def edit
-    @cinema = Cinema.select('id, name, information').find(params[:id])
+    @cinema = Cinema.select('id, name, information, slug').find(params[:id])
   end
   
   def create

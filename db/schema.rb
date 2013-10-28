@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131026210223) do
+ActiveRecord::Schema.define(:version => 20131027005134) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -33,7 +33,10 @@ ActiveRecord::Schema.define(:version => 20131026210223) do
     t.text     "information"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "slug"
   end
+
+  add_index "cinemas", ["slug"], :name => "index_cinemas_on_slug", :unique => true
 
   create_table "cinemas_function_types", :id => false, :force => true do |t|
     t.integer "cinema_id"
@@ -46,9 +49,11 @@ ActiveRecord::Schema.define(:version => 20131026210223) do
     t.integer  "country_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "slug"
   end
 
   add_index "cities", ["country_id"], :name => "index_cities_on_country_id"
+  add_index "cities", ["slug"], :name => "index_cities_on_slug", :unique => true
 
   create_table "comments", :force => true do |t|
     t.string   "author"
@@ -75,7 +80,10 @@ ActiveRecord::Schema.define(:version => 20131026210223) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "slug"
   end
+
+  add_index "countries", ["slug"], :name => "index_countries_on_slug", :unique => true
 
   create_table "function_types", :force => true do |t|
     t.string "name"
@@ -109,7 +117,10 @@ ActiveRecord::Schema.define(:version => 20131026210223) do
 
   create_table "genres", :force => true do |t|
     t.string "name"
+    t.string "slug"
   end
+
+  add_index "genres", ["slug"], :name => "index_genres_on_slug", :unique => true
 
   create_table "genres_shows", :id => false, :force => true do |t|
     t.integer "genre_id"
@@ -164,7 +175,10 @@ ActiveRecord::Schema.define(:version => 20131026210223) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "image_tmp"
+    t.string   "slug"
   end
+
+  add_index "people", ["slug"], :name => "index_people_on_slug", :unique => true
 
   create_table "programs", :force => true do |t|
     t.datetime "time"
@@ -211,7 +225,10 @@ ActiveRecord::Schema.define(:version => 20131026210223) do
     t.integer  "imdb_score",            :limit => 2
     t.string   "rotten_tomatoes_url"
     t.integer  "rotten_tomatoes_score", :limit => 2
+    t.string   "slug"
   end
+
+  add_index "shows", ["slug"], :name => "index_shows_on_slug", :unique => true
 
   create_table "showtimes", :force => true do |t|
     t.time "time"
@@ -231,9 +248,11 @@ ActiveRecord::Schema.define(:version => 20131026210223) do
     t.string   "web_url"
     t.boolean  "active"
     t.integer  "user_id"
+    t.string   "slug"
   end
 
   add_index "theaters", ["city_id", "cinema_id"], :name => "index_theaters_on_city_id_and_cinema_id"
+  add_index "theaters", ["slug"], :name => "index_theaters_on_slug", :unique => true
   add_index "theaters", ["user_id"], :name => "index_theaters_on_user_id"
 
   create_table "users", :force => true do |t|
@@ -248,7 +267,10 @@ ActiveRecord::Schema.define(:version => 20131026210223) do
     t.string   "oauth_token"
     t.datetime "oauth_expires_at"
     t.string   "image"
+    t.string   "slug"
   end
+
+  add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true
 
   create_table "videos", :force => true do |t|
     t.string   "name"

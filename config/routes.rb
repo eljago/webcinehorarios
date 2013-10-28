@@ -3,7 +3,7 @@ require 'api_constraints'
 Webcinehorarios::Application.routes.draw do
   
   root :to => 'home#index'
-  get "cine/salaestrella"
+  get "cines/salaestrella"
   
   mount Resque::Server, :at => "/resque"
   

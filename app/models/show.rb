@@ -1,4 +1,7 @@
 class Show < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+  
   attr_accessible :show_person_roles_attributes, :genre_ids, :active, :year, :debut, :name, :image, :information, 
   :duration, :name_original, :rating, :remote_image_url, :images_attributes, :videos_attributes,
   :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score

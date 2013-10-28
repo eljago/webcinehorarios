@@ -96,13 +96,13 @@ class Admin::ShowsController < ApplicationController
   def billboard
     date = Date.current
     @shows = Show.joins(:functions).where(active: true, functions: {date: date})
-    .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating')
+    .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating, shows.slug')
     .order("debut DESC").uniq.all
   end
   def comingsoon
     date = Date.current
     @shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', date, nil, true)
-    .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating')
+    .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating, shows.slug')
     .order("debut ASC").all
   end
   

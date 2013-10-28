@@ -5,9 +5,9 @@ class Admin::TheatersController < ApplicationController
   def index
     @theaters =
       if params[:city_id]
-        Theater.includes(:cinema).where(city_id: params[:city_id]).order('cinemas.name, theaters.name').all
+        @theaterable.includes(:cinema).order('cinemas.name, theaters.name').all
       elsif params[:cinema_id]
-        Theater.includes(:city).where(cinema_id: params[:cinema_id]).order('cities.name, theaters.name').all
+        @theaterable.theaters.includes(:city).order('cities.name, theaters.name').all
       end
   end
   

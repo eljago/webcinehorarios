@@ -1,4 +1,7 @@
 class Person < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name, use: :slugged
+  
   attr_accessible :birthdate, :birthplace, :deathdate, :height, :information, :name, :image, :remote_image_url
   
   has_many :show_person_roles, :dependent => :destroy

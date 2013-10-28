@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
   has_secure_password
+  extend FriendlyId
+  friendly_id :name, use: :slugged
   attr_accessible :name, :email, :password, :password_confirmation, :admin, :theater_ids
   
   has_many :comments
@@ -10,8 +12,6 @@ class User < ActiveRecord::Base
   validates :name, presence: true, :length => { :in => 4..20 }
   validates :password, presence: true, :length => { :in => 8..20 }
   validates :password_confirmation, presence: true, :length => { :in => 8..20 }
-  
-
   
   def self.from_omniauth(auth)
     where(auth.slice(:provider, :uid)).first_or_initialize.tap do |user|
