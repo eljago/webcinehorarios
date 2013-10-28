@@ -28,7 +28,7 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def edit
-    @shows = Show.select([:id, :name])..order('shows.name ASC').all
+    @shows = Show.select([:id, :name]).order('shows.name ASC').all
   end
   
   def create

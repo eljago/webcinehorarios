@@ -5,7 +5,7 @@
 	.form-inputs
 		= f.hidden_field :date, value: date
 		= f.hidden_field :theater_id, value: @theater.id
-		= f.association :show, collection: @shows, :input_html => { :class => "chzn-select" }
+		= f.association :show, collection: @shows, label: "Película", :input_html => { :class => "chzn-select" }
 		.row
 			%br
 			.col-md-3.col-sm-3
