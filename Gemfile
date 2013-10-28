@@ -81,4 +81,4 @@ gem 'resque', :require => "resque/server"
 gem 'omniauth-facebook', '1.4.0'
 gem 'koala'
 
-gem "friendly_id", "~> 4.0.10"
+gem "friendly_id", "4.0.10"
