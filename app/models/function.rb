@@ -15,7 +15,12 @@ class Function < ActiveRecord::Base
     horarios.gsub(/\s{3,}|( - )|(, )/, "a").split("a").each do |h|
       if h.size >= 5
         horaminuto = h.split(":")
-        function.showtimes << Showtime.find_or_create_by_time(time: Time.new.utc.change(year:2000, month: 1, day: 1, hour: horaminuto[0], min: horaminuto[1], sec: 00))
+        begin
+          time = Time.new.utc.change(year:2000, month: 1, day: 1, hour: horaminuto[0], min: horaminuto[1], sec: 00)
+        rescue NoMethodError
+          next
+        end
+        function.showtimes << Showtime.find_or_create_by_time(time: time)
       end
     end
   end

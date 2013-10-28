@@ -5,7 +5,7 @@ require 'open-uri'
 class Admin::FunctionsController < ApplicationController
 
   before_filter :check_user
-  before_filter :get_theater, only: [:new, :create, :copy_last_day, :delete_day]
+  before_filter :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day]
   before_filter :get_function, only: [:edit, :update, :destroy]
   
   def index
@@ -16,7 +16,6 @@ class Admin::FunctionsController < ApplicationController
     else
       params[:date] = DateTime.parse(params[:date]).to_date
     end
-    @theater = Theater.find(params[:theater_id])
     
     @functions = @theater.functions.includes(:show, :showtimes, :function_types)
     .where('date = ?',params[:date])
@@ -57,6 +56,7 @@ class Admin::FunctionsController < ApplicationController
     if @function.save
       redirect_to admin_theater_functions_path(date: @function.date), notice: 'funcion actualizada con exito.'
     else
+      params[:date] = @function.date
       render action: "edit"
     end
   end
@@ -68,20 +68,24 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def copy_last_day
-    date = Function.where('theater_id = ?',params[:theater_id]).order('date ASC').all.last.date
-    functions = Function.where('theater_id = ? AND date = ?',params[:theater_id],date)
-    functions.each do |function|
-      func = function.dup
-      func.function_types = function.function_types
-      func.showtimes = function.showtimes
-      func.date = function.date.next
-      func.save
+    if @theater.functions.count > 0
+      date = @theater.functions.order('date DESC').limit(1).first.date
+      functions = @theater.functions.where('date = ?',date)
+      functions.each do |function|
+        func = function.dup
+        func.function_types = function.function_types
+        func.showtimes = function.showtimes
+        func.date = function.date.next
+        func.save
+      end
+      redirect_to admin_theater_functions_path(date: date.tomorrow ), notice: 'Dia copiado con exito.'
+    else
+      redirect_to admin_theater_functions_path(date: Date.current)
     end
-    redirect_to admin_theater_functions_path(date: date.tomorrow ), notice: 'Dia copiado con exito.'
   end
   
   def delete_day
-    functions = Function.where(date: params[:date], theater_id: params[:theater_id])
+    functions = @theater.functions.where(date: params[:date])
     functions.each do |function|
       function.destroy
     end
@@ -184,7 +188,8 @@ class Admin::FunctionsController < ApplicationController
   private
   
   def check_user
-    if !current_user.admin? && !current_user.theaters.include?(Theater.find(params[:theater_id]))
+    @theater ||= Theater.find(params[:theater_id])
+    if !current_user.admin? && !current_user.theaters.include?(@theater)
       redirect_to admin_cines_path, notice: 'No puede editar las funciones de este Complejo'
     end
   end
@@ -195,7 +200,7 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def get_theater
-    @theater = Theater.find(params[:theater_id])
+    @theater ||= Theater.find(params[:theater_id])
   end
   
   

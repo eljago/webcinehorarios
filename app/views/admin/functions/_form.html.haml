@@ -3,8 +3,8 @@
 
 	- date = params[:date].to_date
 	.form-inputs
-		= f.input :date, default: date
-		= f.association :theater, :input_html => { :class => "chzn-select" }
+		= f.hidden_field :date, value: date
+		= f.hidden_field :theater_id, value: @theater.id
 		= f.association :show, collection: Show.order('shows.name ASC').all, :input_html => { :class => "chzn-select" }
 		.row
 			%br

@@ -1,4 +1,4 @@
-<% current_user.theaters.each do |theater| %>
+<% @theaters.each do |theater| %>
 
 	<p><%= link_to theater.name, admin_theater_functions_path(theater) %></p>
 <% end %>
