@@ -24,9 +24,11 @@ class Admin::FunctionsController < ApplicationController
   
   def new
     @function = @theater.functions.new
+    @shows = Show.select([:id, :name]).order('shows.name ASC').all
   end
   
   def edit
+    @shows = Show.select([:id, :name])..order('shows.name ASC').all
   end
   
   def create
