@@ -6,6 +6,11 @@ class VideoCover < ImageUploader
     "uploads/covers/#{model.class.to_s.underscore}/#{model.id}"
   end
   
+  def default_url
+    "/assets/" + [version_name, "MissingPicture.jpg"].compact.join('_')
+  end
+  
+  
   def filename
     @name ||= "#{secure_filename}.jpg" if original_filename
   end

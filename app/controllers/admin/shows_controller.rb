@@ -21,12 +21,12 @@ class Admin::ShowsController < ApplicationController
   
   def new
     @show = Show.new
-    @people = Person.order('people.name ASC').all
+    @people = Person.select([:id, :name]).order('people.name ASC').all
   end
   
   def edit
     @show = Show.find(params[:id])
-    @people = Person.order('people.name ASC').all
+    @people = Person.select([:id, :name]).order('people.name ASC').all
   end
   
   def create

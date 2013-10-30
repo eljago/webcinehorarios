@@ -12,9 +12,11 @@ class Admin::PeopleController < ApplicationController
   
   def new
     @person = Person.new
+    @people = Person.select([:id, :name]).order(:name).all
   end
   
   def edit
+    @people = Person.select([:id, :name]).order(:name).all
   end
   
   def create

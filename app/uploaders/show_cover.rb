@@ -17,8 +17,9 @@ class ShowCover < CarrierWave::Uploader::Base
   def filename
     @name ||= "#{secure_filename}.png" if original_filename
   end
+  
   def default_url
-    "/assets/MissingPicture.jpg"
+    "/assets/" + [version_name, "MissingPicture.jpg"].compact.join('_')
   end
 
   process :resize_to_fit => [1136,1136]

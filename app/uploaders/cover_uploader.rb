@@ -6,6 +6,10 @@ class CoverUploader < ImageUploader
     "uploads/covers/#{model.class.to_s.underscore}/#{model.id}"
   end
   
+  def default_url
+    "/assets/" + [version_name, "MissingPicture.jpg"].compact.join('_')
+  end
+  
   process convert: 'png'
 
   def filename

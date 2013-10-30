@@ -93,7 +93,7 @@
 				<div class="col-sm-3">
 				  <%= f.input :debut, include_blank: true %>
 					<%= f.input :rating, collection: [['TE', 'TE'],['TE+7', 'TE+7'], ['13+', '13+'], ['14+', '14+'], ['15+', '15+'], ['16+', '16+'], ['18+', '18+']], :as => :radio_buttons %>
-					<%= f.association :genres, collection: Genre.all(order: 'name'), as: :check_boxes %>
+					<%= f.association :genres, collection: Genre.select([:id, :name]).all(order: 'name'), as: :check_boxes %>
 			  </div>
 			</div>
 			

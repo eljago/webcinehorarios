@@ -22,6 +22,8 @@ class ApplicationController < ActionController::Base
     if !current_permission.allow?(params[:controller], params[:action])
       if params[:controller].split('/').first == "api"
         render :text => "404 Not Found", :status => 404
+      elsif current_user && !current_user.admin?
+        redirect_to admin_cines_path, alert: 'No está Autorizado'
       else
         redirect_to new_admin_session_path, alert: 'No está Autorizado'
       end

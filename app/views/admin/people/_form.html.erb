@@ -2,7 +2,7 @@
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%= select_tag "person_checker", options_from_collection_for_select(Person.order(:name).all, "id", "name"), include_blank: true , class: 'chzn-select' %>
+    <%= select_tag "person_checker", options_from_collection_for_select(@people, "id", "name"), include_blank: true , class: 'chzn-select' %>
 		<%= f.input :name %>
 		<%= f.input :remote_image_url %>
   </div>

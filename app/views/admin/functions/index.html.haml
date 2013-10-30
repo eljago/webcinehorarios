@@ -55,7 +55,7 @@
 	- @functions.each_with_index do |function, index|
 		%tr
 			%td= (index+1)
-			%td= image_tag function.show.image.smallest, size: '80x120' if function.show.image.smallest
+			%td= image_tag function.show.image.smallest if function.show.image.smallest
 			%td{width: "100"}= function.show.name if function.show
 			%td{width: "100"}= function.function_types.map(&:name).join(', ')
 			%td= function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', ')
