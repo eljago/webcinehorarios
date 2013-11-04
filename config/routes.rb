@@ -28,6 +28,9 @@ Webcinehorarios::Application.routes.draw do
       
       resources :theaters, only: [] do
         resources :functions, only: :index
+        collection do
+          get 'theater_coordinates'
+        end
       end
       resources :cinemas, only: [] do
         resources :theaters, only: :index do

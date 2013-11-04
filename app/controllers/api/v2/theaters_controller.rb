@@ -28,6 +28,12 @@ module Api
         end
         @favorite_theaters ||= []
       end
+      
+      def theater_coordinates
+        @theaters = Theater.select([:id, :name, :cinema_id, :latitude, :longitude, :address])
+        .order(:cinema_id, :name).where(active: true).all
+      end
+      
     end
   end
 end

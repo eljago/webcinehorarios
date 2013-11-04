@@ -9,7 +9,7 @@ class Permission
     allow 'api/v1/functions', [:index, :show_functions]
 
     allow 'api/v2/shows', [:billboard, :show, :comingsoon]
-    allow 'api/v2/theaters', [:index, :show_theaters, :favorite_theaters]
+    allow 'api/v2/theaters', [:index, :show_theaters, :favorite_theaters, :theater_coordinates]
     allow 'api/v2/functions', [:index, :show_functions]
     
     allow :home, [:index]
