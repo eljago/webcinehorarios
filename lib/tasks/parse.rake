@@ -8,7 +8,7 @@ namespace :parse do
     date = Date.current
     shows = Show.joins('left outer join functions on shows.id = functions.show_id')
     .where('functions.date >= ? OR shows.debut > ?',date, date)
-    .select('shows.id, shows.name, shows.metacritic_url, shows.imdb_code, shows.rotten_tomatoes_url')
+    .select('shows.id, shows.slug, shows.name, shows.metacritic_url, shows.imdb_code, shows.rotten_tomatoes_url')
     .uniq
     
     shows.each do |show|
