@@ -13,6 +13,7 @@ module Api
         @theaters = Theater.joins(:functions).where(functions: {show_id: params[:show_id], date: date})
         .select('theaters.id, theaters.name, theaters.cinema_id').where('theaters.active = ?', true)
         .order('theaters.name ASC').uniq.all
+        @show_id = params[:show_id]
       end
       
       def favorite_theaters

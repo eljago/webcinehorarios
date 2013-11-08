@@ -18,6 +18,8 @@ module Api
         @functions = Function.includes(:show, :function_types, :showtimes).select('functions.id, functions.date')
         .order('showtimes.time ASC')
         .where(theater_id: params[:theater_id], show_id: params[:show_id], date: @date ).all
+        @show_id = params[:show_id]
+        @theater_id = params[:theater_id]
       end
       
       private
