@@ -1,5 +1,5 @@
 collection @favorite_theaters
-cache ['v2', @show, @favorite_theaters], expires_in: 1.hour
+cache ['v2', @show.id, Digest::MD5.hexdigest(@favorite_theaters.map(&:id).join(','))], expires_in: 1.hour
 attributes :id, :name, :cinema_id
 child :functions do
 	child :function_types do
