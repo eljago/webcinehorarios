@@ -21,7 +21,7 @@ namespace :parse do
         s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
         page = Nokogiri::HTML(s)
         
-        score = page.css(".main_details span.score_value").text.to_i
+        score = page.css(".main_details span[itemprop='ratingValue']").text.to_i
         unless score == 0
           puts "\t\tmetacritic score: #{score}"
           show.metacritic_score = score
