@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131027005134) do
+ActiveRecord::Schema.define(:version => 20131127150525) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -239,16 +239,16 @@ ActiveRecord::Schema.define(:version => 20131027005134) do
     t.string   "image"
     t.string   "address"
     t.text     "information"
-    t.integer  "latitude"
-    t.integer  "longitude"
     t.integer  "cinema_id"
     t.integer  "city_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
     t.string   "web_url"
     t.boolean  "active"
     t.integer  "user_id"
     t.string   "slug"
+    t.decimal  "latitude",    :precision => 15, :scale => 10
+    t.decimal  "longitude",   :precision => 15, :scale => 10
   end
 
   add_index "theaters", ["city_id", "cinema_id"], :name => "index_theaters_on_city_id_and_cinema_id"
