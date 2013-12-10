@@ -1,4 +1,5 @@
 require 'api_constraints'
+require 'sidekiq/web'
 
 Webcinehorarios::Application.routes.draw do
   
@@ -6,6 +7,7 @@ Webcinehorarios::Application.routes.draw do
   get "cines/salaestrella"
   
   mount Resque::Server, :at => "/resque"
+  mount Sidekiq::Web, at: "/sidekiq"
   
   match 'auth/:provider/callback', to: 'admin/sessions#facebook_create'
   match 'auth/failure', to: redirect('/admin')

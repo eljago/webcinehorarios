@@ -55,6 +55,7 @@ gem 'will_paginate', '~> 3.0'
 gem 'carrierwave', :github => "jnicklas/carrierwave"
 gem 'carrierwave_backgrounder'
 gem 'mini_magick'
+gem 'sidekiq'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'

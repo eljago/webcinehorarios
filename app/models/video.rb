@@ -6,4 +6,5 @@ class Video < ActiveRecord::Base
   belongs_to :videoable, polymorphic: true
   
   mount_uploader :image, VideoCover
+  store_in_background :image
 end
