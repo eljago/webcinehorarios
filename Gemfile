@@ -55,7 +55,10 @@ gem 'will_paginate', '~> 3.0'
 gem 'carrierwave', :github => "jnicklas/carrierwave"
 gem 'carrierwave_backgrounder'
 gem 'mini_magick'
+
+# gem 'resque', :require => "resque/server"
 gem 'sidekiq'
+gem 'sinatra', '>= 1.3.0', :require => nil
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
@@ -76,8 +79,6 @@ gem 'figaro'
 
 # To use debugger
 # gem 'debugger'
-
-gem 'resque', :require => "resque/server"
 
 gem 'omniauth-facebook', '1.4.0'
 gem 'koala'

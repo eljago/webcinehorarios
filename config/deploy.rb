@@ -1,5 +1,6 @@
 require "rvm/capistrano"
 require "bundler/capistrano"
+require 'sidekiq/capistrano'
 
 set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
