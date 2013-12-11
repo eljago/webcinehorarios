@@ -1,7 +1,7 @@
 - provide(:title, 'Dashboard')
 - if current_user.admin?
 	- @cinemas.each do |cinema|
-		%h4= cinema.name
+		%h4= link_to cinema.name, [:admin, cinema, :theaters]
 		%table.table.table-bordered.table-condensed
 			%tr
 				%th{style: "width: 150px;"} Theater

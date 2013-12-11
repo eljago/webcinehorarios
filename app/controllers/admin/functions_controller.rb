@@ -341,7 +341,7 @@ class Admin::FunctionsController < ApplicationController
   def parse_cineplanet(parse_days, parse_detector_types)
     url = params[:new_parse][:url] unless params[:new_parse].blank?
     unless url.blank?
-      s = open(url).read
+      s = open(url, 'User-Agent' => 'ruby').read
       s.gsub!('&nbsp;', ' ') 
       page = Nokogiri::HTML(s)
       
