@@ -26,6 +26,8 @@ Webcinehorarios::Application.routes.draw do
         end
       end
       
+      resources :videos, only: :index
+      
       resources :theaters, only: [] do
         resources :functions, only: :index
         collection do
