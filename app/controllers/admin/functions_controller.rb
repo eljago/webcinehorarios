@@ -341,7 +341,7 @@ class Admin::FunctionsController < ApplicationController
   def parse_cineplanet(parse_days, parse_detector_types)
     url = params[:new_parse][:url] unless params[:new_parse].blank?
     unless url.blank?
-      s = open(url, 'User-Agent' => 'ruby').read
+      s = open(url).read
       s.gsub!('&nbsp;', ' ') 
       page = Nokogiri::HTML(s)
       
@@ -371,7 +371,8 @@ class Admin::FunctionsController < ApplicationController
       end
       lista = page.css("div.contenedor-lista-peliculas2 div.texto-lista").each_with_index do |div, index|
         strong = div.css("strong").text
-
+        
+        # si strong.blank? == true, entonces se está en los horarios
         if strong.blank? && !ignore_theater
           if spans = div.css('span.flotar-izquierda')
             
@@ -387,8 +388,8 @@ class Admin::FunctionsController < ApplicationController
           if theater_only
             if strong == @theater.name
               count = count + 1
-              name = strong
               @functionsArray << { theater: strong, functions: [] }
+              ignore_theater = false
             else
               ignore_theater = true
             end
