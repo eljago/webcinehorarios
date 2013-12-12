@@ -11,11 +11,7 @@ class Admin::ContactTicketsController < ApplicationController
   def create
     @contact_ticket = ContactTicket.new(params[:contact_ticket])
     if @contact_ticket.save
-      # send mail using resque
-      # Resque.enqueue(SendContactTicket, @contact_ticket.name, @contact_ticket.from, @contact_ticket.subject, @contact_ticket.content)
-      
-      ContactMailer.cinehorarios_contacto(@contact_ticket).deliver
-      
+      ContactTicketWorker.perform_async(@contact_ticket.id)
       redirect_to root_url, notice: 'Muchas gracias por ponerse en contacto con nosotros.'
     else
       session[:contact_ticket] = @contact_ticket
