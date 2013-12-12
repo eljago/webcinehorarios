@@ -2,7 +2,7 @@
 :verbose: false
 :pidfile: ./tmp/pids/sidekiq.pid
 :namespace: sidekiq_production
-:concurrency:  25
+:concurrency: 25
 :queues:
   - [carrierwave, 10]
   - [default, 5]
