@@ -125,6 +125,17 @@ class Admin::FunctionsController < ApplicationController
     end
   end
   
+  def new_ajax_parse
+    @theater = Theater.find(params[:theater_id])
+    @cinema = @theater.cinema
+    @function_types = @cinema.function_types.order(:name).all
+    @shows = Show.order(:name).select('shows.id, shows.name').all
+    
+    text =  params[:new_ajax_parse][:text]
+    hash = eval(text)
+    
+  end
+  
   def save_update_parsed_show show_id, parsed_show_id, parsed_show_show_id
     if parsed_show_show_id.blank?
       parsed_show = ParsedShow.find(parsed_show_id)
@@ -402,5 +413,9 @@ class Admin::FunctionsController < ApplicationController
     else
       redirect_to [:admin, :cinemas], alert: "URL inválida" 
     end
+  end
+  
+  def parse_cineplanet_ajax
+    
   end
 end

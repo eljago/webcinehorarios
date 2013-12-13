@@ -39,6 +39,10 @@
 				= f.check_box :theater_only
 				= f.text_field :url, size: 70, style: "margin-top: 10px"
 				= f.submit "Parse URL semana", class: 'btn btn-primary'
+		%br
+			= form_for :new_ajax_parse, :url => { controller: :functions, action: :new_ajax_parse }, method: :post, html: {style: "display: inline;"} do |f|
+				= f.text_field :text, size: 70, style: "margin-top: 10px"
+				= f.submit "Parse", class: 'btn btn-primary'
 
 = render 'shared/date_pagination'
 %h2= I18n.localize(params[:date].to_date, format: :normal) if params[:date]
