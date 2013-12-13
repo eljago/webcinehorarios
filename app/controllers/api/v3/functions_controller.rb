@@ -1,6 +1,6 @@
 module Api
-  module V2
-    class FunctionsController < Api::V2::ApiController
+  module V3
+    class FunctionsController < Api::V3::ApiController
       before_filter :get_date, only: [:index, :show_functions]
       
       def index
@@ -8,6 +8,7 @@ module Api
         .select('function_types.name, shows.id, shows.name, shows.image, shows.debut, showtimes.time')
           .order('shows.debut DESC, shows.id, showtimes.time ASC')
           .where(functions: { date: @date, theater_id: params[:theater_id] } ).all
+          
         @theater = Theater.includes(:cinema).select('theaters.address, theaters.latitude, theaters.longitude, 
         theaters.information, theaters.web_url, cinema.name').where(id: params[:theater_id]).all.first
         @cinema_name = @theater.cinema.name
@@ -17,6 +18,7 @@ module Api
         @functions = Function.includes(:show, :function_types, :showtimes).select('functions.id, functions.date')
         .order('showtimes.time ASC')
         .where(theater_id: params[:theater_id], show_id: params[:show_id], date: @date ).all
+        
         @show_id = params[:show_id]
         @theater_id = params[:theater_id]
       end

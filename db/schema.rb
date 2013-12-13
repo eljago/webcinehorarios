@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131210142707) do
+ActiveRecord::Schema.define(:version => 20131213070305) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -107,14 +107,6 @@ ActiveRecord::Schema.define(:version => 20131210142707) do
 
   add_index "functions", ["show_id"], :name => "index_functions_on_show_id"
   add_index "functions", ["theater_id"], :name => "index_functions_on_theater_id"
-
-  create_table "functions_showtimes", :id => false, :force => true do |t|
-    t.integer "function_id"
-    t.integer "showtime_id"
-  end
-
-  add_index "functions_showtimes", ["function_id"], :name => "index_function_showtimes_on_function_id"
-  add_index "functions_showtimes", ["showtime_id"], :name => "index_function_showtimes_on_showtime_id"
 
   create_table "genres", :force => true do |t|
     t.string "name"
@@ -232,8 +224,13 @@ ActiveRecord::Schema.define(:version => 20131210142707) do
   add_index "shows", ["slug"], :name => "index_shows_on_slug", :unique => true
 
   create_table "showtimes", :force => true do |t|
-    t.time "time"
+    t.datetime "time"
+    t.integer  "function_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
+
+  add_index "showtimes", ["function_id"], :name => "index_showtimes_on_function_id"
 
   create_table "theaters", :force => true do |t|
     t.string   "name"

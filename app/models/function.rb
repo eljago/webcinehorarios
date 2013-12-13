@@ -4,7 +4,7 @@ class Function < ActiveRecord::Base
   belongs_to :theater
   belongs_to :show
   has_and_belongs_to_many :function_types
-  has_and_belongs_to_many :showtimes
+  has_many :showtimes
   
   validates :show, presence: :true
   validates :theater, presence: :true
@@ -22,12 +22,16 @@ class Function < ActiveRecord::Base
     Function.create_array_from_horarios_string(horarios).each do |h|
       if h.size >= 5
         horaminuto = h.split(":")
+        horaminuto[0] = horaminuto[0].to_i
+        horaminuto[1] = horaminuto[1].to_i
         begin
-          time = Time.new.utc.change(year:2000, month: 1, day: 1, hour: horaminuto[0], min: horaminuto[1], sec: 00)
+          date = horaminuto[0] < 5 ? function.date+1 : function.date
+          time = DateTime.new.in_time_zone("America/Santiago").change(year: date.year, month: date.month, day: date.day, hour: horaminuto[0], min: horaminuto[1])
+          puts time
         rescue NoMethodError
           next
         end
-        function.showtimes << Showtime.find_or_create_by_time(time: time)
+        function.showtimes << Showtime.new(time: time)
       end
     end
   end

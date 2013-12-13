@@ -62,7 +62,7 @@
 			%td= image_tag function.show.image.smallest if function.show.image.smallest
 			%td{width: "100"}= function.show.name if function.show
 			%td{width: "100"}= function.function_types.map(&:name).join(', ')
-			%td= function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', ')
+			%td= function.showtimes.map{ |showtime| l(showtime.time.in_time_zone("America/Santiago"), format: :normal_time ) }.join(', ')
 			%td{width: "200"}
 				= link_to edit_admin_theater_function_path(@theater.id, function.id, date: params[:date]), class: 'btn btn-default' do
 					%i.icon-edit

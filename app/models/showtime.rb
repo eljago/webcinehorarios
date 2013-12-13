@@ -4,5 +4,5 @@ class Showtime < ActiveRecord::Base
   
   validates :time, presence: true, uniqueness: true
   
-  has_and_belongs_to_many :function
+  belongs_to :function
 end

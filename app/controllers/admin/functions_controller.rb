@@ -19,7 +19,7 @@ class Admin::FunctionsController < ApplicationController
     
     @functions = @theater.functions.includes(:show, :showtimes, :function_types)
     .where('date = ?',params[:date])
-    .order("functions.show_id DESC")
+    .order("functions.show_id DESC, showtimes.time ASC")
   end
   
   def new

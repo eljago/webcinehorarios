@@ -13,6 +13,33 @@ Webcinehorarios::Application.routes.draw do
   ##### API #####
   namespace :api, defaults: { format: 'json' } do
     
+    ##### V3 #####
+    scope module: :v3, constraints: ApiConstraints.new(version: 3) do
+      
+      resources :shows, only: :show do
+        collection do 
+          get 'billboard'
+          get 'comingsoon'
+          get ':show_id/show_theaters' => 'theaters#show_theaters'
+          get ':show_id/favorite_theaters' => 'theaters#favorite_theaters'
+          get ':show_id/show_functions' => 'functions#show_functions'
+        end
+      end
+      
+      resources :videos, only: :index
+      
+      resources :theaters, only: [] do
+        resources :functions, only: :index
+        collection do
+          get 'theater_coordinates'
+        end
+      end
+      resources :cinemas, only: [] do
+        resources :theaters, only: :index do
+        end
+      end
+    end
+    
     ##### V2 #####
     scope module: :v2, constraints: ApiConstraints.new(version: 2) do
       
