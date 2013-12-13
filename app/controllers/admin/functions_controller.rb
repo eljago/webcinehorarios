@@ -225,35 +225,18 @@ class Admin::FunctionsController < ApplicationController
     
     @functionsArray = []
 
-    page.css('div.box_middle div[class="c73l bold h18"]').each_with_index do |item, index|
+    page.css('div.movie-list-inner').each_with_index do |item, index|
       
       detected_function_types = []
-      titulo = item.text.split.join(' ')[0..50]
+      titulo = item.css('h3 span').text
       
       parsed_show_name = titulo.gsub(" ","")
       
-      img = item.css('img[alt="Sala Premium"]')
-      unless img.blank?
-        pdt = parse_detector_types.detect{ |p| p.name == 'Premier' }
+      item.css('div.version-types-wrap span').each do |item, index|
+        pdt = parse_detector_types.detect{ |p| p.name == item.text }
         unless pdt.blank?
           detected_function_types << pdt.function_type_id
-          titulo.prepend("(Premier)-")
-        end
-      end
-      img = item.css('img[alt="Película 3D"]')
-      unless img.blank?
-        pdt = parse_detector_types.detect{ |p| p.name == '3D'}
-        unless pdt.blank?
-          detected_function_types << pdt.function_type_id
-          titulo.prepend("(3D)-")
-        end
-      end
-      img = item.css('img[alt="Sala XD"]')
-      unless img.blank?
-        pdt = parse_detector_types.detect{ |p| p.name == 'Sala XD'}
-        unless pdt.blank?
-          detected_function_types << pdt.function_type_id
-          titulo.prepend("(Sala XD)-")
+          titulo.prepend("(#{pdt.name})-")
         end
       end
       
@@ -262,6 +245,8 @@ class Admin::FunctionsController < ApplicationController
           detected_function_types << pdt.function_type_id
           titulo.prepend("(#{pdt.name})-")
         end
+         # Remove the Movie Type from the Parsed Show Name
+         # Parsed Show Name is gonna be used to detect the movie in the database.
         parsed_show_name = parsed_show_name.gsub(pdt.name, "")
       end
       
@@ -272,15 +257,18 @@ class Admin::FunctionsController < ApplicationController
       movieFunctions[:parsed_show][:show_id] = parsed_show.show_id
       movieFunctions[:function_types] = detected_function_types
       movieFunctions[:functions] = []
-
-      item.css('tr').each do |tr|
-        tds = tr.css('td')
-        diaArray = tds[0].css('strong').text.split("-") # => ["14","jun:"]
+      
+      item.css('li.showtime-item').each_with_index do |item, index|
+        diaArray = item.css('span.showtime-day').text.split("-") # => ["14","jun:"]
         dia = diaArray[0].to_i
-
+        
         if parse_days.map(&:day).include?(dia)
           function = Hash[:day, diaArray.join("-")]
-          horarios = tds[1].text.gsub!(/\s+/, ', ')
+          
+          horarios = ""
+          item.css('span.showtime-hour').each do |item, index|
+            horarios << "#{item.text}, "
+          end
           function[:horarios] = horarios
           function[:date] = @date.advance_to_day(dia)
           movieFunctions[:functions] << function
