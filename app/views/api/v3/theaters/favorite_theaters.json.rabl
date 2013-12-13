@@ -13,7 +13,7 @@ child :functions do
 	end
 	node :showtimes do |f|
 		f.showtimes.select(:time).all.map do |showtime|
-			showtime.time.utc
+			{time: showtime.time.to_s.gsub(/-0300/,"Z")}
 		end
 	end
 end
