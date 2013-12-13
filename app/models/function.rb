@@ -27,7 +27,6 @@ class Function < ActiveRecord::Base
         begin
           date = horaminuto[0] < 5 ? function.date+1 : function.date
           time = DateTime.new.in_time_zone("America/Santiago").change(year: date.year, month: date.month, day: date.day, hour: horaminuto[0], min: horaminuto[1])
-          puts time
         rescue NoMethodError
           next
         end
