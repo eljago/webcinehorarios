@@ -11,7 +11,7 @@ glue :show do
 	end
 end
 node :showtimes do |f|
-	f.showtimes.select(:time).all.map do |showtime|
+	f.showtimes.order('showtimes.time ASC').select(:time).all.map do |showtime|
 		showtime.time.utc
 	end
 end

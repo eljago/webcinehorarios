@@ -12,8 +12,8 @@ child :functions do
 		end
 	end
 	node :showtimes do |f|
-		f.showtimes.select(:time).all.map do |showtime|
-			{time: showtime.time.to_s.gsub(/-0300/,"Z").sub(' ',"'T'")}
+		f.showtimes.order('showtimes.time ASC').select(:time).all.map do |showtime|
+			showtime.time.utc
 		end
 	end
 end
