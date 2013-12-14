@@ -123,7 +123,7 @@ Webcinehorarios::Application.routes.draw do
       resources :functions
       get 'new_parse' => 'functions#new_parse'
       put 'create_parse' => 'functions#create_parse'
-      post 'functions/new_ajax_parse' => 'functions#new_ajax_parse', as: 'new_ajax_parse'
+      post 'functions/new_parse_ajax' => 'functions#new_parse_ajax', as: 'new_parse_ajax'
       put 'create_ajax_parse' => 'functions#create_ajax_parse'
       post 'functions/copy_last_day' => 'functions#copy_last_day', as: 'functions_copy'
       post 'functions/delete_day' => 'functions#delete_day', as: 'functions_delete_day'

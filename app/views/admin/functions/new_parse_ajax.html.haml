@@ -1,0 +1,9 @@
+= render 'breadcrumbs'
+
+%h1 Nueva Función
+
+= render 'parse_cinemark_hoyts'
+
+= link_to admin_theater_functions_path(@theater, date: @date), class: 'btn btn-default' do
+	%i.icon-arrow-left
+	Volver

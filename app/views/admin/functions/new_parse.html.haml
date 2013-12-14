@@ -2,9 +2,7 @@
 
 %h1 Nueva Función
 
-- if @cinema.name == "Cinemark"
-	= render 'parse_cinemark_hoyts'
-- elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
+- if @cinema.name == "Cinemark" || @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
 	= render 'parse_cinemark_hoyts'
 - elsif @cinema.name == "Cineplanet"
 	= render 'parse_cineplanet_movie'

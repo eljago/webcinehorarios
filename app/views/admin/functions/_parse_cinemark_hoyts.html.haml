@@ -28,6 +28,7 @@
 									= f.hidden_field :date, value: function[:date]
 									= f.text_field :horarios, value: function[:horarios], size: 60
 			%br
+	= hidden_field_tag :is_cineplanet, "true" if !@is_cineplanet.blank?
 	= hidden_field_tag :date, @date.to_date
 	
 	.form-actions

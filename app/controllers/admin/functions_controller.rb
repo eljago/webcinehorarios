@@ -97,23 +97,9 @@ class Admin::FunctionsController < ApplicationController
   # GET DATOS DE LA WEB
   # NEW PARSE
   def new_parse
-    @theater = Theater.find(params[:theater_id])
-    @cinema = @theater.cinema
-    @function_types = @cinema.function_types.order(:name).all
-    @shows = Show.order(:name).select('shows.id, shows.name').all
-    @date = params[:new_parse][:date].to_date if params[:new_parse][:date]
-    parse_days = []
-    if params[:new_parse][:parse_type] == 'week'
-      if @date.wday <= 3
-        parse_days = (@date..@date.next_day(3 - @date.wday)).to_a
-      else
-        parse_days = (@date..@date.next_week(:wednesday)).to_a
-      end
-    else
-      parse_days << @date
-    end
-    parse_detector_types = @cinema.parse_detector_types.all
-    
+    parse_data_array = prepare_for_new_parse
+    parse_days = parse_data_array[0]
+    parse_detector_types = parse_data_array[1]
     if @cinema.name == "Cinemark"
       parse_cinemark parse_days, parse_detector_types
     elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
@@ -125,15 +111,14 @@ class Admin::FunctionsController < ApplicationController
     end
   end
   
-  def new_ajax_parse
-    @theater = Theater.find(params[:theater_id])
-    @cinema = @theater.cinema
-    @function_types = @cinema.function_types.order(:name).all
-    @shows = Show.order(:name).select('shows.id, shows.name').all
+  def new_parse_ajax
+    parse_data_array = prepare_for_new_parse
+    parse_days = parse_data_array[0]
+    parse_detector_types = parse_data_array[1]
     
-    text =  params[:new_ajax_parse][:text]
-    hash = eval(text)
+    @is_cineplanet = true
     
+    parse_cineplanet_ajax parse_days, parse_detector_types
   end
   
   def save_update_parsed_show show_id, parsed_show_id, parsed_show_show_id
@@ -152,8 +137,9 @@ class Admin::FunctionsController < ApplicationController
   def create_parse
     @theater = Theater.find(params[:theater_id])
     cinema_name = @theater.cinema.name
+    is_cineplanet = params[:is_cineplanet]
     
-    if cinema_name == "Cinemark" || cinema_name == "Cine Hoyts" || cinema_name == "Cinemundo"
+    if cinema_name == "Cinemark" || cinema_name == "Cine Hoyts" || cinema_name == "Cinemundo" || (cinema_name == "Cineplanet" && is_cineplanet)
       count = 0
       while hash = params["movie_#{count}"]
         unless hash[:show_id].blank?
@@ -215,7 +201,73 @@ class Admin::FunctionsController < ApplicationController
   def get_theater
     @theater ||= Theater.find(params[:theater_id])
   end
+
+  def prepare_for_new_parse
+    @theater = Theater.find(params[:theater_id])
+    @cinema = @theater.cinema
+    @function_types = @cinema.function_types.order(:name).all
+    @shows = Show.order(:name).select('shows.id, shows.name').all
+    parse_params = params[action_name.to_sym]
+    @date = parse_params[:date].to_date if parse_params[:date]
+    parse_days = []
+    if parse_params[:parse_type] == 'week'
+      if @date.wday <= 3
+        parse_days = (@date..@date.next_day(3 - @date.wday)).to_a
+      else
+        parse_days = (@date..@date.next_week(:wednesday)).to_a
+      end
+    else
+      parse_days << @date
+    end
+    parse_detector_types = @cinema.parse_detector_types.all
+    
+    [parse_days, parse_detector_types]
+  end
   
+  def parse_cineplanet_ajax(parse_days, parse_detector_types)
+    hash = eval(params[:new_parse_ajax][:text])
+    
+    @functionsArray = []
+    functions = hash[:functions]
+    functions.each_with_index do |item, index|
+      titulo = item[:name]
+      
+      parsed_show_name = titulo.gsub(" ","")
+      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
+      
+      detected_function_types = []
+      
+      parse_detector_types.each do |pdt|
+        if titulo.include?(pdt.name)
+          detected_function_types << pdt.function_type_id
+          titulo.prepend("(#{pdt.name})-")
+        end
+        parsed_show_name = parsed_show_name.gsub(pdt.name, "")
+      end
+      
+      movieFunctions = {name: titulo}
+      movieFunctions[:parsed_show] = {id: parsed_show.id}
+      movieFunctions[:parsed_show][:show_id] = parsed_show.show_id
+      movieFunctions[:function_types] = detected_function_types
+      movieFunctions[:functions] = []
+
+      days = item[:days]
+      days.each_with_index do |day, index|
+        date = day[:date] # => ["2013", "12", "14"]
+        dia = date.last.to_i # => 14
+        
+        if parse_days.map(&:day).include?(dia)
+          function = {day: date.join("-")}
+          
+          horarios = day[:times]
+          function[:horarios] = horarios
+          function[:date] = @date.advance_to_day(dia)
+          movieFunctions[:functions] << function
+        end
+      end
+      @functionsArray << movieFunctions if movieFunctions[:functions].count > 0
+    end
+  end
   
   def parse_cinemark(parse_days, parse_detector_types)
     url = @theater.web_url
@@ -401,9 +453,5 @@ class Admin::FunctionsController < ApplicationController
     else
       redirect_to [:admin, :cinemas], alert: "URL inválida" 
     end
-  end
-  
-  def parse_cineplanet_ajax
-    
   end
 end
