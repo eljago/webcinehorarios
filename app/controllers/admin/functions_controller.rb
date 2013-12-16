@@ -11,10 +11,10 @@ class Admin::FunctionsController < ApplicationController
   def index
     @dates_array = (Date.current..(Date.current+7))
     
-    if params[:date].blank? || !@dates_array.include?(DateTime.parse(params[:date]).to_date)
+    if params[:date].blank? || !@dates_array.include?(params[:date].to_date)
       params[:date] = Date.current
     else
-      params[:date] = DateTime.parse(params[:date]).to_date
+      params[:date] = params[:date]
     end
     
     @functions = @theater.functions.includes(:show, :showtimes, :function_types)
@@ -70,19 +70,22 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def copy_last_day
+    date = params[:date].to_date
+    functions = @theater.functions.where('functions.date = ?', date)
     if @theater.functions.count > 0
-      date = @theater.functions.order('date DESC').limit(1).first.date
-      functions = @theater.functions.where('date = ?',date)
       functions.each do |function|
         func = function.dup
         func.function_types = function.function_types
-        func.showtimes = function.showtimes
         func.date = function.date.next
+        function.showtimes.order('time ASC').each do |showtime|
+          showt = showtime.dup
+          func.showtimes << showt
+        end
         func.save
       end
       redirect_to admin_theater_functions_path(date: date.tomorrow ), notice: 'Dia copiado con exito.'
     else
-      redirect_to admin_theater_functions_path(date: Date.current)
+      redirect_to admin_theater_functions_path(date: date), alert: 'No hay funciones en este día'
     end
   end
   

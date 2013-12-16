@@ -8,7 +8,7 @@
 		%i.icon-plus
 		Nueva Función
 
-	= link_to 'Copiar Ultimo dia', {controller: 'functions', action: 'copy_last_day'}, method: :post, class: 'btn btn-default'
+	= link_to 'Copiar dia', {controller: 'functions', action: 'copy_last_day', date: params[:date]}, method: :post, class: 'btn btn-default'
 	
 	= link_to 'Borrar día', {controller: 'functions', action: 'delete_day', date: params[:date]}, data: { confirm: '¿Está seguro que quiere borrar todas las funciones de este día?' }, method: :post, class: 'btn btn-default'
 
