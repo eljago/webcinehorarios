@@ -1,0 +1,30 @@
+<h1>Opiniones</h1>
+<table class="table">
+  <tr>
+    <th>Autor</th>
+    <th>Fecha</th>
+    <th>Comentario</th>
+    <th></th>
+  </tr>
+  <% @opinions.each do |opinion| %>
+    <tr>
+      <td>
+        <%= opinion.author %>
+      </td>
+      <td>
+        <%= opinion.date %>
+      </td>
+      <td>
+        <%= opinion.comment %>
+      </td>
+      <td>
+        <%= render_index_actions [opinion], only: [:show, :edit, :destroy] %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<%= link_to new_admin_opinion_path, class: 'btn btn-primary' do %>
+  <i class="icon-plus"></i>
+  Nueva Opinión
+<% end %>

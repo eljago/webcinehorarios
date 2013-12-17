@@ -1,0 +1,8 @@
+<%= render 'breadcrumbs' %>
+<h1>Nueva Función</h1>
+<%= render 'form' %>
+<br/>
+<%= link_to admin_theater_functions_path(@theater, date: params[:date]), class: 'btn btn-default' do %>
+  <i class="icon-arrow-left"></i>
+  Volver
+<% end %>

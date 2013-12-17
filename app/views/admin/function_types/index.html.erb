@@ -1,0 +1,22 @@
+<h1>Tipos de Función</h1>
+<table class="table">
+  <tr>
+    <th>Nombre</th>
+    <th>></th>
+  </tr>
+  <% @function_types.each do |function_type| %>
+    <tr>
+      <td>
+        <%= link_to function_type.name, [:admin, function_type, :parse_detector_types] %>
+      </td>
+      <td>
+        <%= render_index_actions [function_type], only: [:edit, :destroy] %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<%= link_to [:new, :admin, :function_type], class: 'btn btn-default' do %>
+  <i class="icon-plus"></i>
+  Nuevo Function Type
+<% end %>

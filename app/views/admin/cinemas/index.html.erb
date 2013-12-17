@@ -1,0 +1,31 @@
+<%= render 'breadcrumbs' %>
+<h1>Cines</h1>
+<table class="table">
+  <tr>
+    <th>Nombre</th>
+    <th>Imagen</th>
+    <th>Function types</th>
+    <th></th>
+  </tr>
+  <% @cinemas.each do |cinema| %>
+    <tr>
+      <td>
+        <%= link_to cinema.name, admin_cinema_theaters_path(cinema) %>
+      </td>
+      <td>
+        <%= link_to image_tag(cinema.image, size: "80x80"), cinema.image.to_s %>
+      </td>
+      <td>
+        <%= cinema.function_types.select(:name).order(:name).all.map(&:name).join(" ") %>
+      </td>
+      <td>
+        <%= render_index_actions [cinema], only: [:edit, :destroy] %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<%= link_to new_admin_cinema_path, class: 'btn btn-default' do %>
+  <i class="icon-plus"></i>
+  Nuevo Cine
+<% end %>

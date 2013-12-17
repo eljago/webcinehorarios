@@ -1,0 +1,9 @@
+<h1>
+  Nuevo PDT de 
+  <%= @function_type.name %>
+</h1>
+<%= render 'form' %>
+<%= link_to [:admin, @function_type, :parse_detector_types], class: 'btn btn-default' do %>
+  <i class="icon-arrow-left"></i>
+  Volver
+<% end %>

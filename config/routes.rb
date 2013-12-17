@@ -6,9 +6,6 @@ Webcinehorarios::Application.routes.draw do
   get "cines/salaestrella"
   
   mount Sidekiq::Web, at: "/sidekiq"
-  
-  match 'auth/:provider/callback', to: 'admin/sessions#facebook_create'
-  match 'auth/failure', to: redirect('/admin')
 
   ##### API #####
   namespace :api, defaults: { format: 'json' } do
@@ -138,7 +135,6 @@ Webcinehorarios::Application.routes.draw do
       resources :functions
       resources :videos
       post 'functions/copy_last_day' => 'functions#copy_last_day', as: 'functions_copy'
-      match 'create_facebook' => 'shows#create_facebook'
     end
   end
 

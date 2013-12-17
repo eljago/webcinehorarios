@@ -1,9 +1,0 @@
-= simple_form_for [:admin, @country, @city] do |f|
-	= f.error_notification
-
-	.form-inputs
-		= f.input :name, label: 'Nombre'
-		= f.association :theaters, as: :check_boxes, label: 'Complejos'
-
-	.form-actions
-		= f.button :submit, 'Guardar', class: 'btn btn-primary'

@@ -1,7 +1,0 @@
-- if @theaterable.class == City
-	- navigation_add 'Paises', admin_countries_path
-	- navigation_add @theaterable.country.name, admin_country_cities_path(@theaterable.country) if @theaterable.country
-- elsif @theaterable.class == Cinema
-	- navigation_add 'Cines', admin_cinemas_path
-
-- navigation_add @theaterable.name, [:admin, @theaterable, :theaters] if @theaterable

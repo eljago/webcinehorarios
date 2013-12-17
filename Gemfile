@@ -7,7 +7,6 @@ gem 'rails', '3.2.13'
 
 gem 'nokogiri', require: false
 gem 'whenever', require: false
-gem 'haml'
 
 group :development do
   gem 'sqlite3'
@@ -79,8 +78,5 @@ gem 'figaro'
 
 # To use debugger
 # gem 'debugger'
-
-gem 'omniauth-facebook', '1.4.0'
-gem 'koala'
 
 gem "friendly_id", "4.0.10.1"

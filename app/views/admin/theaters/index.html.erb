@@ -1,0 +1,40 @@
+<%= render 'breadcrumbs' %>
+<h1>Complejos</h1>
+<table class="table">
+  <tr>
+    <th>Nombre</th>
+    <th>Latitud</th>
+    <th>Longitud</th>
+    <th></th>
+  </tr>
+  <% @theaters.each do |theater| %>
+    <tr></tr>
+    <% if params[:cinema_id] && theater.city %>
+      <td>
+        <%= link_to "#{theater.city.name} - #{theater.name}", [:admin, theater, :functions] %>
+      </td>
+    <% elsif params[:city_id] && theater.cinema %>
+      <td>
+        <%= link_to "#{theater.cinema.name} - #{theater.name}", [:admin, theater, :functions] %>
+      </td>
+    <% else %>
+      <td>
+        <%= link_to theater.name, [:admin, theater, :functions] %>
+      </td>
+    <% end %>
+    <td>
+      <%= theater.latitude %>
+    </td>
+    <td>
+      <%= theater.longitude %>
+    </td>
+    <td>
+      <%= render_index_actions [@theaterable, theater] %>
+    </td>
+  <% end %>
+</table>
+<br/>
+<%= link_to [:new, :admin, @theaterable, :theater], class: 'btn btn-default' do %>
+  <i class="icon-plus"></i>
+  Nuevo Complejo
+<% end %>

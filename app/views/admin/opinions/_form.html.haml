@@ -1,9 +1,0 @@
-= simple_form_for [:admin, @opinion] do |f|
-	= f.error_notification
-	
-	.form-inputs
-		= f.input :author
-		= f.input :date
-		= f.input :comment
-	.form-actions
-		= f.button :submit, 'Guardar', class: 'btn btn-primary'

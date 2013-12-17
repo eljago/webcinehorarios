@@ -1,0 +1,30 @@
+<h1>Tickets de Contacto</h1>
+<%= will_paginate @contact_tickets, previous_label: h("<"), next_label: h(">") %>
+<table class="table">
+  <tr>
+    <th>Nombre</th>
+    <th>De</th>
+    <th>Asunto</th>
+    <th>Fecha</th>
+    <th></th>
+  </tr>
+  <% @contact_tickets.each do |contact_ticket| %>
+    <tr>
+      <td>
+        <%= contact_ticket.name %>
+      </td>
+      <td>
+        <%= contact_ticket.from %>
+      </td>
+      <td>
+        <%= contact_ticket.subject %>
+      </td>
+      <td>
+        <%= I18n.localize(contact_ticket.created_at, format: :long) %>
+      </td>
+      <td>
+        <%= render_index_actions [contact_ticket], only: [:show] %>
+      </td>
+    </tr>
+  <% end %>
+</table>

@@ -1,0 +1,17 @@
+<h1>Ciudades</h1>
+<table class="table">
+  <tr>
+    <th>Autor</th>
+    <th>Contenido</th>
+  </tr>
+  <% @comments.each do |comment| %>
+    <tr>
+      <td>
+        <%= comment.author %>
+      </td>
+      <td>
+        <%= comment.content %>
+      </td>
+    </tr>
+  <% end %>
+</table>

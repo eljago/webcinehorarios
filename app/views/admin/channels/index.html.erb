@@ -1,0 +1,30 @@
+<h1>Canales</h1>
+<table class="table">
+  <tr>
+    <th>Nombre</th>
+    <th>VTR</th>
+    <th>DIRECTV</th>
+    <th></th>
+  </tr>
+  <% @channels.each do |channel| %>
+    <tr>
+      <td>
+        <%= link_to channel.name, admin_channel_programs_path(channel) %>
+      </td>
+      <td>
+        <%= channel.vtr %>
+      </td>
+      <td>
+        <%= channel.directv %>
+      </td>
+      <td>
+        <%= render_index_actions [channel], only: [:edit, :destroy] %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<%= link_to new_admin_channel_path, class: 'btn btn-default' do %>
+  <i class="icon-plus"></i>
+  Nuevo Canal
+<% end %>

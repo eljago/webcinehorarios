@@ -1,0 +1,106 @@
+<%= render 'breadcrumbs' %>
+<h1>
+  Funciones de
+  <%= @theater.name %>
+</h1>
+<div class="functions">
+  <%= link_to new_admin_theater_function_path(date: params[:date]), class: 'btn btn-default' do %>
+    <i class="icon-plus"></i>
+    Nueva Función
+  <% end %>
+  <%= link_to 'Copiar dia', {controller: 'functions', action: 'copy_last_day', date: params[:date]}, method: :post, class: 'btn btn-default' %>
+  <%= link_to 'Borrar día', {controller: 'functions', action: 'delete_day', date: params[:date]}, data: { confirm: '¿Está seguro que quiere borrar todas las funciones de este día?' }, method: :post, class: 'btn btn-default' %>
+  <% if @theater.cinema.name == "Cinemark" || @theater.cinema.name == "Cine Hoyts" || @theater.cinema.name == "Cinemundo" %>
+    <%= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f| %>
+      <%= f.hidden_field :date, value: params[:date] %>
+      <%= f.hidden_field :parse_type, value: 'day' %>
+      <%= f.submit "Parse dia", class: 'btn btn-primary' %>
+    <% end %>
+    <%= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f| %>
+      <%= f.hidden_field :date, value: params[:date] %>
+      <%= f.hidden_field :parse_type, value: 'week' %>
+      <%= f.submit "Parse semana", class: 'btn btn-primary' %>
+    <% end %>
+  <% end %>
+  <% if @theater.cinema.name == "Cineplanet" %>
+    <br>
+      <%= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f| %>
+        <%= f.hidden_field :date, value: params[:date] %>
+        <%= f.hidden_field :parse_type, value: 'day' %>
+        Theater only?
+        <%= f.check_box :theater_only %>
+        <%= f.text_field :url, size: 70, style: "margin-top: 10px" %>
+        <%= f.submit "Parse URL dia", class: 'btn btn-primary' %>
+      <% end %>
+    </br>
+    <br>
+      <%= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f| %>
+        <%= f.hidden_field :date, value: params[:date] %>
+        <%= f.hidden_field :parse_type, value: 'week' %>
+        Theater only?
+        <%= f.check_box :theater_only %>
+        <%= f.text_field :url, size: 70, style: "margin-top: 10px" %>
+        <%= f.submit "Parse URL semana", class: 'btn btn-primary' %>
+      <% end %>
+    </br>
+    <br>
+      <%= form_for :new_parse_ajax, :url => { controller: :functions, action: :new_parse_ajax }, method: :post, html: {style: "display: inline;"} do |f| %>
+        <%= f.hidden_field :date, value: params[:date] %>
+        <%= f.hidden_field :parse_type, value: 'day' %>
+        <%= f.text_field :text, size: 70, style: "margin-top: 10px" %>
+        <%= f.submit "Parse Dia Ajax", class: 'btn btn-primary' %>
+      <% end %>
+    </br>
+    <br>
+      <%= form_for :new_parse_ajax, :url => { controller: :functions, action: :new_parse_ajax }, method: :post, html: {style: "display: inline;"} do |f| %>
+        <%= f.hidden_field :date, value: params[:date] %>
+        <%= f.hidden_field :parse_type, value: 'week' %>
+        <%= f.text_field :text, size: 70, style: "margin-top: 10px" %>
+        <%= f.submit "Parse Semana Ajax", class: 'btn btn-primary' %>
+      <% end %>
+    </br>
+  <% end %>
+</div>
+<%= render 'shared/date_pagination' %>
+<h2>
+  <%= I18n.localize(params[:date].to_date, format: :normal) if params[:date] %>
+</h2>
+<table class="table">
+  <tr>
+    <th></th>
+    <th></th>
+    <th>Película</th>
+    <th>Tipo</th>
+    <th>Horario</th>
+    <th></th>
+  </tr>
+  <% @functions.each_with_index do |function, index| %>
+    <tr>
+      <td>
+        <%= (index+1) %>
+      </td>
+      <td>
+        <%= image_tag function.show.image.smallest if function.show.image.smallest %>
+      </td>
+      <td width="100">
+        <%= function.show.name if function.show %>
+      </td>
+      <td width="100">
+        <%= function.function_types.map(&:name).join(', ') %>
+      </td>
+      <td>
+        <%= function.showtimes.map{ |showtime| l(showtime.time.in_time_zone("America/Santiago"), format: :normal_time ) }.join(', ') %>
+      </td>
+      <td width="200">
+        <%= link_to edit_admin_theater_function_path(@theater.id, function.id, date: params[:date]), class: 'btn btn-default' do %>
+          <i class="icon-edit"></i>
+          Editar
+        <% end %>
+        <%= link_to admin_theater_function_path(@theater.id, function.id, date: params[:date]), class: 'btn btn-danger', method: :delete, data: { confirm: 'Está seguro?' } do %>
+          <i class="icon-trash"></i>
+          Destruir
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

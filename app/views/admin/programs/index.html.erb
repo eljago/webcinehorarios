@@ -1,0 +1,19 @@
+<h1>
+  <%= "Programas de #{@channel.name}" %>
+</h1>
+<table class="table">
+  <tr>
+    <th>Nombre</th>
+    <th>Hora</th>
+  </tr>
+  <% @programs.each do |program| %>
+    <tr>
+      <td>
+        <%= program.name %>
+      </td>
+      <td>
+        <%= I18n.l program.time, format: :long %>
+      </td>
+    </tr>
+  <% end %>
+</table>
