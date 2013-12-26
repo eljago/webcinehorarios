@@ -124,6 +124,7 @@ Webcinehorarios::Application.routes.draw do
       put 'create_ajax_parse' => 'functions#create_ajax_parse'
       post 'functions/copy_last_day' => 'functions#copy_last_day', as: 'functions_copy'
       post 'functions/delete_day' => 'functions#delete_day', as: 'functions_delete_day'
+      post 'functions/delete_week' => 'functions#delete_week', as: 'functions_delete_week'
     end
     resources :shows do
       collection do 

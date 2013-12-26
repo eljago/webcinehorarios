@@ -26,7 +26,7 @@ class Permission
     if user
       allow 'admin/users', [:edit, :update]
       allow 'admin/cines', [:index]
-      allow 'admin/functions', [:index, :new, :edit, :update, :copy_last_day, :delete_day, :create, :destroy]
+      allow 'admin/functions', [:index, :new, :edit, :update, :copy_last_day, :delete_day, :delete_week, :create, :destroy]
       
       allow_all if user.admin?
     end

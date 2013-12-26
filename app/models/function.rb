@@ -4,7 +4,7 @@ class Function < ActiveRecord::Base
   belongs_to :theater
   belongs_to :show
   has_and_belongs_to_many :function_types
-  has_many :showtimes
+  has_many :showtimes, dependent: :destroy
   
   validates :show, presence: :true
   validates :theater, presence: :true

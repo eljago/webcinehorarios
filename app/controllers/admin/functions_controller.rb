@@ -96,6 +96,14 @@ class Admin::FunctionsController < ApplicationController
     end
     redirect_to admin_theater_functions_path(date: params[:date])
   end
+  
+  def delete_week
+    functions = @theater.functions.where('functions.date >= ?', params[:date])
+    functions.each do |function|
+      function.destroy
+    end
+    redirect_to admin_theater_functions_path(date: params[:date])
+  end
 
   # GET DATOS DE LA WEB
   # NEW PARSE
