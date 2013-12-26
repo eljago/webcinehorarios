@@ -43,7 +43,9 @@ if ARGV[0]
     s2.gsub!('&nbsp;', ' ') 
     page2 = Nokogiri::HTML(s2) 
     
-    pelicula = page2.css('div[class="superior titulo-tamano-superior-modificado"] h2').first.text.split.join(' ')
+    peliculaH2 = page2.css('div[class="superior titulo-tamano-superior-modificado"] h2').first
+    next if peliculaH2 == nil
+    pelicula = peliculaH2.text.split.join(' ')
     puts pelicula
     function = {name: pelicula, days: []}
     days = function[:days]
