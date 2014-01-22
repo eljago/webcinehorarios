@@ -35,7 +35,7 @@ namespace :parse do
         s = open(URL).read
         s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
         page = Nokogiri::HTML(s)
-        score = page.css("p.votes strong").text.to_f*10.to_i
+        score = page.css("div#ratings-bar .vertically-middle").text[0..2].to_f*10.to_i
         unless score == 0
           puts "\t\timdb score: #{score}"
           show.imdb_score = score
