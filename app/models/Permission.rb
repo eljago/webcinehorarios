@@ -14,9 +14,10 @@ class Permission
     allow 'api/v2/videos', [:index]
 
     allow 'api/v3/shows', [:billboard, :show, :comingsoon]
-    allow 'api/v3/theaters', [:index, :show_theaters, :favorite_theaters, :theater_coordinates]
+    allow 'api/v3/theaters', [:index, :show_theaters, :favorite_theaters, :theater_coordinates, :show]
     allow 'api/v3/functions', [:index, :show_functions]
     allow 'api/v3/videos', [:index]
+    allow 'api/v3/cinemas', [:show]
     
     allow :home, [:index]
     allow :cines, [:salaestrella]

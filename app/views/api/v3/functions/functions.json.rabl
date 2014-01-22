@@ -1,8 +1,5 @@
 collection @functions
 cache ['v3', @functions], expires_in: 1.hour
-child :function_types do
-	attributes :name
-end
 glue :show do
 	attributes :id, :name, :image_url
 	glue :portrait_image do
@@ -11,6 +8,11 @@ glue :show do
 end
 node :showtimes do |f|
 	f.showtimes.order('showtimes.time ASC').select(:time).all.map do |showtime|
-		showtime.time.utc
-	end
+		l showtime.time, format: :normal_time
+	end.join(", ")
+end
+node :function_types do |f|
+	f.function_types.order('function_types.name ASC').select(:name).all.map do |function_type|
+		function_type.name
+	end.join(', ')
 end

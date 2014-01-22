@@ -347,7 +347,7 @@ class Admin::FunctionsController < ApplicationController
     
     parse_days.each do |parse_day|
       
-      date_hoyts = parse_day.to_s.split("-").reverse.join('-')
+      date_hoyts = parse_day.strftime("%d-%m-%Y")
       url = "#{@theater.web_url}&fecha=#{date_hoyts}"
       s = open(url).read
       s.gsub!('&nbsp;', ' ')

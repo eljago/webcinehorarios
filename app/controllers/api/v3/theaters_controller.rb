@@ -35,6 +35,9 @@ module Api
         .order(:cinema_id, :name).where(active: true).all
       end
       
+      def show
+        @theater = Theater.find(params[:id])
+      end
     end
   end
 end

@@ -25,13 +25,13 @@ Webcinehorarios::Application.routes.draw do
       
       resources :videos, only: :index
       
-      resources :theaters, only: [] do
+      resources :theaters, only: [:show] do
         resources :functions, only: :index
         collection do
           get 'theater_coordinates'
         end
       end
-      resources :cinemas, only: [] do
+      resources :cinemas, only: [:show] do
         resources :theaters, only: :index do
         end
       end

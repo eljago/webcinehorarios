@@ -1,10 +1,10 @@
-object false
+object false => :theater
 node :date do
 	@date
 end
 node :web_url do
 	if @cinema_name == "Cine Hoyts"
-		date = @date.to_s.split('-').reverse.join('-')
+		date = @date.strftime("%d-%m-%Y")
 		"#{@theater.web_url}&fecha=#{date}"
 	else
 		@theater.web_url
