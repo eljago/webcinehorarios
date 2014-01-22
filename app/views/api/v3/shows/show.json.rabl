@@ -1,10 +1,8 @@
 object @show
 cache ['v3', @show], expires_in: 1.hour
 attributes :id, :name, :image_url, :duration, :name_original, :information, :rating, :year, :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score
-node :images do |s|
-	s.images.select(:image).all.map do |image|
-		image.image_url
-	end
+child :images do
+	attributes :image_url
 end
 child :videos do
 	attributes :name, :code, :image_url
