@@ -1,14 +1,13 @@
 object @show
 cache ['v3', @show], expires_in: 1.hour
 attributes :id, :name, :image_url, :duration, :name_original, :information, :rating, :year, :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score
-child :images do
-	attributes :image_url
+node :images do |s|
+	s.images.select(:image).all.map do |image|
+		image.image_url
+	end
 end
 child :videos do
 	attributes :name, :code, :image_url
-end
-child :genres do
-	attributes :name
 end
 child :show_person_roles => :people do
 	attributes :actor, :director, :character
@@ -18,4 +17,9 @@ child :show_person_roles => :people do
 end
 node :debut do |s|
 	s.debut.blank? ? nil : l(s.debut, format: :longi).capitalize
+end
+node :genres do |s|
+	s.genres.order('genres.name ASC').select(:name).all.map do |genre|
+		genre.name
+	end.join(', ')
 end

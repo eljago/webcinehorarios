@@ -1,6 +1,6 @@
 object @show
 cache ['v2', @show], expires_in: 1.hour
-attributes :id, :name, :image_url, :name_original, :information, :debut, :rating, :year, :metacritic_url, :imdb_code, :rotten_tomatoes_url
+attributes :id, :name, :image_url, :name_original, :information, :debut, :rating, :metacritic_url, :imdb_code, :rotten_tomatoes_url
 child :images do
 	attributes :image_url
 end
@@ -27,4 +27,7 @@ node :metacritic_score do |s|
 end
 node :rotten_tomatoes_score do |s|
 	s.rotten_tomatoes_score == 0 ? nil : s.rotten_tomatoes_score
+end
+node :year do |s|
+	s.year == 0 ? nil : s.year
 end
