@@ -1,6 +1,6 @@
 object @show
 cache ['v1', @show], expires_in: 1.hour
-attributes :id, :name, :image, :duration, :name_original, :information, :debut, :rating, :year, :facebook_id
+attributes :id, :name, :image, :name_original, :information, :debut, :rating, :facebook_id
 child :images do
 	attributes :name, :image
 end
@@ -15,4 +15,10 @@ child :show_person_roles => :people do
 	glue :person do
 	  attributes :name, :image
 	end
+end
+node :duration do |s|
+	s.duration == 0 ? nil : s.duration
+end
+node :year do |s|
+	s.year == 0 ? nil : s.year
 end
