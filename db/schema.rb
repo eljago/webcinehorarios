@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140122043132) do
+ActiveRecord::Schema.define(:version => 20140122053344) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -202,22 +202,22 @@ ActiveRecord::Schema.define(:version => 20140122043132) do
     t.string   "name"
     t.string   "image"
     t.text     "information"
-    t.integer  "duration",                           :default => 0, :null => false
+    t.integer  "duration",              :default => 0, :null => false
     t.string   "name_original"
     t.string   "rating"
-    t.datetime "created_at",                                        :null => false
-    t.datetime "updated_at",                                        :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
     t.date     "debut"
     t.integer  "year"
     t.boolean  "active"
     t.string   "image_tmp"
     t.string   "facebook_id"
     t.string   "metacritic_url"
-    t.integer  "metacritic_score",      :limit => 2
+    t.integer  "metacritic_score",      :default => 0, :null => false
     t.string   "imdb_code"
-    t.integer  "imdb_score",            :limit => 2
+    t.integer  "imdb_score",            :default => 0, :null => false
     t.string   "rotten_tomatoes_url"
-    t.integer  "rotten_tomatoes_score", :limit => 2
+    t.integer  "rotten_tomatoes_score", :default => 0, :null => false
     t.string   "slug"
   end
 
