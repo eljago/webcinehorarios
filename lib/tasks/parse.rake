@@ -29,13 +29,13 @@ namespace :parse do
               show.metacritic_score = score
               should_save_show = true
             end
-          rescue Timeout::Error
-            puts "Timeout::Error: #{$!}\n"
-            next
-          rescue
-            puts "Connection failed: #{$!}\n"
-            next
           end
+        rescue Timeout::Error
+          puts "Timeout::Error: #{$!}\n"
+          next
+        rescue
+          puts "Connection failed: #{$!}\n"
+          next
         end
       end
       
@@ -52,13 +52,13 @@ namespace :parse do
               show.imdb_score = score
               should_save_show = true
             end
-          rescue Timeout::Error
-            puts "Timeout::Error: #{$!}\n"
-            next
-          rescue
-            puts "Connection failed: #{$!}\n"
-            next
           end
+        rescue Timeout::Error
+          puts "Timeout::Error: #{$!}\n"
+          next
+        rescue
+          puts "Connection failed: #{$!}\n"
+          next
         end
       end
     
@@ -76,13 +76,13 @@ namespace :parse do
               show.rotten_tomatoes_score = score
               should_save_show = true
             end
-          rescue Timeout::Error
-            puts "Timeout::Error: #{$!}\n"
-            next
-          rescue
-            puts "Connection failed: #{$!}\n"
-            next
           end
+        rescue Timeout::Error
+          puts "Timeout::Error: #{$!}\n"
+          next
+        rescue
+          puts "Connection failed: #{$!}\n"
+          next
         end
       end
       
