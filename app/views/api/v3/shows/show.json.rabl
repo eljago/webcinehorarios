@@ -17,5 +17,5 @@ child :show_person_roles => :people do
 	end
 end
 node :debut do |s|
-	s.debut.blank? ? nil : l(s.debut, format: :long).capitalize
+	s.debut.blank? ? nil : l(s.debut, format: :longi).capitalize
 end

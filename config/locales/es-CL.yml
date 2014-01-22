@@ -35,6 +35,7 @@ es-CL:
       long: ! '%A %d de %B de %Y'
       short: ! '%d de %b'
       normal: ! '%A %d de %B'
+      longi: ! '%-d de %B de %Y'
     month_names:
     - 
     - enero
