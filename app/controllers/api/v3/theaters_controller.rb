@@ -1,6 +1,7 @@
 module Api
   module V3
     class TheatersController < Api::V3::ApiController
+      before_filter :get_date, only: [:show]
       
       def index
         @theaters = Theater.where(cinema_id: params[:cinema_id]).select('theaters.id, theaters.name, theater.cinema_id')
@@ -30,13 +31,30 @@ module Api
         @favorite_theaters ||= []
       end
       
+      def show
+        @functions = Function.includes(:show, :showtimes, :function_types)
+        .select('function_types.name, shows.id, shows.name, shows.image, shows.debut, showtimes.time')
+          .order('shows.debut DESC, shows.id, showtimes.time ASC')
+          .where(functions: { date: @date, theater_id: params[:id] } ).all
+          
+        @theater = Theater.includes(:cinema).select('theaters.address, theaters.latitude, theaters.longitude, 
+        theaters.information, theaters.web_url, cinema.name').where(id: params[:id]).all.first
+        @cinema_name = @theater.cinema.name
+      end
+      
       def theater_coordinates
         @theaters = Theater.select([:id, :name, :cinema_id, :latitude, :longitude, :address])
         .order(:cinema_id, :name).where(active: true).all
       end
       
-      def show
-        @theater = Theater.find(params[:id])
+      private
+      
+      def get_date
+        @date = Date.current
+        unless params[:date].blank?
+          date_array = params[:date].split('-')
+          @date = Date.new(date_array[0].to_i, date_array[1].to_i, date_array[2].to_i)
+        end
       end
     end
   end
