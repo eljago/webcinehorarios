@@ -14,10 +14,10 @@ module Api
         @show = Show.find(params[:show_id])
         unless params[:favorites].blank?
           favorites = params[:favorites].split(',')
-          @favorite_theaters = Theater.includes(:functions => [:function_types, :showtimes])
+          @favorite_theaters = Theater.includes(functions: [:function_types, :showtimes])
           .select('theaters.id, theaters.name, theaters.cinema_id')
-          .where('theaters.active = ? AND theaters.id IN (?) AND functions.show_id = ? AND functions.date = ?', true, favorites, params[:show_id], @date)
-          .order('theaters.name ASC, showtimes.time ASC').all
+          .where('theaters.active = ? AND theaters.id IN (?) AND functions.show_id = ? AND functions.date = ?', true, favorites, @show.id, @date)
+          .order('theaters.name ASC').all
         end
         @favorite_theaters ||= []
       end
