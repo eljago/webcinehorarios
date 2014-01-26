@@ -22,22 +22,26 @@ class ShowCover < CarrierWave::Uploader::Base
     "/assets/" + [version_name, "MissingPicture.jpg"].compact.join('_')
   end
 
-  process :resize_to_fit => [1136,1136]
+  process :resize_to_fit => [1136,640], if: :is_landscape?
+  process :resize_to_fit => [640,1136], if: :is_not_landscape?
   process convert: 'png'
   process :optimize
   
   version :small do
-    process :resize_to_fit => [568,568]
+  process :resize_to_fit => [568,320], if: :is_landscape?
+  process :resize_to_fit => [320,568], if: :is_not_landscape?
     process convert: 'png'
     process :optimize
   end
   version :smaller do
-    process :resize_to_fit => [284,284]
+  process :resize_to_fit => [284,160], if: :is_landscape?
+  process :resize_to_fit => [160,284], if: :is_not_landscape?
     process convert: 'png'
     process :optimize
   end
   version :smallest do
-    process :resize_to_fit => [142,142]
+  process :resize_to_fit => [142,80], if: :is_landscape?
+  process :resize_to_fit => [80,142], if: :is_not_landscape?
     process convert: 'png'
     process :optimize
   end
@@ -55,6 +59,15 @@ class ShowCover < CarrierWave::Uploader::Base
       end
       img
     end
+  end
+  
+  def is_landscape? picture
+    image = MiniMagick::Image.open(picture.path)
+    image[:width] > image[:height]
+  end
+  def is_not_landscape? picture
+    image = MiniMagick::Image.open(picture.path)
+    image[:width] <= image[:height]
   end
   
 
