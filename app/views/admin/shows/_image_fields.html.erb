@@ -1,6 +1,7 @@
 <fieldset class="image">
 	<% if f.object.new_record? %>
 		<%= f.input :remote_image_url %>
+		<%= f.file_field :image %>
   <% else %>
 		<% if f.object.image.url %>
     	<%= image_tag(f.object.image.url(:smaller))  %>
