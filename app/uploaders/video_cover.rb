@@ -17,14 +17,28 @@ class VideoCover < ImageUploader
   
 	process convert: 'jpg'
   
-  process :resize_to_fit => [640,640]
+  process :resize_to_fit => [1136,640], if: :is_landscape?
+  process :resize_to_fit => [640,1136], if: :is_not_landscape?
   process :optimize
   version :small do
-    process :resize_to_fit => [320,320]
+    process :resize_to_fit => [568,320], if: :is_landscape?
+    process :resize_to_fit => [320,568], if: :is_not_landscape?
     process :optimize
   end
   version :smaller do
-    process :resize_to_fit => [160,160]
+    process :resize_to_fit => [284,160], if: :is_landscape?
+    process :resize_to_fit => [160,284], if: :is_not_landscape?
     process :optimize
+  end
+  
+  private
+  
+  def is_landscape? picture
+    image = MiniMagick::Image.open(picture.path)
+    image[:width] > image[:height]
+  end
+  def is_not_landscape? picture
+    image = MiniMagick::Image.open(picture.path)
+    image[:width] <= image[:height]
   end
 end

@@ -30,6 +30,8 @@ class PersonCover < CoverUploader
     process :optimize
   end
   
+  private
+  
   def is_landscape? picture
     image = MiniMagick::Image.open(picture.path)
     image[:width] > image[:height]

@@ -42,15 +42,6 @@ class ShowImagesUploader < CarrierWave::Uploader::Base
   
   process :set_content_type
   
-  def is_landscape? picture
-    image = MiniMagick::Image.open(picture.path)
-    image[:width] > image[:height]
-  end
-  def is_not_landscape? picture
-    image = MiniMagick::Image.open(picture.path)
-    image[:width] <= image[:height]
-  end
-  
   private
   
   def optimize
@@ -69,7 +60,16 @@ class ShowImagesUploader < CarrierWave::Uploader::Base
       img
     end
   end
-
+  
+  def is_landscape? picture
+    image = MiniMagick::Image.open(picture.path)
+    image[:width] > image[:height]
+  end
+  def is_not_landscape? picture
+    image = MiniMagick::Image.open(picture.path)
+    image[:width] <= image[:height]
+  end
+  
   def secure_filename
     ivar = "@#{mounted_as}_a310d61f534ae85c02ei699fac4c4a5998f89517dd75ee24aar"
     token = model.instance_variable_get(ivar)
