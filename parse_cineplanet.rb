@@ -57,7 +57,7 @@ if ARGV[0]
           hora = hora_min_array[0].to_i # => 12
           min = hora_min_array[1].to_i # => 30
           time = date.to_time.change(hour: hora, min: min)
-          time = time+60*60*12 if time_array[1] == "PM"
+          time = time+60*60*12 if time_array[1] == "PM" && hora != 12
           h = time.hour.to_s.size == 1 ? "0#{time.hour}" : time.hour
           m = time.min.to_s.size == 1 ? "0#{time.min}" : time.min
           days.last[:times] << "#{h}:#{m}, "
