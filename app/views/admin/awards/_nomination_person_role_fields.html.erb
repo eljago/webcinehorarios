@@ -1,0 +1,12 @@
+<fieldset class="nomination_person_role">
+  <div class="form-group row">
+		<div class="col-sm-2 col-sm-offset-3 control-label">Persona:</div>
+		<div class="col-sm-5">
+			<%= f.collection_select :person_id, @people, :id, :name, {include_blank: true}, { class: "chzn-select, form-control" } %>
+    </div>
+		<div class="destroy col-sm-1">
+			<%= f.hidden_field :_destroy %>
+			<button class="close remove_fields">X</button>
+		</div>
+  </div>
+</fieldset>

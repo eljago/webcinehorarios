@@ -1,6 +1,6 @@
-<fieldset class="award_specific_nomination">
+<fieldset class="award_specific_category">
   <div class="form-group row">
-    <%= f.label :name, 'Nombre:', class: 'col-sm-2 col-sm-offset-1 control-label' %>
+		<div class="col-sm-2 col-sm-offset-1 control-label">Nombre:</div>
 		<div class="col-sm-5">
     	<%= f.text_field :name, class: 'form-control' %>
     </div>
@@ -10,16 +10,17 @@
 		</div>
   </div>
   <div class="form-group row">
-    <%= f.label :award_category, 'Categoría General:', class: 'col-sm-2 col-sm-offset-1 control-label' %>
+		<div class="col-sm-2 col-sm-offset-1 control-label">Categoría General:</div>
 		<div class="col-sm-5">
 			<%= f.collection_select :award_category_id, @award_categories, :id, :name, {include_blank: true}, { class: "chzn-select, form-control" } %>
     </div>
   </div>
 	
-	<h3 class="col-sm-offset-1">Shows:</h3>
+	<h3 class="col-sm-offset-1">Nominados:</h3>
   <%= f.fields_for :nominations do |builder| %>
     <%= render 'nomination_fields', f: builder %>
   <% end %>
-  <%= link_to_add_fields "Add Show", f, :nominations %>
+	<br />
+	<%= link_to_add_fields "Add Nominado", f, :nominations %>
 </fieldset>
 <br />

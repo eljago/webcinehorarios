@@ -6,7 +6,8 @@ class Person < ActiveRecord::Base
   
   has_many :show_person_roles, :dependent => :destroy
   has_many :shows, through: :show_person_roles
-  has_and_belongs_to_many :nominations
+  has_many :nomination_person_roles, dependent: :destroy
+  has_many :nominations, through: :nomination_person_roles
   
   validates :name, :presence => :true
   

@@ -26,12 +26,12 @@
     </div>
   </div>
 	
-	<h3>Awards Specific Nominations:</h3>
-	<%= f.fields_for :award_specific_nominations do |b| %>
-	  <%= render 'award_specific_nomination_fields', f: b %>
+	<h3>Awards Specific Category:</h3>
+	<%= f.fields_for :award_specific_categories do |b| %>
+	  <%= render 'award_specific_category_fields', f: b %>
 	<% end %>
 	<br />
-	<%= link_to_add_fields "Add Awards Specific Nomination", f, :award_specific_nominations %>
+	<%= link_to_add_fields "Add Awards Specific Categories", f, :award_specific_categories %>
 	
 	<br />
 	<br />

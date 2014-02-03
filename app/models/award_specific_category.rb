@@ -1,4 +1,4 @@
-class AwardSpecificNomination < ActiveRecord::Base
+class AwardSpecificCategory < ActiveRecord::Base
   attr_accessible :name, :award_category_id, :award_id, :nominations_attributes
   
   belongs_to :award
