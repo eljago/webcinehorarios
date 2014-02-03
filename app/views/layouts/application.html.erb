@@ -12,19 +12,12 @@
 
 	<body id="admin">
 		
+		
 		<% if current_user && current_user.admin? %>
 			<%= render 'layouts/navbar_application' %>
 		<% end %>
-		
 		<div class="container">
-			<div class="row">
-				<div class="col-sm-5">
-					<%= render_navigation if current_user && current_user.admin?%>
-				</div>
-				<div class="col-sm-5" style="float: right;">
-					<%= render 'layouts/user_login' %>
-				</div>
-			</div>
+			<%= render_navigation if current_user && current_user.admin? %>
 			<%= render 'layouts/messages' %>
 			<%= yield %>
 		</div>

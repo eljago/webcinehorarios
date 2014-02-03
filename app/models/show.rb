@@ -15,6 +15,8 @@ class Show < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   has_many :parsed_shows, dependent: :destroy
   has_one :portrait_image, class_name: 'Image', foreign_key: :show_portrait_id
+  has_many :nominations
+  has_many :award_specific_nominations, through: :nominations
   
   validates :name, presence: :true
   

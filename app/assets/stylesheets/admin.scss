@@ -3,6 +3,15 @@ body#admin{
 	font-size: 15px;
 	background-image: image-url('content_bg.jpg');
 	background-repeat: repeat;
+
+	.navbar {
+		margin-bottom: 0;
+	}
+	.container {
+		background-color: white;
+		padding-top: 20px;
+		padding-bottom: 20px;
+	}
 	
 	h1, h2, h3 ,h4, h5{
 		font-family: 'Nunito', sans-serif;
@@ -45,11 +54,6 @@ body#admin{
 	}
 	.letter_pagination a{
 		padding: 4px 9px;
-	}
-	
-	/* Breadcrumb */
-	.breadcrumb{
-		background-color: white;
 	}
 	
 	/* Forms */

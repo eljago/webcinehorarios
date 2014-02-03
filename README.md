@@ -16,3 +16,6 @@ brew install imagemagick
 rake resque:work QUEUE='*' RAILS_ENV=production &
 #### Cuando se muestren workers pero ya se hayan eliminado sus procesos, en rails console:
 Resque.workers.first.prune_dead_workers
+
+
+bundle exec sidekiq -q carrierwave,5 default

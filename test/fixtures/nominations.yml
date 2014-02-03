@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  winner_show: 1
+  award_id: 1
+  award_category_id: 1
+
+two:
+  winner_show: 1
+  award_id: 1
+  award_category_id: 1

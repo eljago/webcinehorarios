@@ -1,0 +1,26 @@
+<% provide(:title, 'Awards') %>
+<%= render 'breadcrumbs' %>
+<h1>Awards</h1>
+<table class="table">
+  <tr>
+    <th>Nombre</th>
+    <th>Active</th>
+    <th>Imagen</th>
+    <th>Fecha</th>
+    <th></th>
+  </tr>
+  <% @awards.each do |award| %>
+    <tr>
+      <td><%= award.name %></td>
+      <td><%= award.active.to_s %></td>
+      <td><%= link_to image_tag(award.image, size: "100x100"), award.image.to_s %></td>
+      <td><%= l(award.date) unless award.date.blank? %></td>
+      <td><%= render_index_actions [award], only: [:edit, :destroy] %></td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<%= link_to new_admin_award_path, class: 'btn btn-default' do %>
+  <i class="icon-plus"></i>
+  Nuevo Award
+<% end %>

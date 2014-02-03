@@ -11,12 +11,35 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140122121326) do
+ActiveRecord::Schema.define(:version => 20140202082336) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+  end
+
+  create_table "award_categories", :force => true do |t|
+    t.string "name"
+  end
+
+  create_table "award_specific_nominations", :force => true do |t|
+    t.string   "name"
+    t.integer  "winner_show"
+    t.integer  "award_id"
+    t.integer  "award_category_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "award_specific_nominations", ["award_id", "award_category_id"], :name => "award_s_nominations"
+
+  create_table "awards", :force => true do |t|
+    t.string  "name"
+    t.boolean "active"
+    t.date    "date"
+    t.string  "image"
+    t.string  "image_tmp"
   end
 
   create_table "channels", :force => true do |t|
@@ -137,6 +160,24 @@ ActiveRecord::Schema.define(:version => 20140122121326) do
 
   add_index "images", ["imageable_id", "imageable_type"], :name => "index_images_on_imageable_id_and_imageable_type"
   add_index "images", ["show_portrait_id"], :name => "index_images_on_show_portrait_id"
+
+  create_table "nominations", :force => true do |t|
+    t.boolean  "winner"
+    t.integer  "award_specific_nomination_id"
+    t.integer  "show_id"
+    t.string   "type"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "nominations", ["award_specific_nomination_id", "show_id"], :name => "index_nominations_on_award_specific_nomination_id_and_show_id"
+
+  create_table "nominations_people", :id => false, :force => true do |t|
+    t.integer "nomination_id"
+    t.integer "person_id"
+  end
+
+  add_index "nominations_people", ["nomination_id", "person_id"], :name => "index_nominations_people_on_nomination_id_and_person_id"
 
   create_table "opinions", :force => true do |t|
     t.string "author"

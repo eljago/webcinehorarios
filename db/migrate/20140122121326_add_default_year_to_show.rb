@@ -1,5 +1,8 @@
 class AddDefaultYearToShow < ActiveRecord::Migration
-  def change
+  def up
     change_column :shows, :year, :integer, default: 0, null: false
+  end
+  def down
+    change_column :shows, :year, :integer
   end
 end

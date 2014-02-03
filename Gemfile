@@ -42,7 +42,7 @@ group :assets do
   gem 'chosen-rails'
 end
 
-gem 'bootstrap-sass-rails', :git => 'git://github.com/yabawock/bootstrap-sass-rails.git', :tag => 'v3.0.0.2'
+gem 'bootstrap-sass', '~> 3.1.0'
 gem "font-awesome-rails"
 
 gem 'jquery-rails'
