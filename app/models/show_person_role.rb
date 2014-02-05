@@ -1,4 +1,4 @@
-class NominationPerson < ActiveRecord::Base
+class ShowPersonRole < ActiveRecord::Base
   attr_accessible :actor, :writer, :creator, :producer, :director, :person_id, :show_id, :character
   
   belongs_to :show

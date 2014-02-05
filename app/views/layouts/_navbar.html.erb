@@ -9,7 +9,7 @@
 	      <span class="icon-bar"></span>
 	    </button>
 			<% if current_page? '/' %>
-				<a id="top-scroll" class="navbar-brand">
+				<a class="navbar-brand top-scroll hidden-xs">
 					<%= image_tag 'logo.png', size: 'x50' %>
 				</a>
 			<% else %>
@@ -21,8 +21,8 @@
 
 	  <div class="collapse navbar-collapse navbar-ex1-collapse">
 	    <ul class="nav navbar-nav">
-	      <li><a id="features-scroll"><i class="icon-reorder"></i> Características</a></li>
-	      <li><a id="contact-scroll"><i class="icon-edit"></i> Contacto</a></li>
+	      <li><a class="features-scroll"><i class="icon-reorder"></i> Características</a></li>
+	      <li><a class="contact-scroll"><i class="icon-edit"></i> Contacto</a></li>
 	    </ul>
 	    <ul class="nav navbar-nav navbar-right">
 	      <li class="social fb">

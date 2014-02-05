@@ -1,42 +1,28 @@
 <%= form_for [:admin, @award] do |f| %>
   <%= render_errors @award %>
 	
-  <div class="form-group row">
-    <%= f.label :name, 'Nombre:', class: 'col-sm-2 control-label' %>
-		<div class="col-sm-5">
-    	<%= f.text_field :name, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="form-group row">
-    <%= f.label :active, 'Activo:', class: 'col-sm-2 control-label' %>
-		<div class="col-sm-5">
-    	<%= f.check_box :active, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="form-group row">
-    <%= f.label :image, 'Imagen:', class: 'col-sm-2 control-label' %>
-		<div class="col-sm-7">
-			<%= f.file_field :image %>
-    </div>
-  </div>
-  <div class="form-group row">
-    <%= f.label :date, 'Fecha:', class: 'col-sm-2 control-label' %>
-		<div class="col-sm-7">
-			<%= f.date_select :date, :order => [:day, :month, :year] %>
-    </div>
-  </div>
+	<div class="form-group">
+		<%= f.label :name, 'Nombre:', class: 'control-label' %>
+		<br />
+		<%= f.text_field :name, class: 'form-control' %>
+	</div>
+	<div class="form-group">
+		<%= f.label :image, 'Imagen:', class: 'control-label' %>
+		<br />
+		<%= f.file_field :image %>
+	</div>
+	<div class="form-group">
+		<%= f.label :active, 'Activo:', class: 'control-label' %>
+		<br />
+		<%= f.check_box :active, class: 'form-control' %>
+	</div>
+	<div class="form-group">
+		<%= f.label :date, 'Fecha:', class: 'control-label' %>
+		<br />
+		<%= f.date_select :date, :order => [:day, :month, :year] %>
+	</div>
 	
-	<h3>Awards Specific Category:</h3>
-	<%= f.fields_for :award_specific_categories do |b| %>
-	  <%= render 'award_specific_category_fields', f: b %>
-	<% end %>
-	<br />
-	<%= link_to_add_fields "Add Awards Specific Categories", f, :award_specific_categories %>
-	
-	<br />
-	<br />
-  <div class="form-actions">
-    <%= f.submit :Guardar, class: 'btn btn-primary' %>
-  </div>
+	<div class="form-actions">
+  	<%= f.submit :Guardar, class: 'btn btn-primary' %>
+	</div>
 <% end %>
-<br />

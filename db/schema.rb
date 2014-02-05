@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140202082336) do
+ActiveRecord::Schema.define(:version => 20140205045700) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(:version => 20140202082336) do
 
   create_table "award_specific_categories", :force => true do |t|
     t.string   "name"
-    t.integer  "winner_show"
     t.integer  "award_id"
     t.integer  "award_category_id"
     t.datetime "created_at",        :null => false
@@ -33,6 +32,17 @@ ActiveRecord::Schema.define(:version => 20140202082336) do
   end
 
   add_index "award_specific_categories", ["award_id", "award_category_id"], :name => "award_s_categories"
+
+  create_table "award_specific_nominations", :force => true do |t|
+    t.string   "name"
+    t.integer  "winner_show"
+    t.integer  "award_id"
+    t.integer  "award_category_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "award_specific_nominations", ["award_id", "award_category_id"], :name => "award_s_nominations"
 
   create_table "awards", :force => true do |t|
     t.string  "name"
@@ -178,6 +188,13 @@ ActiveRecord::Schema.define(:version => 20140202082336) do
   end
 
   add_index "nominations", ["award_specific_category_id", "show_id"], :name => "index_nominations_on_award_specific_category_id_and_show_id"
+
+  create_table "nominations_people", :id => false, :force => true do |t|
+    t.integer "nomination_id"
+    t.integer "person_id"
+  end
+
+  add_index "nominations_people", ["nomination_id", "person_id"], :name => "index_nominations_people_on_nomination_id_and_person_id"
 
   create_table "opinions", :force => true do |t|
     t.string "author"

@@ -1,0 +1,22 @@
+<%= form_for [:admin, @award, @award_specific_category] do |f| %>
+  <%= render_errors @award_specific_category %>
+	
+  <div class="form-group row">
+    <%= f.label :name, 'Nombre:', class: 'col-sm-2 control-label' %>
+		<div class="col-sm-5">
+    	<%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+
+	<h3>Nominados:</h3>
+	<%= f.fields_for :nominations do |builder| %>
+	  <%= render 'nomination_fields', f: builder %>
+	<% end %>
+	<%= link_to_add_fields "Add Nominado", f, :nominations %>
+	
+	<br />
+  <div class="form-actions">
+    <%= f.submit :Guardar, class: 'btn btn-primary' %>
+  </div>
+<% end %>
+<br />

@@ -7,16 +7,10 @@ class Admin::AwardsController < ApplicationController
   
   def new
     @award = Award.new
-    @shows = Show.select([:id, :name]).order('shows.name ASC').all
-    @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC').all
-    @people = Person.select([:id, :name]).order('people.name ASC').all
   end
   
   def edit
-    @award = Award.includes(:award_specific_categories => [:nominations => :nomination_person_roles]).find(params[:id])
-    @shows = Show.select([:id, :name]).order('shows.name ASC').all
-    @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC').all
-    @people = Person.select([:id, :name]).order('people.name ASC').all
+    @award = Award.find(params[:id])
   end
   
   def create

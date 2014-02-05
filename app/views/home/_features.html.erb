@@ -1,37 +1,66 @@
-<h1 class="content-title">CARACTERISTICAS</h1>
 
+<h1 class="content-title">CARACTERISTICAS</h1>
 <div class="row">
-	<div class="col-md-4">
-		<div class="panel panel-success">
-			<div class="panel-heading">Horarios</div>
-			<div class="panel-body">
-				<%= image_tag 'app_img_showtimes.jpg' %>
-			</div>
-			<div class="panel-footer">
-				Horarios de exhibición de todas las películas en los principales cines de Chile.
-			</div>
-		</div>
+	
+	<div class="list-group col-lg-3 visible-lg">
+		<%= image_tag 'features-menu.jpg', class: 'img-rounded' %>
 	</div>
-	<div class="col-md-4">
-		<div class="panel panel-info">
-			<div class="panel-heading">Cartelera</div>
-			<div class="panel-body">
-				<%= image_tag 'app_img_billboard.jpg' %>
-			</div>
-			<div class="panel-footer">
-				Listado de la cartelera semanal y los próximos estrenos.
-			</div>
-		</div>
+	
+	<div class="list-group col-lg-4 col-md-6">
+		  <a id="lgi-cines" href="#" class="list-group-item active">
+		    <h4 class="list-group-item-heading">CINES CHILENOS</h4>
+		    <p class="list-group-item-text hidden-sm hidden-xs">Acceso a los horarios de los cines más importantes de Chile.</p>
+		  </a>
+		  <a id="lgi-favoritos" href="#" class="list-group-item">
+		    <h4 class="list-group-item-heading">GUARDE SUS FAVORITOS</h4>
+		    <p class="list-group-item-text hidden-sm hidden-xs">Guarde sus complejos de cine favoritos para un acceso rápido.</p>
+		  </a>
+			<a id="lgi-mapa" href="#" class="list-group-item">
+	    	<h4 class="list-group-item-heading">MAPA DE CINES</h4>
+	    	<p class="list-group-item-text hidden-sm hidden-xs">Podrá saber cuáles son los cines cercanos a su ubicación usando el mapa de cines cercanos.</p>
+	  	</a>
+			<a id="lgi-cartelera" href="#" class="list-group-item">
+	    	<h4 class="list-group-item-heading">CARTELERA</h4>
+	    	<p class="list-group-item-text hidden-sm hidden-xs">Listado de todas las películas exhibiéndose en todos los cines.</p>
+	  	</a>
+			<a id="lgi-proximamente" href="#" class="list-group-item">
+	    	<h4 class="list-group-item-heading">PROXIMOS ESTRENOS</h4>
+	    	<p class="list-group-item-text hidden-sm hidden-xs">Listado de las películas a estrenarse en los próximos meses.</p>
+	  	</a>
+			<a id="lgi-detalle" href="#" class="list-group-item">
+	    	<h4 class="list-group-item-heading">DETALLE PELICULA</h4>
+	    	<p class="list-group-item-text hidden-sm hidden-xs">Toda la información de cada película, inclyendo synopsis, géneros, duración, reparto, imágenes, videos, y más!.</p>
+	  	</a>
+			<a id="lgi-media" href="#" class="list-group-item">
+	    	<h4 class="list-group-item-heading">MEDIA</h4>
+	    	<p class="list-group-item-text hidden-sm hidden-xs">Imágenes y Videos.</p>
+	  	</a>
 	</div>
-	<div class="col-md-4">
-		<div class="panel panel-warning">
-			<div class="panel-heading">Horarios</div>
-			<div class="panel-body">
-				<%= image_tag 'app_img_detail.jpg' %>
-			</div>
-			<div class="panel-footer">
-				Descripción de cada película que incluye la sinopsis, imágenes, videos, elenco, y más.
-			</div>
+	
+	<div class="col-lg-5 col-md-6" style="padding-bottom: 20px;">
+		<div id="desc-cines" class="lgi-desc">
+			<%= image_tag 'features-cines.jpg', class: 'img-rounded' %>
 		</div>
+		<div id="desc-favoritos" class="lgi-desc">
+			<%= image_tag 'features-favoritos.jpg', class: 'img-rounded' %>
+		</div>
+		<div id="desc-mapa" class="lgi-desc">
+			<%= image_tag 'features-mapa.jpg', class: 'img-rounded' %>
+		</div>
+		<div id="desc-cartelera" class="lgi-desc">
+			<%= image_tag 'features-cartelera.jpg', class: 'img-rounded' %>
+		</div>
+		<div id="desc-proximamente" class="lgi-desc">
+			<%= image_tag 'features-proximamente.jpg', class: 'img-rounded' %>
+		</div>
+		<div id="desc-detalle" class="lgi-desc row">
+			<%= image_tag 'features-detalle1.jpg', class: 'img-rounded col-xs-6' %>
+			<%= image_tag 'features-detalle2.jpg', class: 'img-rounded col-xs-6' %>
+		</div>
+		<div id="desc-media" class="lgi-desc row">
+			<%= image_tag 'features-imagenes.jpg', class: 'img-rounded col-xs-6' %>
+			<%= image_tag 'features-videos.jpg', class: 'img-rounded col-xs-6' %>
+		</div>
+		
 	</div>
 </div>

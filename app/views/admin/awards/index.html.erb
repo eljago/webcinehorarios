@@ -11,7 +11,7 @@
   </tr>
   <% @awards.each do |award| %>
     <tr>
-      <td><%= award.name %></td>
+      <td><%= link_to award.name, admin_award_award_specific_categories_path(award) %></td>
       <td><%= award.active.to_s %></td>
       <td><%= link_to image_tag(award.image, size: "100x100"), award.image.to_s %></td>
       <td><%= l(award.date) unless award.date.blank? %></td>
