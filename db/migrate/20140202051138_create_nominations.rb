@@ -4,7 +4,6 @@ class CreateNominations < ActiveRecord::Migration
       t.boolean :winner
       t.integer :award_specific_category_id
       t.integer :show_id
-      t.string :type
       t.timestamps
     end
     add_index :nominations, [:award_specific_category_id, :show_id]

@@ -7,13 +7,23 @@
     	<%= f.text_field :name, class: 'form-control' %>
     </div>
   </div>
+	
+	<div class="form-group row">
+    <%= f.label :winner_type, 'Winner Type:', class: 'col-sm-2 control-label' %>
+		<div class="col-sm-5">
+	    <% ["show", "person"].each do |winner_type| %>
+	      <br><%= f.radio_button :winner_type, winner_type, checked: @award_specific_category.winner_type == winner_type %>
+	      <%= winner_type.humanize %>
+	    <% end %>
+		</div>
+	</div>
 
 	<h3>Nominados:</h3>
 	<%= f.fields_for :nominations do |builder| %>
 	  <%= render 'nomination_fields', f: builder %>
 	<% end %>
 	<%= link_to_add_fields "Add Nominado", f, :nominations %>
-	
+	<br />
 	<br />
   <div class="form-actions">
     <%= f.submit :Guardar, class: 'btn btn-primary' %>

@@ -23,6 +23,8 @@ Webcinehorarios::Application.routes.draw do
         end
       end
       
+      resources :awards, only: :index
+      
       resources :videos, only: :index
       
       resources :theaters, only: [:show] do
@@ -95,6 +97,7 @@ Webcinehorarios::Application.routes.draw do
     end
     resources :award_specific_categories
     resources :award_categories
+    resources :award_types
     
     resources :cines, only: :index
     

@@ -22,7 +22,16 @@
 		<%= f.date_select :date, :order => [:day, :month, :year] %>
 	</div>
 	
+	<div class="form-group">
+	  <%= f.label :award_type, 'Award Type', class: 'control-label' %>
+	  <% @award_types.each do |award_type| %>
+	    <br><%= f.radio_button :award_type_id, award_type.id, checked: @award.award_type_id == award_type.id %>
+	    <%= award_type.name.humanize %>
+	  <% end %>
+	</div>
+		
 	<div class="form-actions">
   	<%= f.submit :Guardar, class: 'btn btn-primary' %>
 	</div>
 <% end %>
+<br />

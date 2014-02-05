@@ -18,6 +18,7 @@ class Permission
     allow 'api/v3/functions', []
     allow 'api/v3/videos', [:index]
     allow 'api/v3/cinemas', [:show]
+    allow 'api/v3/awards', [:index]
     
     allow :home, [:index]
     allow :cines, [:salaestrella]

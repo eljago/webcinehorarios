@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140205045700) do
+ActiveRecord::Schema.define(:version => 20140205182841) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(:version => 20140205045700) do
 
   create_table "award_specific_categories", :force => true do |t|
     t.string   "name"
+    t.string   "winner_type"
+    t.integer  "winner_show"
     t.integer  "award_id"
     t.integer  "award_category_id"
     t.datetime "created_at",        :null => false
@@ -44,13 +46,20 @@ ActiveRecord::Schema.define(:version => 20140205045700) do
 
   add_index "award_specific_nominations", ["award_id", "award_category_id"], :name => "award_s_nominations"
 
+  create_table "award_types", :force => true do |t|
+    t.string "name"
+  end
+
   create_table "awards", :force => true do |t|
     t.string  "name"
     t.boolean "active"
     t.date    "date"
     t.string  "image"
     t.string  "image_tmp"
+    t.integer "award_type_id"
   end
+
+  add_index "awards", ["award_type_id"], :name => "index_awards_on_award_type_id"
 
   create_table "channels", :force => true do |t|
     t.string   "name"
@@ -182,7 +191,6 @@ ActiveRecord::Schema.define(:version => 20140205045700) do
     t.boolean  "winner"
     t.integer  "award_specific_category_id"
     t.integer  "show_id"
-    t.string   "type"
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
   end

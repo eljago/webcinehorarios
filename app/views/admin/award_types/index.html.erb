@@ -1,0 +1,20 @@
+<% provide(:title, 'Award Types') %>
+<%= render 'breadcrumbs' %>
+<h1>Award Types</h1>
+<table class="table">
+  <tr>
+    <th>Nombre</th>
+    <th></th>
+  </tr>
+  <% @award_types.each do |award_type| %>
+    <tr>
+      <td><%= award_type.name %></td>
+      <td><%= render_index_actions [award_type], only: [:edit, :destroy] %></td>
+    </tr>
+  <% end %>
+</table>
+<br/>
+<%= link_to new_admin_award_type_path, class: 'btn btn-default' do %>
+  <i class="icon-plus"></i>
+  Nuevo Award Type
+<% end %>

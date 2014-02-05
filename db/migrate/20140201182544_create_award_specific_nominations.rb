@@ -2,6 +2,7 @@ class CreateAwardSpecificNominations < ActiveRecord::Migration
   def change
     create_table :award_specific_categories do |t|
       t.string :name
+      t.string :winner_type
       t.integer :winner_show
       t.integer :award_id
       t.integer :award_category_id

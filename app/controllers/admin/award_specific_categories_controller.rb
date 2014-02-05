@@ -25,11 +25,13 @@ class Admin::AwardSpecificCategoriesController < ApplicationController
   def create
     @award = Award.find(params[:award_id])
     @award_specific_category = @award.award_specific_categories.new(params[:award_specific_category])
-    award = @award_specific_category.award
     
     if @award_specific_category.save
-      redirect_to [:admin, award, :award_specific_categories], notice: 'Award Specific Category  creado con éxito.'
+      redirect_to [:admin, @award, :award_specific_categories], notice: 'Award Specific Category  creado con éxito.'
     else
+      @shows = Show.select([:id, :name]).order('shows.name ASC').all
+      @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC').all
+      @people = Person.select([:id, :name]).order('people.name ASC').all
       render action: "new"
     end
   end
@@ -41,6 +43,10 @@ class Admin::AwardSpecificCategoriesController < ApplicationController
     if @award_specific_categories.update_attributes(params[:award_specific_category])
       redirect_to [:admin, award, :award_specific_categories], notice: 'Award Specific Category actualizado con éxito.'
     else
+      @award = @award_specific_category.award
+      @shows = Show.select([:id, :name]).order('shows.name ASC').all
+      @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC').all
+      @people = Person.select([:id, :name]).order('people.name ASC').all
       render action: "edit"
     end
   end
