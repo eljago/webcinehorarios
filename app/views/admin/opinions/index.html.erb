@@ -1,3 +1,5 @@
+<% provide(:title, "Opiniones") %>
+<%= render 'breadcrumbs' %>
 <h1>Opiniones</h1>
 <table class="table">
   <tr>
@@ -8,23 +10,15 @@
   </tr>
   <% @opinions.each do |opinion| %>
     <tr>
-      <td>
-        <%= opinion.author %>
-      </td>
-      <td>
-        <%= opinion.date %>
-      </td>
-      <td>
-        <%= opinion.comment %>
-      </td>
-      <td>
-        <%= render_index_actions [opinion], only: [:show, :edit, :destroy] %>
-      </td>
+      <td><%= opinion.author %></td>
+      <td><%= opinion.date %></td>
+      <td><%= opinion.comment %></td>
+      <td><%= render_index_actions [opinion], only: [:edit, :destroy] %></td>
     </tr>
   <% end %>
 </table>
 <br/>
-<%= link_to new_admin_opinion_path, class: 'btn btn-primary' do %>
+<%= link_to [:new, :admin, :opinion], class: 'btn btn-primary' do %>
   <i class="icon-plus"></i>
   Nueva Opinión
 <% end %>

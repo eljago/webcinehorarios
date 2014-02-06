@@ -1,10 +1,5 @@
+<% provide(:title, "Editar País") %>
+<%= render 'breadcrumbs' %>
 <h1>Editar Género</h1>
 
 <%= render 'form' %>
-
-<%= link_to [:admin, :genres], class: 'btn btn-default' do %>
-	<i class="icon-arrow-left"></i> Volver
-<% end %>
-<%= link_to [:admin, @genre], class: 'btn btn-default' do %>
-	<i class="icon-edit"></i> Mostrar
-<% end %>

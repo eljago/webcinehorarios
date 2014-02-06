@@ -1,9 +1,10 @@
 <% provide(:title, "Tipos de Función") %>
+<%= render 'breadcrumbs' %>
 <h1>Tipos de Función</h1>
 <table class="table">
   <tr>
     <th>Nombre</th>
-    <th>></th>
+    <th></th>
   </tr>
   <% @function_types.each do |function_type| %>
     <tr>
@@ -19,5 +20,5 @@
 <br/>
 <%= link_to [:new, :admin, :function_type], class: 'btn btn-default' do %>
   <i class="icon-plus"></i>
-  Nuevo Function Type
+  Nuevo Tipo de Función
 <% end %>

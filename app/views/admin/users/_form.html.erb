@@ -1,15 +1,59 @@
-<%= simple_form_for [:admin,@user] do |f| %>
-  <%= f.error_notification %>
-  <div class="form-inputs">
-    <%= f.input :name if current_user.admin? %>
-    <%= f.input :email %>
-    <%= f.input :password %>
-    <%= f.input :password_confirmation %>
-    <%= f.input :admin if current_user.admin? %>
-    <%= f.association :theaters, as: :check_boxes if current_user.admin? %>
+<%= form_for [:admin, @user], html: {class: 'form-horizontal', role: 'form' } do |f| %>
+  <%= render_errors @user %>
+	
+	<% if current_user.admin? %>
+	  <div class="form-group">
+	    <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
+			<div class="col-lg-5">
+	    	<%= f.text_field :name, class: 'form-control' %>
+	    </div>
+	  </div>
+	<% end %>
+	
+  <div class="form-group">
+    <%= f.label :email, 'Email:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :email, class: 'form-control' %>
+    </div>
   </div>
+  <div class="form-group">
+    <%= f.label :password, 'Password:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :password, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :password_confirmation, 'Confirmar Password:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :password_confirmation, class: 'form-control' %>
+    </div>
+  </div>
+	
+	<% if current_user.admin? %>
+	  <div class="form-group">
+	    <%= f.label :admin, 'Admin?:', class: 'col-lg-2 control-label' %>
+			<div class="col-lg-5">
+	    	<%= f.check_box :admin, class: 'form-control' %>
+	    </div>
+	  </div>
+	<% end %>
+
+  <div class="form-group">
+    <%= f.label :admin, 'Theaters:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+			<% Theater.select([:id, :name]).order('name ASC').all.each do |theater| %>
+		    <%= check_box_tag 'user[theater_ids][]', theater.id, @user.theaters.map(&:id).include?(theater.id) %>
+		    <%= theater.name %>
+				<br />
+		  <% end %>
+    </div>
+  </div>
+	
   <br/>
-  <div class="form-actions">
-    <%= f.button :submit, class: 'btn btn-primary' %>
+	
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+    	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
+    </div>
   </div>
 <% end %>

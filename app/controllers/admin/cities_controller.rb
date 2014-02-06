@@ -1,13 +1,10 @@
 class Admin::CitiesController < ApplicationController
   
   before_filter :get_country, only: [:index, :new, :create]
-  before_filter :get_city_country, only: [:show, :edit, :update, :destroy]
+  before_filter :get_city_country, only: [:edit, :update, :destroy]
   
   def index
     @cities = @country.cities.order(:name)
-  end
-
-  def show
   end
   
   def new

@@ -1,4 +1,6 @@
 class Admin::OpinionsController < ApplicationController
+  before_filter :get_opinion, only: [:edit, :update, :destroy]
+  
   def index
     @opinions = Opinion.all
   end
@@ -18,15 +20,9 @@ class Admin::OpinionsController < ApplicationController
   end
   
   def edit
-    @opinion = Opinion.find(params[:id])
-  end
-  
-  def show
-    @opinion = Opinion.find(params[:id])
   end
   
   def update
-    @opinion = Opinion.find(params[:id])
     if @opinion.update_attributes(params[:opinion])
       redirect_to [:admin, :opinions], notice: 'Opinion was successfully updated.'
     else
@@ -35,9 +31,14 @@ class Admin::OpinionsController < ApplicationController
   end
   
   def destroy
-    @opinion = Opinion.find(params[:id])
     @opinion.destroy
 
     redirect_to admin_opinions_path
+  end
+  
+  private
+  
+  def get_opinion
+    @opinion = Opinion.find(params[:id])
   end
 end

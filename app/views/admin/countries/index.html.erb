@@ -11,7 +11,7 @@
 <% @countries.each do |country| %>
 	<tr>
 		<td>
-			<%= link_to country.name, admin_country_cities_path(country) %>
+			<%= link_to country.name, [:admin, country, :cities] %>
 		</td>
 		<td>
 			<%= render_index_actions [country], only: [:edit, :destroy] %>
@@ -20,6 +20,6 @@
 <% end %>
 </table>
 
-<%= link_to new_admin_country_path, class: 'btn btn-default' do %>
+<%= link_to [:new, :admin, :country], class: 'btn btn-default' do %>
 	<i class="icon-plus"></i> Nuevo País
 <% end %>

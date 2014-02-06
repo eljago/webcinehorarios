@@ -1,3 +1,5 @@
+<% provide(:title, "Editar Usuario") %>
+<%= render 'breadcrumbs' %>
 <h1>Editar Profile</h1>
 <%= render "form" %>
 <br/>
@@ -7,7 +9,7 @@
     Volver
   <% end %>
 <% else %>
-  <%= link_to admin_cines_path, class: 'btn btn-default' do %>
+  <%= link_to [:admin, :cines], class: 'btn btn-default' do %>
     <i class="icon-arrow-left"></i>
     Volver
   <% end %>

@@ -1,5 +1,6 @@
 class Admin::UsersController < ApplicationController
   before_filter :check_user
+  before_filter :get_user, only: [:edit, :update, :destroy]
   
   def index
     @users = User.all
@@ -20,11 +21,9 @@ class Admin::UsersController < ApplicationController
   end
   
   def edit
-    @user = User.find(params[:id])
   end
 
   def update
-    @user = User.find(params[:id])
     if current_user.admin?
       @user.attributes = params[:user]
       if @user.save(validate: false)
@@ -42,13 +41,16 @@ class Admin::UsersController < ApplicationController
   end
   
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
 
     redirect_to [:admin, :users]
   end
   
   private
+  
+  def get_user
+    @user = User.find(params[:id])
+  end
   
   def check_user
     if !current_user.admin? && current_user.id != User.find(params[:id]).id
