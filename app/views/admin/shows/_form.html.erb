@@ -1,12 +1,11 @@
-<%= simple_form_for [:admin, @show], html: { class: 'form-horizontal show_form', role: 'form' } do |f| %>
-  <%= f.error_notification %>
+<%= form_for [:admin, @show], html: { class: 'form-horizontal show_form', role: 'form' } do |f| %>
+  <%= render_errors @show %>
 	
-			<%= f.input :active %>
 			<div class="row">
 				<div class="col-sm-8">
 					
 				  <div class="form-group">
-				    <%= f.label :name, 'Nombre:', include_blank: true, class: 'col-sm-4 control-label' %>
+				    <%= f.label :name, 'Nombre:', class: 'col-sm-4 control-label' %>
 						<div class="col-sm-7">
 				    	<%= f.text_field :name, class: 'form-control' %>
 				    </div>
@@ -44,7 +43,7 @@
 				  <div class="form-group">
 				    <%= f.label :information, 'Synopsis:', class: 'col-sm-4 control-label' %>
 						<div class="col-sm-7">
-				    	<%= f.text_area :information, class: 'form-control', style: "height: 200px;" %>
+				    	<%= f.text_area :information, class: 'form-control' %>
 				    </div>
 				  </div>
 					
@@ -92,9 +91,51 @@
 				</div>
 					
 				<div class="col-sm-3">
-				  <%= f.input :debut, include_blank: true %>
-					<%= f.input :rating, collection: [['TE', 'TE'],['TE+7', 'TE+7'], ['13+', '13+'], ['14+', '14+'], ['15+', '15+'], ['16+', '16+'], ['18+', '18+']], :as => :radio_buttons %>
-					<%= f.association :genres, collection: Genre.select([:id, :name]).all(order: 'name'), as: :check_boxes %>
+
+				  <div class="form-group">
+				    <%= f.label :active, 'Activo?', class: 'col-sm-5 control-label' %>
+						<div class="col-sm-7">
+				    	<%= f.check_box :active, class: 'form-control' %>
+				    </div>
+				  </div>
+					<div class="form-group">
+						<%= f.label :debut, 'Estreno:', class: 'col-sm-5 control-label' %>
+						<div class="col-sm-7">
+							<%= f.date_select :debut, {:include_blank => true, :default => nil, :order => [:day, :month, :year]} %>
+						</div>
+				  </div>
+					
+					<div class="form-group">
+				    <%= f.label :rating, 'Rating:', class: 'col-sm-5 control-label' %>
+						<div class="col-lg-7">
+							<% ['TE','TE+7','13+','14+','15+','16+','18+'].each do |rating| %>
+							  <div class="radio">
+							    <label>
+										<%= f.radio_button :rating, rating, checked: @show.rating == rating %>
+										<%= rating.humanize %>
+							    </label>
+							  </div>
+						  <% end %>
+				    </div>
+					</div>
+	
+					<% genres = Genre.select([:id, :name]).all(order: :name) %>
+					<% if genres.count > 0 %>
+					  <div class="form-group">
+					    <%= f.label :genre_ids, 'Genres:', class: 'col-lg-5 control-label' %>
+							<div class="col-lg-7">
+								<% genres.each do |genre| %>
+								  <div class="checkbox">
+								    <label>
+								    	<%= check_box_tag 'show[genre_ids][]', genre.id, @show.genres.map(&:id).include?(genre.id) %>
+								    	<%= genre.name.humanize %>
+								    </label>
+								  </div>
+							  <% end %>
+					    </div>
+					  </div>
+					<% end %>
+					
 			  </div>
 			</div>
 			
@@ -107,13 +148,13 @@
 					<br />
 					<%= link_to_add_fields "Add Person", f, :show_person_roles %>
 					<h3>Imagenes:</h3>
-					<%= f.simple_fields_for :images do |b| %>
+					<%= f.fields_for :images do |b| %>
 					  <%= render 'image_fields', f: b %>
 					<% end %>
 					<br />
 					<%= link_to_add_fields "Add Image", f, :images %>
 					<h3>Videos:</h3>
-					<%= f.simple_fields_for :videos do |b| %>
+					<%= f.fields_for :videos do |b| %>
 					  <%= render 'video_fields', f: b %>
 					<% end %>
 					<br />
@@ -122,7 +163,14 @@
 			</div>
 
 	<br />
-			
-	<%= f.button :submit, class: 'btn btn-primary'  %>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-5">
+    	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
+    </div>
+  </div>
 <% end %>
-<br />
+
+<%= link_to [:admin, :shows], class: 'btn btn-default' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>

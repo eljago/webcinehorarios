@@ -1,10 +1,18 @@
-<%= simple_form_for [:admin, @theater, @function] do |f| %>
-  <%= f.error_notification %>
+<%= form_for [:admin, @theater, @function], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
+  <%= render_errors @function %>
   <% date = params[:date].to_date %>
   <div class="form-inputs">
     <%= f.hidden_field :date, value: date %>
     <%= f.hidden_field :theater_id, value: @theater.id %>
-    <%= f.association :show, collection: @shows, label: "Película", :input_html => { :class => "chzn-select" } %>
+		
+  
+	  <div class="form-group">
+	    <%= f.label :show_id, 'Show:', class: 'col-lg-2 control-label' %>
+			<div class="col-lg-10">
+		<%= f.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" } %>
+	    </div>
+	  </div>
+		
     <div class="row">
       <br/>
       <div class="col-md-3 col-sm-3">

@@ -42,14 +42,15 @@
     <%= f.label :admin, 'Theaters:', class: 'col-lg-2 control-label' %>
 		<div class="col-lg-5">
 			<% Theater.select([:id, :name]).order('name ASC').all.each do |theater| %>
-		    <%= check_box_tag 'user[theater_ids][]', theater.id, @user.theaters.map(&:id).include?(theater.id) %>
-		    <%= theater.name %>
-				<br />
+			  <div class="checkbox">
+			    <label>
+		    		<%= check_box_tag 'user[theater_ids][]', theater.id, @user.theaters.map(&:id).include?(theater.id) %>
+		    		<%= theater.name %>
+			    </label>
+			  </div>
 		  <% end %>
     </div>
   </div>
-	
-  <br/>
 	
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">

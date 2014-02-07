@@ -51,6 +51,7 @@ class Admin::ShowsController < ApplicationController
       end
       redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully created.'
     else
+      @people = Person.select([:id, :name]).order('people.name ASC').all
       render action: "new"
     end
   end
@@ -80,6 +81,7 @@ class Admin::ShowsController < ApplicationController
       end
       redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully updated.'
     else
+      @people = Person.select([:id, :name]).order('people.name ASC').all
       render action: "edit"
     end
   end

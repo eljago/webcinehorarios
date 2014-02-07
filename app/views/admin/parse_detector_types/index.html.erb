@@ -1,3 +1,5 @@
+<% provide(:title, "Parse Detector Types") %>
+<%= render 'breadcrumbs' %>
 <h1>
   PDT de
   <%= @function_type.name %>
@@ -23,11 +25,7 @@
   <% end %>
 </table>
 <br/>
-<%= link_to new_admin_function_type_parse_detector_type_path(@function_type), class: 'btn btn-default' do %>
+<%= link_to [:new, :admin, @function_type, :parse_detector_type], class: 'btn btn-default' do %>
   <i class="icon-plus"></i>
-  Nuevo PDT
-<% end %>
-<%= link_to admin_function_types_path, class: 'btn btn-default' do %>
-  <i class="icon-arrow-left"></i>
-  Volver
+  Nuevo Parse Detector Type
 <% end %>

@@ -9,7 +9,7 @@
   <% @cities.each do |city| %>
     <tr>
       <td>
-        <%= link_to city.name, admin_city_theaters_path(city) %>
+        <%= link_to city.name, [:admin, city, :theaters] %>
       </td>
       <td>
         <%= render_index_actions [city], only: [:edit, :destroy] %>
@@ -18,7 +18,7 @@
   <% end %>
 </table>
 <br/>
-<%= link_to new_admin_country_city_path(@country), class: 'btn btn-default' do %>
+<%= link_to [:new, :admin, @country, :city], class: 'btn btn-default' do %>
   <i class="icon-plus"></i>
   Nueva Ciudad
 <% end %>

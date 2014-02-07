@@ -11,7 +11,7 @@
   </tr>
   <% @awards.each do |award| %>
     <tr>
-      <td><%= link_to award.name, admin_award_award_specific_categories_path(award) %></td>
+      <td><%= link_to award.name, [:admin, award, :award_specific_categories] %></td>
       <td><%= award.active.to_s %></td>
       <td><%= link_to image_tag(award.image, size: "100x100"), award.image.to_s %></td>
       <td><%= l(award.date) unless award.date.blank? %></td>
@@ -20,7 +20,7 @@
   <% end %>
 </table>
 <br/>
-<%= link_to new_admin_award_path, class: 'btn btn-default' do %>
+<%= link_to [:new, :admin, :award], class: 'btn btn-default' do %>
   <i class="icon-plus"></i>
   Nuevo Award
 <% end %>

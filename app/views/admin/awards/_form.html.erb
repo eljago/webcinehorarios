@@ -1,37 +1,55 @@
-<%= form_for [:admin, @award] do |f| %>
+<%= form_for [:admin, @award], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
   <%= render_errors @award %>
 	
+  <div class="form-group">
+    <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+	
+  <div class="form-group">
+    <%= f.label :image, 'Imagen:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.file_field :image %>
+    </div>
+  </div>
+	
+  <div class="form-group">
+    <%= f.label :active, 'Activo?', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.check_box :active, class: 'form-control' %>
+    </div>
+  </div>
+	
 	<div class="form-group">
-		<%= f.label :name, 'Nombre:', class: 'control-label' %>
-		<br />
-		<%= f.text_field :name, class: 'form-control' %>
-	</div>
-	<div class="form-group">
-		<%= f.label :image, 'Imagen:', class: 'control-label' %>
-		<br />
-		<%= f.file_field :image %>
-	</div>
-	<div class="form-group">
-		<%= f.label :active, 'Activo:', class: 'control-label' %>
-		<br />
-		<%= f.check_box :active, class: 'form-control' %>
-	</div>
-	<div class="form-group">
-		<%= f.label :date, 'Fecha:', class: 'control-label' %>
-		<br />
-		<%= f.date_select :date, :order => [:day, :month, :year] %>
+		<%= f.label :date, 'Fecha:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+		<%= f.date_select :date, {:include_blank => true, :default => nil, :order => [:day, :month, :year]} %>
+		</div>
 	</div>
 	
 	<div class="form-group">
-	  <%= f.label :award_type, 'Award Type', class: 'control-label' %>
-	  <% @award_types.each do |award_type| %>
-	    <br><%= f.radio_button :award_type_id, award_type.id, checked: @award.award_type_id == award_type.id %>
-	    <%= award_type.name.humanize %>
-	  <% end %>
+    <%= f.label :award_type_id, 'Award Type:', class: 'col-sm-2 control-label' %>
+		<div class="col-lg-5">
+			<% @award_types.each do |award_type| %>
+			  <div class="radio">
+			    <label>
+						<%= f.radio_button :award_type_id, award_type.id, checked: @award.award_type_id == award_type.id %>
+						<%= award_type.name.humanize %>
+			    </label>
+			  </div>
+		  <% end %>
+    </div>
 	</div>
-		
-	<div class="form-actions">
-  	<%= f.submit :Guardar, class: 'btn btn-primary' %>
-	</div>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-5">
+    	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
+    </div>
+  </div>
 <% end %>
-<br />
+
+<%= link_to [:admin, :awards], class: 'btn btn-default' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>

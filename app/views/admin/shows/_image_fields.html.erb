@@ -1,7 +1,16 @@
 <fieldset class="image">
+	<div class="destroy">
+		<%= f.hidden_field :_destroy %>
+		<button class="close remove_fields">X</button>
+	</div>
 	<% if f.object.new_record? %>
-		<%= f.input :remote_image_url %>
-		<%= f.file_field :image %>
+	  <div class="form-group">
+	    <%= f.label :remote_image_url, 'URL Imagen:', class: 'col-sm-4 control-label' %>
+			<div class="col-sm-7">
+	    	<%= f.text_field :remote_image_url, class: 'form-control' %>
+				<%= f.file_field :image %>
+	    </div>
+	  </div>
   <% else %>
 		<% if f.object.image.url %>
     	<%= image_tag(f.object.image.url(:smaller))  %>
@@ -9,9 +18,5 @@
 			<%= 'Imágen Inválida' %>
 		<% end %>
   <% end %>
-	<div class="destroy">
-		<%= f.hidden_field :_destroy %>
-		<button class="close remove_fields">X</button>
-	</div>
 	<%= f.check_box :show_portrait_id %>
 </fieldset>

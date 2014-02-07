@@ -1,10 +1,37 @@
-<%= simple_form_for [:admin, @function_type, @parse_detector_type] do |f| %>
-  <%= f.error_notification %>
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.association :cinema, as: :radio_buttons %>
+<%= form_for [:admin, @function_type, @parse_detector_type], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
+  <%= render_errors @parse_detector_type %>
+	
+  <div class="form-group">
+    <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :name, class: 'form-control' %>
+    </div>
   </div>
-  <div class="form-actions">
-    <%= f.button :submit, class: 'btn btn-primary' %>
+	
+	<% cinemas = Cinema.select([:id, :name]).order('name ASC').all %>
+	<% if cinemas.count > 0 %>
+		<div class="form-group">
+	    <%= f.label :cinema_id, 'Cine:', class: 'col-sm-2 control-label' %>
+			<div class="col-sm-5">
+		    <% cinemas.each do |cinema| %>
+				  <div class="radio">
+				    <label>
+							<%= f.radio_button :cinema_id, cinema.id, checked: @parse_detector_type.cinema_id == cinema.id %>
+			      	<%= cinema.name.humanize %>
+				    </label>
+					</div>
+		    <% end %>
+			</div>
+		</div>
+	<% end %>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-5">
+    	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
+    </div>
   </div>
+<% end %>
+
+<%= link_to [:admin, @function_type, :parse_detector_types], class: 'btn btn-default' do %>
+	<i class="icon-arrow-left"></i> Volver
 <% end %>

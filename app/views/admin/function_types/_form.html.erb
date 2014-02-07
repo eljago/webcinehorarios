@@ -3,10 +3,27 @@
   
   <div class="form-group">
     <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
-		<div class="col-lg-10">
+		<div class="col-lg-5">
     	<%= f.text_field :name, class: 'form-control' %>
     </div>
   </div>
+
+	<% cinemas = Cinema.select([:id, :name]).all(order: :name) %>
+	<% if cinemas.count > 0 %>
+	  <div class="form-group">
+	    <%= f.label :cinema_ids, 'Cines:', class: 'col-lg-2 control-label' %>
+			<div class="col-lg-5">
+				<% cinemas.each do |cinema| %>
+				  <div class="checkbox">
+				    <label>
+				    	<%= check_box_tag 'function_type[cinema_ids][]', cinema.id, @function_type.cinemas.map(&:id).include?(cinema.id) %>
+				    	<%= cinema.name.humanize %>
+				    </label>
+				  </div>
+			  <% end %>
+	    </div>
+	  </div>
+	<% end %>
 	
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">

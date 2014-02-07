@@ -1,11 +1,8 @@
-<% provide(:title, "#{@theaterable.name} Edit") %>
+<% provide(:title, "Editar Complejo") %>
 <%= render 'breadcrumbs' %>
 <h1>Editar Complejo</h1>
 <%= render 'form' %>
-<%= link_to [:admin, @theaterable, :theaters], class: 'btn btn-default' do %>
-  <i class="icon-arrow-left"></i>
-  Volver
-<% end %>
+&nbsp;
 <%= link_to [:admin, @theaterable, @theater], class: 'btn btn-default' do %>
   <i class="icon-edit"></i>
   Mostrar

@@ -1,33 +1,31 @@
-<fieldset class="nomination">
-	<div class="row">
-		<div class="col-sm-4 col-sm-offset-2">
-			<div class="row">
-				<div class="col-sm-5 control-label">
-					Show:
-				</div>
-				<div class="col-sm-7">
-					<%= f.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select, form-control" } %>
-		    </div>
-	    </div>
-		  <div class="form-group row">
-				<div class="col-sm-3 control-label">
-					Ganador?
-				</div>
-				<div class="col-sm-9">
-		    	<%= f.check_box :winner, class: 'form-control' %>
-		    </div>
-				<div class="destroy">
+<fieldset class="nomination row">
+		<div class="col-sm-5">
+			
+		  <div class="form-group">
+				<div class="destroy col-sm-1">
 					<%= f.hidden_field :_destroy %>
 					<button class="close remove_fields">X</button>
 				</div>
+		    <%= f.label :show_id, 'Nombre:', class: 'col-sm-2 col-sm-offset-1 control-label' %>
+				<div class="col-sm-8">
+					<%= f.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select, form-control" } %>
+		    </div>
 		  </div>
+			
+		  <div class="form-group">
+		    <%= f.label :winner, 'Ganador?', class: 'col-sm-4 control-label' %>
+				<div class="col-sm-8">
+		    	<%= f.check_box :winner, class: 'form-control' %>
+		    </div>
+		  </div>
+			
 	  </div>
-		<div class="col-sm-6">
+		
+		<div class="col-sm-5">
 			<h3 style="margin-top: 0;">Personas:</h3>
 		  <%= f.fields_for :nomination_person_roles do |builder| %>
 		    <%= render 'nomination_person_role_fields', f: builder %>
 		  <% end %>
 			<%= link_to_add_fields "Add Person", f, :nomination_person_roles %>
 		</div>
-	</div>
 </fieldset>

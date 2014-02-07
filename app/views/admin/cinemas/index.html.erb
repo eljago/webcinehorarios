@@ -11,7 +11,7 @@
   <% @cinemas.each do |cinema| %>
     <tr>
       <td>
-        <%= link_to cinema.name, admin_cinema_theaters_path(cinema) %>
+        <%= link_to cinema.name, [:admin, cinema, :theaters] %>
       </td>
       <td>
         <%= link_to image_tag(cinema.image, size: "80x80"), cinema.image.to_s %>

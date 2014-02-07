@@ -1,17 +1,93 @@
-<%= simple_form_for [:admin, @theaterable, @theater] do |f| %>
-  <%= f.error_notification %>
-  <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :active %>
-    <%= f.input :web_url %>
-    <%= f.input :address %>
-    <%= f.input :information %>
-    <%= f.input :latitude %>
-    <%= f.input :longitude %>
-    <%= f.association :city, as: :radio_buttons %>
-    <%= f.association :cinema, as: :radio_buttons %>
+<%= form_for [:admin, @theaterable, @theater], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
+  <%= render_errors @theater %>
+	
+  <div class="form-group">
+    <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :name, class: 'form-control' %>
+    </div>
   </div>
-  <div class="form-actions">
-    <%= f.button :submit, class: 'btn btn-primary' %>
+	
+  <div class="form-group">
+    <%= f.label :active, 'Activo?:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.check_box :active, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :web_url, 'URL Web:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :web_url, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :address, 'Dirección:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :address, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :information, 'Dirección:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_area :information, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :latitude, 'Latitud:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.number_field :latitude, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :longitude, 'Latitud:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.number_field :longitude, class: 'form-control' %>
+    </div>
+  </div>
+	
+	<% cities = City.select([:id, :name]).order('name ASC').all %>
+	<% if cities.count > 0 %>
+		<div class="form-group">
+	    <%= f.label :city_id, 'Ciudad:', class: 'col-sm-2 control-label' %>
+			<div class="col-sm-5">
+		    <% cities.each do |city| %>
+				  <div class="radio">
+				    <label>
+			      	<%= f.radio_button :city_id, city.id, checked: @theater.city_id == city.id %>
+			      	<%= city.name.humanize %>
+				    </label>
+					</div>
+		    <% end %>
+			</div>
+		</div>
+	<% end %>
+	
+	<% cinemas = Cinema.select([:id, :name]).order('name ASC').all %>
+	<% if cinemas.count > 0 %>
+		<div class="form-group">
+	    <%= f.label :cinema_id, 'Cine:', class: 'col-sm-2 control-label' %>
+			<div class="col-sm-5">
+		    <% cinemas.each do |cinema| %>
+				  <div class="radio">
+				    <label>
+			      	<%= f.radio_button :cinema_id, cinema.id, checked: @theater.cinema_id == cinema.id %>
+			      	<%= cinema.name.humanize %>
+				    </label>
+					</div>
+		    <% end %>
+			</div>
+		</div>
+	<% end %>
+	
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+    	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
+    </div>
   </div>
 <% end %>
+
+<%= link_to [:admin, @theaterable, :theaters], class: 'btn btn-default' do %>
+  <i class="icon-arrow-left"></i>
+  Volver
+<% end %>
+	

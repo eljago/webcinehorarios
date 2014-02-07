@@ -1,20 +1,22 @@
 class Admin::CitiesController < ApplicationController
-  
-  before_filter :get_country, only: [:index, :new, :create]
-  before_filter :get_city_country, only: [:edit, :update, :destroy]
-  
+    
   def index
+    @country = Country.find(params[:country_id])
     @cities = @country.cities.order(:name)
   end
   
   def new
+    @country = Country.find(params[:country_id])
     @city = @country.cities.new
   end
   
   def edit
+    @city = City.find(params[:id])
+    @country = @city.country
   end
   
   def create
+    @country = Country.find(params[:country_id])
     @city = @country.cities.new(params[:city])
 
     if @city.save
@@ -25,6 +27,8 @@ class Admin::CitiesController < ApplicationController
   end
   
   def update
+    @city = City.find(params[:id])
+    @country = @city.country
 
     if @city.update_attributes(params[:city])
       redirect_to [:admin, @country, :cities], notice: 'City was successfully updated.'
@@ -34,6 +38,8 @@ class Admin::CitiesController < ApplicationController
   end
   
   def destroy
+    @city = City.find(params[:id])
+    @country = @city.country
     @city.destroy
 
     redirect_to [:admin, @country, :cities]

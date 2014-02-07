@@ -1,2 +1,2 @@
-<% navigation_add 'Paises', admin_countries_path %>
-<% navigation_add @country.name, admin_country_cities_path(@country) if @country %>
+<% navigation_add 'Paises', [:admin, :countries] %>
+<% navigation_add @country.name, [:admin, @country, :cities] if @country %>

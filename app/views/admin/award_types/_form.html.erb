@@ -1,16 +1,20 @@
-<%= form_for [:admin, @award_type] do |f| %>
+<%= form_for [:admin, @award_type], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
   <%= render_errors @award_type %>
 	
-  <div class="form-group row">
+  <div class="form-group">
     <%= f.label :name, 'Nombre:', class: 'col-sm-2 control-label' %>
 		<div class="col-sm-5">
     	<%= f.text_field :name, class: 'form-control' %>
     </div>
   </div>
-	
-	<br />
-  <div class="form-actions">
-    <%= f.submit :Guardar, class: 'btn btn-primary' %>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-5">
+    	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
+    </div>
   </div>
 <% end %>
-<br />
+
+<%= link_to [:admin, :award_types], class: 'btn btn-default' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>

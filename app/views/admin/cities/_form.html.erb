@@ -1,10 +1,38 @@
-<%= simple_form_for [:admin, @country, @city] do |f| %>
-  <%= f.error_notification %>
-  <div class="form-inputs">
-    <%= f.input :name, label: 'Nombre' %>
-    <%= f.association :theaters, as: :check_boxes, label: 'Complejos' %>
+<%= form_for [:admin, @country, @city], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
+  <%= render_errors @city %>
+	
+  <div class="form-group">
+    <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-10">
+    	<%= f.text_field :name, class: 'form-control' %>
+    </div>
   </div>
-  <div class="form-actions">
-    <%= f.button :submit, 'Guardar', class: 'btn btn-primary' %>
+	
+	<% theaters = Theater.select([:id, :name]).order('name ASC').all %>
+	<% if theaters.count > 0 %>
+	  <div class="form-group">
+	    <%= f.label :admin, 'Theaters:', class: 'col-lg-2 control-label' %>
+			<div class="col-lg-5">
+				<% theaters.each do |theater| %>
+				  <div class="checkbox">
+				    <label>
+				    	<%= check_box_tag 'city[theater_ids][]', theater.id, @city.theaters.map(&:id).include?(theater.id) %>
+				    	<%= theater.name %>
+				    </label>
+				  </div>
+			  <% end %>
+	    </div>
+	  </div>
+	<% end %>
+	
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-10">
+    	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
+    </div>
   </div>
+<% end %>
+
+<%= link_to [:admin, @country, :cities], class: 'btn btn-default' do %>
+  <i class="icon-arrow-left"></i>
+  Volver
 <% end %>
