@@ -11,7 +11,7 @@ class Function < ActiveRecord::Base
   validates :date, presence: :true
   
   def self.create_string_from_horarios(string)
-    string.gsub(/\s{3,}|( - )|(, )|(-{4,})/, ", ")
+    string.gsub(/\s{3,}|( - )|(, )|(. )|(-+)/, ", ")
   end
   def self.create_array_from_horarios_string(string)
     Function.create_string_from_horarios(string).split(', ')
@@ -21,6 +21,7 @@ class Function < ActiveRecord::Base
   def self.create_showtimes(function, horarios)
     Function.create_array_from_horarios_string(horarios).each do |h|
       if h.size >= 5
+        h = h.gsub(/(;)/, ":")
         horaminuto = h.split(":")
         horaminuto[0] = horaminuto[0].to_i
         horaminuto[1] = horaminuto[1].to_i

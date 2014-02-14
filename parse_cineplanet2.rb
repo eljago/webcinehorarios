@@ -11,6 +11,9 @@ if ARGV[0]
   elsif ARGV[0] == "Costanera"
     URL = "http://www.cineplanet.cl/cines/costanera-center/"
     theater_name = "Costanera Center"
+  elsif ARGV[0] == "Prime"
+    URL = "http://www.cineplanet.cl/cines/prime/"
+    theater_name = "Costanera Prime"
   elsif ARGV[0] == "Concepcion"
     URL = "http://www.cineplanet.cl/cines/concepcion/"
     theater_name = "Concepción"
@@ -39,7 +42,12 @@ if ARGV[0]
   page.css('#lista-pelicula div.img a').each_with_index do |item, index|
   
     url2 = item[:href]
-    s2 = open(url2).read
+    begin
+      s2 = open(url2).read
+    rescue URI::InvalidURIError => e
+      puts "URI INVALID URI ERROR, NEXT!"
+      next
+    end
     s2.gsub!('&nbsp;', ' ') 
     page2 = Nokogiri::HTML(s2) 
     
