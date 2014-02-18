@@ -12,16 +12,20 @@
 			<%= f.text_field :character, class: 'form-control' %>
 		</div>
 		<div class="col-sm-6">
-		<%= f.check_box :director %> Director
-		<% if f.object.new_record? %>
-			<%= f.check_box :actor, {checked: true} %>
-		<% else %>
-			<%= f.check_box :actor %>
-		<% end %>
-		Actor
-		<%= f.check_box :writer %> Escritor
-		<%= f.check_box :creator %> Creador
-		<%= f.check_box :producer %> Productor
+			<div class="row">
+				<div class="col-sm-4 col-sm-offset-2 form-group">
+			    <%= f.check_box :director %>
+			    <%= f.label :director, 'Director' %>
+				</div>
+				<div class="col-sm-4 form-group">
+					<% if f.object.new_record? %>
+						<%= f.check_box :actor, {checked: true} %>
+					<% else %>
+						<%= f.check_box :actor %>
+					<% end %>
+			    <%= f.label :actor, 'Actor' %>
+				</div>
+			</div>
 		</div>
 	</div>
 </fieldset>
