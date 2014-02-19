@@ -21,3 +21,6 @@ node :genres do |s|
 		genre.name
 	end.join(', ')
 end
+node :has_functions do |show|
+	!show.functions.where('functions.date = ?',Date.current).count.zero?
+end

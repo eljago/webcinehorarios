@@ -7,7 +7,4 @@ child :videoable do
 	glue :portrait_image do
 		attributes :image_url => :portrait_image
 	end
-	node :has_functions do |show|
-		!show.functions.where('functions.date = ?',Date.current).count.zero?
-	end
 end
