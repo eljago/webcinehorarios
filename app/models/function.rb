@@ -11,7 +11,7 @@ class Function < ActiveRecord::Base
   validates :date, presence: :true
   
   def self.create_string_from_horarios(string)
-    string.gsub(/\s{3,}|( - )|(, )|(. )|(-+)/, ", ")
+    string.gsub(/\s{3,}|(\s-\s)|(,\s)|(\.\s)|(-+)/, ", ")
   end
   def self.create_array_from_horarios_string(string)
     Function.create_string_from_horarios(string).split(', ')
