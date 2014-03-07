@@ -1,4 +1,6 @@
-<% @theaters.each do |theater| %>
+<h1>Cines</h1>
+<br />
 
-	<p><%= link_to theater.name, admin_theater_functions_path(theater) %></p>
+<% @theaters.each do |theater| %>
+	<h3><%= link_to theater.name, admin_theater_functions_path(theater) %></h3>
 <% end %>

@@ -35,17 +35,6 @@ ActiveRecord::Schema.define(:version => 20140210191550) do
 
   add_index "award_specific_categories", ["award_id", "award_category_id"], :name => "award_s_categories"
 
-  create_table "award_specific_nominations", :force => true do |t|
-    t.string   "name"
-    t.integer  "winner_show"
-    t.integer  "award_id"
-    t.integer  "award_category_id"
-    t.datetime "created_at",        :null => false
-    t.datetime "updated_at",        :null => false
-  end
-
-  add_index "award_specific_nominations", ["award_id", "award_category_id"], :name => "award_s_nominations"
-
   create_table "award_types", :force => true do |t|
     t.string "name"
   end
@@ -197,13 +186,6 @@ ActiveRecord::Schema.define(:version => 20140210191550) do
 
   add_index "nominations", ["award_specific_category_id", "show_id"], :name => "index_nominations_on_award_specific_category_id_and_show_id"
 
-  create_table "nominations_people", :id => false, :force => true do |t|
-    t.integer "nomination_id"
-    t.integer "person_id"
-  end
-
-  add_index "nominations_people", ["nomination_id", "person_id"], :name => "index_nominations_people_on_nomination_id_and_person_id"
-
   create_table "opinions", :force => true do |t|
     t.string "author"
     t.text   "comment"
@@ -271,19 +253,19 @@ ActiveRecord::Schema.define(:version => 20140210191550) do
     t.integer  "duration"
     t.string   "name_original"
     t.string   "rating"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.date     "debut"
     t.integer  "year"
     t.boolean  "active"
     t.string   "image_tmp"
     t.string   "facebook_id"
     t.string   "metacritic_url"
-    t.integer  "metacritic_score"
+    t.integer  "metacritic_score",      :limit => 1
     t.string   "imdb_code"
-    t.integer  "imdb_score"
+    t.integer  "imdb_score",            :limit => 1
     t.string   "rotten_tomatoes_url"
-    t.integer  "rotten_tomatoes_score"
+    t.integer  "rotten_tomatoes_score", :limit => 1
     t.string   "slug"
   end
 

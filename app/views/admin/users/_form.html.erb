@@ -19,13 +19,13 @@
   <div class="form-group">
     <%= f.label :password, 'Password:', class: 'col-lg-2 control-label' %>
 		<div class="col-lg-5">
-    	<%= f.text_field :password, class: 'form-control' %>
+    	<%= f.password_field :password, class: 'form-control' %>
     </div>
   </div>
   <div class="form-group">
     <%= f.label :password_confirmation, 'Confirmar Password:', class: 'col-lg-2 control-label' %>
 		<div class="col-lg-5">
-    	<%= f.text_field :password_confirmation, class: 'form-control' %>
+    	<%= f.password_field :password_confirmation, class: 'form-control' %>
     </div>
   </div>
 	
@@ -36,21 +36,22 @@
 	    	<%= f.check_box :admin, class: 'form-control' %>
 	    </div>
 	  </div>
-	<% end %>
 
-  <div class="form-group">
-    <%= f.label :admin, 'Theaters:', class: 'col-lg-2 control-label' %>
-		<div class="col-lg-5">
-			<% Theater.select([:id, :name]).order('name ASC').all.each do |theater| %>
-			  <div class="checkbox">
-			    <label>
-		    		<%= check_box_tag 'user[theater_ids][]', theater.id, @user.theaters.map(&:id).include?(theater.id) %>
-		    		<%= theater.name %>
-			    </label>
-			  </div>
-		  <% end %>
-    </div>
-  </div>
+	  <div class="form-group">
+	    <%= f.label :admin, 'Theaters:', class: 'col-lg-2 control-label' %>
+			<div class="col-lg-5">
+				<% Theater.select([:id, :name]).order('name ASC').all.each do |theater| %>
+				  <div class="checkbox">
+				    <label>
+			    		<%= check_box_tag 'user[theater_ids][]', theater.id, @user.theaters.map(&:id).include?(theater.id) %>
+			    		<%= theater.name %>
+				    </label>
+				  </div>
+			  <% end %>
+	    </div>
+	  </div>
+	
+	<% end %>
 	
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
