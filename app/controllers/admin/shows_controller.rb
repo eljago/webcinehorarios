@@ -32,7 +32,7 @@ class Admin::ShowsController < ApplicationController
   def create
     if params[:show][:videos_attributes]
       params[:show][:videos_attributes].each do |key, video|
-        if video[:code] != ""
+        unless video[:code].blank?
           video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
         end
       end
@@ -62,7 +62,7 @@ class Admin::ShowsController < ApplicationController
       params[:show][:videos_attributes].each do |key, video|
         if video[:code] != ""
           db_video = @show.videos.find_by_id(video[:id].to_i)
-          if !db_video || db_video.code != video[:code]
+          if !db_video && db_video.code != video[:code]
             video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
           end
         end

@@ -1,0 +1,35 @@
+<% provide(:title, "Videos") %>
+<%= render 'breadcrumbs' %>
+<h1>Videos</h1>
+
+<%= will_paginate @videos, renderer: BootstrapPagination::Rails %>
+
+<table class="table">
+	<tr>
+		<th>Nombre</th>
+		<th>Imagen</th>
+		<th>Destacado</th>
+		<th></th>
+	</tr>
+
+<% @videos.each do |video| %>
+	<tr>
+		<td>
+			<%= video.name %>
+		</td>
+		<td>
+			<%= link_to image_tag(video.image.smaller), video.image.to_s if video.image %>
+		</td>
+		<td>
+			<%= video.outstanding %>
+		</td>
+		<td>
+			<%= render_index_actions [video], only: [:edit, :destroy] %>
+		</td>
+	</tr>
+<% end %>
+</table>
+
+<%= link_to [:new, :admin, :video], class: 'btn btn-default' do %>
+	<i class="icon-plus"></i> Nuevo Video
+<% end %>

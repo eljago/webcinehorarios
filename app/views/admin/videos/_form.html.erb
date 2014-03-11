@@ -1,0 +1,32 @@
+<%= form_for [:admin, @video], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
+  <%= render_errors @video %>
+	
+  <div class="form-group">
+    <%= f.label :outstanding, 'Destacado:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.check_box :outstanding, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :code, 'Código:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :code, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-lg-offset-2 col-lg-5">
+    	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>
+
+<%= link_to [:admin, :videos], class: 'btn btn-default' do %>
+	<i class="icon-arrow-left"></i> Volver
+<% end %>

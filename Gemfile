@@ -49,6 +49,7 @@ gem 'jquery-rails'
 gem 'simple_form'
 
 gem 'will_paginate', '~> 3.0'
+gem 'will_paginate-bootstrap'
 
 # gems used for image uploading
 gem 'carrierwave', :github => "jnicklas/carrierwave"

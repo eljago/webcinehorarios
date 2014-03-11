@@ -92,6 +92,7 @@ Webcinehorarios::Application.routes.draw do
   # ADMIN
   namespace :admin do
     
+    resources :videos
     resources :awards do
       resources :award_specific_categories
     end
