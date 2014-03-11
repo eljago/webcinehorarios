@@ -3,7 +3,7 @@ module Api
     class CinemasController < Api::V3::ApiController
       
       def show
-        @cinema = Cinema.find(params[:id])
+        @cinema = Cinema.includes(:theaters).where(theaters: {active: true}).find(params[:id])
       end
     end
   end
