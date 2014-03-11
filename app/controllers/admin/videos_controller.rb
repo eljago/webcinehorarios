@@ -4,7 +4,7 @@ class Admin::VideosController < ApplicationController
   before_filter :get_video, only: [:edit, :update, :destroy]
   
   def index
-    @videos = Video.order('videos.created_at ASC').page(params[:page]).per_page(1)
+    @videos = Video.order('videos.created_at ASC').page(params[:page]).per_page(10)
   end
   
   def new
