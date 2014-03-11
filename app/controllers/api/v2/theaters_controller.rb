@@ -4,7 +4,7 @@ module Api
       
       def index
         @theaters = Theater.where(cinema_id: params[:cinema_id]).select('theaters.id, theaters.name, theaters.cinema_id')
-          .where('theaters.active = ?', true).order('theaters.name').all
+          .where(active: true).order('theaters.name').all
       end
       
       def show_theaters
