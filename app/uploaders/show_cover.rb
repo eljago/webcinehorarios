@@ -2,9 +2,12 @@
 
 class ShowCover < CarrierWave::Uploader::Base
   include ::CarrierWave::Backgrounder::Delay
+  include CarrierWave::MimeTypes
   include CarrierWave::MiniMagick
   
-  storage :file
+  process :set_content_type
+  
+  storage :fog
   
   def extension_white_list
     %w(jpg jpeg gif png)
