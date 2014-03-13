@@ -304,15 +304,19 @@ class Admin::FunctionsController < ApplicationController
       end
       
       parse_detector_types.each do |pdt|
+        next if detected_function_types.include?(pdt.function_type_id)
         if titulo.include?(pdt.name)
           detected_function_types << pdt.function_type_id
           titulo.prepend("(#{pdt.name})-")
+
+          # Remove the Movie Type from the Parsed Show Name
+          # Parsed Show Name is gonna be used to detect the movie in the database.
+         parsed_show_name.gsub!(pdt.name, "")
         end
-         # Remove the Movie Type from the Parsed Show Name
-         # Parsed Show Name is gonna be used to detect the movie in the database.
-        parsed_show_name = parsed_show_name.gsub(pdt.name, "")
       end
-      
+
+       parsed_show_name.gsub!(/\(|\)|\s/, "")
+               
       parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
 
       movieFunctions = Hash[:name, titulo]
