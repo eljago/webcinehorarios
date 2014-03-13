@@ -54,6 +54,8 @@ gem 'will_paginate-bootstrap'
 # gems used for image uploading
 gem 'carrierwave', :github => "jnicklas/carrierwave"
 gem 'carrierwave_backgrounder'
+gem 'fog'
+gem 'unf'
 gem 'mini_magick'
 
 # gem 'resque', :require => "resque/server"
