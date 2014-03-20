@@ -1,6 +1,6 @@
 <%= form_tag admin_theater_create_parse_path, method: :put do %>
   <h1>
-    <%= @theater.name %>
+    <%= "#{@theater.name} (#{@functionsArray.count})" %>
   </h1>
   <% @functionsArray.each_with_index do |item, index| %>
     <%= simple_fields_for "movie_#{index}" do |b| %>

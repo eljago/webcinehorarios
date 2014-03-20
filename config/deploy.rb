@@ -67,3 +67,13 @@ task :tail, roles: :app do
     break if stream == :err
   end
 end
+
+namespace :sidekiq do
+  desc "tail sidekiq log files"
+  task :tail, roles: :app do
+    run "tail -f #{shared_path}/log/sidekiq.log" do |channel, stream, data|
+      puts "#{channel[:host]}: #{data}"
+      break if stream == :err
+    end
+  end
+end
