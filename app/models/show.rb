@@ -25,7 +25,7 @@ class Show < ActiveRecord::Base
   accepts_nested_attributes_for :show_person_roles, allow_destroy: true
 
   mount_uploader :image, ShowCover
-  store_in_background :image
+  #store_in_background :image
   
   def actors
     people.includes('show_person_roles').where('show_person_roles.actor'=>true)

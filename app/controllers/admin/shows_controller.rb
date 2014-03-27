@@ -60,9 +60,9 @@ class Admin::ShowsController < ApplicationController
     @show = Show.find(params[:id])
     if params[:show][:videos_attributes]
       params[:show][:videos_attributes].each do |key, video|
-        if video[:code] != ""
+        unless video[:code].blank?
           db_video = @show.videos.find_by_id(video[:id].to_i)
-          if !db_video && db_video.code != video[:code]
+          unless db_video && db_video.code == video[:code]
             video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
           end
         end
