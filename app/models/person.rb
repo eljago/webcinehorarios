@@ -12,5 +12,5 @@ class Person < ActiveRecord::Base
   validates :name, :presence => :true
   
   mount_uploader :image, PersonCover
-  store_in_background :image
+  # store_in_background :image
 end
