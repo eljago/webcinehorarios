@@ -24,6 +24,9 @@ end
 node :information do
 	@theater.information
 end
+node :cinema_id do
+	@theater.cinema_id
+end
 node :functions do
 	partial "api/v3/functions/functions", object: @functions 
 end
