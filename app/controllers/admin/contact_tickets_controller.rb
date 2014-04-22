@@ -11,7 +11,8 @@ class Admin::ContactTicketsController < ApplicationController
   def create
     @contact_ticket = ContactTicket.new(params[:contact_ticket])
     if @contact_ticket.save
-      ContactTicketWorker.perform_async(@contact_ticket.id)
+      # ContactTicketWorker.perform_async(@contact_ticket.id)
+      ContactMailer.cinehorarios_contacto(@contact_ticket).deliver
       redirect_to root_url, notice: 'Muchas gracias por ponerse en contacto con nosotros.'
     else
       session[:contact_ticket] = @contact_ticket
