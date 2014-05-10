@@ -42,11 +42,19 @@ if ARGV[0]
   page.css('#lista-pelicula div.img a').each_with_index do |item, index|
   
     url2 = item[:href]
+    retries = 42
     begin
       s2 = open(url2).read
     rescue URI::InvalidURIError => e
       puts "URI INVALID URI ERROR, NEXT!"
       next
+    rescue Errno::ETIMEDOUT
+       retries -= 1
+       if retries > 0
+         sleep 0.42 and retry
+       else
+         raise
+       end
     end
     s2.gsub!('&nbsp;', ' ') 
     page2 = Nokogiri::HTML(s2) 
