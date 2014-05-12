@@ -12,14 +12,10 @@
 
 	<body id="admin">
 		
+		<%= render 'layouts/navbar_application' %>
 		
-		<% if current_user && current_user.admin? %>
-			<%= render 'layouts/navbar_application' %>
-		<% else %>
-			<%= render 'layouts/navbar_application_nonadmin' %>
-		<% end %>
 		<div class="container">
-			<%= render_navigation if current_user && current_user.admin? %>
+			<%= render_navigation if current_member && current_member.admin? %>
 			<%= render 'layouts/messages' %>
 			<%= yield %>
 		</div>

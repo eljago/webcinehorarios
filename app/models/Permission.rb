@@ -1,7 +1,7 @@
 # encoding: utf-8
 class Permission
   
-  def initialize(user)
+  def initialize(member)
     allow 'api/v1/shows', [:billboard, :show, :comingsoon]
     allow 'api/v1/cities', :index
     allow 'api/v1/theaters', :show_theaters_joins
@@ -21,16 +21,20 @@ class Permission
     allow 'api/v3/awards', [:index]
     
     allow :home, [:index]
-    allow :cines, [:salaestrella]
-    allow 'admin/sessions', [:new, :create, :destroy, :facebook_create]
     allow 'admin/contact_tickets', [:create]
     
-    if user
-      allow 'admin/users', [:edit, :update]
-      allow 'admin/cines', [:index]
-      allow 'admin/functions', [:index, :new, :edit, :update, :copy_last_day, :delete_day, :delete_week, :create, :destroy]
+    # devise 
+    allow 'devise/sessions', [:new, :create, :destroy]
+    # allow 'devise/passwords', [:create, :new, :edit, :update]
+    # allow 'devise/registrations', [:cancel, :create, :new, :edit, :update, :destroy]
+    allow 'api/v3/sessions', [:create, :destroy]
+    allow 'api/v3/registrations', [:create]
+
+    allow 'admin/dashboard', [:index]
+    
+    if member
       
-      allow_all if user.admin?
+      allow_all if member.admin?
     end
   end
   

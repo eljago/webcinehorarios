@@ -101,25 +101,12 @@ class Admin::ShowsController < ApplicationController
     .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating, shows.slug')
     .order("debut DESC").uniq.all
   end
+  
   def comingsoon
     date = Date.current
     @shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', date, nil, true)
     .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating, shows.slug')
     .order("debut ASC").all
-  end
-  
-  def create_facebook
-    if Rails.env.production?
-      image_url = params[:show][:remote_image_url]
-      mensaje = params[:show][:name]
-      
-      if (current_user.facebook.access_token != nil)
-        graph = Koala::Facebook::API.new(current_user.facebook.get_page_access_token(ENV['FACEBOOK_CINEHORARIOS_PAGE_ID']))
-        response = graph.put_picture("#{image_url}",
-          { message: mensaje },ENV['FACEBOOK_CINEHORARIOS_ALBUM_ID'])
-        @show.facebook_id = response["id"]
-      end
-    end
   end
   
 end

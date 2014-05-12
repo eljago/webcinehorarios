@@ -8,6 +8,9 @@ gem 'rails', '3.2.13'
 gem 'nokogiri', require: false
 gem 'whenever', require: false
 
+gem 'devise'
+gem 'simple_token_authentication'
+
 group :development do
   gem 'sqlite3'
   gem 'better_errors'
@@ -63,7 +66,7 @@ gem 'sidekiq'
 gem 'sinatra', '>= 1.3.0', :require => nil
 
 # To use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.0.0'
+# gem 'bcrypt-ruby', '~> 3.0.0'
 
 # To use Jbuilder templates for JSON
 # gem 'jbuilder'

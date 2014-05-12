@@ -1,6 +1,6 @@
 class Comment < ActiveRecord::Base
-  attr_accessible :author, :content, :user, :show
+  attr_accessible :author, :content, :member_id, :show
   
-  belongs_to :user
+  belongs_to :member
   belongs_to :show
 end

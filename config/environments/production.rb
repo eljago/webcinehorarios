@@ -68,7 +68,10 @@ Webcinehorarios::Application.configure do
     user_name: ENV["MAIL_ACCOUNT"],
     password: ENV["MAIL_PASSWORD"]
   }
-
+  
+  #req for devise
+  config.action_mailer.default_url_options = { :host => 'cinehorarios.cl' }
+  
   # Enable threaded mode
   # config.threadsafe!
 

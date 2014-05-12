@@ -1,38 +1,41 @@
-<% provide(:title, 'Dashboard') %>
-<%= render 'breadcrumbs' %>
-<% if current_user.admin? %>
-  <% @cinemas.each do |cinema| %>
-    <h4>
-      <%= link_to cinema.name, [:admin, cinema, :theaters] %>
-    </h4>
-    <table class="table table-striped table-condensed">
-      <tr>
-        <th style="width: 150px;">Theater</th>
-        <% 8.times do |n| %>
-          <th>
-            <%= l Date.current + n, format: :short %>
-          </th>
-        <% end %>
-      </tr>
-      <% cinema.theaters.each do |theater| %>
-        <tr>
-          <td>
-            <%= link_to theater.name, [:admin, theater, :functions] %>
-          </td>
-          <% hash = theater.functions.count(group: :date) %>
-          <% 8.times do |n| %>
-            <% if hash[Date.current + n].blank? %>
-              <td class="dashboard no-functions" onclick="window.open( '<%= admin_theater_functions_path(theater, date: Date.current + n) %>','_blank')">
-                0
-              </td>
-            <% else %>
-              <td class="dashboard has-functions" onclick="window.open( '<%= admin_theater_functions_path(theater, date: Date.current + n) %>','_blank')">
-                <%= hash[Date.current + n] %>
-              </td>
-            <% end %>
-          <% end %>
-        </tr>
-      <% end %>
-    </table>
-  <% end %>
+<% if current_member.try(:admin?) %>
+
+	<% provide(:title, 'Dashboard') %>
+	<%= render 'breadcrumbs' %>
+
+	<% @cinemas.each do |cinema| %>
+	  <h4>
+	    <%= link_to cinema.name, [:admin, cinema, :theaters] %>
+	  </h4>
+	  <table class="table table-striped table-condensed">
+	    <tr>
+	      <th style="width: 150px;">Theater</th>
+	      <% 8.times do |n| %>
+	        <th>
+	          <%= l Date.current + n, format: :short %>
+	        </th>
+	      <% end %>
+	    </tr>
+	    <% cinema.theaters.each do |theater| %>
+	      <tr>
+	        <td>
+	          <%= link_to theater.name, [:admin, theater, :functions] %>
+	        </td>
+	        <% hash = theater.functions.count(group: :date) %>
+	        <% 8.times do |n| %>
+	          <% if hash[Date.current + n].blank? %>
+	            <td class="dashboard no-functions" onclick="window.open( '<%= admin_theater_functions_path(theater, date: Date.current + n) %>','_blank')">
+	              0
+	            </td>
+	          <% else %>
+	            <td class="dashboard has-functions" onclick="window.open( '<%= admin_theater_functions_path(theater, date: Date.current + n) %>','_blank')">
+	              <%= hash[Date.current + n] %>
+	            </td>
+	          <% end %>
+	        <% end %>
+	      </tr>
+	    <% end %>
+	  </table>
+	<% end %>
+
 <% end %>

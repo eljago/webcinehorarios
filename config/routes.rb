@@ -2,8 +2,9 @@ require 'api_constraints'
 
 Webcinehorarios::Application.routes.draw do
   
+  devise_for :members
+
   root :to => 'home#index'
-  get "cines/salaestrella"
   
   mount Sidekiq::Web, at: "/sidekiq"
 
@@ -12,6 +13,12 @@ Webcinehorarios::Application.routes.draw do
     
     ##### V3 #####
     scope module: :v3, constraints: ApiConstraints.new(version: 3) do
+
+      devise_scope :member do
+        post 'registrations' => 'registrations#create', :as => 'register'
+        post 'sessions' => 'sessions#create', :as => 'login'
+        delete 'sessions' => 'sessions#destroy', :as => 'logout'
+      end
       
       resources :shows, only: :show do
         collection do 
@@ -99,9 +106,7 @@ Webcinehorarios::Application.routes.draw do
     resources :award_specific_categories
     resources :award_categories
     resources :award_types
-    
-    resources :cines, only: :index
-    
+        
     resources :opinions
 
     resources :cinemas, except: :show do
@@ -110,8 +115,7 @@ Webcinehorarios::Application.routes.draw do
     
     get '' => 'dashboard#index', as: '/'
     resources :contact_tickets, only: [:index, :show, :create]
-    resources :users, :genres, :people
-    resources :sessions
+    resources :genres, :people
     
     resources :function_types do
       resources :parse_detector_types

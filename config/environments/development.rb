@@ -28,6 +28,9 @@ Webcinehorarios::Application.configure do
     password: ENV["MAIL_PASSWORD"]
   }
   
+  #req for devise
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
 

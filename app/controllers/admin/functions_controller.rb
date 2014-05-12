@@ -3,8 +3,6 @@ require 'nokogiri'
 require 'open-uri'
 
 class Admin::FunctionsController < ApplicationController
-
-  before_filter :check_user
   before_filter :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day]
   before_filter :get_function, only: [:edit, :update, :destroy]
   
@@ -196,13 +194,6 @@ class Admin::FunctionsController < ApplicationController
   end
   
   private
-  
-  def check_user
-    @theater ||= Theater.find(params[:theater_id])
-    if !current_user.admin? && !current_user.theaters.include?(@theater)
-      redirect_to admin_cines_path, notice: 'No puede editar las funciones de este Complejo'
-    end
-  end
   
   def get_function
     @function = Function.find(params[:id])
