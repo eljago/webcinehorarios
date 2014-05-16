@@ -1,9 +1,18 @@
 require "rvm/capistrano"
 require "bundler/capistrano"
 require 'sidekiq/capistrano'
+require 'capistrano-db-tasks'
 
 set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
+
+## CAPISTRANO DB TASKS
+# if you haven't already specified
+set :rails_env, "production"
+# if you want to remove the dump file after loading
+set :db_local_clean, true
+# if you want to work on a specific local environment (default = ENV['RAILS_ENV'] || 'development')
+set :locals_rails_env, "development"
 
 # Require the recipes you need, comment out the ones you don't
 

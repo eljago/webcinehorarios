@@ -274,19 +274,19 @@ ActiveRecord::Schema.define(:version => 20140512020550) do
     t.integer  "duration"
     t.string   "name_original"
     t.string   "rating"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
     t.date     "debut"
     t.integer  "year"
     t.boolean  "active"
     t.string   "image_tmp"
     t.string   "facebook_id"
     t.string   "metacritic_url"
-    t.integer  "metacritic_score",      :limit => 1
+    t.integer  "metacritic_score"
     t.string   "imdb_code"
-    t.integer  "imdb_score",            :limit => 1
+    t.integer  "imdb_score"
     t.string   "rotten_tomatoes_url"
-    t.integer  "rotten_tomatoes_score", :limit => 1
+    t.integer  "rotten_tomatoes_score"
     t.string   "slug"
   end
 
@@ -319,13 +319,13 @@ ActiveRecord::Schema.define(:version => 20140512020550) do
   add_index "theaters", ["slug"], :name => "index_theaters_on_slug", :unique => true
 
   create_table "users", :force => true do |t|
-    t.string   "email",           :default => "", :null => false
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.string   "email"
+    t.string   "password_digest"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.string   "name"
     t.boolean  "admin"
     t.string   "slug"
-    t.string   "password_digest"
   end
 
   add_index "users", ["slug"], :name => "index_users_on_slug", :unique => true

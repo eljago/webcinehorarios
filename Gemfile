@@ -4,7 +4,7 @@ gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+gem "capistrano-db-tasks", require: false
 gem 'nokogiri', require: false
 gem 'whenever', require: false
 

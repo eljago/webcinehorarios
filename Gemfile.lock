@@ -58,6 +58,7 @@ GEM
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
+    capistrano-db-tasks (0.2.1)
     carrierwave_backgrounder (0.3.0)
       carrierwave (~> 0.5)
     celluloid (0.15.2)
@@ -256,6 +257,7 @@ DEPENDENCIES
   bootstrap-sass (~> 3.1.0)
   bullet
   capistrano
+  capistrano-db-tasks
   carrierwave!
   carrierwave_backgrounder
   chosen-rails

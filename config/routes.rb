@@ -11,6 +11,41 @@ Webcinehorarios::Application.routes.draw do
   ##### API #####
   namespace :api, defaults: { format: 'json' } do
     
+    ##### V4 #####
+    scope module: :v4, constraints: ApiConstraints.new(version: 4) do
+
+      devise_scope :member do
+        post 'registrations' => 'registrations#create', :as => 'register'
+        post 'sessions' => 'sessions#create', :as => 'login'
+        delete 'sessions' => 'sessions#destroy', :as => 'logout'
+      end
+      
+      resources :shows, only: :show do
+        collection do 
+          get 'billboard'
+          get 'comingsoon'
+          get ':show_id/show_theaters' => 'theaters#show_theaters'
+          get ':show_id/favorite_theaters' => 'theaters#favorite_theaters'
+          get ':show_id/show_functions' => 'functions#show_functions'
+        end
+      end
+      
+      resources :awards, only: :index
+      
+      resources :videos, only: :index
+      
+      resources :theaters, only: [:show] do
+        resources :functions, only: :index
+        collection do
+          get 'theater_coordinates'
+        end
+      end
+      resources :cinemas, only: [:show] do
+        resources :theaters, only: :index do
+        end
+      end
+    end
+    
     ##### V3 #####
     scope module: :v3, constraints: ApiConstraints.new(version: 3) do
 
