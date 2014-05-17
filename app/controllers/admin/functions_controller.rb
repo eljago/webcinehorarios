@@ -149,6 +149,7 @@ class Admin::FunctionsController < ApplicationController
     is_cineplanet = params[:is_cineplanet]
     
     if cinema_name == "Cinemark" || cinema_name == "Cine Hoyts" || cinema_name == "Cinemundo" || (cinema_name == "Cineplanet" && is_cineplanet)
+      functions_to_save = []
       count = 0
       while hash = params["movie_#{count}"]
         unless hash[:show_id].blank?
@@ -161,13 +162,15 @@ class Admin::FunctionsController < ApplicationController
               function.function_type_ids = hash[:function_types]
               function.date = hash2[:date]
               Function.create_showtimes function, hash2[:horarios]
-              function.save
+              functions_to_save << function
+              # function.save
             end
             count2 = count2 + 1
           end
         end
         count = count + 1
       end
+      @theater.override_functions functions_to_save, params[:date].to_date
     elsif cinema_name == "Cineplanet"
       save_update_parsed_show params[:show_id], params[:parsed_show_id], params[:parsed_show_show_id]
       count = 0

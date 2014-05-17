@@ -50,4 +50,24 @@ class Function < ActiveRecord::Base
       end
     end
   end
+  
+  def total_identical? function
+    
+    return false unless identical? function
+    return false if function_types.length != function.function_types.length
+    return false if showtimes.length != function.showtimes.length
+    
+    fts = function.function_types.order(:id)
+    local_function_types = function_types.order(:id)
+    fts.each_with_index do |ft, index|
+      return false unless ft.identical? local_function_types[index]
+    end
+    sts = function.showtimes.order(:id)
+    local_showtimes = showtimes.order(:id)
+    sts.each_with_index do |st, index|
+      return false unless st.identical? local_showtimes[index]
+    end
+    
+    return true
+  end
 end
