@@ -27,6 +27,18 @@ class Show < ActiveRecord::Base
   mount_uploader :image, ShowCover
   #store_in_background :image
   
+  include PgSearch
+  pg_search_scope :search, against: [:name],
+    using: {tsearch: {dictionary: "spanish"}}
+  
+  def self.text_search(query)
+    if query.present?
+      search(query)
+    else
+      order('created_at desc')
+    end
+  end
+  
   def actors
     people.includes('show_person_roles').where('show_person_roles.actor'=>true)
   end
