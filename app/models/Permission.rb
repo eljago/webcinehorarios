@@ -20,6 +20,13 @@ class Permission
     allow 'api/v3/cinemas', [:show]
     allow 'api/v3/awards', [:index]
     
+    allow 'api/v4/shows', [:billboard, :show, :comingsoon]
+    allow 'api/v4/theaters', [:show_theaters, :favorite_theaters, :theater_coordinates, :show]
+    allow 'api/v4/functions', []
+    allow 'api/v4/videos', [:index]
+    allow 'api/v4/cinemas', [:show]
+    allow 'api/v4/awards', [:index]
+    
     allow :home, [:index]
     allow 'admin/contact_tickets', [:create]
     

@@ -6,6 +6,11 @@ class ApplicationController < ActionController::Base
   delegate :allow?, to: :current_permission
   helper_method :allow?
   
+  
+  def raise_route_not_found!
+    render :template => "errors/404", :status => 404
+  end
+  
   private
   
   def current_permission
@@ -27,4 +32,5 @@ class ApplicationController < ActionController::Base
     admin_path
   end
   
+    
 end
