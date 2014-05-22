@@ -1,4 +1,4 @@
-class Api::V4::ShowsController < Api::V3::ApiController
+class Api::V4::ShowsController < Api::V4::ApiController
   
   def billboard
     current_day = Date.current

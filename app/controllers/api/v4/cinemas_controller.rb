@@ -1,4 +1,4 @@
-class Api::V4::CinemasController < Api::V3::ApiController
+class Api::V4::CinemasController < Api::V4::ApiController
   
   def show
     @cinema = Cinema.includes(:theaters).where(theaters: {active: true}).find(params[:id])

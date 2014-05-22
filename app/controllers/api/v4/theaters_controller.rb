@@ -1,4 +1,4 @@
-class API:V4::TheatersController < Api::V3::ApiController
+class Api::V4::TheatersController < Api::V4::ApiController
   before_filter :get_date, only: [:show_theaters, :favorite_theaters, :show]
   
   def show_theaters
