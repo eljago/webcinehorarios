@@ -3,7 +3,7 @@ require 'nokogiri'
 require 'open-uri'
 
 class Admin::FunctionsController < ApplicationController
-  before_filter :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day]
+  before_filter :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day, :delete_week]
   before_filter :get_function, only: [:edit, :update, :destroy]
   
   def index
