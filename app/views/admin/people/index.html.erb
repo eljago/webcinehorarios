@@ -15,7 +15,7 @@
 	</div>
 </div>
 
-<p><%= will_paginate @people, renderer: BootstrapPagination::Rails %></p>
+<p><%= will_paginate @people, previous_label: h("<"), next_label: h(">"), renderer: BootstrapPagination::Rails %></p>
 
 <table class="table">
   <tr>
