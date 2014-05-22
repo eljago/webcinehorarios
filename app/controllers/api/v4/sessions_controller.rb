@@ -1,4 +1,4 @@
-class Api::V3::SessionsController < Devise::SessionsController
+class Api::V4::SessionsController < Devise::SessionsController
 
   def create
     self.resource = warden.authenticate!(auth_options)

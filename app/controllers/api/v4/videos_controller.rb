@@ -1,4 +1,4 @@
-class Api::V4::VideosController < Api::V3::ApiController
+class Api::V4::VideosController < Api::V4::ApiController
   
   def index
     page = params[:page].blank? ? 1 : params[:page]

@@ -3,7 +3,7 @@ require 'nokogiri'
 require 'open-uri'
 
 class Admin::FunctionsController < ApplicationController
-  before_filter :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day]
+  before_filter :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day, :delete_week]
   before_filter :get_function, only: [:edit, :update, :destroy]
   
   def index
@@ -108,6 +108,7 @@ class Admin::FunctionsController < ApplicationController
   def new_parse
     parse_data_array = prepare_for_new_parse
     parse_days = parse_data_array[0]
+    @parse_days_count = parse_days.length
     parse_detector_types = parse_data_array[1]
     if @cinema.name == "Cinemark"
       parse_cinemark parse_days, parse_detector_types
@@ -170,7 +171,7 @@ class Admin::FunctionsController < ApplicationController
         end
         count = count + 1
       end
-      @theater.override_functions functions_to_save, params[:date].to_date
+      @theater.override_functions functions_to_save, params[:date].to_date, params[:parse_days_count]
     elsif cinema_name == "Cineplanet"
       save_update_parsed_show params[:show_id], params[:parsed_show_id], params[:parsed_show_show_id]
       count = 0

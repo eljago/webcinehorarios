@@ -2,6 +2,10 @@ class Api::V4::ApiController < ApplicationController
   before_filter :restrict_access
   respond_to :json
 
+  def api_route_not_found!
+    render :json => {error: {code:  1, mensaje: "Ruta para #{params[:unmatched_route]} no existe", type: "CHRoutingError"} }
+  end
+  
   private 
 
   def restrict_access

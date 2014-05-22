@@ -5,9 +5,9 @@ class Admin::ShowsController < ApplicationController
   before_filter :get_show, only: :destroy
   
   def index
-    letter = params[:letter].blank? ? 'A' : params[:letter] 
-    @shows = Show.where('name like ?', "#{letter}%")
-    .order(:name).all
+    # letter = params[:letter].blank? ? 'A' : params[:letter] 
+    # @shows = Show.where('name like ?', "#{letter}%").order(:name).all
+    @shows = Show.text_search(params[:query]).paginate(page: params[:page], per_page: 10)
   end
   
   def show

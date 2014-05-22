@@ -1,11 +1,10 @@
-class Api::V4::CinemasController < Api::V3::ApiController
+class Api::V4::CinemasController < Api::V4::ApiController
   
   def show
     @cinema = Cinema.includes(:theaters).where(theaters: {active: true}).find(params[:id])
     @status_code = 1;
   rescue ActiveRecord::RecordNotFound
-    @status_code = 0;
-    render :json => {:state => {:code => 0}, :data => {} }
+    render :json => {error: {code:  0, mensaje: "No existe un Cine con id #{params[:id]}.", type: "CHCinemaNotFound"} }
   end
   
 end
