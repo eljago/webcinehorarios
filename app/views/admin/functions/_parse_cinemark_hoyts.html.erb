@@ -42,6 +42,7 @@
     <% end %>
   <% end %>
   <%= hidden_field_tag :is_cineplanet, "true" if !@is_cineplanet.blank? %>
+  <%= hidden_field_tag :parse_days_count, @parse_days_count %>
   <%= hidden_field_tag :date, @date.to_date %>
   <div class="form-actions">
     <%= submit_tag :submit, class: 'btn btn-primary' %>
