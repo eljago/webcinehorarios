@@ -3,8 +3,9 @@ class Admin::PeopleController < ApplicationController
   before_filter :get_person, only: [:show, :edit, :update, :destroy]
   
   def index
-    letter = params[:letter].blank? ? 'A' : params[:letter] 
-    @people = Person.where('name like ?', "#{letter}%").order(:name).all
+    # letter = params[:letter].blank? ? 'A' : params[:letter] 
+    # @people = Person.where('name like ?', "#{letter}%").order(:name).all
+    @people = Person.text_search(params[:query]).paginate(page: params[:page], per_page: 10)
   end
   
   def show

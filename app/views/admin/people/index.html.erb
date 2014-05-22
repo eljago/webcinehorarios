@@ -1,11 +1,21 @@
 <%= render 'breadcrumbs' %>
 <h1>Personas</h1>
 
-<%= link_to [:new, :admin, :person], class: 'btn btn-default' do %>
-	<i class="icon-plus"></i> Nueva Persona
-<% end %>
+<div class="row">
+	<div class="col-sm-3">
+		<%= link_to [:new, :admin, :person], class: 'btn btn-default' do %>
+			<i class="icon-plus"></i> Nueva Persona
+		<% end %>
+	</div>
+	<div class="col-sm-9">
+		<%= form_tag [:admin, :people], method: :get, class: 'form-inline', role: 'form' do %>
+			<%= text_field_tag :query, params[:query], class: 'form-control' %>
+			<%= submit_tag "Buscar", name: nil, class: 'btn btn-default' %>
+		<% end %>
+	</div>
+</div>
 
-<%= render 'shared/letter_pagination' %>
+<p><%= will_paginate @people, renderer: BootstrapPagination::Rails %></p>
 
 <table class="table">
   <tr>
