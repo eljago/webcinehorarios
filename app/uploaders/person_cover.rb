@@ -33,11 +33,11 @@ class PersonCover < CoverUploader
   private
   
   def is_landscape? picture
-    image = MiniMagick::Image.open(picture.path)
+    image = MiniMagick::Image.open(@file.file)
     image[:width] > image[:height]
   end
   def is_not_landscape? picture
-    image = MiniMagick::Image.open(picture.path)
+    image = MiniMagick::Image.open(@file.file)
     image[:width] <= image[:height]
   end
 end
