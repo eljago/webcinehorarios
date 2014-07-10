@@ -19,7 +19,7 @@ namespace :parse do
         begin
           timeout(10) do
             URL = show.metacritic_url
-            s = open(URL).read
+            s = open(URL, "User-Agent" => "Mozilla/5.0").read
             s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
             page = Nokogiri::HTML(s)
         
@@ -32,10 +32,8 @@ namespace :parse do
           end
         rescue Timeout::Error
           puts "Timeout::Error: #{$!}\n"
-          next
         rescue
           puts "Connection failed: #{$!}\n"
-          next
         end
       end
       
@@ -43,7 +41,7 @@ namespace :parse do
         begin
           timeout(10) do
             URL = "http://m.imdb.com/title/#{show.imdb_code}/"
-            s = open(URL).read
+            s = open(URL, "User-Agent" => "Mozilla/5.0").read
             s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
             page = Nokogiri::HTML(s)
             score = page.css("div#ratings-bar .vertically-middle").text[0..2].to_f*10.to_i
@@ -55,10 +53,8 @@ namespace :parse do
           end
         rescue Timeout::Error
           puts "Timeout::Error: #{$!}\n"
-          next
         rescue
           puts "Connection failed: #{$!}\n"
-          next
         end
       end
     
@@ -66,7 +62,7 @@ namespace :parse do
         begin
           timeout(10) do
             URL = show.rotten_tomatoes_url
-            s = open(URL).read
+            s = open(URL, "User-Agent" => "Mozilla/5.0").read
             s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
             page = Nokogiri::HTML(s)
       
@@ -79,10 +75,8 @@ namespace :parse do
           end
         rescue Timeout::Error
           puts "Timeout::Error: #{$!}\n"
-          next
         rescue
           puts "Connection failed: #{$!}\n"
-          next
         end
       end
       
