@@ -3,6 +3,7 @@
 require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
+require 'clipboard'
 
 if ARGV[0]
   if ARGV[0] == "Florida"
@@ -89,6 +90,8 @@ if ARGV[0]
       end
     end
   end
+  
+  Clipboard.copy hash
   
   puts hash
 end

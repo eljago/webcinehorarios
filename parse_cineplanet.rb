@@ -68,6 +68,8 @@ if ARGV[0]
   end
   browser.close
   
+  Clipboard.copy hash
+  
   puts hash
 end
 
