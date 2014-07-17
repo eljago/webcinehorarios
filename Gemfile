@@ -6,7 +6,12 @@ gem 'rails', '3.2.13'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 gem "capistrano-db-tasks", require: false
 gem 'nokogiri', require: false
+gem 'http', require: false
 gem 'whenever', require: false
+gem 'clipboard', require: false
+
+# Gem for Settings
+gem "rails-settings-cached", "0.2.4"
 
 gem 'devise'
 gem 'simple_token_authentication'

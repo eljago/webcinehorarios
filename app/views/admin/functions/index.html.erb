@@ -13,7 +13,7 @@
   <%= link_to 'Borrar día', {controller: 'functions', action: 'delete_day', date: params[:date]}, data: { confirm: '¿Está seguro que quiere borrar todas las funciones de este día?' }, method: :post, class: 'btn btn-danger' %>
   <%= link_to 'Borrar Semana', {controller: 'functions', action: 'delete_week', date: params[:date]}, data: { confirm: '¿Está seguro que quiere borrar todas las funciones de este día en adelante?' }, method: :post, class: 'btn btn-danger' %>
 	
-  <% if @theater.cinema.name == "Cinemark" || @theater.cinema.name == "Cine Hoyts" || @theater.cinema.name == "Cinemundo" %>
+  <% if @theater.cinema.name == "Cinemark" || @theater.cinema.name == "Cine Hoyts" || @theater.cinema.name == "Cinemundo" || @theater.cinema.name == "Cineplanet" %>
     <%= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f| %>
       <%= f.hidden_field :date, value: params[:date] %>
       <%= f.hidden_field :parse_type, value: 'day' %>
@@ -24,44 +24,6 @@
       <%= f.hidden_field :parse_type, value: 'week' %>
       <%= f.submit "Parse semana", class: 'btn btn-primary' %>
     <% end %>
-  <% end %>
-  <% if @theater.cinema.name == "Cineplanet" %>
-    <br>
-      <%= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f| %>
-        <%= f.hidden_field :date, value: params[:date] %>
-        <%= f.hidden_field :parse_type, value: 'day' %>
-        Theater only?
-        <%= f.check_box :theater_only %>
-        <%= f.text_field :url, size: 70, style: "margin-top: 10px" %>
-        <%= f.submit "Parse URL dia", class: 'btn btn-primary' %>
-      <% end %>
-    </br>
-    <br>
-      <%= form_for :new_parse, :url => { controller: :functions, action: :new_parse }, method: :get, html: {style: "display: inline;"} do |f| %>
-        <%= f.hidden_field :date, value: params[:date] %>
-        <%= f.hidden_field :parse_type, value: 'week' %>
-        Theater only?
-        <%= f.check_box :theater_only %>
-        <%= f.text_field :url, size: 70, style: "margin-top: 10px" %>
-        <%= f.submit "Parse URL semana", class: 'btn btn-primary' %>
-      <% end %>
-    </br>
-    <br>
-      <%= form_for :new_parse_ajax, :url => { controller: :functions, action: :new_parse_ajax }, method: :post, html: {style: "display: inline;"} do |f| %>
-        <%= f.hidden_field :date, value: params[:date] %>
-        <%= f.hidden_field :parse_type, value: 'day' %>
-        <%= f.text_field :text, size: 70, style: "margin-top: 10px" %>
-        <%= f.submit "Parse Dia Ajax", class: 'btn btn-primary' %>
-      <% end %>
-    </br>
-    <br>
-      <%= form_for :new_parse_ajax, :url => { controller: :functions, action: :new_parse_ajax }, method: :post, html: {style: "display: inline;"} do |f| %>
-        <%= f.hidden_field :date, value: params[:date] %>
-        <%= f.hidden_field :parse_type, value: 'week' %>
-        <%= f.text_field :text, size: 70, style: "margin-top: 10px" %>
-        <%= f.submit "Parse Semana Ajax", class: 'btn btn-primary' %>
-      <% end %>
-    </br>
   <% end %>
 		
 </div>

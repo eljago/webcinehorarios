@@ -70,6 +70,7 @@ GEM
       sass-rails (>= 3.2)
     chronic (0.9.1)
     chunky_png (1.2.8)
+    clipboard (1.0.5)
     coderay (1.0.9)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -119,6 +120,9 @@ GEM
     highline (1.6.19)
     hike (1.2.3)
     hirb (0.7.1)
+    http (0.6.1)
+      http_parser.rb (~> 0.6.0)
+    http_parser.rb (0.6.0)
     i18n (0.6.1)
     journey (1.0.4)
     jquery-rails (3.0.4)
@@ -180,6 +184,8 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
+    rails-settings-cached (0.2.4)
+      rails (>= 3.0.0)
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -265,6 +271,7 @@ DEPENDENCIES
   carrierwave!
   carrierwave_backgrounder
   chosen-rails
+  clipboard
   coffee-rails (~> 3.2.1)
   devise
   figaro
@@ -273,6 +280,7 @@ DEPENDENCIES
   font-awesome-sass-rails
   friendly_id (= 4.0.10.1)
   hirb
+  http
   jquery-rails
   meta_request
   methodfinder
@@ -285,6 +293,7 @@ DEPENDENCIES
   rack-mini-profiler
   railroady
   rails (= 3.2.13)
+  rails-settings-cached (= 0.2.4)
   rvm-capistrano
   sass-rails (~> 3.2.3)
   sidekiq

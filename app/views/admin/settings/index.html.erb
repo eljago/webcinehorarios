@@ -1,0 +1,16 @@
+<% provide(:title, 'Ajustes') %>
+
+<table class="table">
+  <tr>
+    <th>Propiedad</th>
+    <th>Valor</th>
+    <th></th>
+  </tr>
+	<% @settings.each do |item| %>
+	  <tr>
+	    <td><%= item.var %></td>
+	    <td><%= item.value %></td>
+	    <td><%= render_index_actions [item], only: [:edit] %></td>
+	  </tr>
+	<% end %>
+</table>

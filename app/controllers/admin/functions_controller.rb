@@ -1,6 +1,6 @@
 # encoding: utf-8
 require 'nokogiri'
-require 'open-uri'
+require 'http'
 
 class Admin::FunctionsController < ApplicationController
   before_filter :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day, :delete_week]
@@ -121,16 +121,6 @@ class Admin::FunctionsController < ApplicationController
     end
   end
   
-  def new_parse_ajax
-    parse_data_array = prepare_for_new_parse
-    parse_days = parse_data_array[0]
-    parse_detector_types = parse_data_array[1]
-    
-    @is_cineplanet = true
-    
-    parse_cineplanet_ajax parse_days, parse_detector_types
-  end
-  
   def save_update_parsed_show show_id, parsed_show_id, parsed_show_show_id
     if parsed_show_show_id.blank?
       parsed_show = ParsedShow.find(parsed_show_id)
@@ -149,7 +139,7 @@ class Admin::FunctionsController < ApplicationController
     cinema_name = @theater.cinema.name
     is_cineplanet = params[:is_cineplanet]
     
-    if cinema_name == "Cinemark" || cinema_name == "Cine Hoyts" || cinema_name == "Cinemundo" || (cinema_name == "Cineplanet" && is_cineplanet)
+    if cinema_name == "Cinemark" || cinema_name == "Cine Hoyts" || cinema_name == "Cinemundo" || cinema_name == "Cineplanet"
       functions_to_save = []
       count = 0
       while hash = params["movie_#{count}"]
@@ -172,27 +162,6 @@ class Admin::FunctionsController < ApplicationController
         count = count + 1
       end
       @theater.override_functions functions_to_save, params[:date].to_date, params[:parse_days_count]
-    elsif cinema_name == "Cineplanet"
-      save_update_parsed_show params[:show_id], params[:parsed_show_id], params[:parsed_show_show_id]
-      count = 0
-      while hash = params[:theaters]["theater_#{count}"]
-        count2 = 0
-        unless hash[:theater_id].blank?
-          theater = Theater.find(hash[:theater_id])
-          while hash2 = hash["function_#{count2}"]
-            if hash2[:horarios].size >= 5
-              function = theater.functions.new
-              function.show_id = params[:show_id]
-              function.function_type_ids = params[:function_types][:function_types]
-              function.date = hash2[:date]
-              Function.create_showtimes function, hash2[:horarios]
-              function.save
-            end
-            count2 = count2 + 1
-          end
-        end
-        count = count + 1
-      end
     end
     redirect_to admin_theater_functions_path(date: params[:date]), notice: "Exito"
   end
@@ -228,51 +197,6 @@ class Admin::FunctionsController < ApplicationController
     parse_detector_types = @cinema.parse_detector_types.all
     
     [parse_days, parse_detector_types]
-  end
-  
-  def parse_cineplanet_ajax(parse_days, parse_detector_types)
-    hash = eval(params[:new_parse_ajax][:text])
-    
-    @functionsArray = []
-    functions = hash[:functions]
-    functions.each_with_index do |item, index|
-      titulo = item[:name]
-      
-      parsed_show_name = titulo.gsub(" ","")
-      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
-      
-      detected_function_types = []
-      
-      parse_detector_types.each do |pdt|
-        if titulo.include?(pdt.name)
-          detected_function_types << pdt.function_type_id
-          titulo.prepend("(#{pdt.name})-")
-        end
-        parsed_show_name = parsed_show_name.gsub(pdt.name, "")
-      end
-      
-      movieFunctions = {name: titulo}
-      movieFunctions[:parsed_show] = {id: parsed_show.id}
-      movieFunctions[:parsed_show][:show_id] = parsed_show.show_id
-      movieFunctions[:function_types] = detected_function_types
-      movieFunctions[:functions] = []
-
-      days = item[:days]
-      days.each_with_index do |day, index|
-        date = day[:date] # => ["2013", "12", "14"]
-        dia = date.last.to_i # => 14
-        
-        if parse_days.map(&:day).include?(dia)
-          function = {day: date.join("-")}
-          
-          horarios = day[:times]
-          function[:horarios] = horarios
-          function[:date] = @date.advance_to_day(dia)
-          movieFunctions[:functions] << function
-        end
-      end
-      @functionsArray << movieFunctions if movieFunctions[:functions].count > 0
-    end
   end
   
   def parse_cinemark(parse_days, parse_detector_types)
@@ -313,6 +237,7 @@ class Admin::FunctionsController < ApplicationController
        parsed_show_name.gsub!(/\(|\)|\s/, "")
                
       parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
+      puts parsed_show
 
       movieFunctions = Hash[:name, titulo]
       movieFunctions[:parsed_show] = Hash[:id, parsed_show.id]
@@ -400,66 +325,75 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def parse_cineplanet(parse_days, parse_detector_types)
-    url = params[:new_parse][:url] unless params[:new_parse].blank?
+    theater_name = @theater.name
+    url = "http://www.cineplanet.cl/"
     unless url.blank?
-      s = open(url).read
+      proxy_ip = Settings.proxy.split(':')[0]
+      proxy_port = Settings.proxy.split(':')[1]
+      s = HTTP.via(proxy_ip, proxy_port.to_i).get(url).to_s
       s.gsub!('&nbsp;', ' ') 
       page = Nokogiri::HTML(s)
-      
+
       @functionsArray = []
-      
-      @name_pelicula = page.css('div[class="superior titulo-tamano-superior-modificado"]').text.split.join(' ')
-      parsed_show_name = @name_pelicula.gsub(" ","")
-      
-      @function_types_detected = []
-      parse_detector_types.each do |pdt|
-        if @name_pelicula.include?(pdt.name)
-          @function_types_detected << pdt.function_type_id
-          @name_pelicula.prepend("(#{pdt.name})-")
-        end
-        parsed_show_name = parsed_show_name.gsub(pdt.name, "")
-      end
-      
-      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
-      @parsed_show = Hash[:id, parsed_show.id]
-      @parsed_show[:show_id] = parsed_show.show_id
-      
-      count = -1
-      ignore_theater = false
-      theater_only = false
-      if params[:new_parse][:theater_only] == "1"
-        theater_only = true
-      end
-      lista = page.css("div.contenedor-lista-peliculas2 div.texto-lista").each_with_index do |div, index|
-        strong = div.css("strong").text
+
+      page.css('#lista-pelicula div.img a').each_with_index do |item, index|
+  
+        url2 = item[:href]
+        s2 = HTTP.via(proxy_ip, proxy_port.to_i).get(url2).to_s
+        s2.gsub!('&nbsp;', ' ') 
+        page2 = Nokogiri::HTML(s2) 
+    
+        pelicula = page2.css('div[class="superior titulo-tamano-superior-modificado"]')
+        next if pelicula == nil
+        pelicula = pelicula.text.split.join(' ')
         
-        # si strong.blank? == true, entonces se está en los horarios
-        if strong.blank? && !ignore_theater
-          if spans = div.css('span.flotar-izquierda')
-            
-            dia = spans[0].text.split(" ").last.to_i
-            
-            if parse_days.map(&:day).include?(dia)
-              horarios = Function.create_string_from_horarios(spans[1])
-              @functionsArray[count][:functions] << { date: @date.advance_to_day(dia), horarios: horarios }
-            end
-          end
-          ignore_theater = false
-        else
-          if theater_only
-            if strong == @theater.name
-              count = count + 1
-              @functionsArray << { theater: strong, functions: [] }
-              ignore_theater = false
-            else
-              ignore_theater = true
-            end
-          else
-            count = count + 1
-            @functionsArray << { theater: strong, functions: [] }
+        parsed_show_name = pelicula.gsub(" ","")
+        
+        detected_function_types = []
+        parse_detector_types.each do |pdt|
+          next if detected_function_types.include?(pdt.function_type_id)
+          if pelicula.include?(pdt.name)
+            detected_function_types << pdt.function_type_id
+            pelicula.prepend("(#{pdt.name})-")
+            parsed_show_name.gsub!(pdt.name, "")
           end
         end
+      
+        parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
+        
+        movieFunctions = {name: pelicula}
+        movieFunctions[:parsed_show] = {id: parsed_show.id}
+        movieFunctions[:parsed_show][:show_id] = parsed_show.show_id
+        movieFunctions[:function_types] = detected_function_types
+        movieFunctions[:functions] = []
+        
+        theater_found = false
+        days = []
+        page2.css("div.contenedor-lista-peliculas2 div.texto-lista").each_with_index do |div, index|
+          strong = div.css("strong").text
+          # si strong.empty?, entonces se está en los horarios
+          if strong.empty? && theater_found
+            if spans = div.css('span.flotar-izquierda')
+          
+              date_array = spans[0].text.split
+              horarios = spans[1].text.gsub(/\s{3,}/, ", ")
+              function = Hash.new
+              function[:day] = date_array.to_s
+              function[:horarios] = horarios
+              function[:date] = @date.advance_to_day date_array[1].to_i
+              movieFunctions[:functions] << function
+            end
+            ignore_theater = false
+          else
+            break if theater_found
+            if strong == theater_name
+              theater_found = true
+            end
+          end
+        end
+        @functionsArray << movieFunctions if movieFunctions[:functions].count > 0
       end
+      
     else
       redirect_to [:admin, :cinemas], alert: "URL inválida" 
     end

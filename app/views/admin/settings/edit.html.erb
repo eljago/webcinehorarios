@@ -1,0 +1,16 @@
+<% provide(:title, 'Edit Ajustes') %>
+
+<h1>Editar Ajustes</h1>
+
+<%= simple_form_for([:admin, @setting]) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :var %>
+    <%= f.input :value %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Save" %>
+  </div>
+<% end %>

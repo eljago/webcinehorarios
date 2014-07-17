@@ -1,8 +1,0 @@
-<% provide(:title, "#{@theater.name} Parse Ajax") %>
-<%= render 'breadcrumbs' %>
-<h1>Nueva Función</h1>
-<%= render 'parse_cinemark_hoyts' %>
-<%= link_to admin_theater_functions_path(@theater, date: @date), class: 'btn btn-default' do %>
-  <i class="icon-arrow-left"></i>
-  Volver
-<% end %>

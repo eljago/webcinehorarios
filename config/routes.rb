@@ -188,6 +188,8 @@ Webcinehorarios::Application.routes.draw do
       resources :videos
       post 'functions/copy_last_day' => 'functions#copy_last_day', as: 'functions_copy'
     end
+    
+    resources :settings, only: [:index, :edit, :update]
   end
   
   match '*unmatched_route', :to => 'application#raise_route_not_found!'
