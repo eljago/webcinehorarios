@@ -26,7 +26,7 @@ set :deploy_via, :remote_cache
 set :use_sudo, false
 
 set :scm, "git"
-set :repository, "git@github.com:eljago/#{application}.git"
+set :repository, "ssh://perforce@107.170.169.97:1525/home/perforce/repos/#{application}.git"
 set :branch, "master"
 
 default_run_options[:pty] = true

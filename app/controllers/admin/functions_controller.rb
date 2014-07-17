@@ -368,7 +368,6 @@ class Admin::FunctionsController < ApplicationController
         movieFunctions[:functions] = []
         
         theater_found = false
-        days = []
         page2.css("div.contenedor-lista-peliculas2 div.texto-lista").each_with_index do |div, index|
           strong = div.css("strong").text
           # si strong.empty?, entonces se está en los horarios
@@ -376,14 +375,17 @@ class Admin::FunctionsController < ApplicationController
             if spans = div.css('span.flotar-izquierda')
           
               date_array = spans[0].text.split
-              horarios = spans[1].text.gsub(/\s{3,}/, ", ")
-              function = Hash.new
-              function[:day] = date_array.to_s
-              function[:horarios] = horarios
-              function[:date] = @date.advance_to_day date_array[1].to_i
-              movieFunctions[:functions] << function
+              dia = date_array[1].to_i
+              
+              if parse_days.map(&:day).include?(dia)
+                horarios = spans[1].text.gsub(/\s{3,}/, ", ")
+                function = Hash.new
+                function[:day] = date_array.to_s
+                function[:horarios] = horarios
+                function[:date] = @date.advance_to_day dia
+                movieFunctions[:functions] << function
+              end
             end
-            ignore_theater = false
           else
             break if theater_found
             if strong == theater_name
