@@ -1,2 +1,4 @@
 jQuery ->
-	$('.chzn-select').chosen()
+	$('.chzn-select').on 'click', ->
+		$(@).chosen()
+		return
