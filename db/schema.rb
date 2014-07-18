@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140708194126) do
+ActiveRecord::Schema.define(:version => 20140718103457) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -238,6 +238,7 @@ ActiveRecord::Schema.define(:version => 20140708194126) do
     t.datetime "updated_at", :null => false
     t.string   "image_tmp"
     t.string   "slug"
+    t.string   "imdb_code"
   end
 
   add_index "people", ["slug"], :name => "index_people_on_slug", :unique => true

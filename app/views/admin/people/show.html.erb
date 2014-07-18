@@ -6,8 +6,30 @@
 </p>
 <p>
   <b>Imagen:</b>
-  <%= link_to(image_tag(@person.image.url), @person.image.to_s) if @person.image %>
+  <%= link_to(image_tag(@person.image.url), @person.image.to_s) if @person.image.present? %>
 </p>
+<p>
+  <b>Imdb Code:</b>
+  <%= link_to(@person.imdb_code, "http://m.imdb.com/name/#{@person.imdb_code}/") if @person.imdb_code.present? %>
+</p>
+
+<h2>Movies</h2>
+
+<table class="table">
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @person.shows.each do |show| %>
+  <tr>
+		<td><%= link_to image_tag(show.image.smallest), show.image.to_s if show.image.present? %></td>
+    <td><%= show.name %></td>
+		<td><%= render_index_actions [show] %></td>
+  </tr>
+<% end %>
+</table>
 
 <%= link_to [:admin, :people], class: 'btn btn-default' do %>
 	<i class="icon-arrow-left"></i> Volver
