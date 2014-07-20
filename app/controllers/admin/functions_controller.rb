@@ -7,7 +7,7 @@ class Admin::FunctionsController < ApplicationController
   before_filter :get_function, only: [:edit, :update, :destroy]
   
   def index
-    @dates_array = ((Date.current-1)..(Date.current+7))
+    @dates_array = ((Date.current-2)..(Date.current+7))
     
     if params[:date].blank? || !@dates_array.include?(params[:date].to_date)
       params[:date] = Date.current
