@@ -7,6 +7,6 @@ jQuery ->
   $('form').on 'click', '.add_fields', (event) ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
-    $(this).after($(this).data('fields').replace(regexp, time))
+    $(this).before($(this).data('fields').replace(regexp, time))
     $('fieldset.show_person_role:last .chzn-select').chosen()
     event.preventDefault()

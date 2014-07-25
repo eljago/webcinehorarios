@@ -1,17 +1,22 @@
-<fieldset class="show_person_role">
+<fieldset id="showpersonroles_<%= f.object.id %>" class="show_person_role">
 	<div class="row">
+		<div class="destroy" style: "display: inline; float: left;">
+			<%= f.hidden_field :_destroy %>
+			<button class="close remove_fields">X</button>
+		</div>
+		<div class="col-sm-1 handle">
+			<% if f.object.present? && f.object.person.present? && f.object.person.image.smallest.present? %>
+	    	<%= image_tag(f.object.person.image.smallest, size: '50x70')  %>
+			<% end %>
+		</div>
 		<div class="col-sm-3">
-			<div class="destroy" style: "display: inline; float: left;">
-				<%= f.hidden_field :_destroy %>
-				<button class="close remove_fields">X</button>
-			</div>
 			<%= f.collection_select :person_id, @people, :id, :name, {include_blank: true}, { class: "chzn-select", style: "width: 90%;" } %>
 			
 		</div>
 		<div class="col-sm-3">
 			<%= f.text_field :character, class: 'form-control' %>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-sm-4">
 			<div class="row">
 				<div class="col-sm-4 col-sm-offset-2 form-group">
 			    <%= f.check_box :director %>

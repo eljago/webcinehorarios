@@ -23,7 +23,7 @@ module Api
         shows.name_original, shows.information, shows.debut, shows.rating, shows.year,
         shows.metacritic_score, shows.imdb_score, shows.rotten_tomatoes_score,
         shows.metacritic_url, shows.imdb_code, shows.rotten_tomatoes_url')
-        .includes(:show_person_roles => :person).find(params[:id])
+        .includes(:show_person_roles => :person).order('show_person_roles.position').find(params[:id])
       end
       
     end

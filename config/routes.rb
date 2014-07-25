@@ -188,6 +188,7 @@ Webcinehorarios::Application.routes.draw do
       resources :videos
       post 'functions/copy_last_day' => 'functions#copy_last_day', as: 'functions_copy'
     end
+    post 'show_person_roles/sort' => 'show_person_roles#sort', as: 'show_person_roles_sort'
     
     resources :settings, only: [:index, :edit, :update]
   end

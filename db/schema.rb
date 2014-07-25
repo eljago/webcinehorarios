@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140718103457) do
+ActiveRecord::Schema.define(:version => 20140725033947) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "access_token"
@@ -275,6 +275,7 @@ ActiveRecord::Schema.define(:version => 20140718103457) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "character"
+    t.integer  "position"
   end
 
   add_index "show_person_roles", ["person_id", "show_id"], :name => "index_show_person_roles_on_person_id_and_show_id"

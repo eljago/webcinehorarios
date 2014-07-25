@@ -142,9 +142,11 @@
 			<div class="row">
 				<div class="col-md-12">
 					<h3>Personas:</h3>
-					<%= f.fields_for :show_person_roles do |b| %>
-					  <%= render 'show_person_role_fields', f: b %>
-					<% end %>
+					<div id="showpersonroles" data-update-url="<%= admin_show_person_roles_sort_url %>">
+						<%= f.fields_for :show_person_roles do |b| %>
+						  <%= render 'show_person_role_fields', f: b %>
+						<% end %>
+					</div>
 					<br />
 					<%= link_to_add_fields "Add Person", f, :show_person_roles %>
 					<h3>Imagenes:</h3>

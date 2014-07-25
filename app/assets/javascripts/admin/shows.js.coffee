@@ -1,4 +1,7 @@
 jQuery ->
-	$('.chzn-select').on 'click', ->
-		$(@).chosen()
-		return
+	$('.chzn-select').chosen()
+	$('#showpersonroles').sortable
+		axis: 'y'
+		handle: '.handle'
+		update: ->
+			$.post($(this).data('update-url'), $(this).sortable('serialize'))

@@ -25,7 +25,7 @@ class Admin::ShowsController < ApplicationController
   end
   
   def edit
-    @show = Show.find(params[:id])
+    @show = Show.includes(:show_person_roles => :person).order('show_person_roles.position').find(params[:id])
     @people = Person.select([:id, :name]).order('people.name ASC').all
   end
   

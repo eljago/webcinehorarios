@@ -56,7 +56,9 @@ gem 'bootstrap-sass', '~> 3.1.0'
 gem "font-awesome-rails"
 
 gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'simple_form'
+gem 'acts_as_list'
 
 gem 'will_paginate', '~> 3.0'
 gem 'will_paginate-bootstrap'
