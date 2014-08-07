@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: cinemas
+#
+#  id          :integer          not null, primary key
+#  name        :string(255)
+#  image       :string(255)
+#  information :text
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  slug        :string(255)
+#  image_tmp   :string(255)
+#
+
 class Cinema < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged

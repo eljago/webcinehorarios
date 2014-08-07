@@ -1,3 +1,11 @@
+# == Schema Information
+#
+# Table name: award_categories
+#
+#  id   :integer          not null, primary key
+#  name :string(255)
+#
+
 class AwardCategory < ActiveRecord::Base
   attr_accessible :name
 

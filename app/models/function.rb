@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: functions
+#
+#  id         :integer          not null, primary key
+#  theater_id :integer
+#  show_id    :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  date       :date
+#
+
 class Function < ActiveRecord::Base
   attr_accessible :theater_id, :show_id, :function_type_ids, :date, :showtimes_ids
   

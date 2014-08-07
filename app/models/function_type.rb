@@ -1,3 +1,11 @@
+# == Schema Information
+#
+# Table name: function_types
+#
+#  id   :integer          not null, primary key
+#  name :string(255)
+#
+
 class FunctionType < ActiveRecord::Base
   attr_accessible :name, :cinema_ids
   

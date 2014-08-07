@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: people
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  image      :string(255)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  image_tmp  :string(255)
+#  slug       :string(255)
+#  imdb_code  :string(255)
+#
+
 class Person < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: :slugged

@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: nominations
+#
+#  id                         :integer          not null, primary key
+#  winner                     :boolean
+#  award_specific_category_id :integer
+#  show_id                    :integer
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#
+
 class Nomination < ActiveRecord::Base
   attr_accessible :winner, :show_id, :award_specific_category_id, :nomination_person_roles_attributes
   

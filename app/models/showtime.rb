@@ -1,3 +1,12 @@
+# == Schema Information
+#
+# Table name: showtimes
+#
+#  id          :integer          not null, primary key
+#  time        :datetime
+#  function_id :integer
+#
+
 class Showtime < ActiveRecord::Base
   
   attr_accessible :time

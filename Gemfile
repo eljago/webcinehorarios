@@ -28,6 +28,8 @@ group :development do
   gem 'awesome_print'
   
   gem 'railroady'
+  
+  gem 'annotate', '~> 2.6.5'
 end
 gem 'rack-mini-profiler'
 

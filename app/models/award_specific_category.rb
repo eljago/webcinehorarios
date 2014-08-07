@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: award_specific_categories
+#
+#  id                :integer          not null, primary key
+#  name              :string(255)
+#  winner_type       :string(255)
+#  winner_show       :integer
+#  award_id          :integer
+#  award_category_id :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
 class AwardSpecificCategory < ActiveRecord::Base
   attr_accessible :name, :award_category_id, :award_id, :nominations_attributes, :winner_type
   
