@@ -9,6 +9,11 @@
 #  updated_at :datetime         not null
 #  date       :date
 #
+# Indexes
+#
+#  index_functions_on_show_id     (show_id)
+#  index_functions_on_theater_id  (theater_id)
+#
 
 class Function < ActiveRecord::Base
   attr_accessible :theater_id, :show_id, :function_type_ids, :date, :showtimes_ids

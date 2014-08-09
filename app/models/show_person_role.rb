@@ -15,6 +15,10 @@
 #  character  :string(255)
 #  position   :integer
 #
+# Indexes
+#
+#  index_show_person_roles_on_person_id_and_show_id  (person_id,show_id)
+#
 
 class ShowPersonRole < ActiveRecord::Base
   acts_as_list

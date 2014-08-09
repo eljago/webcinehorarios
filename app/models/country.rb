@@ -8,10 +8,14 @@
 #  updated_at :datetime         not null
 #  slug       :string(255)
 #
+# Indexes
+#
+#  index_countries_on_slug  (slug) UNIQUE
+#
 
 class Country < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
   
   attr_accessible :name
   

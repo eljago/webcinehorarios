@@ -13,6 +13,10 @@
 #  image_tmp      :string(255)
 #  outstanding    :boolean
 #
+# Indexes
+#
+#  index_videos_on_videoable_id_and_videoable_type  (videoable_id,videoable_type)
+#
 
 class Video < ActiveRecord::Base
   attr_accessible :name, :code, :image, :remote_image_url, :outstanding

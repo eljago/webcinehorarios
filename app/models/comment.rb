@@ -10,6 +10,11 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_comments_on_member_id  (member_id)
+#  index_comments_on_show_id    (show_id)
+#
 
 class Comment < ActiveRecord::Base
   attr_accessible :author, :content, :member_id, :show

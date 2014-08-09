@@ -24,10 +24,14 @@
 #  rotten_tomatoes_score :integer
 #  slug                  :string(255)
 #
+# Indexes
+#
+#  index_shows_on_slug  (slug) UNIQUE
+#
 
 class Show < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
   
   attr_accessible :show_person_roles_attributes, :genre_ids, :active, :year, :debut, :name, :image, :information, 
   :duration, :name_original, :rating, :remote_image_url, :images_attributes, :videos_attributes,

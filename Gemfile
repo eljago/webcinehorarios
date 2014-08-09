@@ -1,17 +1,18 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '4.0.8'
+
+gem 'pg'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-gem "capistrano-db-tasks", require: false
 gem 'nokogiri', require: false
 gem 'http', require: false
 gem 'whenever', require: false
 gem 'clipboard', require: false
 
 # Gem for Settings
-gem "rails-settings-cached", "0.2.4"
+gem "rails-settings-cached", "0.3.1"
 
 gem 'devise'
 gem 'simple_token_authentication'
@@ -30,35 +31,37 @@ group :development do
   gem 'railroady'
   
   gem 'annotate', '~> 2.6.5'
+  
+  gem 'rspec-rails', '~> 3.0.0'
+  
+  gem 'rvm-capistrano', '1.4.4', require: false
+  gem 'capistrano', '2.15.4', require: false
+  gem "capistrano-sidekiq", require: false
+  gem "capistrano-db-tasks", '0.2.1', require: false
 end
 gem 'rack-mini-profiler'
 
 group :production do
-  gem 'pg'
+  
 end
 
 gem 'pg_search'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'font-awesome-sass-rails'
-  gem 'coffee-rails', '~> 3.2.1'
-  
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
+gem 'uglifier'
+gem 'sass-rails'
+gem 'coffee-rails'
+gem 'font-awesome-sass-rails'
 
-  gem 'uglifier', '>= 1.0.3'
-  
-  gem 'chosen-rails'
-end
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+# gem 'therubyracer', :platforms => :ruby
 
-gem 'bootstrap-sass', '~> 3.1.0'
+gem 'chosen-rails'
+
+gem 'bootstrap-sass', '~> 3.2.0'
 gem "font-awesome-rails"
 
 gem 'jquery-rails'
-gem 'jquery-ui-rails'
+gem 'jquery-ui-rails', '~> 5.0.0'
 gem 'simple_form'
 gem 'acts_as_list'
 
@@ -74,7 +77,7 @@ gem 'mini_magick'
 
 # gem 'resque', :require => "resque/server"
 gem 'sidekiq'
-gem 'sinatra', '>= 1.3.0', :require => nil
+gem 'sinatra', :require => nil
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -87,13 +90,16 @@ gem 'oj'
 # Use unicorn as the app server
 # gem 'unicorn'
 
-# Deploy with Capistrano
-gem 'rvm-capistrano'
-gem 'capistrano'
-
 gem 'figaro'
 
 # To use debugger
 # gem 'debugger'
 
-gem "friendly_id", "4.0.10.1"
+gem "friendly_id"
+
+# Rails 4 upgrade
+gem 'protected_attributes' # https://github.com/rails/protected_attributes
+# gem 'active_resource' # https://github.com/rails/activeresource
+gem 'actionpack-action_caching' # https://github.com/rails/actionpack-action_caching
+gem 'activerecord-session_store' # https://github.com/rails/activerecord-session_store
+gem 'rails-observers' # https://github.com/rails/rails-observers

@@ -11,6 +11,10 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
+# Indexes
+#
+#  award_s_categories  (award_id,award_category_id)
+#
 
 class AwardSpecificCategory < ActiveRecord::Base
   attr_accessible :name, :award_category_id, :award_id, :nominations_attributes, :winner_type

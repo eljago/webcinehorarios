@@ -7,6 +7,11 @@
 #  function_type_id :integer
 #  cinema_id        :integer
 #
+# Indexes
+#
+#  index_parse_detector_types_on_cinema_id         (cinema_id)
+#  index_parse_detector_types_on_function_type_id  (function_type_id)
+#
 
 class ParseDetectorType < ActiveRecord::Base
   attr_accessible :cinema_id, :function_type_id, :name

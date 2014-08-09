@@ -10,10 +10,15 @@
 #  updated_at :datetime         not null
 #  slug       :string(255)
 #
+# Indexes
+#
+#  index_cities_on_country_id  (country_id)
+#  index_cities_on_slug        (slug) UNIQUE
+#
 
 class City < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
   
   attr_accessible :name, :theater_ids
   

@@ -14,6 +14,11 @@
 #  height           :integer
 #  show_portrait_id :integer
 #
+# Indexes
+#
+#  index_images_on_imageable_id_and_imageable_type  (imageable_id,imageable_type)
+#  index_images_on_show_portrait_id                 (show_portrait_id)
+#
 
 class Image < ActiveRecord::Base
   attr_accessible :name, :image, :remote_image_url, :width, :height, :show_portrait_id

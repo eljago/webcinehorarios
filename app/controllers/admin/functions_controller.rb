@@ -16,7 +16,7 @@ class Admin::FunctionsController < ApplicationController
     end
     
     @functions = @theater.functions.includes(:show, :showtimes, :function_types)
-    .where('date = ?',params[:date])
+    .where(date: params[:date]).references(:show, :showtimes, :function_types)
     .order("functions.show_id DESC, showtimes.time ASC")
   end
   
@@ -236,7 +236,7 @@ class Admin::FunctionsController < ApplicationController
 
        parsed_show_name.gsub!(/\(|\)|\s/, "")
                
-      parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
+      parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name[0..10])
       puts parsed_show
 
       movieFunctions = Hash[:name, titulo]
@@ -303,7 +303,7 @@ class Admin::FunctionsController < ApplicationController
                 parsed_show_name = parsed_show_name.gsub(pdt.name, "")
               end
               
-              parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
+              parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name[0..10])
               function_helper[:parsed_show] = Hash[:id, parsed_show.id]
               function_helper[:parsed_show][:show_id] = parsed_show.show_id
               
@@ -359,7 +359,7 @@ class Admin::FunctionsController < ApplicationController
           end
         end
       
-        parsed_show = ParsedShow.select('id, show_id').find_or_create_by_name(parsed_show_name[0..10])
+        parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name[0..10])
         
         movieFunctions = {name: pelicula}
         movieFunctions[:parsed_show] = {id: parsed_show.id}

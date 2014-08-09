@@ -6,10 +6,14 @@
 #  name :string(255)
 #  slug :string(255)
 #
+# Indexes
+#
+#  index_genres_on_slug  (slug) UNIQUE
+#
 
 class Genre < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
   
   attr_accessible :name
   has_and_belongs_to_many :shows

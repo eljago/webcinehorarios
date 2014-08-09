@@ -6,6 +6,10 @@
 #  time        :datetime
 #  function_id :integer
 #
+# Indexes
+#
+#  index_showtimes_on_function_id  (function_id)
+#
 
 class Showtime < ActiveRecord::Base
   

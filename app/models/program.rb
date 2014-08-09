@@ -9,6 +9,10 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_programs_on_channel_id  (channel_id)
+#
 
 class Program < ActiveRecord::Base
   belongs_to :channel

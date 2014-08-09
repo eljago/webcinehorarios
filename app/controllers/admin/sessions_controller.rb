@@ -6,7 +6,7 @@ class Admin::SessionsController < ApplicationController
   end
   
   def create
-    user = User.find_by_email(params[:email])
+    user = User.where(email: params[:email])
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       if user.admin?

@@ -9,6 +9,10 @@
 #  created_at                 :datetime         not null
 #  updated_at                 :datetime         not null
 #
+# Indexes
+#
+#  index_nominations_on_award_specific_category_id_and_show_id  (award_specific_category_id,show_id)
+#
 
 class Nomination < ActiveRecord::Base
   attr_accessible :winner, :show_id, :award_specific_category_id, :nomination_person_roles_attributes

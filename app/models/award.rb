@@ -10,6 +10,10 @@
 #  image_tmp     :string(255)
 #  award_type_id :integer
 #
+# Indexes
+#
+#  index_awards_on_award_type_id  (award_type_id)
+#
 
 class Award < ActiveRecord::Base
   attr_accessible :name, :active, :date, :image, :award_specific_categories_attributes, :award_type_id

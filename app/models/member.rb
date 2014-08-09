@@ -18,6 +18,12 @@
 #  authentication_token   :string(255)
 #  admin                  :boolean          default(FALSE)
 #
+# Indexes
+#
+#  index_members_on_authentication_token  (authentication_token)
+#  index_members_on_email                 (email) UNIQUE
+#  index_members_on_reset_password_token  (reset_password_token) UNIQUE
+#
 
 class Member < ActiveRecord::Base
   acts_as_token_authenticatable

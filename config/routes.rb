@@ -279,11 +279,12 @@ Webcinehorarios::Application.routes.draw do
     ##### V4 #####
     scope module: :v4, constraints: ApiConstraints.new(version: 4) do
 
-      devise_scope :member do
-        post 'registrations' => 'registrations#create', :as => 'register'
-        post 'sessions' => 'sessions#create', :as => 'login'
-        delete 'sessions' => 'sessions#destroy', :as => 'logout'
-      end
+      # devise_scope :member do
+      #   post 'registrations' => 'registrations#create', :as => 'register'
+      #   post 'sessions' => 'sessions#create', :as => 'login'
+      #   delete 'sessions' => 'sessions#destroy', :as => 'logout'
+      # end
+      # REMOVED TO AVOID THE ERROR
       
       resources :shows, only: :show do
         collection do 
@@ -310,7 +311,7 @@ Webcinehorarios::Application.routes.draw do
         end
       end
 
-      match '*unmatched_route', :to => 'api#api_route_not_found!'
+      get '*unmatched_route', :to => 'api#api_route_not_found!'
     end
     
     ##### V3 #####
@@ -433,30 +434,29 @@ Webcinehorarios::Application.routes.draw do
       resources :theaters
     end
     resources :theaters do
-      resources :functions
-      get 'new_parse' => 'functions#new_parse'
-      put 'create_parse' => 'functions#create_parse'
-      post 'functions/new_parse_ajax' => 'functions#new_parse_ajax', as: 'new_parse_ajax'
-      put 'create_ajax_parse' => 'functions#create_ajax_parse'
-      post 'functions/copy_last_day' => 'functions#copy_last_day', as: 'functions_copy'
-      post 'functions/delete_day' => 'functions#delete_day', as: 'functions_delete_day'
-      post 'functions/delete_week' => 'functions#delete_week', as: 'functions_delete_week'
+      resources :functions do
+        collection do
+          get 'new_parse'
+          post 'create_parse'
+          post 'create_ajax_parse'
+          post 'delete_week', as: 'functions_delete_week'
+          post 'delete_day', as: 'functions_delete_day'
+          post 'copy_last_day', as: 'functions_copy'
+          post 'new_parse_ajax'
+        end
+      end
     end
     resources :shows do
       collection do 
         get 'billboard'
         get 'comingsoon'
       end 
-      resources :comments, only: :index
-      resources :images
-      resources :functions
-      resources :videos
-      post 'functions/copy_last_day' => 'functions#copy_last_day', as: 'functions_copy'
     end
+    # For Sorting Actors
     post 'show_person_roles/sort' => 'show_person_roles#sort', as: 'show_person_roles_sort'
     
     resources :settings, only: [:index, :edit, :update]
   end
   
-  match '*unmatched_route', :to => 'application#raise_route_not_found!'
+  get '*unmatched_route', :to => 'application#raise_route_not_found!'
 end

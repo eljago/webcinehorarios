@@ -8,6 +8,10 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
+# Indexes
+#
+#  index_parsed_shows_on_show_id  (show_id)
+#
 
 class ParsedShow < ActiveRecord::Base
   attr_accessible :name, :show_id

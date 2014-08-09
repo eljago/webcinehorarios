@@ -17,10 +17,15 @@
 #  latitude    :decimal(15, 10)
 #  longitude   :decimal(15, 10)
 #
+# Indexes
+#
+#  index_theaters_on_city_id_and_cinema_id  (city_id,cinema_id)
+#  index_theaters_on_slug                   (slug) UNIQUE
+#
 
 class Theater < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
   
   attr_accessible :cinema_id, :city_id, :address, :information, :latitude, :longitude, :name, :web_url, :function_type_ids, :active
   

@@ -11,10 +11,14 @@
 #  slug       :string(255)
 #  imdb_code  :string(255)
 #
+# Indexes
+#
+#  index_people_on_slug  (slug) UNIQUE
+#
 
 class Person < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :name, use: :slugged
+  friendly_id :name, use: [:slugged, :finders]
   
   attr_accessible :birthdate, :birthplace, :deathdate, :height, :information, :name, :image, :remote_image_url, :imdb_code
   

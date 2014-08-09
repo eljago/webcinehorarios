@@ -21,7 +21,7 @@
 	        <td>
 	          <%= link_to theater.name, [:admin, theater, :functions] %>
 	        </td>
-	        <% hash = theater.functions.count(group: :date) %>
+	        <% hash = theater.functions.group(:date).count %>
 	        <% 8.times do |n| %>
 	          <% if hash[Date.current + n].blank? %>
 	            <td class="dashboard no-functions" onclick="window.open( '<%= admin_theater_functions_path(theater, date: Date.current + n) %>','_blank')">
