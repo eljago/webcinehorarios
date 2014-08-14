@@ -6,7 +6,7 @@ class Admin::ShowsController < ApplicationController
   
   def index
     # letter = params[:letter].blank? ? 'A' : params[:letter] 
-    # @shows = Show.where('name like ?', "#{letter}%").order(:name).all
+    # @shows = Show.where('name like ?', "#{letter}%").order(:name)
     @shows = Show.text_search(params[:query]).paginate(page: params[:page], per_page: 10)
   end
   
@@ -21,12 +21,12 @@ class Admin::ShowsController < ApplicationController
   
   def new
     @show = Show.new
-    @people = Person.select([:id, :name]).order('people.name ASC').all
+    @people = Person.select([:id, :name]).order('people.name ASC')
   end
   
   def edit
     @show = Show.includes(:show_person_roles => :person).order('show_person_roles.position').find(params[:id])
-    @people = Person.select([:id, :name]).order('people.name ASC').all
+    @people = Person.select([:id, :name]).order('people.name ASC')
   end
   
   def create
@@ -51,7 +51,7 @@ class Admin::ShowsController < ApplicationController
       end
       redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully created.'
     else
-      @people = Person.select([:id, :name]).order('people.name ASC').all
+      @people = Person.select([:id, :name]).order('people.name ASC')
       render action: "new"
     end
   end
@@ -81,7 +81,7 @@ class Admin::ShowsController < ApplicationController
       end
       redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully updated.'
     else
-      @people = Person.select([:id, :name]).order('people.name ASC').all
+      @people = Person.select([:id, :name]).order('people.name ASC')
       render action: "edit"
     end
   end
@@ -99,14 +99,14 @@ class Admin::ShowsController < ApplicationController
     date = Date.current
     @shows = Show.joins(:functions).where(active: true, functions: {date: date})
     .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating, shows.slug')
-    .order("debut DESC").uniq.all
+    .order("debut DESC").uniq
   end
   
   def comingsoon
     date = Date.current
     @shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', date, nil, true)
     .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating, shows.slug')
-    .order("debut ASC").all
+    .order("debut ASC")
   end
   
 end

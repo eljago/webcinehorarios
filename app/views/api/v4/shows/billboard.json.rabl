@@ -5,7 +5,7 @@ glue :portrait_image do
 	attributes :image_url => :portrait_image
 end
 node :genres do |s|
-	s.genres.order('genres.name ASC').select(:name).all.map do |genre|
+	s.genres.order('genres.name ASC').select(:name).map do |genre|
 		genre.name
 	end.join(', ')
 end

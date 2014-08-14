@@ -17,7 +17,7 @@
         <%= link_to image_tag(cinema.image, size: "80x80"), cinema.image.to_s %>
       </td>
       <td>
-        <%= cinema.function_types.select(:name).order(:name).all.map(&:name).join(" ") %>
+        <%= cinema.function_types.select(:name).order(:name).map(&:name).join(" ") %>
       </td>
       <td>
         <%= render_index_actions [cinema], only: [:edit, :destroy] %>

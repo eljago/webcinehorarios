@@ -8,14 +8,14 @@ module Api
         @shows = Show.joins(:functions).where('shows.active = ? AND shows.debut <= ? AND functions.date = ?', true, date, current_day)
         .includes(:genres)
         .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating')
-        .order("debut DESC").uniq.all
+        .order("debut DESC").uniq
       end
       
       def comingsoon
         date = Date.current
         @shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', date, nil, true)
         .select('shows.id, shows.name, shows.debut, shows.name_original, shows.image, shows.debut')
-        .order("debut ASC").all
+        .order("debut ASC")
       end
       
       def show

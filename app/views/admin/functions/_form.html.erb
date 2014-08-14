@@ -16,7 +16,7 @@
     <div class="row">
       <br/>
       <div class="col-md-3 col-sm-3">
-        <%= f.collection_check_boxes :function_type_ids, @theater.cinema.function_types.order(:name).all, :id, :name, :item_wrapper_class => "checkbox_line" %>
+        <%= f.collection_check_boxes :function_type_ids, @theater.cinema.function_types.order(:name), :id, :name, :item_wrapper_class => "checkbox_line" %>
       </div>
       <div class="col-md-9 col-sm-9">
         <div class="row">

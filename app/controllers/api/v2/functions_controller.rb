@@ -7,16 +7,16 @@ module Api
         @functions = Function.includes(:show, :showtimes, :function_types)
         .select('function_types.name, shows.id, shows.name, shows.image, shows.debut, showtimes.time')
           .order('shows.debut DESC, shows.id, showtimes.time ASC')
-          .where(functions: { date: @date, theater_id: params[:theater_id] } ).all
+          .where(functions: { date: @date, theater_id: params[:theater_id] } )
         @theater = Theater.includes(:cinema).select('theaters.address, theaters.latitude, theaters.longitude, 
-        theaters.information, theaters.web_url, cinema.name').where(id: params[:theater_id]).all.first
+        theaters.information, theaters.web_url, cinema.name').where(id: params[:theater_id]).first
         @cinema_name = @theater.cinema.name
       end
         
       def show_functions
         @functions = Function.includes(:show, :function_types, :showtimes).select('functions.id, functions.date')
         .order('showtimes.time ASC')
-        .where(theater_id: params[:theater_id], show_id: params[:show_id], date: @date ).all
+        .where(theater_id: params[:theater_id], show_id: params[:show_id], date: @date )
         @show_id = params[:show_id]
         @theater_id = params[:theater_id]
       end

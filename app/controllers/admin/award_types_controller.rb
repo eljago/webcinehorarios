@@ -2,7 +2,7 @@
 class Admin::AwardTypesController < ApplicationController
 
   def index
-    @award_types = AwardType.order('name ASC').all
+    @award_types = AwardType.order('name ASC')
   end
   
   def new

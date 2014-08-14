@@ -3,23 +3,23 @@ class Admin::AwardSpecificCategoriesController < ApplicationController
 
   def index
     @award = Award.find(params[:award_id])
-    @award_specific_categories = @award.award_specific_categories.order('name ASC').all
+    @award_specific_categories = @award.award_specific_categories.order('name ASC')
   end
   
   def new
     @award = Award.find(params[:award_id])
     @award_specific_category = @award.award_specific_categories.new
-    @shows = Show.select([:id, :name]).order('shows.name ASC').all
-    @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC').all
-    @people = Person.select([:id, :name]).order('people.name ASC').all
+    @shows = Show.select([:id, :name]).order('shows.name ASC')
+    @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC')
+    @people = Person.select([:id, :name]).order('people.name ASC')
   end
   
   def edit
     @award_specific_category = AwardSpecificCategory.includes(:nominations => :nomination_person_roles).find(params[:id])
     @award = @award_specific_category.award
-    @shows = Show.select([:id, :name]).order('shows.name ASC').all
-    @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC').all
-    @people = Person.select([:id, :name]).order('people.name ASC').all
+    @shows = Show.select([:id, :name]).order('shows.name ASC')
+    @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC')
+    @people = Person.select([:id, :name]).order('people.name ASC')
   end
   
   def create
@@ -29,9 +29,9 @@ class Admin::AwardSpecificCategoriesController < ApplicationController
     if @award_specific_category.save
       redirect_to [:admin, @award, :award_specific_categories], notice: 'Award Specific Category  creado con éxito.'
     else
-      @shows = Show.select([:id, :name]).order('shows.name ASC').all
-      @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC').all
-      @people = Person.select([:id, :name]).order('people.name ASC').all
+      @shows = Show.select([:id, :name]).order('shows.name ASC')
+      @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC')
+      @people = Person.select([:id, :name]).order('people.name ASC')
       render action: "new"
     end
   end
@@ -44,9 +44,9 @@ class Admin::AwardSpecificCategoriesController < ApplicationController
       redirect_to [:admin, award, :award_specific_categories], notice: 'Award Specific Category actualizado con éxito.'
     else
       @award = @award_specific_category.award
-      @shows = Show.select([:id, :name]).order('shows.name ASC').all
-      @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC').all
-      @people = Person.select([:id, :name]).order('people.name ASC').all
+      @shows = Show.select([:id, :name]).order('shows.name ASC')
+      @award_categories = AwardCategory.select([:id, :name]).order('award_categories.name ASC')
+      @people = Person.select([:id, :name]).order('people.name ASC')
       render action: "edit"
     end
   end

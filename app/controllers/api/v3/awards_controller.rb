@@ -3,7 +3,7 @@ module Api
     class AwardsController < Api::V3::ApiController
       
       def index
-        @awards = Award.includes(award_specific_categories: [nominations: :nomination_person_roles]).order('awards.date DESC').where(active: true).all
+        @awards = Award.includes(award_specific_categories: [nominations: :nomination_person_roles]).order('awards.date DESC').where(active: true)
       end
       
     end

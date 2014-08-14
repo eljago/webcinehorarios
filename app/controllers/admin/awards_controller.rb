@@ -2,17 +2,17 @@
 class Admin::AwardsController < ApplicationController
 
   def index
-    @awards = Award.order('date DESC').all
+    @awards = Award.order('date DESC')
   end
   
   def new
     @award = Award.new
-    @award_types = AwardType.order('name ASC').all
+    @award_types = AwardType.order('name ASC')
   end
   
   def edit
     @award = Award.find(params[:id])
-    @award_types = AwardType.order('name ASC').all
+    @award_types = AwardType.order('name ASC')
   end
   
   def create
@@ -21,7 +21,7 @@ class Admin::AwardsController < ApplicationController
     if @award.save
       redirect_to [:admin, :awards], notice: 'Award creado con éxito.'
     else
-      @award_types = AwardType.order('name ASC').all
+      @award_types = AwardType.order('name ASC')
       render action: "new"
     end
   end
@@ -32,7 +32,7 @@ class Admin::AwardsController < ApplicationController
     if @award.update_attributes(params[:award])
       redirect_to [:admin, :awards], notice: 'Award actualizado con éxito.'
     else
-      @award_types = AwardType.order('name ASC').all
+      @award_types = AwardType.order('name ASC')
       render action: "edit"
     end
   end

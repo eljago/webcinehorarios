@@ -17,7 +17,7 @@ node :debut do |s|
 	s.debut.blank? ? nil : l(s.debut, format: :longi).capitalize
 end
 node :genres do |s|
-	s.genres.order('genres.name ASC').select(:name).all.map do |genre|
+	s.genres.order('genres.name ASC').select(:name).map do |genre|
 		genre.name
 	end.join(', ')
 end

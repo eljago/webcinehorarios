@@ -22,11 +22,11 @@ class Admin::FunctionsController < ApplicationController
   
   def new
     @function = @theater.functions.new
-    @shows = Show.select([:id, :name]).order('shows.name ASC').all
+    @shows = Show.select([:id, :name]).order('shows.name ASC')
   end
   
   def edit
-    @shows = Show.select([:id, :name]).order('shows.name ASC').all
+    @shows = Show.select([:id, :name]).order('shows.name ASC')
   end
   
   def create
@@ -180,8 +180,8 @@ class Admin::FunctionsController < ApplicationController
   def prepare_for_new_parse
     @theater = Theater.find(params[:theater_id])
     @cinema = @theater.cinema
-    @function_types = @cinema.function_types.order(:name).all
-    @shows = Show.order(:name).select('shows.id, shows.name').all
+    @function_types = @cinema.function_types.order(:name)
+    @shows = Show.order(:name).select('shows.id, shows.name')
     parse_params = params[action_name.to_sym]
     @date = parse_params[:date].to_date if parse_params[:date]
     parse_days = []
@@ -194,7 +194,7 @@ class Admin::FunctionsController < ApplicationController
     else
       parse_days << @date
     end
-    parse_detector_types = @cinema.parse_detector_types.all
+    parse_detector_types = @cinema.parse_detector_types
     
     [parse_days, parse_detector_types]
   end
@@ -237,7 +237,6 @@ class Admin::FunctionsController < ApplicationController
        parsed_show_name.gsub!(/\(|\)|\s/, "")
                
       parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name[0..10])
-      puts parsed_show
 
       movieFunctions = Hash[:name, titulo]
       movieFunctions[:parsed_show] = Hash[:id, parsed_show.id]

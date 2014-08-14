@@ -6,7 +6,7 @@ module Api
         date = Date.current
         @shows = Show.joins(:functions).where(active: true, functions: {date: date}).includes(:genres)
         .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating')
-        .order("debut DESC").uniq.all
+        .order("debut DESC").uniq
       end
       
       def comingsoon

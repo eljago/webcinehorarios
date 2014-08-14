@@ -10,7 +10,7 @@ glue :show do
 	end
 end
 node :showtimes do |f|
-	f.showtimes.order('showtimes.time ASC').select(:time).all.map do |showtime|
+	f.showtimes.order('showtimes.time ASC').select(:time).map do |showtime|
 		{time: showtime.time.to_s.gsub(/ -0300/,"Z").sub(' ',"T")}
 	end
 end

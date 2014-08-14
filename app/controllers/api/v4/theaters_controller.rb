@@ -4,7 +4,7 @@ class Api::V4::TheatersController < Api::V4::ApiController
   def show_theaters
     @theaters = Theater.joins(:functions).where(functions: {show_id: params[:show_id], date: @date})
     .select('theaters.id, theaters.name, theaters.cinema_id').where('theaters.active = ?', true)
-    .order('theaters.name ASC').uniq.all
+    .order('theaters.name ASC').uniq
     @show_id = params[:show_id]
   end
  
@@ -15,7 +15,7 @@ class Api::V4::TheatersController < Api::V4::ApiController
       @favorite_theaters = Theater.includes(functions: [:function_types, :showtimes])
       .select('theaters.id, theaters.name, theaters.cinema_id')
       .where('theaters.active = ? AND theaters.id IN (?) AND functions.show_id = ? AND functions.date = ?', true, favorites, @show.id, @date)
-      .order('theaters.name ASC').all
+      .order('theaters.name ASC')
     end
     @favorite_theaters ||= []
   end
@@ -24,16 +24,16 @@ class Api::V4::TheatersController < Api::V4::ApiController
     @functions = Function.includes(:show, :showtimes, :function_types)
     .select('function_types.name, shows.id, shows.name, shows.image, shows.debut, showtimes.time')
       .order('shows.debut DESC, shows.id, showtimes.time ASC')
-      .where(functions: { date: @date, theater_id: params[:id] } ).all
+      .where(functions: { date: @date, theater_id: params[:id] } )
       
     @theater = Theater.includes(:cinema).select('theaters.address, theaters.latitude, theaters.longitude, 
-    theaters.information, theaters.web_url, cinema.name').where(id: params[:id]).all.first
+    theaters.information, theaters.web_url, cinema.name').where(id: params[:id]).first
     @cinema_name = @theater.cinema.name
   end
   
   def theater_coordinates
     @theaters = Theater.select([:id, :name, :cinema_id, :latitude, :longitude, :address])
-    .order(:cinema_id, :name).where(active: true).all
+    .order(:cinema_id, :name).where(active: true)
   end
   
   private

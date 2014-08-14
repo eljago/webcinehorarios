@@ -4,7 +4,7 @@ class Admin::PeopleController < ApplicationController
   
   def index
     # letter = params[:letter].blank? ? 'A' : params[:letter] 
-    # @people = Person.where('name like ?', "#{letter}%").order(:name).all
+    # @people = Person.where('name like ?', "#{letter}%").order(:name)
     @people = Person.text_search(params[:query]).paginate(page: params[:page], per_page: 10)
   end
   

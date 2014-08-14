@@ -1,7 +1,7 @@
 class Admin::CinemasController < ApplicationController
 
   def index
-    @cinemas = Cinema.order('id').select('id, name, information, image, slug').all
+    @cinemas = Cinema.order('id').select('id, name, information, image, slug')
   end
   
   def new
