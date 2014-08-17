@@ -55,6 +55,9 @@ gem 'acts_as_list'
 gem 'will_paginate', '~> 3.0'
 gem 'will_paginate-bootstrap'
 
+# Show progress of page load.
+gem 'nprogress-rails'
+
 # gems used for image uploading
 gem 'carrierwave', :github => "jnicklas/carrierwave"
 gem 'carrierwave_backgrounder'
