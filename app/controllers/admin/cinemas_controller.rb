@@ -25,7 +25,7 @@ class Admin::CinemasController < ApplicationController
   def update
     @cinema = Cinema.find(params[:id])
 
-    if @cinema.update_attributes(params[:cinema])
+    if @cinema.update_attributes(cinema_params)
       redirect_to [:admin, :cinemas], notice: 'Cinema was successfully updated.'
     else
       render action: "edit"
@@ -42,6 +42,6 @@ class Admin::CinemasController < ApplicationController
   private
   
   def cinema_params
-    params.require(:cinema).params :image, :information, :name, :remote_image_url, :theater_ids
+    params.require(:cinema).permit :image, :information, :name, :remote_image_url, theater_ids: []
   end
 end

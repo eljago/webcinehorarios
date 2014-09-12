@@ -18,7 +18,7 @@ class Admin::ProgramsController < ApplicationController
   end
   
   def create
-    @program = @channel.programs.new(params[:program])
+    @program = @channel.programs.new(program_params)
 
     if @program.save
       redirect_to [:admin, @channel, :programs], notice: 'Program was successfully created.'
@@ -29,7 +29,7 @@ class Admin::ProgramsController < ApplicationController
   
   def update
 
-    if @program.update_attributes(params[:program])
+    if @program.update_attributes(program_params)
       redirect_to [:admin, @channel, :programs], notice: 'Program was successfully updated.'
     else
       render action: "edit"
@@ -51,5 +51,9 @@ class Admin::ProgramsController < ApplicationController
   def get_program_channel
     @program = Program.find(params[:id])
     @channel = @program.channel
+  end
+  
+  def program_params
+    params.require(:program).permit :name, :time
   end
 end

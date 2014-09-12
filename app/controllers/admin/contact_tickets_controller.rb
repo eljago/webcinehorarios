@@ -9,7 +9,7 @@ class Admin::ContactTicketsController < ApplicationController
   end
   
   def create
-    @contact_ticket = ContactTicket.new(params[:contact_ticket])
+    @contact_ticket = ContactTicket.new(contact_ticket_params)
     if @contact_ticket.save
       ContactMailer.cinehorarios_contacto(@contact_ticket).deliver
       redirect_to root_url, notice: 'Muchas gracias por ponerse en contacto con nosotros.'
@@ -17,5 +17,11 @@ class Admin::ContactTicketsController < ApplicationController
       session[:contact_ticket] = @contact_ticket
       redirect_to root_url(anchor: "contact"), flash: { error: "Llene los campos correctamente" }
     end
+  end
+  
+  private
+  
+  def contact_ticket_params
+    params.require(:contact_ticket).permit :content, :from, :name, :subject
   end
 end

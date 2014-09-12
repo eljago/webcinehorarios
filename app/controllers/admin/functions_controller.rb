@@ -30,7 +30,7 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def create
-    @function = @theater.functions.new(params[:function])
+    @function = @theater.functions.new(function_params)
     Function.create_showtimes @function, params[:horarios]
     Function.create_extra_showtimes_from_params @function, @theater, params
     
@@ -47,7 +47,7 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def update
-    @function.assign_attributes(params[:function])
+    @function.assign_attributes(function_params)
     if (Function.create_string_from_horarios(params[:horarios]) != @function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', '))
       @function.showtimes = []
       Function.create_showtimes @function, params[:horarios]
@@ -175,6 +175,10 @@ class Admin::FunctionsController < ApplicationController
   
   def get_theater
     @theater ||= Theater.find(params[:theater_id])
+  end
+  
+  def function_params
+    params.require(:function).permit :theater_id, :show_id, :date, showtimes_ids: [], function_type_ids: []
   end
 
   def prepare_for_new_parse

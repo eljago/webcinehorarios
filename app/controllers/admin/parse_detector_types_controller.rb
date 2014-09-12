@@ -22,7 +22,7 @@ class Admin::ParseDetectorTypesController < ApplicationController
   
   def create
     @function_type = FunctionType.find(params[:function_type_id])
-    @parse_detector_type = @function_type.parse_detector_types.new(params[:parse_detector_type])
+    @parse_detector_type = @function_type.parse_detector_types.new(parse_detector_type_params)
 
     if @parse_detector_type.save
       redirect_to [:admin, @function_type, :parse_detector_types], notice: 'Parse Detector Type was successfully created.'
@@ -35,7 +35,7 @@ class Admin::ParseDetectorTypesController < ApplicationController
     @parse_detector_type = ParseDetectorType.find(params[:id])
     @function_type = @parse_detector_type.function_type
     
-    if @parse_detector_type.update_attributes(params[:parse_detector_type])
+    if @parse_detector_type.update_attributes(parse_detector_type_params)
       redirect_to [:admin, @function_type, :parse_detector_types], notice: 'Parse Detector Type was successfully updated.'
     else
       render action: "edit"
@@ -48,5 +48,11 @@ class Admin::ParseDetectorTypesController < ApplicationController
     @parse_detector_type.destroy
 
     redirect_to [:admin, @function_type, :parse_detector_types]
+  end
+  
+  private
+  
+  def parse_detector_type_params
+    params.require(:parse_detector_type).permit :cinema_id, :function_type_id, :name
   end
 end

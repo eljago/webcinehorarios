@@ -14,7 +14,7 @@ class Admin::FunctionTypesController < ApplicationController
   end
   
   def create
-    @function_type = FunctionType.new(params[:function_type])
+    @function_type = FunctionType.new(function_type_params)
 
     if @function_type.save
       redirect_to [:admin, :function_types], notice: 'Function Type was successfully created.'
@@ -25,7 +25,7 @@ class Admin::FunctionTypesController < ApplicationController
   
   def update
 
-    if @function_type.update_attributes(params[:function_type])
+    if @function_type.update_attributes(function_type_params)
       redirect_to [:admin, :function_types], notice: 'Function Type was successfully updated.'
     else
       render action: "edit"
@@ -42,5 +42,9 @@ class Admin::FunctionTypesController < ApplicationController
   
   def get_function_type
     @function_type = FunctionType.find(params[:id])
+  end
+  
+  def function_type_params
+    params.require(:function_type).permit :name, cinema_ids: []
   end
 end

@@ -29,7 +29,7 @@ FactoryGirl.define do
     latitude "-33,3901201000"
     longitude "-70,5460327000"
     name "Alto Las Condes"
-    weburl "http://www.cinemark.cl/theatres/alto-las-condes"
+    web_url "http://www.cinemark.cl/theatres/alto-las-condes"
     active true
     cinema
     city

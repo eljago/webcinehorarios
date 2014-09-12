@@ -15,7 +15,7 @@
 #
 
 class Nomination < ActiveRecord::Base
-  attr_accessible :winner, :show_id, :award_specific_category_id, :nomination_person_roles_attributes
+  # attr_accessible :winner, :show_id, :award_specific_category_id, :nomination_person_roles_attributes
   
   belongs_to :award_specific_category
   belongs_to :show

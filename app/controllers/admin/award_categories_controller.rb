@@ -14,7 +14,7 @@ class Admin::AwardCategoriesController < ApplicationController
   end
   
   def create
-    @award_category = AwardCategory.new(params[:award_category])
+    @award_category = AwardCategory.new(award_category_params)
     
     if @award_category.save
       redirect_to [:admin, :award_categories], notice: 'Award Category  creado con éxito.'
@@ -26,7 +26,7 @@ class Admin::AwardCategoriesController < ApplicationController
   def update
     @award_category = AwardCategory.find(params[:id])
 
-    if @award_category.update_attributes(params[:award_category])
+    if @award_category.update_attributes(award_category_params)
       redirect_to [:admin, :award_categories], notice: 'Award Category  actualizado con éxito.'
     else
       render action: "edit"

@@ -15,11 +15,11 @@ class Admin::VideosController < ApplicationController
   end
   
   def create
-    unless params[:video][:code].blank?
-      params[:video][:remote_image_url] = "http://img.youtube.com/vi/#{params[:video][:code]}/0.jpg"
+    unless video_params[:code].blank?
+      video_params[:remote_image_url] = "http://img.youtube.com/vi/#{params[:video][:code]}/0.jpg"
     end
     
-    @video = Video.new(params[:video])
+    @video = Video.new(video_params)
 
     if @video.save
       redirect_to [:admin, :videos], notice: 'Video Creado Exitosamente.'
@@ -29,17 +29,17 @@ class Admin::VideosController < ApplicationController
   end
   
   def update
-    unless params[:video][:code].blank?
+    unless video_params[:code].blank?
       video = Video.find(params[:id].to_i)
       puts video.code.dump
-      puts params[:video][:code].dump
+      puts video_params[:code].dump
       puts video.blank?
-      if !video.blank? && video.code != params[:video][:code]
-        params[:video][:remote_image_url] = "http://img.youtube.com/vi/#{params[:video][:code]}/0.jpg"
+      if !video.blank? && video.code != video_params[:code]
+        video_params[:remote_image_url] = "http://img.youtube.com/vi/#{params[:video][:code]}/0.jpg"
       end
     end
     
-    if @video.update_attributes(params[:video])
+    if @video.update_attributes(video_params)
       redirect_to [:admin, :videos], notice: 'Video Actualizado Exitosamente.'
     else
       render action: "edit"
@@ -56,5 +56,9 @@ class Admin::VideosController < ApplicationController
   
   def get_video
     @video = Video.find(params[:id])
+  end
+  
+  def video_params
+    params.require(:video).permit :name, :code, :image, :remote_image_url, :outstanding
   end
 end

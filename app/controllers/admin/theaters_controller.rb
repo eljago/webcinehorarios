@@ -22,7 +22,7 @@ class Admin::TheatersController < ApplicationController
   end
   
   def create
-    @theater = @theaterable.theaters.new(params[:theater])
+    @theater = @theaterable.theaters.new(theater_params)
 
     if @theater.save
       redirect_to [:admin, @theaterable, :theaters], notice: 'Theater was successfully created.'
@@ -32,7 +32,7 @@ class Admin::TheatersController < ApplicationController
   end
   
   def update
-    if @theater.update_attributes(params[:theater])
+    if @theater.update_attributes(theater_params)
       redirect_to [:admin, @theaterable, :theaters], notice: 'Theater was successfully updated.'
     else
       render action: "edit"
@@ -58,5 +58,9 @@ class Admin::TheatersController < ApplicationController
       elsif params[:cinema_id]
         Cinema.find(params[:cinema_id])
       end
+  end
+  
+  def theater_params
+    params.require(:theater).permit(:cinema_id, :city_id, :address, :information, :latitude, :longitude, :name, :web_url, :active, function_type_ids: [])
   end
 end

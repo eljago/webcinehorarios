@@ -28,7 +28,7 @@ require 'spec_helper'
 describe Theater do
   
   let(:cinema) { FactoryGirl.create(:cinema) }
-  before { @theater = cinema.theaters.build(name: "Alto las Condes", information: "Avenida Kennedy 9001, local 3092, Las Condes - Santiago / Mall Alto Las Condes.", latitude: "-33,3901201000", longitude: "-70,5460327000", weburl: "http://www.cinemark.cl/theatres/alto-las-condes", active: true) }
+  before { @theater = cinema.theaters.build(name: "Alto las Condes", information: "Avenida Kennedy 9001, local 3092, Las Condes - Santiago / Mall Alto Las Condes.", latitude: "-33,3901201000", longitude: "-70,5460327000", web_url: "http://www.cinemark.cl/theatres/alto-las-condes", active: true) }
   
   subject { @theater }
 

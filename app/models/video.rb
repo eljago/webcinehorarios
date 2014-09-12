@@ -19,7 +19,7 @@
 #
 
 class Video < ActiveRecord::Base
-  attr_accessible :name, :code, :image, :remote_image_url, :outstanding
+  # attr_accessible :name, :code, :image, :remote_image_url, :outstanding
     
   validates :name, presence: true
   

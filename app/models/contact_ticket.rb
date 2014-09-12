@@ -12,7 +12,7 @@
 #
 
 class ContactTicket < ActiveRecord::Base
-  attr_accessible :content, :from, :name, :subject
+  # attr_accessible :content, :from, :name, :subject
   
   validates :name, presence: true
   validates :content, presence: true

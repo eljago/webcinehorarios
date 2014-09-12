@@ -3,7 +3,7 @@
 		<%= f.hidden_field :_destroy %>
 		<button class="close remove_fields">X</button>
 	</div>
-	<%= f.check_box :show_portrait_id %>
+	<%= f.check_box :show_portrait_id, {}, 1, 0 %>
 	<% if f.object.new_record? %>
 	  <div class="form-group">
 	    <%= f.label :remote_image_url, 'URL Imagen:', class: 'col-sm-2 control-label' %>

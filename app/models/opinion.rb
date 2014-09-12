@@ -9,5 +9,5 @@
 #
 
 class Opinion < ActiveRecord::Base
-  attr_accessible :author, :comment, :date
+  # attr_accessible :author, :comment, :date
 end

@@ -17,7 +17,7 @@ class Admin::CitiesController < ApplicationController
   
   def create
     @country = Country.find(params[:country_id])
-    @city = @country.cities.new(params[:city])
+    @city = @country.cities.new(city_params)
 
     if @city.save
       redirect_to [:admin, @country, :cities], notice: 'City was successfully created.'
@@ -30,7 +30,7 @@ class Admin::CitiesController < ApplicationController
     @city = City.find(params[:id])
     @country = @city.country
 
-    if @city.update_attributes(params[:city])
+    if @city.update_attributes(city_params)
       redirect_to [:admin, @country, :cities], notice: 'City was successfully updated.'
     else
       render action: "edit"
@@ -54,5 +54,9 @@ class Admin::CitiesController < ApplicationController
   def get_city_country
     @city = City.find(params[:id])
     @country = @city.country
+  end
+  
+  def city_params
+    params.require(:city).permit :name, theater_ids: []
   end
 end

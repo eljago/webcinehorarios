@@ -17,7 +17,7 @@ class Admin::ChannelsController < ApplicationController
   end
   
   def create
-    @channel = Channel.new(params[:channel])
+    @channel = Channel.new(channel_params)
 
     if @channel.save
       redirect_to [:admin, :channels], notice: 'Channel was successfully created.'
@@ -27,7 +27,7 @@ class Admin::ChannelsController < ApplicationController
   end
   
   def update
-    if @channel.update_attributes(params[:channel])
+    if @channel.update_attributes(channel_params)
       redirect_to [:admin, :channels], notice: 'Channel was successfully updated.'
     else
       render action: "edit"

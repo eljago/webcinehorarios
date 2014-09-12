@@ -24,7 +24,7 @@ class Admin::AwardSpecificCategoriesController < ApplicationController
   
   def create
     @award = Award.find(params[:award_id])
-    @award_specific_category = @award.award_specific_categories.new(params[:award_specific_category])
+    @award_specific_category = @award.award_specific_categories.new(award_specific_category_params)
     
     if @award_specific_category.save
       redirect_to [:admin, @award, :award_specific_categories], notice: 'Award Specific Category  creado con éxito.'
@@ -40,7 +40,7 @@ class Admin::AwardSpecificCategoriesController < ApplicationController
     @award_specific_categories = AwardSpecificCategory.find(params[:id])
     award = @award_specific_categories.award
 
-    if @award_specific_categories.update_attributes(params[:award_specific_category])
+    if @award_specific_categories.update_attributes(award_specific_category_params)
       redirect_to [:admin, award, :award_specific_categories], notice: 'Award Specific Category actualizado con éxito.'
     else
       @award = @award_specific_category.award
@@ -60,6 +60,6 @@ class Admin::AwardSpecificCategoriesController < ApplicationController
   end
   
   def award_specific_category_params
-    params.permit(:award_specific_category).permit :name, :award_category_id, :award_id, :winner_type, nominations_attributes: [ :winner, :show_id, :award_specific_category_id, nomination_person_roles_attributes: [ :person_id, :nomination_id ] ]
+    params.require(:award_specific_category).permit :name, :award_category_id, :award_id, :winner_type, nominations_attributes: [ :winner, :show_id, :award_specific_category_id, nomination_person_roles_attributes: [ :person_id, :nomination_id ] ]
   end
 end

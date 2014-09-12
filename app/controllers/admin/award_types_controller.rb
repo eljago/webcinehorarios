@@ -14,7 +14,7 @@ class Admin::AwardTypesController < ApplicationController
   end
   
   def create
-    @award_type = AwardType.new(params[:award_type])
+    @award_type = AwardType.new(award_type_params)
     
     if @award_type.save
       redirect_to [:admin, :award_types], notice: 'Award Type  creado con éxito.'
@@ -26,7 +26,7 @@ class Admin::AwardTypesController < ApplicationController
   def update
     @award_type = AwardType.find(params[:id])
 
-    if @award_type.update_attributes(params[:award_type])
+    if @award_type.update_attributes(award_type_params)
       redirect_to [:admin, :award_types], notice: 'Award Type actualizado con éxito.'
     else
       render action: "edit"

@@ -22,7 +22,7 @@ class Admin::PeopleController < ApplicationController
   end
   
   def create
-    @person = Person.new(params[:person])
+    @person = Person.new(person_params)
 
     if @person.save
       redirect_to [:new, :admin, :person], notice: 'Person was successfully created.'
@@ -33,7 +33,7 @@ class Admin::PeopleController < ApplicationController
   
   def update
 
-    if @person.update_attributes(params[:person])
+    if @person.update_attributes(person_params)
       redirect_to [:admin, :people], notice: 'Person was successfully updated.'
     else
       render action: "edit"
@@ -61,5 +61,9 @@ class Admin::PeopleController < ApplicationController
   
   def get_person
     @person = Person.find(params[:id])
+  end
+  
+  def person_params
+    params.require(:person).permit :birthdate, :birthplace, :deathdate, :height, :information, :name, :image, :remote_image_url, :imdb_code
   end
 end

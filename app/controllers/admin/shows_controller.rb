@@ -24,18 +24,18 @@ class Admin::ShowsController < ApplicationController
   end
   
   def edit
-    @show = Show.includes(:show_person_roles => :person).order('show_person_roles.position').find(params[:id])
+    @show = Show.includes(show_person_roles: :person).order('show_person_roles.position').find(params[:id])
   end
   
   def create
-    if params[:show][:videos_attributes]
-      params[:show][:videos_attributes].each do |key, video|
+    if show_params[:videos_attributes]
+      show_params[:videos_attributes].each do |key, video|
         unless video[:code].blank?
           video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
         end
       end
     end
-    @show = Show.new(params[:show])
+    @show = Show.new(show_params)
     
     if @show.save
       @show.images.each do |image|
@@ -55,8 +55,8 @@ class Admin::ShowsController < ApplicationController
   
   def update
     @show = Show.find(params[:id])
-    if params[:show][:videos_attributes]
-      params[:show][:videos_attributes].each do |key, video|
+    if show_params[:videos_attributes]
+      show_params[:videos_attributes].each do |key, video|
         unless video[:code].blank?
           db_video = @show.videos.find(video[:id].to_i)
           unless db_video && db_video.code == video[:code]
@@ -65,13 +65,12 @@ class Admin::ShowsController < ApplicationController
         end
       end
     end
-    
-    if @show.update_attributes(params[:show])
+    if @show.update_attributes(show_params)
       @show.images.each do |image|
-        if image.show_portrait_id == 0
+        if image.show_portrait_id == "0"
           image.show_portrait_id = nil
           image.save
-        elsif image.show_portrait_id == 1
+        elsif image.show_portrait_id == "1"
           image.show_portrait_id = @show.id
           image.save
         end
@@ -88,10 +87,6 @@ class Admin::ShowsController < ApplicationController
     redirect_to [:admin, :shows]
   end
   
-  def get_show
-    @show = Show.find(params[:id])
-  end
-  
   def billboard
     date = Date.current
     @shows = Show.joins(:functions).where(active: true, functions: {date: date})
@@ -106,4 +101,14 @@ class Admin::ShowsController < ApplicationController
     .order("debut ASC")
   end
   
+  
+  private
+  
+  def get_show
+    @show = Show.find(params[:id])
+  end
+  
+  def show_params
+    params.require(:show).permit :active, :year, :debut, :name, :image, :information, :duration, :name_original, :rating, :remote_image_url, :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score, images_attributes: [ :_destroy, :id, :name, :image, :remote_image_url, :width, :height, :show_portrait_id ], videos_attributes: [ :_destroy, :id, :name, :code, :image, :remote_image_url, :outstanding ], show_person_roles_attributes: [ :_destroy, :id, :actor, :writer, :creator, :producer, :director, :person_id, :show_id, :character ], genre_ids: []
+  end
 end

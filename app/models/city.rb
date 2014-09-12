@@ -20,7 +20,7 @@ class City < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
   
-  attr_accessible :name, :theater_ids
+  # attr_accessible :name, :theater_ids
   
   belongs_to :country
   has_many :theaters

@@ -14,7 +14,7 @@ class Admin::GenresController < ApplicationController
   end
   
   def create
-    @genre = Genre.new(params[:genre])
+    @genre = Genre.new(genre_params)
 
     if @genre.save
       redirect_to [:admin, :genres], notice: 'Genre was successfully created.'
@@ -25,7 +25,7 @@ class Admin::GenresController < ApplicationController
   
   def update
 
-    if @genre.update_attributes(params[:genre])
+    if @genre.update_attributes(genre_params)
       redirect_to [:admin, :genres], notice: 'Genre was successfully updated.'
     else
       render action: "edit"
@@ -42,5 +42,9 @@ class Admin::GenresController < ApplicationController
   
   def get_genre
     @genre = Genre.find(params[:id])
+  end
+  
+  def genre_params
+    params.require(:genre).permit :name
   end
 end

@@ -10,7 +10,7 @@ class Admin::OpinionsController < ApplicationController
   end
   
   def create
-    @opinion = Opinion.new(params[:opinion])
+    @opinion = Opinion.new(opinion_params)
 
     if @opinion.save
       redirect_to [:admin, :opinions], notice: 'Opinion was successfully created.'
@@ -23,7 +23,7 @@ class Admin::OpinionsController < ApplicationController
   end
   
   def update
-    if @opinion.update_attributes(params[:opinion])
+    if @opinion.update_attributes(opinion_params)
       redirect_to [:admin, :opinions], notice: 'Opinion was successfully updated.'
     else
       render action: "edit"
@@ -41,4 +41,9 @@ class Admin::OpinionsController < ApplicationController
   def get_opinion
     @opinion = Opinion.find(params[:id])
   end
+  
+  def opinion_params
+    params.require(:opinion).permit :author, :comment, :date
+  end
+  
 end
