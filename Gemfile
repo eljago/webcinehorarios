@@ -48,7 +48,7 @@ gem 'pg_search'
 
 gem 'font-awesome-sass-rails'
 
-gem 'chosen-rails'
+# gem 'chosen-rails'
 gem "select2-rails"
 
 gem 'bootstrap-sass', '~> 3.2.0'
