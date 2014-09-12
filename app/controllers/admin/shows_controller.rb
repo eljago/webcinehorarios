@@ -21,12 +21,10 @@ class Admin::ShowsController < ApplicationController
   
   def new
     @show = Show.new
-    @people = Person.select([:id, :name]).order('people.name ASC')
   end
   
   def edit
     @show = Show.includes(:show_person_roles => :person).order('show_person_roles.position').find(params[:id])
-    @people = Person.select([:id, :name]).order('people.name ASC')
   end
   
   def create
@@ -51,7 +49,6 @@ class Admin::ShowsController < ApplicationController
       end
       redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully created.'
     else
-      @people = Person.select([:id, :name]).order('people.name ASC')
       render action: "new"
     end
   end
@@ -61,7 +58,7 @@ class Admin::ShowsController < ApplicationController
     if params[:show][:videos_attributes]
       params[:show][:videos_attributes].each do |key, video|
         unless video[:code].blank?
-          db_video = @show.videos.where(id: video[:id].to_i)
+          db_video = @show.videos.find(video[:id].to_i)
           unless db_video && db_video.code == video[:code]
             video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
           end

@@ -13,8 +13,9 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
-//= require bootstrap
-//= require chosen-jquery
+//= require bootstrap-sprockets
+//= require select2
+//= require select2_locale_es
 //= require turbolinks
 //= require nprogress
 //= require nprogress-turbolinks

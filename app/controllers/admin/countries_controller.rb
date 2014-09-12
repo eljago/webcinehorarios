@@ -15,7 +15,7 @@ class Admin::CountriesController < ApplicationController
   end
   
   def create
-    @country = Country.new(params[:country])
+    @country = Country.new(country_params)
 
     if @country.save
       respond_to do |format|
@@ -30,7 +30,7 @@ class Admin::CountriesController < ApplicationController
   end
   
   def update
-    if @country.update_attributes(params[:country])
+    if @country.update_attributes(country_params)
       redirect_to [:admin, :countries], notice: 'País Actualizado Exitosamente.'
     else
       render action: "edit"
@@ -47,5 +47,9 @@ class Admin::CountriesController < ApplicationController
   
   def get_country
     @country = Country.find(params[:id])
+  end
+  
+  def country_params
+    params.require(:country).permit(:name)
   end
 end

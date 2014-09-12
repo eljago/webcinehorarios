@@ -1,6 +1,5 @@
 require "rvm/capistrano"
 require "bundler/capistrano"
-require 'capistrano/sidekiq'
 require 'capistrano-db-tasks'
 
 set :whenever_command, "bundle exec whenever"
@@ -74,15 +73,5 @@ task :tail, roles: :app do
   run "tail -f #{shared_path}/log/#{rails_env}.log" do |channel, stream, data|
     puts "#{channel[:host]}: #{data}"
     break if stream == :err
-  end
-end
-
-namespace :sidekiq do
-  desc "tail sidekiq log files"
-  task :tail, roles: :app do
-    run "tail -f #{shared_path}/log/sidekiq.log" do |channel, stream, data|
-      puts "#{channel[:host]}: #{data}"
-      break if stream == :err
-    end
   end
 end

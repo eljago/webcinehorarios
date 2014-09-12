@@ -40,4 +40,10 @@ class Admin::AwardTypesController < ApplicationController
     redirect_to admin_award_types_url
   end
   
+  private
+  
+  def award_type_params
+    params.require(:award_type).permit :name
+  end
+  
 end

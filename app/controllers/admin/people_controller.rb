@@ -9,6 +9,9 @@ class Admin::PeopleController < ApplicationController
   end
   
   def show
+    respond_to do |format|
+      format.json { render json: {person: { id: @person.id, name: @person.name } } }
+    end
   end
   
   def new
@@ -41,6 +44,17 @@ class Admin::PeopleController < ApplicationController
     @person.destroy
 
     redirect_to [:admin, :people]
+  end
+  
+  def select_people
+    q = params[:q].split.map(&:capitalize).join(" ")
+    @people = Person.select([:id, :name]).
+                          where("name like :q", q: "%#{q}%").
+                          order('name').order(:name)
+
+    respond_to do |format|
+      format.json { render json: {people: @people.map { |e| {id: e.id, text: "#{e.name}"} }} }
+    end
   end
   
   private

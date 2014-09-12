@@ -45,4 +45,8 @@ class Admin::ChannelsController < ApplicationController
   def get_channel
     @channel = Channel.find(params[:id])
   end
+  
+  def channel_params
+    params.require(:channel).permit :directv, :name, :vtr
+  end
 end

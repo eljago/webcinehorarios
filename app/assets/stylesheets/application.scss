@@ -9,9 +9,10 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
- *= require chosen
  *= require font-awesome
  *= require nprogress
  *= require nprogress-bootstrap
+ *= require select2
+ *= require select2-bootstrap
  *= require_tree .
  */

@@ -10,8 +10,7 @@
 			<% end %>
 		</div>
 		<div class="col-sm-3">
-			<%= f.collection_select :person_id, @people, :id, :name, {include_blank: true}, { class: "chzn-select", style: "width: 90%;" } %>
-			
+			<%= f.hidden_field :person_id, class: 'chzn-select ajax', style: "width: 90%;", data: { source: select_people_admin_people_path } %>
 		</div>
 		<div class="col-sm-3">
 			<%= f.text_field :character, class: 'form-control' %>

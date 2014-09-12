@@ -13,7 +13,7 @@ class Admin::CinemasController < ApplicationController
   end
   
   def create
-    @cinema = Cinema.new(params[:cinema])
+    @cinema = Cinema.new(cinema_params)
     
     if @cinema.save
       redirect_to [:admin, :cinemas], notice: 'Cinema was successfully created.'
@@ -37,5 +37,11 @@ class Admin::CinemasController < ApplicationController
     @cinema.destroy
 
     redirect_to admin_cinemas_url
+  end
+  
+  private
+  
+  def cinema_params
+    params.require(:cinema).params :image, :information, :name, :remote_image_url, :theater_ids
   end
 end

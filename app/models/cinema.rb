@@ -20,7 +20,7 @@ class Cinema < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
   
-  attr_accessible :image, :information, :name, :remote_image_url, :theater_ids
+  # attr_accessible :image, :information, :name, :remote_image_url, :theater_ids
   
   has_many :theaters
   has_many :parse_detector_types

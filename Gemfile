@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby '2.1.2'
 
 gem 'rails', '4.0.8'
 
@@ -8,13 +9,16 @@ gem 'whenever', require: false
 gem 'clipboard', require: false
 
 group :test do
-  gem 'factory_girl_rails', '4.2.0'
-  gem 'selenium-webdriver', '2.35.1'
-  gem 'capybara', '2.1.0'
+  gem 'sqlite3'
+  gem "capybara", "~> 2.1.0"
+  gem "database_cleaner", "~> 1.0.1"
+  gem "launchy", "~> 2.3.0"
+  gem "selenium-webdriver", "~> 2.35.1"
 end
 
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
+  gem "factory_girl_rails", "~> 4.2.1"
   gem 'guard-rspec'
 end
 
@@ -44,9 +48,11 @@ gem 'pg_search'
 
 gem 'font-awesome-sass-rails'
 
-gem 'chosen-rails'
+# gem 'chosen-rails'
+gem "select2-rails"
 
 gem 'bootstrap-sass', '~> 3.2.0'
+gem "autoprefixer-rails"
 gem "font-awesome-rails"
 
 gem 'jquery-ui-rails', '~> 5.0.0'
@@ -65,10 +71,6 @@ gem 'carrierwave_backgrounder'
 gem 'fog'
 gem 'unf'
 gem 'mini_magick'
-
-# gem 'resque', :require => "resque/server"
-gem 'sidekiq'
-gem 'sinatra', :require => nil
 
 gem 'rabl'
 gem 'oj'
@@ -106,7 +108,7 @@ gem 'turbolinks'
 # gem 'jbuilder', '~> 1.2'
 
 # Rails 4 upgrade
-gem 'protected_attributes' # https://github.com/rails/protected_attributes
+# gem 'protected_attributes' # https://github.com/rails/protected_attributes
 # gem 'active_resource' # https://github.com/rails/activeresource
 gem 'actionpack-action_caching' # https://github.com/rails/actionpack-action_caching
 gem 'activerecord-session_store' # https://github.com/rails/activerecord-session_store

@@ -17,7 +17,7 @@
 #
 
 class AwardSpecificCategory < ActiveRecord::Base
-  attr_accessible :name, :award_category_id, :award_id, :nominations_attributes, :winner_type
+  # attr_accessible :name, :award_category_id, :award_id, :nominations_attributes, :winner_type
   
   belongs_to :award
   belongs_to :award_category

@@ -39,4 +39,10 @@ class Admin::AwardCategoriesController < ApplicationController
 
     redirect_to admin_award_categories_url
   end
+  
+  private 
+  
+  def award_category_params
+    params.require(:award_category).permit :name
+  end
 end

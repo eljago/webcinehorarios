@@ -58,4 +58,8 @@ class Admin::AwardSpecificCategoriesController < ApplicationController
 
     redirect_to [:admin, award, :award_specific_categories]
   end
+  
+  def award_specific_category_params
+    params.permit(:award_specific_category).permit :name, :award_category_id, :award_id, :winner_type, nominations_attributes: [ :winner, :show_id, :award_specific_category_id, nomination_person_roles_attributes: [ :person_id, :nomination_id ] ]
+  end
 end

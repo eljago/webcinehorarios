@@ -1,17 +1,18 @@
+
 # == Schema Information
 #
-# Table name: channels
+# Table name: people
 #
 #  id         :integer          not null, primary key
 #  name       :string(255)
-#  vtr        :integer
-#  directv    :integer
+#  image      :string(255)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  image_tmp  :string(255)
+#  slug       :string(255)
+#  imdb_code  :string(255)
 #
-
-class Channel < ActiveRecord::Base
-  # attr_accessible :directv, :name, :vtr
-  
-  has_many :programs
-end
+# Indexes
+#
+#  index_people_on_slug  (slug) UNIQUE
+#

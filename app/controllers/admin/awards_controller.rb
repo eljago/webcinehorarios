@@ -43,4 +43,10 @@ class Admin::AwardsController < ApplicationController
 
     redirect_to admin_awards_url
   end
+  
+  private
+  
+  def award_params
+    params.require(:award).permit :name, :active, :date, :image, :award_type_id, award_specific_categories_attributes: [ :name, :award_category_id, :award_id, :winner_type ]
+  end
 end

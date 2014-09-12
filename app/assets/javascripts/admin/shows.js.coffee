@@ -1,5 +1,29 @@
 ready = ->
-	$('.chzn-select').chosen()
+	$('.chzn-select').each (i, e) =>
+		id = $(e).val()
+		$(e).select2
+			minimumInputLength: 3
+			ajax:
+        url: $(e).data('source')
+        dataType: 'json'
+        data: (term) ->
+          q: term
+        results: (data) ->
+          results: data.people
+					
+			initSelection: (element, callback) ->
+				id = $(element).val()
+				if id isnt ""
+					$.ajax("/admin/people/" + id + ".json",
+			      dataType: "json"
+			    ).done (data) ->
+			      callback
+			        id: id
+			        text: data.person.name
+						return
+				return
+
+							
 	$('#showpersonroles').sortable
 		axis: 'y'
 		handle: '.handle'
