@@ -30,7 +30,6 @@ class Person < ActiveRecord::Base
   validates :name, :presence => :true
   
   mount_uploader :image, PersonCover
-  # store_in_background :image
 
   include PgSearch
   pg_search_scope :search, against: [:name],

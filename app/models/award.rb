@@ -26,7 +26,6 @@ class Award < ActiveRecord::Base
   validates :name, :presence => :true
 
   mount_uploader :image, AwardCover
-  store_in_background :image
   
   def categories
     award_categories

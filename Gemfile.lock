@@ -65,17 +65,12 @@ GEM
       net-ssh (>= 2.0.14)
       net-ssh-gateway (>= 1.1.0)
     capistrano-db-tasks (0.2.1)
-    capistrano-sidekiq (0.3.5)
-      capistrano
-      sidekiq
     capybara (2.1.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    carrierwave_backgrounder (0.4.1)
-      carrierwave (~> 0.5)
     celluloid (0.15.2)
       timers (~> 1.1.0)
     childprocess (0.5.3)
@@ -97,7 +92,6 @@ GEM
       sass (~> 3.2.19)
     compass-rails (2.0.0)
       compass (>= 0.12.2)
-    connection_pool (2.0.0)
     database_cleaner (1.0.1)
     debug_inspector (0.0.2)
     devise (3.2.4)
@@ -250,9 +244,6 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    redis (3.1.0)
-    redis-namespace (1.5.1)
-      redis (~> 3.0, >= 3.0.4)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
@@ -284,12 +275,6 @@ GEM
       multi_json (~> 1.0)
       rubyzip (< 1.0.0)
       websocket (~> 1.0.4)
-    sidekiq (3.2.1)
-      celluloid (>= 0.15.2)
-      connection_pool (>= 2.0.0)
-      json
-      redis (>= 3.0.6)
-      redis-namespace (>= 1.3.1)
     simple_form (3.0.2)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
@@ -354,10 +339,8 @@ DEPENDENCIES
   bullet
   capistrano (= 2.15.4)
   capistrano-db-tasks (= 0.2.1)
-  capistrano-sidekiq
   capybara (~> 2.1.0)
   carrierwave!
-  carrierwave_backgrounder
   clipboard
   coffee-rails (~> 4.0.0)
   database_cleaner (~> 1.0.1)

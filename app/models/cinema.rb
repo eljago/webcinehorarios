@@ -29,5 +29,4 @@ class Cinema < ActiveRecord::Base
   validates :name, :presence => :true
 
   mount_uploader :image, CinemaCover
-  store_in_background :image
 end

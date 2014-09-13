@@ -38,7 +38,7 @@ group :development do
   gem 'clipboard', require: false
   gem 'rvm-capistrano', '1.4.4', require: false
   gem 'capistrano', '2.15.4', require: false
-  gem "capistrano-sidekiq", require: false
+  # gem "capistrano-sidekiq", require: false
   gem "capistrano-db-tasks", '0.2.1', require: false
 end
 gem 'rack-mini-profiler'
@@ -67,7 +67,7 @@ gem 'nprogress-rails'
 
 # gems used for image uploading
 gem 'carrierwave', :github => "jnicklas/carrierwave"
-gem 'carrierwave_backgrounder'
+# gem 'carrierwave_backgrounder'
 gem 'fog'
 gem 'unf'
 gem 'mini_magick'

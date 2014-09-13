@@ -1,7 +1,6 @@
 # encoding: utf-8
 
 class ShowImagesUploader < CarrierWave::Uploader::Base
-  include ::CarrierWave::Backgrounder::Delay
   include CarrierWave::MimeTypes
   include CarrierWave::MiniMagick
   

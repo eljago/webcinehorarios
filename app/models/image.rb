@@ -26,5 +26,4 @@ class Image < ActiveRecord::Base
   belongs_to :imageable, polymorphic: true
   
   mount_uploader :image, ShowImagesUploader
-  #store_in_background :image
 end
