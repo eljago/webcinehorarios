@@ -1,4 +1,5 @@
 set :rvm_ruby_string, '2.1.2'
+set :rvm_type, :user
 require "rvm/capistrano"
 require "bundler/capistrano"
 require 'capistrano-db-tasks'
