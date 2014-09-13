@@ -36,10 +36,12 @@ group :development do
   gem 'annotate', '~> 2.6.5'
 
   gem 'clipboard', require: false
-  gem 'rvm-capistrano', '1.4.4', require: false
-  gem 'capistrano', '2.15.4', require: false
-  # gem "capistrano-sidekiq", require: false
-  gem "capistrano-db-tasks", '0.2.1', require: false
+  gem 'capistrano', '~> 3.1.0'
+  gem 'capistrano-bundler', '~> 1.1.2'
+  gem 'capistrano-rails', '~> 1.1.1'
+
+  # Add this if you're using rbenv
+  gem 'capistrano-rbenv', github: "capistrano/rbenv"
 end
 gem 'rack-mini-profiler'
 
