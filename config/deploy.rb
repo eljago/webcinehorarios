@@ -1,11 +1,16 @@
-set :rvm_ruby_string, '2.1.2'
-set :rvm_type, :user
 require "rvm/capistrano"
 require "bundler/capistrano"
 require 'capistrano-db-tasks'
 
 set :whenever_command, "bundle exec whenever"
 require "whenever/capistrano"
+
+set :default_environment, { 
+  'PATH' => "/home/jago/.rvm/gems/ruby-2.1.2/bin:/home/jago/.rvm/gems/ruby-2.1.2@global/bin:/home/jago/.rvm/rubies/ruby-2.1.2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/home/jago/.rvm/bin:/home/jago/.rvm/bin",
+  'RUBY_VERSION' => 'ruby 2.1.2p95',
+  'GEM_HOME' => "/home/jago/.rvm/gems/ruby-2.1.2",
+  'GEM_PATH' => "/home/jago/.rvm/gems/ruby-2.1.2:/home/jago/.rvm/gems/ruby-2.1.2@global" 
+}
 
 ## CAPISTRANO DB TASKS
 # if you haven't already specified
