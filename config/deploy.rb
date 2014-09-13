@@ -77,3 +77,9 @@ task :tail, roles: :app do
     break if stream == :err
   end
 end
+
+desc "update manifest file"
+task :manifest, roles: :app do
+  run "cp #{shared_path}/assets/manifest.yml ~/."
+  run "mv #{shared_path}/assets/manifest.yml #{shared_path}/../current/assets_manifest.yml"
+end
