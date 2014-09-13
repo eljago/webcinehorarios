@@ -6,7 +6,6 @@ gem 'rails', '4.0.8'
 gem 'nokogiri', require: false
 gem 'http', require: false
 gem 'whenever', require: false
-gem 'clipboard', require: false
 
 group :test do
   gem 'sqlite3'
@@ -23,9 +22,9 @@ group :development, :test do
 end
 
 group :development do
-  gem 'better_errors'
+  gem 'better_errors', '~> 1.1.0'
   gem 'binding_of_caller'
-  gem 'meta_request'
+  gem 'meta_request', '~> 0.3.3'
   gem 'bullet'
   gem 'methodfinder'
   gem 'hirb'
@@ -35,10 +34,11 @@ group :development do
   gem 'railroady'
   
   gem 'annotate', '~> 2.6.5'
-  
+
+  gem 'clipboard', require: false
   gem 'rvm-capistrano', '1.4.4', require: false
   gem 'capistrano', '2.15.4', require: false
-  gem "capistrano-sidekiq", require: false
+  # gem "capistrano-sidekiq", require: false
   gem "capistrano-db-tasks", '0.2.1', require: false
 end
 gem 'rack-mini-profiler'
@@ -106,10 +106,3 @@ gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 1.2'
-
-# Rails 4 upgrade
-# gem 'protected_attributes' # https://github.com/rails/protected_attributes
-# gem 'active_resource' # https://github.com/rails/activeresource
-# gem 'actionpack-action_caching' # https://github.com/rails/actionpack-action_caching
-# gem 'activerecord-session_store' # https://github.com/rails/activerecord-session_store
-# gem 'rails-observers' # https://github.com/rails/rails-observers
