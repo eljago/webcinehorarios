@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.1.2'
 
-gem 'rails', '4.0.8'
+gem 'rails', '4.1.6'
 
 gem 'nokogiri', require: false
 gem 'http', require: false
@@ -33,6 +33,8 @@ group :development do
   
   gem 'railroady'
   
+  gem 'spring'
+  
   gem 'annotate', '~> 2.6.5'
 
   gem 'clipboard', require: false
@@ -40,7 +42,6 @@ group :development do
   gem 'capistrano-bundler', '~> 1.1.2'
   gem 'capistrano-rails', '~> 1.1.1'
   gem 'capistrano-rbenv', github: "capistrano/rbenv"
-  gem 'capistrano-cookbook'
 end
 gem 'rack-mini-profiler'
 
@@ -75,8 +76,6 @@ gem 'mini_magick'
 
 gem 'rabl'
 gem 'oj'
-
-gem 'figaro'
 
 gem "friendly_id"
 

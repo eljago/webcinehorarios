@@ -67,8 +67,8 @@ Webcinehorarios::Application.configure do
     domain: "cinehorarios.cl",
     authentication: "plain",
     enable_starttls_auto: true,
-    user_name: ENV["MAIL_ACCOUNT"],
-    password: ENV["MAIL_PASSWORD"]
+    user_name: Rails.application.secrets.mail_account,
+    password: Rails.application.secrets.mail_password
   }
   
   #req for devise

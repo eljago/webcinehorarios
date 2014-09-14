@@ -3,7 +3,7 @@ set :repo_url, 'ssh://perforce@107.170.169.97:1525/home/perforce/repos/webcineho
 
 set :deploy_to, '/home/jago/apps/webcinehorarios'
 
-set :linked_files, %w{config/database.yml config/application.yml}
+set :linked_files, %w{config/database.yml config/application.yml config/secrets.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads}
 
 set :default_env, { path: "~/.rbenv/shims:~/.rbenv/bin:$PATH" }
@@ -19,6 +19,4 @@ namespace :deploy do
 
   after :publishing, 'deploy:restart'
   after :finishing, 'deploy:cleanup'
-  before :deploy, 'deploy:check_revision'
-  after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
 end
