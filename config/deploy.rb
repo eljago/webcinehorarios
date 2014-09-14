@@ -19,4 +19,6 @@ namespace :deploy do
 
   after :publishing, 'deploy:restart'
   after :finishing, 'deploy:cleanup'
+  before :deploy, 'deploy:check_revision'
+  after 'deploy:symlink:shared', 'deploy:compile_assets_locally'
 end

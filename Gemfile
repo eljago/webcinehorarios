@@ -39,9 +39,8 @@ group :development do
   gem 'capistrano', '~> 3.1.0'
   gem 'capistrano-bundler', '~> 1.1.2'
   gem 'capistrano-rails', '~> 1.1.1'
-
-  # Add this if you're using rbenv
   gem 'capistrano-rbenv', github: "capistrano/rbenv"
+  gem 'capistrano-cookbook'
 end
 gem 'rack-mini-profiler'
 
