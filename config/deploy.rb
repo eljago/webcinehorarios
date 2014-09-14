@@ -6,6 +6,8 @@ set :deploy_to, '/home/jago/apps/webcinehorarios'
 set :linked_files, %w{config/database.yml config/application.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system public/uploads}
 
+set :default_env, { path: "~/.rbenv/shims:~/.rbenv/bin:$PATH" }
+
 namespace :deploy do
 
   desc 'Restart application'
