@@ -9,7 +9,7 @@
   </div>
 	
 	<% theaters = Theater.select([:id, :name]).order('name ASC') %>
-	<% if theaters.count > 0 %>
+	<% if theaters.count(:all) > 0 %>
 	  <div class="form-group">
 	    <%= f.label :admin, 'Theaters:', class: 'col-lg-2 control-label' %>
 			<div class="col-lg-5">

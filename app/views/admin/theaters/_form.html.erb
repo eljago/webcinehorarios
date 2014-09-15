@@ -46,7 +46,7 @@
   </div>
 	
 	<% cities = City.select([:id, :name]).order('name ASC') %>
-	<% if cities.count > 0 %>
+	<% if cities.count(:all) > 0 %>
 		<div class="form-group">
 	    <%= f.label :city_id, 'Ciudad:', class: 'col-sm-2 control-label' %>
 			<div class="col-sm-5">
@@ -63,7 +63,7 @@
 	<% end %>
 	
 	<% cinemas = Cinema.select([:id, :name]).order('name ASC') %>
-	<% if cinemas.count > 0 %>
+	<% if cinemas.count(:all) > 0 %>
 		<div class="form-group">
 	    <%= f.label :cinema_id, 'Cine:', class: 'col-sm-2 control-label' %>
 			<div class="col-sm-5">

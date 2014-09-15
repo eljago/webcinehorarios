@@ -1,9 +1,9 @@
-<%= form_for [:admin, @person], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
+<%= simple_form_for [:admin, @person], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
   <%= render_errors @person %>
 	
 	<% people = Person.select([:id, :name]).order(:name) %>
 	
-	<% if people.count > 0 %>
+	<% if people.count(:all) > 0 %>
   	<div class="form-group">
 			<div class="col-lg-5 col-lg-offset-2">
 	  		<%= select_tag "person_checker", options_from_collection_for_select(people, "id", "name"), include_blank: true , class: 'chzn-select' %>
@@ -11,27 +11,10 @@
 		</div>
 	<% end %>
 	
-  <div class="form-group">
-    <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
-		<div class="col-lg-5">
-    	<%= f.text_field :name, class: 'form-control' %>
-    </div>
-  </div>
-	
-  <div class="form-group">
-    <%= f.label :image, 'Imagen:', class: 'col-lg-2 control-label' %>
-		<div class="col-lg-5">
-    	<%= f.text_field :remote_image_url, class: 'form-control' %>
-    	<%= f.file_field :image %>
-    </div>
-  </div>
-	
-  <div class="form-group">
-    <%= f.label :imdb_code, 'Imdb Code:', class: 'col-lg-2 control-label' %>
-		<div class="col-lg-5">
-    	<%= f.text_field :imdb_code, class: 'form-control' %>
-    </div>
-  </div>
+	<%= f.input :name %>
+	<%= f.input :imdb_code %>
+	<%= f.input :remote_image_url %>
+	<%= f.input :image %>
 
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-5">

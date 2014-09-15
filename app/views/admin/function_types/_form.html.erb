@@ -9,7 +9,7 @@
   </div>
 
 	<% cinemas = Cinema.select([:id, :name]).order(:name) %>
-	<% if cinemas.count > 0 %>
+	<% if cinemas.count(:all) > 0 %>
 	  <div class="form-group">
 	    <%= f.label :cinema_ids, 'Cines:', class: 'col-lg-2 control-label' %>
 			<div class="col-lg-5">

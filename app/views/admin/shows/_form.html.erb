@@ -1,141 +1,28 @@
-<%= form_for [:admin, @show], html: { class: 'form-horizontal show_form', role: 'form' } do |f| %>
-  <%= render_errors @show %>
+<%= simple_form_for [:admin, @show], html: { class: 'form-horizontal', role: 'form' } do |f| %>
+  <%= f.error_notification %>
 	
 			<div class="row">
 				<div class="col-sm-8">
-					
-				  <div class="form-group">
-				    <%= f.label :name, 'Nombre:', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.text_field :name, class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :name_original, 'Nombre Original:', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.text_field :name_original, class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :remote_image_url, 'URL Imagen:', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.text_field :remote_image_url, class: 'form-control' %>
-							<%= f.file_field :image %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :year, 'Año:', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.text_field :year, class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :duration, 'Duración:', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.text_field :duration, class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :information, 'Synopsis:', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.text_area :information, rows: '10', class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :imdb_code, 'IMDb code:', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.text_field :imdb_code, class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :imdb_score, 'IMDb Score', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-3">
-				    	<%= f.text_field :imdb_score, class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :metacritic_url, 'Metacritic URL:', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.text_field :metacritic_url, class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :metacritic_score, 'Metacritic Score', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-3">
-				    	<%= f.text_field :metacritic_score, class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :rotten_tomatoes_url, 'Rotten Tomatoes URL:', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.text_field :rotten_tomatoes_url, class: 'form-control' %>
-				    </div>
-				  </div>
-					
-				  <div class="form-group">
-				    <%= f.label :rotten_tomatoes_score, 'Rotten Tomatoes Score', class: 'col-sm-4 control-label' %>
-						<div class="col-sm-3">
-				    	<%= f.text_field :rotten_tomatoes_score, class: 'form-control' %>
-				    </div>
-				  </div>
+					<%= f.input :name %>
+					<%= f.input :name_original %>
+					<%= f.input :remote_image_url %>
+					<%= f.input :image %>
+					<%= f.input :year %>
+					<%= f.input :duration %>
+					<%= f.input :information, input_html: { rows: '15' } %>
+					<%= f.input :imdb_code %>
+					<%= f.input :imdb_score %>
+					<%= f.input :metacritic_url %>
+					<%= f.input :metacritic_score %>
+					<%= f.input :rotten_tomatoes_url %>
+					<%= f.input :rotten_tomatoes_score %>
 				</div>
 					
 				<div class="col-sm-3">
-
-				  <div class="form-group">
-				    <%= f.label :active, 'Activo?', class: 'col-sm-5 control-label' %>
-						<div class="col-sm-7">
-				    	<%= f.check_box :active, class: 'form-control' %>
-				    </div>
-				  </div>
-					<div class="form-group">
-						<%= f.label :debut, 'Estreno:', class: 'col-sm-5 control-label' %>
-						<div class="col-sm-7">
-							<%= f.date_select :debut, {:include_blank => true, :default => nil, :order => [:day, :month, :year]} %>
-						</div>
-				  </div>
-					
-					<div class="form-group">
-				    <%= f.label :rating, 'Rating:', class: 'col-sm-5 control-label' %>
-						<div class="col-lg-7">
-							<% ['TE','TE+7','13+','14+','15+','16+','18+'].each do |rating| %>
-							  <div class="radio">
-							    <label>
-										<%= f.radio_button :rating, rating, checked: @show.rating == rating %>
-										<%= rating.humanize %>
-							    </label>
-							  </div>
-						  <% end %>
-				    </div>
-					</div>
-	
-					<% genres = Genre.select([:id, :name]).order(:name) %>
-					<% if genres.count > 0 %>
-					  <div class="form-group">
-					    <%= f.label :genre_ids, 'Genres:', class: 'col-lg-5 control-label' %>
-							<div class="col-lg-7">
-								<% genres.each do |genre| %>
-								  <div class="checkbox">
-								    <label>
-								    	<%= check_box_tag 'show[genre_ids][]', genre.id, @show.genres.map(&:id).include?(genre.id) %>
-								    	<%= genre.name.humanize %>
-								    </label>
-								  </div>
-							  <% end %>
-					    </div>
-					  </div>
-					<% end %>
-					
+					<%= f.input :active %>
+					<%= f.input :debut, include_blank: true %>
+					<%= f.input :rating, collection: ['TE','TE+7','13+','14+','15+','16+','18+'], as: :radio_buttons %>
+					<%= f.association :genres, as: :check_boxes %>
 			  </div>
 			</div>
 			

@@ -58,7 +58,7 @@ gem "autoprefixer-rails"
 gem "font-awesome-rails"
 
 gem 'jquery-ui-rails', '~> 5.0.0'
-gem 'simple_form'
+gem 'simple_form', github: 'plataformatec/simple_form', tag: 'v3.1.0.rc2'
 gem 'acts_as_list'
 
 gem 'will_paginate', '~> 3.0'
