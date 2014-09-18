@@ -5,7 +5,7 @@ class Admin::SettingsController < ApplicationController
   end
 
   def edit
-    @setting = Settings.unscoped.find(setting_params)
+    @setting = Settings.unscoped.find(params[:id])
     @setting[:value] = YAML.load(@setting[:value])
   end
   
@@ -24,6 +24,6 @@ class Admin::SettingsController < ApplicationController
   private
   
   def setting_params
-    params.require(:setting).permit :var
+    params.require(:settings).permit :var, :value
   end
 end

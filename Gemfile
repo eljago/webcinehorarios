@@ -79,7 +79,7 @@ gem 'oj'
 
 gem "friendly_id"
 
-gem "rails-settings-cached", "0.3.1"
+gem "rails-settings-cached", "0.4.1"
 
 gem 'devise'
 gem 'simple_token_authentication'
