@@ -43,4 +43,4 @@ web_ready = function(){
 }
 
 $(document).ready(web_ready);
-$(document).on('page:load', ready);
+$(document).on('page:load', web_ready);

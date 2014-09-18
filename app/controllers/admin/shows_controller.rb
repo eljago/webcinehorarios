@@ -92,6 +92,22 @@ class Admin::ShowsController < ApplicationController
     .order("debut ASC")
   end
   
+  def select_shows
+    q = params[:q].split.map(&:capitalize).join(" ")
+    @shows = Show.select([:id, :name]).
+                          where("name like :q", q: "%#{q}%").
+                          order('name').order(:name)
+
+    respond_to do |format|
+      format.json { render json: {shows: @shows.map { |e| {id: e.id, text: "#{e.name}"} }} }
+    end
+  end
+  def simple_show
+    @show = Show.select([:id, :name]).find(params[:show_id])
+    respond_to do |format|
+      format.json { render json: {show: { id: @show.id, name: @show.name } } }
+    end
+  end
   
   private
   

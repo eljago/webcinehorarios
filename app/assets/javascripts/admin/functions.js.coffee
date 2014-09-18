@@ -32,7 +32,8 @@ ready = ->
     time = new Date().getTime()
     regexp = new RegExp($(this).data('id'), 'g')
     $(this).before($(this).data('fields').replace(regexp, time))
-    func($('fieldset.show_person_role:last .chzn-select'))
+		if $('fieldset.show_person_role:last .people-select') && $('fieldset.show_person_role:last .people-select').length > 0
+	    func($('fieldset.show_person_role:last .people-select'))
     event.preventDefault()
 		
 $(document).ready(ready)

@@ -6,7 +6,7 @@
 	<% if people.count(:all) > 0 %>
   	<div class="form-group">
 			<div class="col-lg-5 col-lg-offset-2">
-	  		<%= select_tag "person_checker", options_from_collection_for_select(people, "id", "name"), include_blank: true , class: 'chzn-select' %>
+				<%= f.hidden_field :id, class: 'people-select ajax', style: "width: 90%;", data: { source: select_people_admin_people_path } %>
 			</div>
 		</div>
 	<% end %>

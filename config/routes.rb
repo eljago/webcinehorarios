@@ -329,9 +329,11 @@ Webcinehorarios::Application.routes.draw do
       end
     end
     resources :shows do
+      get 'simple_show'
       collection do 
         get 'billboard'
         get 'comingsoon'
+        get 'select_shows'
       end 
     end
     # For Sorting Actors
