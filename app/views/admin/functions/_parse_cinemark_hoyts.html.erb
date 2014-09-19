@@ -9,15 +9,21 @@
           <% if item[:functions].count > 0 %>
             <%= b.hidden_field :parsed_show_id, value: item[:parsed_show][:id] %>
             <%= b.hidden_field :parsed_show_show_id, value: item[:parsed_show][:show_id] %>
+						
             <% if item[:parsed_show][:show_id].blank? %>
               <%= b.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" } %>
             <% else %>
               <%= b.collection_select :show_id, @shows, :id, :name, {selected: item[:parsed_show][:show_id], include_blank: true}, { class: "chzn-select" } %>
             <% end %>
+						
           <% end %>
+					
           <br/>
+					
           <%= b.collection_check_boxes :function_types, @function_types, :id, :name, checked: item[:function_types], :item_wrapper_class => "checkbox_line" %>
         </div>
+				
+				
         <div class="col-sm-8">
           <strong>
             <%= item[:name] %>
@@ -41,7 +47,6 @@
       <br/>
     <% end %>
   <% end %>
-  <%= hidden_field_tag :is_cineplanet, "true" if !@is_cineplanet.blank? %>
   <%= hidden_field_tag :parse_days_count, @parse_days_count %>
   <%= hidden_field_tag :date, @date.to_date %>
   <div class="form-actions">

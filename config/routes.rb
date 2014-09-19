@@ -318,6 +318,7 @@ Webcinehorarios::Application.routes.draw do
     resources :theaters do
       resources :functions do
         collection do
+          get :parse_theater
           get 'new_parse'
           post 'create_parse'
           post 'create_ajax_parse'

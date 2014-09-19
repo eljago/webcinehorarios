@@ -19,4 +19,5 @@ namespace :deploy do
 
   after :publishing, 'deploy:restart'
   after :finishing, 'deploy:cleanup'
+  before :deploy, 'deploy:check_revision'
 end
