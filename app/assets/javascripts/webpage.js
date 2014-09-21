@@ -1,4 +1,4 @@
-web_ready = function(){
+$(document).ready(function(){
 	var button = $('#contact').find('button');
   button.button();
 
@@ -40,7 +40,4 @@ web_ready = function(){
 		  $("#desc-"+value).fadeIn();
 		});
 	});
-}
-
-$(document).ready(web_ready);
-$(document).on('page:load', web_ready);
+});
