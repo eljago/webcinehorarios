@@ -55,19 +55,22 @@ class Admin::ShowsController < ApplicationController
   
   def update
     @show = Show.find(params[:id])
-    if show_params[:videos_attributes]
-      show_params[:videos_attributes].each do |key, video|
-        if key.to_i > 2147483647
-          video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
-        elsif video[:code].present?
-          db_video = @show.videos.find(video[:id].to_i)
-          unless db_video && db_video.code == video[:code]
+    instance_show_params = show_params
+    if instance_show_params[:videos_attributes]
+      instance_show_params[:videos_attributes].each do |key, video|
+        if video[:code].present?
+          if key.to_i > 2147483647
             video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
+          elsif video[:_destroy] == "false"
+            db_video = @show.videos.find(video[:id].to_i)
+            unless db_video && db_video.code == video[:code]
+              video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
+            end
           end
         end
       end
     end
-    if @show.update_attributes(show_params)
+    if @show.update_attributes(instance_show_params)
       redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully updated.'
     else
       @people = Person.select([:id, :name]).order('people.name ASC')
