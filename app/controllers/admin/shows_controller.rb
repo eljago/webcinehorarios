@@ -57,7 +57,9 @@ class Admin::ShowsController < ApplicationController
     @show = Show.find(params[:id])
     if show_params[:videos_attributes]
       show_params[:videos_attributes].each do |key, video|
-        if key.to_i < 2147483647 && video[:code].present?
+        if key.to_i > 2147483647
+          video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
+        elsif video[:code].present?
           db_video = @show.videos.find(video[:id].to_i)
           unless db_video && db_video.code == video[:code]
             video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
