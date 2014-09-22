@@ -1,10 +1,10 @@
-<fieldset class="show-image">
-	<div class="destroy">
-		<%= f.hidden_field :_destroy %>
-		<button class="close remove_fields">X</button>
-	</div>
-	<%= f.check_box :show_portrait_id, {}, 1, 0 %>
-	<% if f.object.new_record? %>
+<% if f.object.new_record? %>
+	<fieldset class="show-image">
+		<div class="destroy">
+			<%= f.hidden_field :_destroy %>
+			<button class="close remove_fields">X</button>
+		</div>
+		<%= f.check_box :show_portrait_id, {}, 1, 0 %>
 	  <div class="form-group">
 	    <%= f.label :remote_image_url, 'URL Imagen:', class: 'col-sm-2 control-label' %>
 			<div class="col-sm-10">
@@ -12,11 +12,20 @@
 				<%= f.file_field :image %>
 	    </div>
 	  </div>
-  <% else %>
-		<% if f.object.image.url %>
-    	<%= image_tag(f.object.image.url(:smaller))  %>
-		<% else %>
-			<%= 'Imágen Inválida' %>
-		<% end %>
-  <% end %>
-</fieldset>
+	</fieldset>
+<% else %>
+	<div class="col-xs-3 col-md-2">
+		<fieldset class="show-image">
+		<div class="destroy">
+			<%= f.hidden_field :_destroy %>
+			<button class="close remove_fields">X</button>
+		</div>
+		<%= f.check_box :show_portrait_id, {}, 1, 0 %>
+			<% if f.object.image.url %>
+			<%= link_to(image_tag(f.object.image.url(:smaller)), f.object.image.url, target: '_blank', class: 'thumbnail') %>
+			<% else %>
+				<%= 'Imágen Inválida' %>
+			<% end %>
+		</fieldset>
+	</div>
+<% end %>

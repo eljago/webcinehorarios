@@ -19,10 +19,49 @@
 				</div>
 					
 				<div class="col-sm-3">
-					<%= f.input :active %>
-					<%= f.input :debut, include_blank: true %>
-					<%= f.input :rating, collection: ['TE','TE+7','13+','14+','15+','16+','18+'], as: :radio_buttons %>
-					<%= f.association :genres, as: :check_boxes %>
+					<div class="form-group">
+				    <%= f.label :active, 'Activo?', class: 'col-sm-5 control-label' %>
+						<div class="col-sm-7">
+				    	<%= f.check_box :active, class: 'form-control' %>
+				    </div>
+				  </div>
+					<div class="form-group">
+						<%= f.label :debut, 'Estreno:', class: 'col-sm-5 control-label' %>
+						<div class="col-sm-7">
+							<%= f.date_select :debut, {:include_blank => true, :default => nil, :order => [:day, :month, :year]} %>
+						</div>
+				  </div>
+
+					<div class="form-group">
+				    <%= f.label :rating, 'Rating:', class: 'col-sm-5 control-label' %>
+						<div class="col-lg-7">
+							<% ['TE','TE+7','13+','14+','15+','16+','18+'].each do |rating| %>
+							  <div class="radio">
+							    <label>
+										<%= f.radio_button :rating, rating, checked: @show.rating == rating %>
+										<%= rating.humanize %>
+							    </label>
+							  </div>
+						  <% end %>
+				    </div>
+					</div>
+
+					<% genres = Genre.select([:id, :name]).order(:name) %>
+					<% if genres.count(:id) > 0 %>
+					  <div class="form-group">
+					    <%= f.label :genre_ids, 'Genres:', class: 'col-lg-5 control-label' %>
+							<div class="col-lg-7">
+								<% genres.each do |genre| %>
+								  <div class="checkbox">
+								    <label>
+								    	<%= check_box_tag 'show[genre_ids][]', genre.id, @show.genres.map(&:id).include?(genre.id) %>
+								    	<%= genre.name.humanize %>
+								    </label>
+								  </div>
+							  <% end %>
+					    </div>
+					  </div>
+					<% end %>
 			  </div>
 			</div>
 			
@@ -37,9 +76,11 @@
 					<br />
 					<%= link_to_add_fields "Add Person", f, :show_person_roles %>
 					<h3>Imagenes:</h3>
-					<%= f.fields_for :images do |b| %>
-					  <%= render 'image_fields', f: b %>
-					<% end %>
+					<div class="row">
+						<%= f.fields_for :images do |b| %>
+						  <%= render 'image_fields', f: b %>
+						<% end %>
+					</div>
 					<br />
 					<%= link_to_add_fields "Add Image", f, :images %>
 					<h3>Videos:</h3>
