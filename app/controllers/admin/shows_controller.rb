@@ -42,7 +42,7 @@ class Admin::ShowsController < ApplicationController
         if image.show_portrait_id == 0
           image.show_portrait_id = nil
           image.save
-        elsif image.show_portrait_id == 1
+        else
           image.show_portrait_id = @show.id
           image.save
         end
@@ -70,7 +70,18 @@ class Admin::ShowsController < ApplicationController
         end
       end
     end
+    
     if @show.update_attributes(instance_show_params)
+      @show.images.each do |image|
+        if image.show_portrait_id == 0
+          image.show_portrait_id = nil
+          image.save
+        else
+          image.show_portrait_id = @show.id
+          image.save
+        end
+      end
+      
       redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully updated.'
     else
       @people = Person.select([:id, :name]).order('people.name ASC')

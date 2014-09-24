@@ -1,3 +1,5 @@
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
+
 set :application, 'webcinehorarios'
 set :repo_url, 'ssh://perforce@107.170.169.97:1525/home/perforce/repos/webcinehorarios.git'
 
