@@ -19,7 +19,6 @@ module TheaterParserHelper
         function = { showtimes: [] }
         function[:day] = itemFunction.css('.diaHora').text.superclean
         dia = function[:day].split('-').last.to_i
-        puts parse_days
         if parse_days.map(&:day).include?(dia)
           showtimes = []
           itemFunction.css('.horarioHora').each do |itemShowtime|
@@ -144,25 +143,21 @@ module TheaterParserHelper
       titulo = page2.css('div[class="superior titulo-tamano-superior-modificado"]')
       next if titulo == nil
       titulo = titulo.text.superclean
-      puts titulo
       
       movieFunction = { name: titulo, functions: [] }
       
       theater_found = false
       page2.css("div.contenedor-lista-peliculas2 div.texto-lista").each do |div|
         strong = div.css("strong").text.superclean
-        puts strong
         # si strong.empty?, entonces se está en los horarios
         if strong.empty? && theater_found
           if spans = div.css('span.flotar-izquierda')
         
             date_array = spans[0].text.split
             dia = date_array[1].to_i
-            puts dia
             if parse_days.map(&:day).include?(dia)
               horarios = spans[1].text.superclean.gsub(' ', ', ')
               function = { day: date_array.to_s, showtimes: horarios, dia: dia }
-              puts function
               movieFunction[:functions] << function
             end
           end

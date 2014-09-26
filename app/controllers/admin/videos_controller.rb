@@ -31,9 +31,6 @@ class Admin::VideosController < ApplicationController
   def update
     unless video_params[:code].blank?
       video = Video.find(params[:id].to_i)
-      puts video.code.dump
-      puts video_params[:code].dump
-      puts video.blank?
       if !video.blank? && video.code != video_params[:code]
         video_params[:remote_image_url] = "http://img.youtube.com/vi/#{params[:video][:code]}/0.jpg"
       end

@@ -28,14 +28,15 @@ class Admin::ShowsController < ApplicationController
   end
   
   def create
-    if show_params[:videos_attributes]
-      show_params[:videos_attributes].each do |key, video|
+    new_show_params = show_params
+    if new_show_params[:videos_attributes]
+      new_show_params[:videos_attributes].each do |key, video|
         unless video[:code].blank?
           video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
         end
       end
     end
-    @show = Show.new(show_params)
+    @show = Show.new(new_show_params)
     
     if @show.save
       @show.images.each do |image|

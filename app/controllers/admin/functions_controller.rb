@@ -123,7 +123,6 @@ class Admin::FunctionsController < ApplicationController
       hash = parse_cineplanet(@theater.web_url, parse_days, @theater.name)
       continue = true
     end
-    puts hash
     
     @functionsArray = []
     if continue
