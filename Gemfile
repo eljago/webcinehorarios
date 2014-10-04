@@ -71,8 +71,8 @@ gem 'nprogress-rails'
 # gems used for image uploading
 gem 'carrierwave', :github => "jnicklas/carrierwave"
 # gem 'carrierwave_backgrounder'
-gem 'fog'
-gem 'unf'
+# gem 'fog'
+# gem 'unf'
 gem 'mini_magick'
 
 gem 'rabl'

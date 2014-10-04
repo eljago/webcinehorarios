@@ -5,8 +5,8 @@ class ShowImagesUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
   
   process :set_content_type
-  
-  storage :fog
+  storage :file
+  # storage :fog
   
   def extension_white_list
     %w(jpg jpeg gif png)
