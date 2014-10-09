@@ -144,7 +144,7 @@ class Admin::FunctionsController < ApplicationController
            parsed_show_name.gsub!(transliterate(pdt.name.gsub(/\s+/, "")).underscore, "")
           end
         end
-        parsed_show_name.gsub!(/\(|\)|\s/, "")
+        parsed_show_name.gsub!(/\(|\)|\s|_/, "")
       
         parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name[0..10])
         
