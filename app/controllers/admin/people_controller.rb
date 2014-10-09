@@ -10,6 +10,7 @@ class Admin::PeopleController < ApplicationController
   
   def show
     respond_to do |format|
+      format.html
       format.json { render json: {person: { id: @person.id, name: @person.name } } }
     end
   end
