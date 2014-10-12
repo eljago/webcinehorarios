@@ -1,0 +1,12 @@
+namespace :parse do
+  desc "Fetch Shows scores"
+  task :scores do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "parse:metacritic"
+        end
+      end
+    end
+  end
+end
