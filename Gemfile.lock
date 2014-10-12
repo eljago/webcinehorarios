@@ -1,12 +1,4 @@
 GIT
-  remote: git://github.com/capistrano/rbenv.git
-  revision: 2332dba20ec1f8c8cb7a9cd38770d71f5c4bf5a9
-  specs:
-    capistrano-rbenv (2.0.2)
-      capistrano (~> 3.1)
-      sshkit (~> 1.3)
-
-GIT
   remote: git://github.com/jnicklas/carrierwave.git
   revision: c2ee2e89d3aa447c6b81186be6d627202d33a97f
   specs:
@@ -87,6 +79,9 @@ GEM
     capistrano-rails (1.1.2)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    capistrano-rbenv (2.0.2)
+      capistrano (~> 3.1)
+      sshkit (~> 1.3)
     capybara (2.1.0)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
@@ -324,10 +319,10 @@ DEPENDENCIES
   binding_of_caller
   bootstrap-sass (~> 3.2.0)
   bullet
-  capistrano (~> 3.1.0)
+  capistrano (~> 3.1)
   capistrano-bundler (~> 1.1.2)
   capistrano-rails (~> 1.1.1)
-  capistrano-rbenv!
+  capistrano-rbenv (~> 2.0)
   capybara (~> 2.1.0)
   carrierwave!
   clipboard
