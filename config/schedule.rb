@@ -25,7 +25,7 @@ set :environment, "production"
 
 set :output, "#{path}/log/cron.log"
 
-every :day, :at => "9am" do
+every :day, :at => "7:35am" do
   rake "parse:metacritic"
   rake "cache:carrierwave_clean"
   # rake "maintain:functions"
