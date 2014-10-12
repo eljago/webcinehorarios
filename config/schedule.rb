@@ -19,6 +19,8 @@
 
 # Learn more: http://github.com/javan/whenever
 
+env :PATH, ENV['PATH']
+
 set :environment, "production"
 
 set :output, "#{path}/log/cron.log"
