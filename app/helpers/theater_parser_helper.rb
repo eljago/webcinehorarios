@@ -53,11 +53,17 @@ module TheaterParserHelper
       item.css('li.showtime-item').each do |item|
         function = { showtimes: [] }
         function[:day] = item.css('span.showtime-day').text.superclean
-        dia = function[:day].split('-').first.to_i
+        dia = function[:day].split('-')[0].to_i
         mes = function[:day].split('-')[1].superclean.gsub(':','')
-        mesValid = l(date, format: '%b').to_s.downcase
-        puts mes
-        puts mesValid
+        
+        if date != Date.current
+          dateToValidate = date.advance_to_day(dia)
+        else
+          dateToValidate = date
+        end
+        
+        mesValid = l(dateToValidate, format: '%b').to_s.downcase
+        
         if parse_days.map(&:day).include?(dia) && mes == mesValid
           horarios = ""
           item.css('span.showtime-hour').each do |item|
