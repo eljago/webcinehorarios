@@ -34,7 +34,7 @@ module TheaterParserHelper
     return hash
   end
   
-  def parse_cinemark url, parse_days
+  def parse_cinemark url, parse_days, date
     s = open(URI.escape(url)).read
     s.gsub!('&nbsp;', ' ')
     page = Nokogiri::HTML(s)
@@ -54,7 +54,11 @@ module TheaterParserHelper
         function = { showtimes: [] }
         function[:day] = item.css('span.showtime-day').text.superclean
         dia = function[:day].split('-').first.to_i
-        if parse_days.map(&:day).include?(dia)
+        mes = function[:day].split('-')[1].superclean.gsub(':','')
+        mesValid = l(date, format: '%b').to_s.downcase
+        puts mes
+        puts mesValid
+        if parse_days.map(&:day).include?(dia) && mes == mesValid
           horarios = ""
           item.css('span.showtime-hour').each do |item|
             horarios << "#{item.text}, "
