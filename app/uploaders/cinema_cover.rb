@@ -3,7 +3,7 @@
 class CinemaCover < CoverUploader
   
   def default_url
-    "/assets/" + [version_name, "MissingPicture.jpg"].compact.join('_')
+    ActionController::Base.helpers.asset_path("assets/" + [version_name, "MissingPicture.jpg"].compact.join('_'))
   end
   
   process :resize_to_fit => [200,200]

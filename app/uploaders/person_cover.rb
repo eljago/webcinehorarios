@@ -3,7 +3,7 @@
 class PersonCover < CoverUploader
 
   def default_url
-    "/assets/" + [version_name, "MissingActor.png"].compact.join('_')
+    ActionController::Base.helpers.asset_path("assets/" + [version_name, "MissingActor.png"].compact.join('_'))
   end
 
   process :resize_to_limit => [1136,640], if: :is_landscape?
