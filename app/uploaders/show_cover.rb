@@ -21,7 +21,7 @@ class ShowCover < CarrierWave::Uploader::Base
   end
   
   def default_url
-    ActionController::Base.helpers.asset_path("assets/" + [version_name, "MissingPicture.jpg"].compact.join('_'))
+    ActionController::Base.helpers.asset_path("fallback/" + [version_name, "MissingPicture.jpg"].compact.join('_'))
   end
 
   process :resize_to_limit => [1136,640], if: :is_landscape?
