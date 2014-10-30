@@ -3,7 +3,7 @@
 class AwardCover < CoverUploader
 
   def default_url
-    "uploads/default_images/#{[version_name, "MissingActor.png"].compact.join('_')}"
+    ActionController::Base.helpers.asset_path("fallback/" + [version_name, "MissingActor.png"].compact.join('_'))
   end
 
   process :resize_to_fit => [200, 200]

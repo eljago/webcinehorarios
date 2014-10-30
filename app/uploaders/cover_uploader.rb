@@ -7,7 +7,7 @@ class CoverUploader < ImageUploader
   end
   
   def default_url
-    "uploads/default_images/#{[version_name, "MissingPicture.jpg"].compact.join('_')}"
+    ActionController::Base.helpers.asset_path("fallback/" + [version_name, "MissingPicture.jpg"].compact.join('_'))
   end
   
   process convert: 'png'
