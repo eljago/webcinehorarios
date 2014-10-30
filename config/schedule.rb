@@ -19,11 +19,13 @@
 
 # Learn more: http://github.com/javan/whenever
 
+env :PATH, ENV['PATH']
+
 set :environment, "production"
 
 set :output, "#{path}/log/cron.log"
 
-every :day, :at => "5am" do
+every :day, :at => "3:30am" do
   rake "parse:metacritic"
   rake "cache:carrierwave_clean"
   # rake "maintain:functions"
