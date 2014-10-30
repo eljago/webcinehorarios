@@ -7,7 +7,7 @@ class VideoCover < ImageUploader
   end
   
   def default_url
-    ActionController::Base.helpers.asset_path("fallback/" + [version_name, "MissingPicture.jpg"].compact.join('_'))
+    ActionController::Base.helpers.asset_path("uploads/default_images/" + [version_name, "MissingPicture.jpg"].compact.join('_'))
   end
   
   
