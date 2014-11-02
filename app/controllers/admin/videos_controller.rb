@@ -56,6 +56,6 @@ class Admin::VideosController < ApplicationController
   end
   
   def video_params
-    params.require(:video).permit :name, :code, :image, :remote_image_url, :outstanding
+    params.require(:video).permit :name, :code, :image, :remote_image_url, :outstanding, :video_type
   end
 end

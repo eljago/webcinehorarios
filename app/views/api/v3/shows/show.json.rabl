@@ -5,7 +5,7 @@ child :images do
 	attributes :image_url
 end
 child :videos do
-	attributes :name, :code, :image_url
+	attributes :name, :code, :image_url, :video_type
 end
 child :show_person_roles => :people do
 	attributes :actor, :director, :character

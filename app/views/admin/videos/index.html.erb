@@ -9,6 +9,7 @@
 		<th>Nombre</th>
 		<th>Imagen</th>
 		<th>Destacado</th>
+		<th>Type</th>
 		<th></th>
 	</tr>
 
@@ -22,6 +23,9 @@
 		</td>
 		<td>
 			<%= video.outstanding %>
+		</td>
+		<td>
+			<%= video.video_type %>
 		</td>
 		<td>
 			<%= render_index_actions [video], only: [:edit, :destroy] %>

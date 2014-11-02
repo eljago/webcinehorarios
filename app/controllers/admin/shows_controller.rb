@@ -133,6 +133,6 @@ class Admin::ShowsController < ApplicationController
   end
   
   def show_params
-    params.require(:show).permit :active, :year, :debut, :name, :image, :information, :duration, :name_original, :rating, :remote_image_url, :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score, images_attributes: [ :_destroy, :id, :name, :image, :remote_image_url, :width, :height, :show_portrait_id ], videos_attributes: [ :_destroy, :id, :name, :code, :image, :remote_image_url, :outstanding ], show_person_roles_attributes: [ :_destroy, :id, :actor, :writer, :creator, :producer, :director, :person_id, :show_id, :character ], genre_ids: []
+    params.require(:show).permit :active, :year, :debut, :name, :image, :information, :duration, :name_original, :rating, :remote_image_url, :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score, images_attributes: [ :_destroy, :id, :name, :image, :remote_image_url, :width, :height, :show_portrait_id ], videos_attributes: [ :_destroy, :id, :name, :code, :image, :remote_image_url, :outstanding, :video_type ], show_person_roles_attributes: [ :_destroy, :id, :actor, :writer, :creator, :producer, :director, :person_id, :show_id, :character ], genre_ids: []
   end
 end

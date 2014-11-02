@@ -3,20 +3,26 @@
 	
   <div class="form-group">
     <%= f.label :outstanding, 'Destacado:', class: 'col-lg-2 control-label' %>
-		<div class="col-lg-5">
+	<div class="col-lg-5">
     	<%= f.check_box :outstanding, class: 'form-control' %>
     </div>
   </div>
   <div class="form-group">
     <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
-		<div class="col-lg-5">
+	<div class="col-lg-5">
     	<%= f.text_field :name, class: 'form-control' %>
     </div>
   </div>
   <div class="form-group">
     <%= f.label :code, 'Código:', class: 'col-lg-2 control-label' %>
-		<div class="col-lg-5">
+	<div class="col-lg-5">
     	<%= f.text_field :code, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <%= f.label :video_type, 'Tipo de Video:', class: 'col-lg-2 control-label' %>
+	<div class="col-lg-5">
+    	<%= f.select :video_type, options_for_select(Video.video_types.collect { |s| [s[0].humanize, s[0]] }, selected: @video.video_type), {} , class: 'form-control' %>
     </div>
   </div>
 

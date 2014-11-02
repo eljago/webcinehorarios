@@ -25,5 +25,12 @@
     	<%= f.text_field :code, class: 'form-control' %>
     </div>
   </div>
+  <div class="form-group">
+    <%= f.label :video_type, 'Tipo de Video:', class: 'col-sm-2 control-label' %>
+		<div class="col-sm-5">
+    	<%= f.text_field :code, class: 'form-control' %>
+		<%= f.select :video_type, options_for_select(Video.video_types.collect { |s| [s[0].humanize, s[0]] }, selected: f.object.video_type), {} , class: 'form-control' %>
+    </div>
+  </div>
 
 </fieldset>
