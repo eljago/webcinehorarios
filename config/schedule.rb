@@ -30,3 +30,7 @@ every 6.hours do
   rake "cache:carrierwave_clean"
   # rake "maintain:functions"
 end
+
+every 1.day, at: '5am' do
+  command '/sbin/shutdown -r +5'
+end
