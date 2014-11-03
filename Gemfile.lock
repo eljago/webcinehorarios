@@ -339,6 +339,7 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   jquery-ui-rails (~> 5.0.0)
+  json
   launchy (~> 2.3.0)
   meta_request (~> 0.3.3)
   methodfinder

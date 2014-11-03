@@ -1,5 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
+require 'open-uri'
+require 'json'
 class Admin::ShowsController < ApplicationController
   
   before_filter :get_show, only: :destroy
@@ -32,7 +34,14 @@ class Admin::ShowsController < ApplicationController
     if new_show_params[:videos_attributes]
       new_show_params[:videos_attributes].each do |key, video|
         unless video[:code].blank?
-          video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
+          if video["video_type"] == "youtube"
+            video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
+          elsif video["video_type"] == "vimeo"
+            api_url = "http://vimeo.com/api/v2/video/#{video[:code]}.json"
+            s = open(URI.escape(api_url)).read
+            video_json = JSON.parse(s)
+            video[:remote_image_url] = video_json.first["thumbnail_large"]
+          end
         end
       end
     end
@@ -61,11 +70,27 @@ class Admin::ShowsController < ApplicationController
       instance_show_params[:videos_attributes].each do |key, video|
         if video[:code].present?
           if key.to_i > 2147483647
-            video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
+            
+            if video["video_type"] == "youtube"
+              video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
+            elsif video["video_type"] == "vimeo"
+              api_url = "http://vimeo.com/api/v2/video/#{video[:code]}.json"
+              s = open(URI.escape(api_url)).read
+              video_json = JSON.parse(s)
+              video[:remote_image_url] = video_json.first["thumbnail_large"]
+            end
+            
           elsif video[:_destroy] == "false"
             db_video = @show.videos.find(video[:id].to_i)
             unless db_video && db_video.code == video[:code]
-              video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
+              if video["video_type"] == "youtube"
+                video[:remote_image_url] = "http://img.youtube.com/vi/#{video[:code]}/0.jpg"
+              elsif video["video_type"] == "vimeo"
+                api_url = "http://vimeo.com/api/v2/video/#{video[:code]}.json"
+                s = open(URI.escape(api_url)).read
+                video_json = JSON.parse(s)
+                video[:remote_image_url] = video_json.first["thumbnail_large"]
+              end
             end
           end
         end

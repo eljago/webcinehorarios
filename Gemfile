@@ -78,6 +78,8 @@ gem 'mini_magick'
 gem 'rabl'
 gem 'oj'
 
+gem 'json'
+
 gem "friendly_id"
 
 gem "rails-settings-cached", "0.4.1"

@@ -1,4 +1,7 @@
 # encoding: utf-8
+require 'open-uri'
+require 'json'
+
 class Admin::VideosController < ApplicationController
   
   before_filter :get_video, only: [:edit, :update, :destroy]
@@ -16,7 +19,14 @@ class Admin::VideosController < ApplicationController
   
   def create
     unless video_params[:code].blank?
-      video_params[:remote_image_url] = "http://img.youtube.com/vi/#{params[:video][:code]}/0.jpg"
+      if video_params["video_type"] == "youtube"
+        params[:video][:remote_image_url] = "http://img.youtube.com/vi/#{video_params[:code]}/0.jpg"
+      elsif video_params["video_type"] == "vimeo"
+        api_url = "http://vimeo.com/api/v2/video/#{video_params[:code]}.json"
+        s = open(URI.escape(api_url)).read
+        video_json = JSON.parse(s)
+        params[:video][:remote_image_url] = video_json.first["thumbnail_large"]
+      end
     end
     
     @video = Video.new(video_params)
@@ -29,10 +39,18 @@ class Admin::VideosController < ApplicationController
   end
   
   def update
+        puts video_params["video_type"]
     unless video_params[:code].blank?
       video = Video.find(params[:id].to_i)
       if !video.blank? && video.code != video_params[:code]
-        video_params[:remote_image_url] = "http://img.youtube.com/vi/#{params[:video][:code]}/0.jpg"
+        if video_params["video_type"] == "youtube"
+          params[:video][:remote_image_url] = "http://img.youtube.com/vi/#{video_params[:code]}/0.jpg"
+        elsif video_params["video_type"] == "vimeo"
+          api_url = "http://vimeo.com/api/v2/video/#{video_params[:code]}.json"
+          s = open(URI.escape(api_url)).read
+          video_json = JSON.parse(s)
+          params[:video][:remote_image_url] = video_json.first["thumbnail_large"]
+        end
       end
     end
     
