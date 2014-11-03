@@ -4,8 +4,8 @@ attributes :id, :name, :image_url, :duration, :name_original, :information, :rat
 child :images do
 	attributes :image_url
 end
-child :videos do
-	attributes :name, :code, :image_url, :video_type
+child @show.videos.where(video_type: 0) do
+			attributes :name, :code, :image_url, :video_type
 end
 child :show_person_roles => :people do
 	attributes :actor, :director, :character
