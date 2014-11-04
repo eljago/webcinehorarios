@@ -10,7 +10,7 @@ end
 child :show_person_roles => :people do
 	attributes :actor, :director, :character
 	glue :person do
-	  attributes :name, :image_url
+	  attributes :name, :image_url, :imdb_code
 	end
 end
 node :debut do |s|
