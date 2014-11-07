@@ -17,7 +17,7 @@ class Admin::SettingsController < ApplicationController
     if @setting.save
       redirect_to admin_settings_path, notice: "Saved."
     else
-      render "edit"
+      render action: "edit"
     end
   end
   

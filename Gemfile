@@ -68,9 +68,11 @@ gem 'will_paginate-bootstrap'
 # Show progress of page load.
 gem 'nprogress-rails'
 
+gem 'sucker_punch'
+
 # gems used for image uploading
 gem 'carrierwave', :github => "jnicklas/carrierwave"
-# gem 'carrierwave_backgrounder'
+gem 'carrierwave_backgrounder'
 # gem 'fog'
 # gem 'unf'
 gem 'mini_magick'

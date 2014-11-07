@@ -18,7 +18,7 @@ class Admin::SessionsController < ApplicationController
       end
     else
       flash.now.alert = 'Email o password inválido'
-      render 'new'
+      render action: :new
     end
   end
   

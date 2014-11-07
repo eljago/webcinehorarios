@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class PersonCover < CoverUploader
-
+  include ::CarrierWave::Backgrounder::Delay
   def default_url
     ActionController::Base.helpers.asset_path("uploads/default_images/" + [version_name, "MissingActor.png"].compact.join('_'))
   end
