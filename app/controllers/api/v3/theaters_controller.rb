@@ -19,12 +19,15 @@ module Api
           .order('theaters.name ASC').references(:functions)
         end
         @favorite_theaters ||= []
+        @cache_date = @date.strftime '%Y%m%d'
       end
       
       def show
         @functions = Function.includes(:show, :showtimes, :function_types)
           .order('shows.debut DESC, shows.id, showtimes.time ASC')
           .where(functions: { date: @date, theater_id: params[:id] } )
+        
+        @cache_date = @date.strftime '%Y%m%d'
           
         @theater = Theater.includes(:cinema).where(id: params[:id]).first
         @cinema_name = @theater.cinema.name

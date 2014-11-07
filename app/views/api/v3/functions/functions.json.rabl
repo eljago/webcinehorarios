@@ -1,5 +1,4 @@
 collection @functions
-cache ['v3', @functions], expires_in: 1.hour
 glue :show do
 	attributes :id, :name, :image_url
 	glue :portrait_image do
