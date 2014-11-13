@@ -1,0 +1,12 @@
+namespace :clean_cineplanet do
+  desc "Fetch Shows scores"
+  task :cache do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "clean_cineplanet:cache"
+        end
+      end
+    end
+  end
+end
