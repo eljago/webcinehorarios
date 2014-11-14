@@ -42,4 +42,4 @@
 <% end %>
 </table>
 
-<br />
+<p><%= will_paginate @shows, previous_label: h("<"), next_label: h(">"), renderer: BootstrapPagination::Rails %></p>

@@ -101,6 +101,6 @@
   </div>
 <% end %>
 
-<%= link_to [:admin, :shows], class: 'btn btn-default' do %>
+<%= link_to session[:previous_url], class: 'btn btn-default' do %>
 	<i class="icon-arrow-left"></i> Volver
 <% end %>

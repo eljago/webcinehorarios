@@ -76,7 +76,7 @@
 <%= render 'images' %>
 <%= render 'videos' %>
 
-<%= link_to [:admin, :shows], class: 'btn btn-default' do %>
+<%= link_to session[:previous_url], class: 'btn btn-default' do %>
 	<i class="icon-arrow-left"></i> Volver
 <% end %>
 <%= link_to [:edit, :admin, @show], class: 'btn btn-default' do %>

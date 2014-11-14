@@ -5,6 +5,19 @@ require 'json'
 class Admin::ShowsController < ApplicationController
   
   before_filter :get_show, only: :destroy
+  before_filter :set_previous_url, only: [:index, :billboard, :comingsoon]
+  
+  def set_previous_url
+    if action_name == 'index'
+      session[:previous_url] = admin_shows_url
+    elsif action_name == 'billboard'
+      session[:previous_url] = billboard_admin_shows_url
+    elsif action_name == 'comingsoon'
+      session[:previous_url] = comingsoon_admin_shows_url
+    else
+      session[:previous_url] = admin_shows_url
+    end
+  end
   
   def index
     # letter = params[:letter].blank? ? 'A' : params[:letter] 
@@ -57,7 +70,7 @@ class Admin::ShowsController < ApplicationController
           image.save
         end
       end
-      redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully created.'
+      redirect_to session[:previous_url], notice: 'Show was successfully created.'
     else
       render action: "new"
     end
@@ -108,7 +121,7 @@ class Admin::ShowsController < ApplicationController
         end
       end
       
-      redirect_to admin_shows_url(letter: @show.name[0].upcase), notice: 'Show was successfully updated.'
+      redirect_to session[:previous_url], notice: 'Show was successfully updated.'
     else
       @people = Person.select([:id, :name]).order('people.name ASC')
       render action: "edit"
@@ -117,7 +130,7 @@ class Admin::ShowsController < ApplicationController
   
   def destroy
     @show.destroy
-    redirect_to [:admin, :shows]
+    redirect_to session[:previous_url]
   end
   
   def billboard
