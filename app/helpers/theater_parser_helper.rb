@@ -35,14 +35,7 @@ module TheaterParserHelper
   end
   
   def parse_cinemark url, parse_days, date
-    s = nil
-    if Rails.env == "Production"
-      proxy_ip = Settings.proxy.split(':')[0]
-      proxy_port = Settings.proxy.split(':')[1]
-      s = HTTP.via(proxy_ip, proxy_port.to_i).get(url).to_s
-    else
-      s = open(URI.escape(url)).read
-    end
+    s = open(URI.escape(url)).read
     s.gsub!('&nbsp;', ' ')
     page = Nokogiri::HTML(s)
     
