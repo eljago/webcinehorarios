@@ -61,11 +61,11 @@ namespace :parse do
         begin
           timeout(10) do
             url = show.rotten_tomatoes_url
-            s = open(url, "User-Agent" => "Mozilla/5.0").read
+            s = open(url).read
             s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
             page = Nokogiri::HTML(s)
       
-            score = page.css("#all-critics-numbers span#all-critics-meter").text.to_i
+            score = page.css("#all-critics-numbers span[itemprop=ratingValue]").first.text.to_i
             unless score == 0
               puts "\t\troten: #{score}"
               show.update_attribute(:rotten_tomatoes_score, score)
