@@ -65,18 +65,14 @@ namespace :parse do
             s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ') 
             page = Nokogiri::HTML(s)
             
-            item = page.css("#all-critics-numbers span[itemprop=ratingValue]")
-            score = nil
-            if item.respond_to? :first
-              score = page.css("#all-critics-numbers span[itemprop=ratingValue]").first.text.to_i
-            else
-              score = page.css("#all-critics-numbers span[itemprop=ratingValue]").text.to_i
-            end
-            
-            unless score == 0
-              puts "\t\troten: #{score}"
-              show.update_attribute(:rotten_tomatoes_score, score)
-              should_save_show = true
+            span = page.css("#all-critics-numbers span[itemprop=ratingValue]").first
+            if span != nil
+              score = span.text.to_i
+              if score != 0
+                puts "\t\troten: #{score}"
+                show.update_attribute(:rotten_tomatoes_score, score)
+                should_save_show = true
+              end
             end
           end
         rescue Timeout::Error
