@@ -5,12 +5,7 @@ node :date do
 	@date
 end
 node :web_url do
-	if @cinema_name == "Cine Hoyts"
-		date = @date.to_s.split('-').reverse.join('-')
-		"#{@theater.web_url}&fecha=#{date}"
-	else
-		@theater.web_url
-	end
+	@theater.web_url
 end
 node :address do
 	@theater.address

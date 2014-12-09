@@ -3,6 +3,15 @@ module Api
     class TheatersController < Api::V3::ApiController
       before_filter :get_date, only: [:show_theaters, :favorite_theaters, :show]
       
+      def index
+        fav_theaters = params[:favorites]
+        if fav_theaters.present?
+          favorites = fav_theaters.split(',')
+          @favorite_theaters = Theater.where('theaters.active = ? AND theaters.id IN (?)', true, favorites).order('theaters.cinema_id ASC, theaters.name ASC')
+        end
+        @favorite_theaters ||= []
+      end
+      
       def show_theaters
         @theaters = Theater.joins(:functions).where(functions: {show_id: params[:show_id], date: @date})
         .where('theaters.active = ?', true)
