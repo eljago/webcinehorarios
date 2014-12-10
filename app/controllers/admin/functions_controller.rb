@@ -144,9 +144,9 @@ class Admin::FunctionsController < ApplicationController
            parsed_show_name.gsub!(transliterate(pdt.name.gsub(/\s+/, "")).underscore, "")
           end
         end
-        parsed_show_name.gsub!(/\(|\)|\s|_/, "")
+        parsed_show_name.gsub!(/\(|\)|\s|_|:|,|\[|\]|\'|\"/, "")
       
-        parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name[0..10])
+        parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
         
         movieFunctions[:functions] = []
         movieFunctions[:parsed_show] = { id: parsed_show.id, show_id: parsed_show.show_id }
