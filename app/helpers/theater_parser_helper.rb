@@ -14,6 +14,15 @@ module TheaterParserHelper
       titulo = item.css('header.titulo_interior').first.text.superclean
       
       movieFunction = { name: titulo, functions: []}
+      
+      item.css('p#idioma i').each do |item|
+        item_reformatted = item.text.superclean
+        if item_reformatted == 'ESPAÑOL'
+          movieFunction[:name] = "#{movieFunction[:name]} (DOB)"
+        elsif item_reformatted = 'INGLES'
+          movieFunction[:name] = "#{movieFunction[:name]} (SUB)"
+        end
+      end
   
       item.css('div.boxHorario span.horarioTitulo').each_with_index do |itemFunction, index|
         function = { showtimes: [] }
@@ -47,7 +56,10 @@ module TheaterParserHelper
       movieFunction = { name: titulo, functions: []}
       
       item.css('div.version-types-wrap span').each do |item|
-        movieFunction[:name] = "#{movieFunction[:name]} #{item.text.superclean}"
+        item_reformatted = item.text.superclean
+        if item_reformatted != 'Tradicional'
+          movieFunction[:name] = "#{movieFunction[:name]} #{item_reformatted}"
+        end
       end
       
       item.css('li.showtime-item').each do |item|
@@ -122,11 +134,11 @@ module TheaterParserHelper
     return hash
   end
   
-  def parse_cineplanet url, parse_days, theater_name, parse_type
+  def parse_cineplanet url, parse_days, theater_name
     
     dir_path = Rails.root.join(*%w( tmp cache functions ))
     FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
-    file_path = File.join(dir_path, "cineplanet_#{parse_type}.txt")
+    file_path = File.join(dir_path, "cineplanet.txt")
     max_old_time = 60*30
 
     read_from_disk = nil
@@ -166,7 +178,7 @@ module TheaterParserHelper
 
     page.css('#lista-pelicula div.img a').each_with_index do |item, index|
       
-      file_path2 = File.join(dir_path, "cineplanet_#{parse_type}_#{index}.txt")
+      file_path2 = File.join(dir_path, "cineplanet_#{index}.txt")
       
       if read_from_disk && File.exists?(file_path2)
         s2 = File.read(file_path2)

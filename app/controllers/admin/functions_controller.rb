@@ -120,7 +120,7 @@ class Admin::FunctionsController < ApplicationController
       hash = parse_cinehoyts(@theater.web_url, parse_days)
       continue = true
     elsif @cinema.name == "Cineplanet"
-      hash = parse_cineplanet(@theater.web_url, parse_days, @theater.name, @parse_type)
+      hash = parse_cineplanet(@theater.web_url, parse_days, @theater.name)
       continue = true
     end
     
@@ -132,8 +132,8 @@ class Admin::FunctionsController < ApplicationController
         parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).underscore
         
         movieFunctions = { name: titulo }
-              
-        parse_detector_types.each do |pdt|
+        pdts = parse_detector_types.order('LENGTH(name) DESC')
+        pdts.each do |pdt|
           next if detected_function_types.include?(pdt.function_type_id)
           if titulo.include?(pdt.name)
             detected_function_types << pdt.function_type_id
@@ -144,7 +144,7 @@ class Admin::FunctionsController < ApplicationController
            parsed_show_name.gsub!(transliterate(pdt.name.gsub(/\s+/, "")).underscore, "")
           end
         end
-        parsed_show_name.gsub!(/\(|\)|\s|_|:|,|\[|\]|\'|\"/, "")
+        parsed_show_name.gsub!(/\(|\)|\s|_|:|,|\[|\]|\'|\"|-/, "")
       
         parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
         
@@ -246,10 +246,10 @@ class Admin::FunctionsController < ApplicationController
     @function_types = @cinema.function_types.order(:name)
     @shows = Show.order(:name).select('shows.id, shows.name')
     parse_params = params[action_name.to_sym]
-    @parse_type = parse_params[:parse_type]
+    parse_type = parse_params[:parse_type]
     @date = parse_params[:date].to_date if parse_params[:date]
     parse_days = []
-    if @parse_type == 'week'
+    if parse_type == 'week'
       if @date.wday <= 3
         parse_days = (@date..@date.next_day(3 - @date.wday)).to_a
       else
