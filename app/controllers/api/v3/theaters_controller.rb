@@ -43,8 +43,7 @@ module Api
       end
       
       def theater_coordinates
-        @theaters = Theater.select([:id, :name, :cinema_id, :latitude, :longitude, :address])
-        .order(:cinema_id, :name).where(active: true)
+        @theaters = Theater.order(:cinema_id, :name).where(active: true)
       end
       
       private
