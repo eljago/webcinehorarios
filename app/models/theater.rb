@@ -48,7 +48,7 @@ class Theater < ActiveRecord::Base
 
   
   def override_functions new_functions, start_date, parse_days_count
-    current_functions = functions.where('functions.date >= ? and functions.date < ?', start_date, start_date + parse_days_count.to_i).includes(:function_types, :showtimes)
+    current_functions = functions.where(date: start_date..(start_date + parse_days_count.to_i-1)).includes(:function_types, :showtimes)
     functions_to_destroy = []
     indexes_to_save = Array.new(new_functions.count, true)
     
@@ -56,10 +56,10 @@ class Theater < ActiveRecord::Base
       found_identical = false
       new_functions.each_with_index do |new_function, index|
         next unless indexes_to_save[index]
-        if function.total_identical? new_function
+        if (function.total_identical?(new_function))
           found_identical = true
           indexes_to_save[index] = false
-           break
+          break
         end
       end
       functions_to_destroy << function unless found_identical
