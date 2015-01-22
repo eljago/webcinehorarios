@@ -34,7 +34,7 @@ module Api
       def show
         @functions = Function.includes(:show, :showtimes, :function_types)
           .order('shows.debut DESC, shows.id, showtimes.time ASC')
-          .where(functions: { date: @date, theater_id: params[:id] } )
+          .where(functions: { date: @date, theater_id: params[:id] }, show_id: 1..Float::INFINITY )
         
         @cache_date = @date.strftime '%Y%m%d'
           

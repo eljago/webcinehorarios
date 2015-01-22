@@ -15,7 +15,7 @@ class Admin::FunctionsController < ApplicationController
       params[:date] = params[:date]
     end
     
-    @functions = @theater.functions.includes(:show, :showtimes, :function_types, :parsed_show => :show)
+    @functions = @theater.functions.includes(:show, :function_types, :parsed_show => :show)
     .where(date: params[:date]).references(:showtimes)
     .order("functions.show_id DESC, showtimes.time ASC")
   end

@@ -107,7 +107,7 @@ class Function < ActiveRecord::Base
     lsts = showtimes.map(&:time).sort
     return false if sts != lsts
     
-    return false if !(show_id == function.show_id || parsed_show_id == function.parsed_show_id)
+    return false if (show_id != function.show_id || parsed_show_id != function.parsed_show_id)
     
     return true
   end
