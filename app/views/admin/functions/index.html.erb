@@ -35,6 +35,8 @@
   <tr>
     <th></th>
     <th></th>
+    <th></th>
+    <th></th>
     <th>Película</th>
     <th>Tipo</th>
     <th>Horario</th>
@@ -48,6 +50,12 @@
       <td>
         <%= image_tag function.show.image.smallest if function.show && function.show.image.smallest %>
       </td>
+	  <td>
+	  	<%= function.parsed_show.present? ? function.parsed_show.name : "NO PS" %>
+	  </td>
+	  <td>
+	  	<%= function.parsed_show && function.parsed_show.show ? function.parsed_show.show.name : "NO PSS" %>
+	  </td>
       <td width="100">
         <%= function.show.name if function.show %>
       </td>

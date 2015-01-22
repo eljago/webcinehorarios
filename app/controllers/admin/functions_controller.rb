@@ -15,8 +15,8 @@ class Admin::FunctionsController < ApplicationController
       params[:date] = params[:date]
     end
     
-    @functions = @theater.functions.includes(:show, :showtimes, :function_types)
-    .where(date: params[:date]).references(:show, :showtimes, :function_types)
+    @functions = @theater.functions.includes(:show, :showtimes, :function_types, :parsed_show => :show)
+    .where(date: params[:date]).references(:showtimes)
     .order("functions.show_id DESC, showtimes.time ASC")
   end
   
@@ -144,7 +144,7 @@ class Admin::FunctionsController < ApplicationController
            parsed_show_name.gsub!(transliterate(pdt.name.gsub(/\s+/, "")).underscore, "")
           end
         end
-        parsed_show_name.gsub!(/\(|\)|\s|_|:|,|\[|\]|\'|\"|-/, "")
+        parsed_show_name.gsub!(/[^a-z0-9]/i, '')
       
         parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
         
@@ -180,18 +180,6 @@ class Admin::FunctionsController < ApplicationController
     end
   end
   
-  def save_update_parsed_show show_id, parsed_show_id, parsed_show_show_id
-    if parsed_show_show_id.blank?
-      parsed_show = ParsedShow.find(parsed_show_id)
-      parsed_show.show_id = show_id
-      parsed_show.save
-    elsif parsed_show_show_id != show_id
-      parsed_show = ParsedShow.find(parsed_show_id)
-      parsed_show.show_id = show_id
-      parsed_show.save
-    end
-  end
-  
   # CREATE PARSE
   def create_parse
     @theater = Theater.find(params[:theater_id])
@@ -202,21 +190,20 @@ class Admin::FunctionsController < ApplicationController
       functions_to_save = []
       count = 0
       while hash = params["movie_#{count}"]
-        unless hash[:show_id].blank?
-          count2 = 0
-          save_update_parsed_show hash[:show_id], hash[:parsed_show_id], hash[:parsed_show_show_id]
-          while hash2 = hash["function_#{count2}"]
-            if hash2[:horarios].size >= 5
-              function = @theater.functions.new
-              function.show_id = hash[:show_id].to_i
-              function.function_type_ids = hash[:function_types]
-              function.date = hash2[:date]
-              Function.create_showtimes function, hash2[:horarios]
-              functions_to_save << function
-              # function.save
-            end
-            count2 = count2 + 1
+        count2 = 0
+        save_update_parsed_show hash[:show_id], hash[:parsed_show_id], hash[:parsed_show_show_id]
+        while hash2 = hash["function_#{count2}"]
+          if hash2[:horarios].size >= 5
+            function = @theater.functions.new
+            function.show_id = hash[:parsed_show_show_id].to_i
+            function.function_type_ids = hash[:function_types]
+            function.date = hash2[:date]
+            function.parsed_show_id = hash[:parsed_show_id].to_i
+            Function.create_showtimes function, hash2[:horarios]
+            functions_to_save << function
+            # function.save
           end
+          count2 = count2 + 1
         end
         count = count + 1
       end
@@ -237,7 +224,7 @@ class Admin::FunctionsController < ApplicationController
   end
   
   def function_params
-    params.require(:function).permit :theater_id, :show_id, :date, showtimes_ids: [], function_type_ids: []
+    params.require(:function).permit :theater_id, :show_id, :date, :parsed_show_id, showtimes_ids: [], function_type_ids: []
   end
 
   def prepare_for_new_parse
