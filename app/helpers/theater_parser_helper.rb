@@ -159,50 +159,101 @@ module TheaterParserHelper
   end
   
   def parse_cinehoyts url, parse_days, theater_name
-    s = open(URI.escape("http://www.cinehoyts.cl/Cartelera")).read
-    s.gsub!('&nbsp;', ' ')
-    page = Nokogiri::HTML(s)
+    
+    dir_path = Rails.root.join(*%w( tmp cache functions ))
+    FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
+    file_path = File.join(dir_path, "cinehoyts.txt")
+    max_old_time = 60*30
 
+    read_from_disk = nil
+    if File.exists? file_path # FILE EXISTS
+      time_creation = File.ctime(file_path)
+      seconds_created_ago = Time.current - time_creation
+      if seconds_created_ago > max_old_time
+        read_from_disk = false
+      else
+        read_from_disk = true
+      end
+    else # FILE DOESN'T EXISTS
+      read_from_disk = false
+    end
+    
+    s = nil
+    if read_from_disk && File.exists?(file_path)# READ FROM DISK
+      s = File.read(file_path)
+    else # READ FROM INTERNET
+      url = "http://www.cinehoyts.cl/Cartelera"
+      if Rails.env == "Production"
+        proxy_ip = Settings.proxy.split(':')[0]
+        proxy_port = Settings.proxy.split(':')[1]
+        s = HTTP.via(proxy_ip, proxy_port.to_i).get(url).to_s
+      else
+        s = open(URI.escape(url)).read
+      end
+      s.gsub!('&nbsp;', ' ')
+    
+      File.open(file_path, 'w') do |f|
+        f.puts s
+      end
+    end
+    
+    page = Nokogiri::HTML(s)
     hash = { movieFunctions: [] }
 
-    page.css('p[class="fuente_azul fuente_listado"]').each do |a|
-      link = "http://www.cinehoyts.cl#{a.parent['href']}"
-      puts link
-      name = a.text
-  
-      s2 = open(URI.escape(link)).read
-      s2.gsub!('&nbsp;', ' ')
+    page.css('p[class="fuente_azul fuente_listado"]').each_with_index do |a, index|
+      
+      file_path2 = File.join(dir_path, "cinehoyts_#{index}.txt")
+      if read_from_disk && File.exists?(file_path2)
+        s2 = File.read(file_path2)
+      else
+        url2 = "http://www.cinehoyts.cl#{a.parent['href']}"
+        if Rails.env == "Production"
+          proxy_ip = Settings.proxy.split(':')[0]
+          proxy_port = Settings.proxy.split(':')[1]
+          s2 = HTTP.via(proxy_ip, proxy_port.to_i).get(url2).to_s
+        else
+          s2 = open(URI.escape(url2)).read
+        end
+        s2.gsub!('&nbsp;', ' ') 
+      
+        File.open(file_path2, 'w') do |f|
+          f.puts s2
+        end
+      end
+      
       page2 = Nokogiri::HTML(s2)
-  
+      name = a.text
       theater_found = false
   
       page2.css('div#accordion div.panel-default').each do |cinepanel|
     
         nombre_cine = cinepanel.css('div.panel-heading h4 a').first.text.gsub('CineHoyts', '').superclean
-        if nombre_cine == theater_name
+        if transliterate(nombre_cine).underscore == transliterate(theater_name).underscore
       
           theater_found = true
       
           cinepanel.css('div.panel-body div.carousel-inner div[class="row diez_m_t"]').each do |functions_row|
             day = functions_row.css('.col-lg-2').first.text.superclean
             dia = day.split[1].to_i
-        
-            functions_row.css('.comprar_funcion').each do |showtime|
-              clean_showtime_splitted = showtime.text.superclean.split
-              time = clean_showtime_splitted.first
-              function_types = clean_showtime_splitted[1..clean_showtime_splitted.length-1].join(' ')
+            
+            if parse_days.map(&:day).include?(dia)
+              functions_row.css('.comprar_funcion').each do |showtime|
+                clean_showtime_splitted = showtime.text.superclean.split
+                time = clean_showtime_splitted.first
+                function_types = clean_showtime_splitted[1..clean_showtime_splitted.length-1].join(' ')
           
-              movie_name = "#{name} #{function_types}"
-              movie_functions_hash = hash[:movieFunctions].get_hash_with_key_value(:name, movie_name)
-              if movie_functions_hash
-                function_hash = movie_functions_hash[:functions].get_hash_with_key_value(:dia, dia)
-                if function_hash
-                  function_hash[:showtimes] << "#{time}, "
+                movie_name = "#{name} #{function_types}"
+                movie_functions_hash = hash[:movieFunctions].get_hash_with_key_value(:name, movie_name)
+                if movie_functions_hash
+                  function_hash = movie_functions_hash[:functions].get_hash_with_key_value(:dia, dia)
+                  if function_hash
+                    function_hash[:showtimes] << "#{time}, "
+                  else
+                    movie_functions_hash[:functions] << { day: day, dia: dia, showtimes: "#{time}, " }
+                  end
                 else
-                  movie_functions_hash[:functions] << { day: day, dia: dia, showtimes: "#{time}, " }
+                  hash[:movieFunctions] << { name: movie_name, functions: [ { day: day, dia: dia, showtimes: "#{time}, " } ] }
                 end
-              else
-                hash[:movieFunctions] << { name: movie_name, functions: [ { day: day, dia: dia, showtimes: "#{time}, " } ] }
               end
             end
           end
@@ -258,7 +309,6 @@ module TheaterParserHelper
     page.css('#lista-pelicula div.img a').each_with_index do |item, index|
       
       file_path2 = File.join(dir_path, "cineplanet_#{index}.txt")
-      
       if read_from_disk && File.exists?(file_path2)
         s2 = File.read(file_path2)
       else
