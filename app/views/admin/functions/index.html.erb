@@ -46,7 +46,7 @@
         <%= (index+1) %>
       </td>
       <td>
-        <%= image_tag function.show.image.smallest if function.show.image.smallest %>
+        <%= image_tag function.show.image.smallest if function.show && function.show.image.smallest %>
       </td>
       <td width="100">
         <%= function.show.name if function.show %>

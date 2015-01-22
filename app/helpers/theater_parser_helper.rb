@@ -91,43 +91,55 @@ module TheaterParserHelper
     return hash
   end
   
-  def parse_cinehoyts url, parse_days
-    hash = { movieFunctions: [] }
-    movieFunction = nil
-    
-    parse_days.each do |parse_day|
-      
-      date_hoyts = parse_day.strftime("%d-%m-%Y")
-      s = open("#{url}&fecha=#{date_hoyts}").read
-      s.gsub!('&nbsp;', ' ')
-      page = Nokogiri::HTML(s)
+  def parse_cinehoyts url, parse_days, theater_name
+    s = open(URI.escape("http://www.cinehoyts.cl/Cartelera")).read
+    s.gsub!('&nbsp;', ' ')
+    page = Nokogiri::HTML(s)
 
-      page.css('table[width="440"] tr').each_with_index do |tr, index|
-        if index % 2 == 0
-          movieFunction = nil
-          titulo = tr.css('td[width="241"] span').text.superclean
-          if titulo
-            # search if the same movie has been read on a previous date:
-            hash[:movieFunctions].each do |item|
-              if item[:name] == titulo
-                movieFunction = item
-                break
+    hash = { movieFunctions: [] }
+
+    page.css('p[class="fuente_azul fuente_listado"]').each do |a|
+      link = "http://www.cinehoyts.cl#{a.parent['href']}"
+      puts link
+      name = a.text
+  
+      s2 = open(URI.escape(link)).read
+      s2.gsub!('&nbsp;', ' ')
+      page2 = Nokogiri::HTML(s2)
+  
+      theater_found = false
+  
+      page2.css('div#accordion div.panel-default').each do |cinepanel|
+    
+        nombre_cine = cinepanel.css('div.panel-heading h4 a').first.text.gsub('CineHoyts', '').superclean
+        if nombre_cine == theater_name
+      
+          theater_found = true
+      
+          cinepanel.css('div.panel-body div.carousel-inner div[class="row diez_m_t"]').each do |functions_row|
+            day = functions_row.css('.col-lg-2').first.text.superclean
+            dia = day.split[1].to_i
+        
+            functions_row.css('.comprar_funcion').each do |showtime|
+              clean_showtime_splitted = showtime.text.superclean.split
+              time = clean_showtime_splitted.first
+              function_types = clean_showtime_splitted[1..clean_showtime_splitted.length-1].join(' ')
+          
+              movie_name = "#{name} #{function_types}"
+              movie_functions_hash = hash[:movieFunctions].get_hash_with_key_value(:name, movie_name)
+              if movie_functions_hash
+                function_hash = movie_functions_hash[:functions].get_hash_with_key_value(:dia, dia)
+                if function_hash
+                  function_hash[:showtimes] << "#{time}, "
+                else
+                  movie_functions_hash[:functions] << { day: day, dia: dia, showtimes: "#{time}, " }
+                end
+              else
+                hash[:movieFunctions] << { name: movie_name, functions: [ { day: day, dia: dia, showtimes: "#{time}, " } ] }
               end
             end
-            if movieFunction == nil
-              movieFunction = { name: titulo, functions: [] }
-              hash[:movieFunctions] << movieFunction
-            end
           end
-        else
-          if tr.css('td[width="241"] font[color="white"]')
-            horarios = tr.css('td[width="241"] font[color="white"]').text.superclean
-            dia = parse_day.day
-            if parse_days.map(&:day).include?(dia)
-              function = { day: parse_day.to_s, showtimes: horarios, dia: dia }
-              movieFunction[:functions] << function
-            end
-          end
+          break
         end
       end
     end

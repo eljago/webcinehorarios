@@ -117,7 +117,7 @@ class Admin::FunctionsController < ApplicationController
       hash = parse_cinemark(@theater.web_url, parse_days, @date)
       continue = true
     elsif @cinema.name == "Cine Hoyts" || @cinema.name == "Cinemundo"
-      hash = parse_cinehoyts(@theater.web_url, parse_days)
+      hash = parse_cinehoyts(@theater.web_url, parse_days, @theater.name)
       continue = true
     elsif @cinema.name == "Cineplanet"
       hash = parse_cineplanet(@theater.web_url, parse_days, @theater.name)
