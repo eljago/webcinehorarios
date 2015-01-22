@@ -223,6 +223,9 @@ class Admin::FunctionsController < ApplicationController
   end
   def create_parsed_shows
     
+    parsed_shows_updated_count = 0
+    functions_updated_count = 0
+    
     count = 0
     while hash = params["orphan_parsed_shows_#{count}"]
       parsed_show = ParsedShow.find(hash[:parsed_show_id])
@@ -234,13 +237,15 @@ class Admin::FunctionsController < ApplicationController
         parsed_show.functions.where('functions.show_id IS ?', nil).each do |function|
           function.show_id = hash[:show_id]
           function.save
+          functions_updated_count = functions_updated_count + 1
         end
         parsed_show.save
+        parsed_shows_updated_count = parsed_shows_updated_count + 1
       end
       count = count + 1
     end
 
-    redirect_to admin_orphan_parsed_shows_path, notice: "Exito"
+    redirect_to admin_orphan_parsed_shows_path, notice: "Actualizados: #{parsed_shows_updated_count} parsed shows y #{functions_updated_count} functiones"
   end
   
   
