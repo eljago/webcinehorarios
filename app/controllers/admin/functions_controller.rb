@@ -195,7 +195,8 @@ class Admin::FunctionsController < ApplicationController
         while hash2 = hash["function_#{count2}"]
           if hash2[:horarios].size >= 5
             function = @theater.functions.new
-            function.show_id = hash[:parsed_show_show_id].to_i
+            function.show_id = hash[:parsed_show_show_id].to_i if hash[:parsed_show_show_id]
+            function.show_id = hash[:show_id].to_i if hash[:show_id]
             function.function_type_ids = hash[:function_types]
             function.date = hash2[:date]
             function.parsed_show_id = hash[:parsed_show_id].to_i
@@ -211,6 +212,37 @@ class Admin::FunctionsController < ApplicationController
     end
     redirect_to admin_theater_functions_path(date: params[:date]), notice: "Exito"
   end
+  
+  def orphan_parsed_shows
+    parsed_shows1 = ParsedShow.where(show_id: nil).select(:id, :name, :show_id)
+    parsed_shows2 = ParsedShow.joins(:functions).where('functions.show_id IS ?', nil).uniq
+    
+    @parsed_shows = parsed_shows1 | parsed_shows2
+    
+    @shows = Show.select([:id, :name]).order('shows.name ASC')
+  end
+  def create_parsed_shows
+    
+    count = 0
+    while hash = params["orphan_parsed_shows_#{count}"]
+      parsed_show = ParsedShow.find(hash[:parsed_show_id])
+      if hash[:destroy].to_i == 1
+        parsed_show.destroy
+        puts 'destroy'
+      elsif hash[:show_id].present?
+        parsed_show.show_id = hash[:show_id]
+        parsed_show.functions.where('functions.show_id IS ?', nil).each do |function|
+          function.show_id = hash[:show_id]
+          function.save
+        end
+        parsed_show.save
+      end
+      count = count + 1
+    end
+
+    redirect_to admin_orphan_parsed_shows_path, notice: "Exito"
+  end
+  
   
   private
   
