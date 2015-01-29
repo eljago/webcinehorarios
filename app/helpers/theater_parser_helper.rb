@@ -142,8 +142,11 @@ module TheaterParserHelper
         end
         
         mesValid = l(dateToValidate, format: '%b').to_s.downcase
+        mesValid_next_month = l(dateToValidate.next_month, format: '%b').to_s.downcase
         
-        if parse_days.map(&:day).include?(dia) && mes == mesValid
+        # If the day read from the webpage is in the parse_days array, and the month read from the webpage is either this or next month
+        # parse_days are always 7 contiguos days, so they can't be from 2 months ahead
+        if parse_days.map(&:day).include?(dia) && (mes == mesValid || mes == mesValid_next_month)
           horarios = ""
           item.css('span.showtime-hour').each do |item|
             horarios << "#{item.text}, "
