@@ -7,25 +7,25 @@ namespace :parse_cinemas do
     
     time_start = Time.current
     
-    cinestar_theaters = Cinema.where(name: "CineStar").first.theaters
-    cinestar_theaters.each do |theater|
-      task_parse_theater(theater)
-    end
+    # cinestar_theaters = Cinema.where(name: "CineStar").first.theaters
+    # cinestar_theaters.each do |theater|
+    #   task_parse_theater(theater)
+    # end
     
     cinestar_theaters = Cinema.where(name: "Cinemark").first.theaters
     cinestar_theaters.each do |theater|
       task_parse_theater theater
     end
     
-    cinestar_theaters = Cinema.where(name: "Cine Hoyts").first.theaters
-    cinestar_theaters.each do |theater|
-      task_parse_theater theater
-    end
-    
-    cinestar_theaters = Cinema.where(name: "Cinemundo").first.theaters
-    cinestar_theaters.each do |theater|
-      task_parse_theater theater
-    end
+    # cinestar_theaters = Cinema.where(name: "Cine Hoyts").first.theaters
+    # cinestar_theaters.each do |theater|
+    #   task_parse_theater theater
+    # end
+    #
+    # cinestar_theaters = Cinema.where(name: "Cinemundo").first.theaters
+    # cinestar_theaters.each do |theater|
+    #   task_parse_theater theater
+    # end
     
     cinestar_theaters = Cinema.where(name: "Cineplanet").first.theaters
     cinestar_theaters.each do |theater|
