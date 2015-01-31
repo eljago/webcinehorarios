@@ -14,23 +14,30 @@ module TheaterParserHelper
     end
   end
   
-  def task_parse_cinemark
+  def task_parse_theater theater
     # cinema = Cinema.includes(:theaters).where({name: 'Cinemark', theaters: {active: true}}).first
-    @theater = Theater.where(name: 'Alto Las Condes').first
-    cinema = @theater.cinema
+    cinema = theater.cinema
     function_types = cinema.function_types.order(:name)
     shows = Show.order(:name).select('shows.id, shows.name')
-    parse_detector_types = cinema.parse_detector_types
+    parse_detector_types = cinema.parse_detector_types.order('LENGTH(name) DESC')
     date = Date.current
     parse_days_count = 7
     
-    date = Date.current
     parse_days = []
     parse_days_count.times do |n|
       parse_days << date + n
     end
-    hash = parse_cinemark(@theater.web_url, parse_days, date)
-    # puts hash
+    
+    hash = nil
+    if cinema.name == "CineStar"
+      hash = parse_cinestar(theater.web_url, parse_days)
+    elsif cinema.name == "Cinemark"
+      hash = parse_cinemark(theater.web_url, parse_days, date)
+    elsif cinema.name == "Cine Hoyts" || cinema.name == "Cinemundo"
+      hash = parse_cinehoyts(theater.web_url, parse_days, theater.name)
+    elsif cinema.name == "Cineplanet"
+      hash = parse_cineplanet(theater.web_url, parse_days, theater.name)
+    end
     
     functions_to_save = []
     hash[:movieFunctions].each do |hash_movie_function|
@@ -39,8 +46,7 @@ module TheaterParserHelper
       parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).underscore # Name of the show read from the webpage then formatted
       
       movieFunctions = { name: titulo }
-      pdts = parse_detector_types.order('LENGTH(name) DESC')
-      pdts.each do |pdt|
+      parse_detector_types.each do |pdt|
         next if detected_function_types.include?(pdt.function_type_id)
         if titulo.include?(pdt.name)
           detected_function_types << pdt.function_type_id
@@ -52,12 +58,11 @@ module TheaterParserHelper
         end
       end
       parsed_show_name.gsub!(/[^a-z0-9]/i, '')
-    
       parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
       
       hash_movie_function[:functions].each do |hash_function|
         if hash_function[:showtimes].size >= 5
-          function = @theater.functions.new
+          function = theater.functions.new
           function.show_id = parsed_show.show_id
           function.function_type_ids = detected_function_types
           function.date = date.advance_to_day(hash_function[:dia])
@@ -67,7 +72,7 @@ module TheaterParserHelper
         end
       end
     end
-    @theater.override_functions(functions_to_save, Date.current, parse_days_count)
+    theater.override_functions(functions_to_save, Date.current, parse_days_count)
   end
   
   def parse_cinestar url, parse_days

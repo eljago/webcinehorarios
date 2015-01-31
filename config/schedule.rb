@@ -34,3 +34,7 @@ end
 every 1.day, at: '5am' do
   command '/sbin/shutdown -r +5'
 end
+
+every 2.hours do
+  rake 'parse_cinemas:all'
+end

@@ -7,4 +7,13 @@ class ContactMailer < ActionMailer::Base
     @subject = contact_ticket.subject
     mail to: "contacto@cinehorarios.cl", from: contact_ticket.from, subject: "[CONTACTO CINE HORARIOS] #{contact_ticket.subject}"
   end
+  
+  def parse_complete_mailer(contact_ticket)
+    @name = contact_ticket.name
+    @content = contact_ticket.content
+    @from = contact_ticket.from
+    @subject = contact_ticket.subject
+    mail to: "arturo.espinoza@cinehorarios.cl", from: contact_ticket.from, subject: contact_ticket.subject
+  end
+  
 end

@@ -132,8 +132,7 @@ class Admin::FunctionsController < ApplicationController
         parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).underscore
         
         movieFunctions = { name: titulo }
-        pdts = parse_detector_types.order('LENGTH(name) DESC')
-        pdts.each do |pdt|
+        parse_detector_types.each do |pdt|
           next if detected_function_types.include?(pdt.function_type_id)
           if titulo.include?(pdt.name)
             detected_function_types << pdt.function_type_id
@@ -145,7 +144,6 @@ class Admin::FunctionsController < ApplicationController
           end
         end
         parsed_show_name.gsub!(/[^a-z0-9]/i, '')
-      
         parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
         
         movieFunctions[:functions] = []
@@ -282,7 +280,7 @@ class Admin::FunctionsController < ApplicationController
     else
       parse_days << @date
     end
-    parse_detector_types = @cinema.parse_detector_types
+    parse_detector_types = @cinema.parse_detector_types.order('LENGTH(name) DESC')
     
     [parse_days, parse_detector_types]
   end
