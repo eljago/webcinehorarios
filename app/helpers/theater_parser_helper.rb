@@ -21,7 +21,7 @@ module TheaterParserHelper
     shows = Show.order(:name).select('shows.id, shows.name')
     parse_detector_types = cinema.parse_detector_types.order('LENGTH(name) DESC')
     date = Date.current
-    parse_days_count = 7
+    parse_days_count = 14
     
     parse_days = []
     parse_days_count.times do |n|
@@ -362,7 +362,7 @@ module TheaterParserHelper
           break if theater_found
           if theater_name == "Costanera Center" && (strong == theater_name || strong == "Costanera Prime")
             theater_found = true
-          elsif strong == theater_name
+          elsif transliterate(strong).underscore == transliterate(theater_name).underscore
             theater_found = true
           end
         end
