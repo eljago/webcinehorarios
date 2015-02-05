@@ -26,7 +26,7 @@ module TheaterParserHelper
     
     parse_days = []
     parse_days_count.times do |n|
-      unless (date.wednesday? && taim.hour > 19)
+      unless (date.wednesday? && taim.hour > 19 && date == date+n)
         parse_days << date + n
       end
     end
