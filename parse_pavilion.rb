@@ -21,11 +21,13 @@ hash[:functions] = []
 page.css('div.home-block div.one-third-thumbs figure').each_with_index do |item, index|
   if index % 3 == 1
     
-    h5 = item.css('h5').last
-    puts h5.text.superclean
-    next_el = h5.next_sibling
-    
-    puts next_el.name
+    item.css('.home-block figure').each do |figure|
+      
+    end
+    # puts h5.text.superclean
+#     next_el = h5.next_sibling
+#
+#     puts next_el.name
     
     # h1s = item.css('h1')
  #    h2s = item.css('h2')
