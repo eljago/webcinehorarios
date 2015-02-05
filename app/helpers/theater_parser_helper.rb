@@ -168,6 +168,10 @@ module TheaterParserHelper
   
   def parse_cinehoyts url, parse_days, theater_name
     
+    date = Date.current
+    time = Time.current
+    parse_days.delete(date) if date.wednesday? && time.hour > 18
+    
     dir_path = Rails.root.join(*%w( tmp cache functions ))
     FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
     file_path = File.join(dir_path, "cinehoyts.txt")

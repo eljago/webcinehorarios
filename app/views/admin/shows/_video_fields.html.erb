@@ -1,35 +1,49 @@
-<fieldset class="video">
+<% if f.object.new_record? %>
+	<fieldset class="video">
+	  <div class="form-group">
+			<div class="destroy col-sm-7">
+	    	<%= f.hidden_field :_destroy, class: 'form-control' %>
+				<button class="close remove_fields">&times;</button>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <%= f.label :outstanding, 'Destacado', class: 'col-sm-2 control-label' %>
+			<div class="col-sm-5">
+	    	<%= f.check_box :outstanding, class: 'form-control' %>
+	    </div>
+	  </div>
 	
-  <div class="form-group">
-		<div class="destroy col-sm-7">
-    	<%= f.hidden_field :_destroy, class: 'form-control' %>
-			<button class="close remove_fields">&times;</button>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :outstanding, 'Destacado', class: 'col-sm-2 control-label' %>
-		<div class="col-sm-5">
-    	<%= f.check_box :outstanding, class: 'form-control' %>
-    </div>
-  </div>
-	
-  <div class="form-group">
-    <%= f.label :name, 'Nombre:', class: 'col-sm-2 control-label' %>
-		<div class="col-sm-5">
-    	<%= f.text_field :name, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :code, 'Código:', class: 'col-sm-2 control-label' %>
-		<div class="col-sm-5">
-    	<%= f.text_field :code, class: 'form-control' %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :video_type, 'Tipo de Video:', class: 'col-sm-2 control-label' %>
-		<div class="col-sm-5">
-		<%= f.select :video_type, options_for_select(Video.video_types.collect { |s| [s[0].humanize, s[0]] }, selected: f.object.video_type), {} , class: 'form-control' %>
-    </div>
-  </div>
-
-</fieldset>
+	  <div class="form-group">
+	    <%= f.label :name, 'Nombre:', class: 'col-sm-2 control-label' %>
+			<div class="col-sm-5">
+	    	<%= f.text_field :name, class: 'form-control' %>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <%= f.label :code, 'Código:', class: 'col-sm-2 control-label' %>
+			<div class="col-sm-5">
+	    	<%= f.text_field :code, class: 'form-control' %>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <%= f.label :video_type, 'Tipo de Video:', class: 'col-sm-2 control-label' %>
+			<div class="col-sm-5">
+			<%= f.select :video_type, options_for_select(Video.video_types.collect { |s| [s[0].humanize, s[0]] }, selected: f.object.video_type), {} , class: 'form-control' %>
+	    </div>
+	  </div>
+	</fieldset>
+<% else %>
+	<fieldset class="video">
+	  <div class="form-group">
+			<div class="destroy col-sm-3">
+	    	<%= f.hidden_field :_destroy, class: 'form-control' %>
+				<button class="close remove_fields">&times;</button>
+	    </div>
+	  </div>
+		<% if f.object.image.url %>
+			<%= link_to(image_tag(f.object.image.url(:smaller)), f.object.image.url, target: '_blank') %>
+		<% else %>
+			<%= 'Imágen Inválida' %>
+		<% end %>
+	</fieldset>
+<% end %>
