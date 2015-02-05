@@ -22,10 +22,13 @@ module TheaterParserHelper
     parse_detector_types = cinema.parse_detector_types.order('LENGTH(name) DESC')
     date = Date.current
     parse_days_count = 14
+    taim = Time.current
     
     parse_days = []
     parse_days_count.times do |n|
-      parse_days << date + n
+      unless (date.wednesday? && taim.hour > 19)
+        parse_days << date + n
+      end
     end
     
     hash = nil
@@ -167,10 +170,6 @@ module TheaterParserHelper
   end
   
   def parse_cinehoyts url, parse_days, theater_name
-    
-    date = Date.current
-    time = Time.current
-    parse_days.delete(date) if date.wednesday? && time.hour > 18
     
     dir_path = Rails.root.join(*%w( tmp cache functions ))
     FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
