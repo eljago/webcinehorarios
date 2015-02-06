@@ -103,8 +103,12 @@ class Function < ActiveRecord::Base
     lfts = function_types.map(&:id).sort
     return false if fts != lfts
     
-    sts = function.showtimes.map(&:time).sort
-    lsts = showtimes.map(&:time).sort
+    sts = function.showtimes.sort.map do |showtime|
+      (showtime.time.hour.to_s + showtime.time.min.to_s).to_i
+    end
+    lsts = showtimes.sort.map do |showtime|
+      (showtime.time.hour.to_s + showtime.time.min.to_s).to_i
+    end
     return false if sts != lsts
     
     return false if (show_id != function.show_id || parsed_show_id != function.parsed_show_id)
