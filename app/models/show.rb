@@ -54,6 +54,7 @@ class Show < ActiveRecord::Base
   accepts_nested_attributes_for :show_person_roles, allow_destroy: true
 
   mount_uploader :image, ShowCover
+  store_in_background :image
   
   include PgSearch
   pg_search_scope :search, against: [:name],
