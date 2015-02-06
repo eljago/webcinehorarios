@@ -22,11 +22,10 @@ module TheaterParserHelper
     parse_detector_types = cinema.parse_detector_types.order('LENGTH(name) DESC')
     date = Date.current
     parse_days_count = 14
-    taim = Time.current
     
     parse_days = []
     parse_days_count.times do |n|
-      unless (date.wednesday? && taim.hour > 19 && date == date+n)
+      unless (Time.current.hour > 19 && date == date+n)
         parse_days << date + n
       end
     end
