@@ -78,7 +78,10 @@ module TheaterParserHelper
   def parse_cinemall_quilpue
     theater = Theater.find('cinemall-quilpue')
     url = theater.web_url
-    s = open(URI.escape(theater.web_url)).read
+
+    proxy_ip = Settings.proxy.split(':')[0]
+    proxy_port = Settings.proxy.split(':')[1]
+    s = HTTP.via(proxy_ip, proxy_port.to_i).get(url).to_s
     s.gsub!('&nbsp;', ' ')
     page = Nokogiri::HTML(s)
     
