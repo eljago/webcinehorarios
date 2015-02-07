@@ -16,7 +16,7 @@
         <%= parse_detector_type.name %>
       </td>
       <td>
-        <%= parse_detector_type.cinema.name %>
+        <%= parse_detector_type.cinema.name if parse_detector_type.cinema %>
       </td>
       <td>
         <%= render_index_actions [@function_type, parse_detector_type] %>
