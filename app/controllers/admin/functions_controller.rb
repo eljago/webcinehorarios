@@ -122,6 +122,9 @@ class Admin::FunctionsController < ApplicationController
     elsif @cinema.name == "Cineplanet"
       hash = parse_cineplanet(@theater.web_url, parse_days, @theater.name)
       continue = true
+    elsif @theater.slug == 'cinemall-quilpue'
+      hash = parse_cinemall_quilpue
+      continue = true
     end
     
     @functionsArray = []
@@ -184,7 +187,7 @@ class Admin::FunctionsController < ApplicationController
     cinema_name = @theater.cinema.name
     is_cineplanet = params[:is_cineplanet]
     
-    if ["Cinemark", "Cine Hoyts", "Cinemundo", "Cineplanet", "CineStar"].include? cinema_name
+    if ["Cinemark", "Cine Hoyts", "Cinemundo", "Cineplanet", "CineStar"].include?(cinema_name) || @theater.slug == 'cinemall-quilpue'
       functions_to_save = []
       count = 0
       while hash = params["movie_#{count}"]

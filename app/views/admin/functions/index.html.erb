@@ -24,6 +24,13 @@
 	    <%= f.hidden_field :parse_type, value: 'week' %>
 	    <%= f.submit "Parse semana", class: 'btn btn-primary' %>
 	  <% end %>
+		
+	<% elsif @theater.slug == 'cinemall-quilpue' %>
+	  <%= form_for :parse_theater, :url => { controller: :functions, action: :parse_theater }, method: :get, html: {style: "display: inline;"} do |f| %>
+	    <%= f.hidden_field :date, value: params[:date] %>
+	    <%= f.hidden_field :parse_type, value: 'day' %>
+	    <%= f.submit "Parse dia", class: 'btn btn-primary' %>
+	  <% end %>
 	<% end %>
 		
 </div>

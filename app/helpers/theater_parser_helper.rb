@@ -25,9 +25,7 @@ module TheaterParserHelper
     
     parse_days = []
     parse_days_count.times do |n|
-      unless (Time.current.hour > 19 && date == date+n)
-        parse_days << date + n
-      end
+      parse_days << date + n
     end
     
     hash = nil
@@ -75,6 +73,36 @@ module TheaterParserHelper
       end
     end
     theater.override_functions(functions_to_save, Date.current, parse_days_count)
+  end
+  
+  def parse_cinemall_quilpue
+    theater = Theater.find('cinemall-quilpue')
+    url = theater.web_url
+    s = open(URI.escape(theater.web_url)).read
+    s.gsub!('&nbsp;', ' ')
+    page = Nokogiri::HTML(s)
+    
+    date = Date.current
+    
+    hash = { movieFunctions: [] }
+    
+    page.css('div.mainbar div.article').each_with_index do |item, index|
+      titulo = item.css("#infopelicula").first.children[3].text.superclean
+  
+      funciones_code = item.css("#funciones")
+      horarios = funciones_code.text.string_between_markers("Horarios:", "Valor").superclean
+      u1 = funciones_code.css('u').first.text
+      u2 = funciones_code.css('u')[1].text
+      function_types = funciones_code.text.string_between_markers(u1, u2).superclean
+      function_types.gsub!('NORMAL', '')
+    
+      titulo = titulo + " " + function_types
+      
+      function = { showtimes: horarios, day: date.to_s, dia: date.day }
+      movieFunction = { name: titulo, functions: [function] }
+      hash[:movieFunctions] << movieFunction
+    end
+    return hash
   end
   
   def parse_cinestar url, parse_days
