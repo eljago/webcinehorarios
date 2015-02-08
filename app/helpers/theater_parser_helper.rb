@@ -23,19 +23,23 @@ module TheaterParserHelper
     date = Date.current
     parse_days_count = 14
     
+    if cinema.slug == 'cinemundo' || cinema.slug == 'cine-hoyts'
+      date = date+1 if Time.current.hour > 19
+    end
+    
     parse_days = []
     parse_days_count.times do |n|
       parse_days << date + n
     end
     
     hash = nil
-    if cinema.name == "CineStar"
+    if cinema.slug == "cinestar"
       hash = parse_cinestar(theater.web_url, parse_days)
-    elsif cinema.name == "Cinemark"
+    elsif cinema.slug == "cinemark"
       hash = parse_cinemark(theater.web_url, parse_days, date)
-    elsif cinema.name == "Cine Hoyts" || cinema.name == "Cinemundo"
+    elsif cinema.slug == "cine-hoyts" || cinema.slug == "cinemundo"
       hash = parse_cinehoyts(theater.web_url, parse_days, theater.name)
-    elsif cinema.name == "Cineplanet"
+    elsif cinema.slug == "cineplanet"
       hash = parse_cineplanet(theater.web_url, parse_days, theater.name)
     end
     
@@ -72,7 +76,7 @@ module TheaterParserHelper
         end
       end
     end
-    theater.override_functions(functions_to_save, Date.current, parse_days_count)
+    theater.override_functions(functions_to_save, date, parse_days_count)
   end
   
   def parse_cinemall_quilpue

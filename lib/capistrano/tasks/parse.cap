@@ -1,0 +1,12 @@
+namespace :parse do
+  desc "Fetch Shows scores"
+  task :cinemas do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "parse_cinemas:all"
+        end
+      end
+    end
+  end
+end
