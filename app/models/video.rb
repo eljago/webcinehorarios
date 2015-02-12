@@ -31,5 +31,6 @@ class Video < ActiveRecord::Base
   belongs_to :show, foreign_key: :videoable_id
   
   mount_uploader :image, VideoCover
-  store_in_background :image
+  #store_in_background :image
+  
 end
