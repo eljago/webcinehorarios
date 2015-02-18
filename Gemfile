@@ -92,7 +92,7 @@ gem "rails-settings-cached", "0.4.1"
 gem 'devise'
 gem 'simple_token_authentication'
 
-
+gem 'activerecord-session_store'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.2'
