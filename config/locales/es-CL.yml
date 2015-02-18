@@ -201,3 +201,8 @@ es-CL:
   activerecord:
     errors:
       <<: *errors
+
+
+  recaptcha:
+    errors:
+      incorrect-captcha-sol: 'Captcha Incorrecto'

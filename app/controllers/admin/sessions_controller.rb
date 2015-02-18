@@ -6,7 +6,7 @@ class SessionsController < Devise::SessionsController
       super
     else
       build_resource
-      flash[:error] = "Captcha has wrong, try a again."
+      flash[:error] = "Captcha Incorrecto."
       respond_with_navigational(resource) { render :new }
     end    
   end
