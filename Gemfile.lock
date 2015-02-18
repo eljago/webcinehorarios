@@ -235,6 +235,7 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
+    recaptcha (0.3.6)
     rspec (2.13.0)
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
@@ -362,6 +363,7 @@ DEPENDENCIES
   railroady
   rails (= 4.1.6)
   rails-settings-cached (= 0.4.1)
+  recaptcha
   rspec-rails (= 2.13.1)
   sass-rails (~> 4.0.2)
   select2-rails

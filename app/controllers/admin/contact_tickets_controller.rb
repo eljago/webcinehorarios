@@ -10,7 +10,7 @@ class Admin::ContactTicketsController < ApplicationController
   
   def create
     @contact_ticket = ContactTicket.new(contact_ticket_params)
-    if @contact_ticket.save
+    if verify_recaptcha(:model => @contact_ticket, :timeout => 60, :message => "Captcha incorrecto") && @contact_ticket.save
       ContactMailer.cinehorarios_contacto(@contact_ticket).deliver
       redirect_to root_url, notice: 'Muchas gracias por ponerse en contacto con nosotros.'
     else
