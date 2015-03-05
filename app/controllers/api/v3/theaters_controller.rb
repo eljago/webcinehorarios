@@ -17,6 +17,7 @@ module Api
         .where('theaters.active = ?', true)
         .order('theaters.name ASC').uniq
         @show_id = params[:show_id]
+        @cache_date = @date.strftime '%Y%m%d'
       end
      
       def favorite_theaters
