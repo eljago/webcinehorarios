@@ -199,7 +199,7 @@ module TheaterParserHelper
     dir_path = Rails.root.join(*%w( tmp cache functions ))
     FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
     file_path = File.join(dir_path, "cinehoyts.txt")
-    max_old_time = 60*30
+    max_old_time = 60*20
 
     read_from_disk = nil
     if File.exists? file_path # FILE EXISTS
@@ -305,7 +305,7 @@ module TheaterParserHelper
     dir_path = Rails.root.join(*%w( tmp cache functions ))
     FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
     file_path = File.join(dir_path, "cineplanet.txt")
-    max_old_time = 60*30
+    max_old_time = 60*20
 
     read_from_disk = nil
     if File.exists? file_path # FILE EXISTS
