@@ -23,9 +23,9 @@ module TheaterParserHelper
     date = Date.current
     parse_days_count = 14
     
-    if cinema.slug == 'cinemundo' || cinema.slug == 'cine-hoyts'
-      date = date+1 if Time.current.hour > 19
-    end
+    # if cinema.slug == 'cinemundo' || cinema.slug == 'cine-hoyts'
+    #   date = date+1 if Time.current.hour > 19
+    # end
     
     parse_days = []
     parse_days_count.times do |n|
@@ -76,7 +76,7 @@ module TheaterParserHelper
         end
       end
     end
-    theater.override_functions(functions_to_save, date, parse_days_count)
+    theater.override_functions(functions_to_save, date, parse_days_count) if functions_to_save.count > 0
   end
   
   def parse_cinemall_quilpue
