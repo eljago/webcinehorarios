@@ -196,6 +196,7 @@ module TheaterParserHelper
   
   def parse_cinehoyts url, parse_days, theater_name
     
+    theater_web_id = url.split('/').last
     dir_path = Rails.root.join(*%w( tmp cache functions ))
     FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
     file_path = File.join(dir_path, "cinehoyts.txt")
@@ -218,13 +219,13 @@ module TheaterParserHelper
     if read_from_disk && File.exists?(file_path)# READ FROM DISK
       s = File.read(file_path)
     else # READ FROM INTERNET
-      url = "http://www.cinehoyts.cl/Cartelera"
+      url1 = "http://www.cinehoyts.cl/Cartelera"
       if Rails.env == "Production"
         proxy_ip = Settings.proxy.split(':')[0]
         proxy_port = Settings.proxy.split(':')[1]
-        s = HTTP.via(proxy_ip, proxy_port.to_i).get(url).to_s
+        s = HTTP.via(proxy_ip, proxy_port.to_i).get(url1).to_s
       else
-        s = open(URI.escape(url)).read
+        s = open(URI.escape(url1)).read
       end
       s.gsub!('&nbsp;', ' ')
     
@@ -260,41 +261,32 @@ module TheaterParserHelper
       page2 = Nokogiri::HTML(s2)
       name = a.text
       theater_found = false
-  
-      page2.css('div#accordion div.panel-default').each do |cinepanel|
-    
-        nombre_cine = cinepanel.css('div.panel-heading h4 a').first.text.gsub('CineHoyts', '').superclean
-        if transliterate(nombre_cine).underscore == transliterate(theater_name).underscore
       
-          theater_found = true
+      page2.css("div#cine#{theater_web_id} div[class=\"row diez_m_t\"]").each do |functions_row|
+        day = functions_row.css('.col-lg-2').first.text.superclean
+        dia = day.split[1].to_i
+        
+        if parse_days.map(&:day).include?(dia)
+          functions_row.css('.comprar_funcion').each do |showtime|
+            clean_showtime_splitted = showtime.text.superclean.split
+            time = clean_showtime_splitted.first
+            function_types = clean_showtime_splitted[1..clean_showtime_splitted.length-1].join(' ')
       
-          cinepanel.css('div.panel-body div.carousel-inner div[class="row diez_m_t"]').each do |functions_row|
-            day = functions_row.css('.col-lg-2').first.text.superclean
-            dia = day.split[1].to_i
-            
-            if parse_days.map(&:day).include?(dia)
-              functions_row.css('.comprar_funcion').each do |showtime|
-                clean_showtime_splitted = showtime.text.superclean.split
-                time = clean_showtime_splitted.first
-                function_types = clean_showtime_splitted[1..clean_showtime_splitted.length-1].join(' ')
-          
-                movie_name = "#{name} #{function_types}"
-                movie_functions_hash = hash[:movieFunctions].get_hash_with_key_value(:name, movie_name)
-                if movie_functions_hash
-                  function_hash = movie_functions_hash[:functions].get_hash_with_key_value(:dia, dia)
-                  if function_hash
-                    function_hash[:showtimes] << "#{time}, "
-                  else
-                    movie_functions_hash[:functions] << { day: day, dia: dia, showtimes: "#{time}, " }
-                  end
-                else
-                  hash[:movieFunctions] << { name: movie_name, functions: [ { day: day, dia: dia, showtimes: "#{time}, " } ] }
-                end
+            movie_name = "#{name} #{function_types}"
+            movie_functions_hash = hash[:movieFunctions].get_hash_with_key_value(:name, movie_name)
+            if movie_functions_hash
+              function_hash = movie_functions_hash[:functions].get_hash_with_key_value(:dia, dia)
+              if function_hash
+                function_hash[:showtimes] << "#{time}, "
+              else
+                movie_functions_hash[:functions] << { day: day, dia: dia, showtimes: "#{time}, " }
               end
+            else
+              hash[:movieFunctions] << { name: movie_name, functions: [ { day: day, dia: dia, showtimes: "#{time}, " } ] }
             end
           end
-          break
         end
+        break
       end
     end
     return hash
