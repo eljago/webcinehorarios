@@ -252,7 +252,7 @@ module TheaterParserHelper
           s2 = open(URI.escape(url2)).read
         end
         s2.gsub!('&nbsp;', ' ') 
-      
+        
         File.open(file_path2, 'w') do |f|
           f.puts s2
         end
@@ -260,7 +260,6 @@ module TheaterParserHelper
       
       page2 = Nokogiri::HTML(s2)
       name = a.text
-      theater_found = false
       
       page2.css("div#cine#{theater_web_id} div[class=\"row diez_m_t\"]").each do |functions_row|
         day = functions_row.css('.col-lg-2').first.text.superclean
