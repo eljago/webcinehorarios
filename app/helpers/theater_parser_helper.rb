@@ -23,9 +23,9 @@ module TheaterParserHelper
     date = Date.current
     parse_days_count = 14
     
-    # if cinema.slug == 'cinemundo' || cinema.slug == 'cine-hoyts'
-    #   date = date+1 if Time.current.hour > 19
-    # end
+    if cinema.slug == 'cinemundo' || cinema.slug == 'cine-hoyts'
+      date = date+1 if Time.current.hour > 19
+    end
     
     parse_days = []
     parse_days_count.times do |n|
@@ -72,11 +72,11 @@ module TheaterParserHelper
           function.date = date.advance_to_day(hash_function[:dia])
           function.parsed_show = parsed_show
           Function.create_showtimes function, hash_function[:showtimes]
-          functions_to_save << function if function.showtimes.count > 0
+          functions_to_save << function
         end
       end
     end
-    theater.override_functions(functions_to_save, date, parse_days_count) if functions_to_save.count > 0
+    theater.override_functions(functions_to_save, date, parse_days_count)
   end
   
   def parse_cinemall_quilpue
@@ -200,7 +200,7 @@ module TheaterParserHelper
     dir_path = Rails.root.join(*%w( tmp cache functions ))
     FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
     file_path = File.join(dir_path, "cinehoyts.txt")
-    max_old_time = 60*20
+    max_old_time = 60*30
 
     read_from_disk = nil
     if File.exists? file_path # FILE EXISTS
@@ -252,7 +252,7 @@ module TheaterParserHelper
           s2 = open(URI.escape(url2)).read
         end
         s2.gsub!('&nbsp;', ' ') 
-        
+      
         File.open(file_path2, 'w') do |f|
           f.puts s2
         end
@@ -260,6 +260,7 @@ module TheaterParserHelper
       
       page2 = Nokogiri::HTML(s2)
       name = a.text
+      theater_found = false
       
       page2.css("div#cine#{theater_web_id} div[class=\"row diez_m_t\"]").each do |functions_row|
         day = functions_row.css('.col-lg-2').first.text.superclean
@@ -296,7 +297,7 @@ module TheaterParserHelper
     dir_path = Rails.root.join(*%w( tmp cache functions ))
     FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
     file_path = File.join(dir_path, "cineplanet.txt")
-    max_old_time = 60*20
+    max_old_time = 60*30
 
     read_from_disk = nil
     if File.exists? file_path # FILE EXISTS

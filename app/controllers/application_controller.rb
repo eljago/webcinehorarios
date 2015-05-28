@@ -32,14 +32,5 @@ class ApplicationController < ActionController::Base
     admin_path
   end
   
-
-  def get_date
-    @date = Date.current
-    if params[:date].present?
-      date_array = params[:date].split('-')
-      @date = Date.new(date_array[0].to_i, date_array[1].to_i, date_array[2].to_i)
-    end
-  end
-  
     
 end
