@@ -72,7 +72,7 @@ module TheaterParserHelper
           function.date = date.advance_to_day(hash_function[:dia])
           function.parsed_show = parsed_show
           Function.create_showtimes function, hash_function[:showtimes]
-          functions_to_save << function
+          functions_to_save << function if function.showtimes.count > 0
         end
       end
     end
