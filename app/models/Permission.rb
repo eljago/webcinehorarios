@@ -12,7 +12,7 @@ class Permission
     allow 'api/v3/awards', [:index]
     
     # API V4
-    allow 'api/v4/theaters', [:index]
+    allow 'api/v4/theaters', [:index, :favorites]
     allow 'api/v4/functions', [:index]
     allow 'api/v4/shows', [:billboard, :coming_soon, :show, :theaters]
     allow 'api/v4/videos', [:index]

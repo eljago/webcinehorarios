@@ -273,6 +273,9 @@ Webcinehorarios::Application.routes.draw do
     scope module: :v4, constraints: ApiConstraints.new(version: 4, default: true) do
       
       resources :theaters, only: :index do
+        collection do
+          get 'favorites'
+        end
         resources :functions, only: :index
       end
       

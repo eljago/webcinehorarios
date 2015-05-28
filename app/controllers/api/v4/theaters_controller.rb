@@ -12,6 +12,15 @@ module Api
         end
       end
       
+      def favorites
+        if params[:ids].present?
+          favorites = params[:ids].split(',')
+          @favorite_theaters = Theater.where('theaters.active = ? AND theaters.id IN (?)', true, favorites).order('theaters.cinema_id, theaters.name')
+        else
+          render_missing_params
+        end
+      end
+      
     end
   end
 end
