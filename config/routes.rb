@@ -241,7 +241,7 @@ Webcinehorarios::Application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     
     ##### V3 #####
-    scope module: :v3, constraints: ApiConstraints.new(version: 3, default: true) do
+    scope module: :v3, constraints: ApiConstraints.new(version: 3) do
       
       resources :shows, only: :show do
         collection do 
@@ -270,7 +270,7 @@ Webcinehorarios::Application.routes.draw do
     end
     
     ##### V4 #####
-    scope module: :v4, constraints: ApiConstraints.new(version: 4) do
+    scope module: :v4, constraints: ApiConstraints.new(version: 4, default: true) do
       
       resources :theaters, only: :index do
         resources :functions, only: :index
