@@ -285,7 +285,6 @@ module TheaterParserHelper
             end
           end
         end
-        break
       end
     end
     return hash
