@@ -175,7 +175,7 @@ module TheaterParserHelper
         function = { showtimes: [] }
         function[:day] = item.css('span.showtime-day').text.superclean
         dia = function[:day].split('-')[0].to_i
-        mes = function[:day].split('-')[1].superclean.gsub(':','')
+        mes = function[:day].split('-')[1].superclean.downcase.gsub(':','')
         
         mesValid = l(date, format: '%b').to_s.downcase
         
