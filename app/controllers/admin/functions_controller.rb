@@ -156,9 +156,9 @@ class Admin::FunctionsController < ApplicationController
           function = { day: hash_function[:day] }
           function[:horarios] = hash_function[:showtimes]
           function[:date] = @date.advance_to_day(hash_function[:dia])
-          movieFunctions[:functions] << function
+          movieFunctions[:functions] << function if function[:horarios].length > 0
         end
-        @functionsArray << movieFunctions if movieFunctions[:functions].count > 0
+        @functionsArray << movieFunctions if movieFunctions[:functions].length > 0
       end
     end
   end

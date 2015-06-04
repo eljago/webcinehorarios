@@ -72,11 +72,11 @@ module TheaterParserHelper
           function.date = date.advance_to_day(hash_function[:dia])
           function.parsed_show = parsed_show
           Function.create_showtimes function, hash_function[:showtimes]
-          functions_to_save << function if function.showtimes.count > 0
+          functions_to_save << function if function.showtimes.length > 0
         end
       end
     end
-    theater.override_functions(functions_to_save, date, parse_days_count) if functions_to_save.count > 0
+    theater.override_functions(functions_to_save, date, parse_days_count) if functions_to_save.length > 0
   end
   
   def parse_cinemall_quilpue
@@ -144,10 +144,10 @@ module TheaterParserHelper
           end
           function[:showtimes] = showtimes.join(', ')
           function[:dia] = dia
-          movieFunction[:functions] << function
+          movieFunction[:functions] << function if function[:showtimes].length > 0
         end
       end
-      hash[:movieFunctions] << movieFunction
+      hash[:movieFunctions] << movieFunction if movieFunction[:functions].length > 0
     end
     return hash
   end
@@ -186,10 +186,10 @@ module TheaterParserHelper
           end
           function[:dia] = dia
           function[:showtimes] = horarios
-          movieFunction[:functions] << function
+          movieFunction[:functions] << function if function[:showtimes].length > 0
         end
       end
-      hash[:movieFunctions] << movieFunction if movieFunction[:functions].count > 0
+      hash[:movieFunctions] << movieFunction if movieFunction[:functions].length > 0
     end
     return hash
   end
@@ -373,7 +373,7 @@ module TheaterParserHelper
             if parse_days.map(&:day).include?(dia)
               horarios = spans[1].text.superclean.gsub(' ', ', ')
               function = { day: date_array.to_s, showtimes: horarios, dia: dia }
-              movieFunction[:functions] << function
+              movieFunction[:functions] << function if function[:showtimes].length > 0
             end
           end
         else
@@ -385,7 +385,7 @@ module TheaterParserHelper
           end
         end
       end
-      hash[:movieFunctions] << movieFunction if movieFunction[:functions].count > 0
+      hash[:movieFunctions] << movieFunction if movieFunction[:functions].length > 0
     end
     return hash
   end
