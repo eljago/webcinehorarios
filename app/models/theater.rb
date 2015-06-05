@@ -48,7 +48,18 @@ class Theater < ActiveRecord::Base
 
   
   def override_functions new_functions, start_date, parse_days_count
-    current_functions = functions.where(date: start_date..(start_date + parse_days_count.to_i-1)).includes(:function_types, :showtimes)
+
+    date_range = start_date..(start_date + parse_days_count.to_i-1)
+    days_with_new_functions = Hash.new
+    date_range.each do |date|
+      days_with_new_functions[date] = false;
+    end
+    new_functions.each do |func|
+      break if days_with_new_functions.all?
+      days_with_new_functions[func.date] = true if days_with_new_functions[func.date] == false
+    end
+
+    current_functions = functions.where(date: date_range).includes(:function_types, :showtimes)
     functions_to_destroy = []
     indexes_to_save = Array.new(new_functions.count, true)
     
@@ -66,7 +77,7 @@ class Theater < ActiveRecord::Base
     end
     
     functions_to_destroy.each do |f|
-      f.destroy
+      f.destroy if days_with_new_functions[f.date]
     end
     indexes_to_save.each_with_index do |should_save, index|
       new_functions[index].save if should_save
