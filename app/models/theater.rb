@@ -55,7 +55,7 @@ class Theater < ActiveRecord::Base
       days_with_new_functions[date] = false;
     end
     new_functions.each do |func|
-      break if days_with_new_functions.all?
+      break if days_with_new_functions.values.all?
       days_with_new_functions[func.date] = true if days_with_new_functions[func.date] == false
     end
 
