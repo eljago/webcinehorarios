@@ -315,7 +315,7 @@ module TheaterParserHelper
       s = File.read(file_path)
     else # READ FROM INTERNET
       url = "http://www.cineplanet.cl/"
-      if Rails.env == "Production"
+      if Rails.env == "Production" && Settings.proxy.present?
         proxy_ip = Settings.proxy.split(':')[0]
         proxy_port = Settings.proxy.split(':')[1]
         s = HTTP.via(proxy_ip, proxy_port.to_i).get(url).to_s
@@ -339,7 +339,7 @@ module TheaterParserHelper
         s2 = File.read(file_path2)
       else
         url2 = item[:href]
-        if Rails.env == "Production"
+        if Rails.env == "Production" && Settings.proxy.present?
           proxy_ip = Settings.proxy.split(':')[0]
           proxy_port = Settings.proxy.split(':')[1]
           s2 = HTTP.via(proxy_ip, proxy_port.to_i).get(url2).to_s
