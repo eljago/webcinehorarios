@@ -311,22 +311,24 @@ module TheaterParserHelper
     end
     
     s = nil
-    if read_from_disk && File.exists?(file_path)# READ FROM DISK
+    # if read_from_disk && File.exists?(file_path)# READ FROM DISK
+    if File.exists?(file_path)# READ FROM DISK
       s = File.read(file_path)
     else # READ FROM INTERNET
-      url = "http://www.cineplanet.cl/"
-      if Rails.env == "Production" && Settings.proxy.present?
-        proxy_ip = Settings.proxy.split(':')[0]
-        proxy_port = Settings.proxy.split(':')[1]
-        s = HTTP.via(proxy_ip, proxy_port.to_i).get(url).to_s
-      else
-        s = open(URI.escape(url)).read
-      end
-      s.gsub!('&nbsp;', ' ')
-    
-      File.open(file_path, 'w') do |f|
-        f.puts s
-      end
+      return
+      # url = "http://www.cineplanet.cl/"
+      # if Rails.env == "Production" && Settings.proxy.present?
+      #   proxy_ip = Settings.proxy.split(':')[0]
+      #   proxy_port = Settings.proxy.split(':')[1]
+      #   s = HTTP.via(proxy_ip, proxy_port.to_i).get(url).to_s
+      # else
+      #   s = Net::HTTP.get(URI(url)).force_encoding('UTF-8')
+      # end
+      # s.gsub!('&nbsp;', ' ')
+      #
+      # File.open(file_path, 'w') do |f|
+      #   f.puts s
+      # end
     end
     
     page = Nokogiri::HTML(s)
@@ -335,22 +337,24 @@ module TheaterParserHelper
     page.css('#lista-pelicula div.img a').each_with_index do |item, index|
       
       file_path2 = File.join(dir_path, "cineplanet_#{index}.txt")
-      if read_from_disk && File.exists?(file_path2)
+      # if read_from_disk && File.exists?(file_path2)
+      if File.exists?(file_path2)# READ FROM DISK
         s2 = File.read(file_path2)
       else
-        url2 = item[:href]
-        if Rails.env == "Production" && Settings.proxy.present?
-          proxy_ip = Settings.proxy.split(':')[0]
-          proxy_port = Settings.proxy.split(':')[1]
-          s2 = HTTP.via(proxy_ip, proxy_port.to_i).get(url2).to_s
-        else
-          s2 = open(URI.escape(url2)).read
-        end
-        s2.gsub!('&nbsp;', ' ') 
-      
-        File.open(file_path2, 'w') do |f|
-          f.puts s2
-        end
+        return
+        # url2 = item[:href]
+        # if Rails.env == "Production" && Settings.proxy.present?
+        #   proxy_ip = Settings.proxy.split(':')[0]
+        #   proxy_port = Settings.proxy.split(':')[1]
+        #   s2 = HTTP.via(proxy_ip, proxy_port.to_i).get(url2).to_s
+        # else
+        #   s2 = Net::HTTP.get(URI(url2)).force_encoding('UTF-8')
+        # end
+        # s2.gsub!('&nbsp;', ' ')
+        #
+        # File.open(file_path2, 'w') do |f|
+        #   f.puts s2
+        # end
       end
       
       page2 = Nokogiri::HTML(s2) 

@@ -27,10 +27,10 @@ namespace :parse_cinemas do
       task_parse_theater theater
     end
     
-    cinestar_theaters = Cinema.where(name: "Cineplanet").first.theaters
-    cinestar_theaters.each do |theater|
-      task_parse_theater theater
-    end
+    # cinestar_theaters = Cinema.where(name: "Cineplanet").first.theaters
+    # cinestar_theaters.each do |theater|
+    #   task_parse_theater theater
+    # end
     
     if Rails.env.production?
       time_end = Time.current
