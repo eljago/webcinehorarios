@@ -292,63 +292,106 @@ module TheaterParserHelper
   
   def parse_cineplanet url, parse_days, theater_name
     
-    proxy = Settings.proxy
-    proxy_ip = proxy.split(':')[0]
-    proxy_port = proxy.split(':')[1]
+    dir_path = Rails.root.join(*%w( tmp cache functions ))
+    FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
+    file_path = File.join(dir_path, "cineplanet.txt")
+    max_old_time = 60*20
 
-    uri = URI('http://www.cineplanet.cl/')
-    user_agent = {'User-Agent' => 'Firefox 28/Android: Mozilla/5.0 (Android; Mobile; rv:28.0) Gecko/24.0 Firefox/28.0'}
+    read_from_disk = nil
+    if File.exists? file_path # FILE EXISTS
+      time_creation = File.ctime(file_path)
+      seconds_created_ago = Time.current - time_creation
+      if seconds_created_ago > max_old_time
+        read_from_disk = false
+      else
+        read_from_disk = true
+      end
+    else # FILE DOESN'T EXISTS
+      read_from_disk = false
+    end
     
-    Net::HTTP.new(uri.host, nil, nil, nil).start do |http|
-      # always proxy via your.proxy.addr:8080
-      request = Net::HTTP::Get.new(uri, user_agent)
-      response = http.request request # Net::HTTPResponse object
-      body = response.body.force_encoding('UTF-8')
-      
-      page = Nokogiri::HTML(body)
-      hash = { movieFunctions: [] }
-      
-      page.css('#lista-pelicula div.img a').each_with_index do |item, index|
-        url2 = URI(item[:href])
-      
-        request2 = Net::HTTP::Get.new(url2, user_agent)
-        response2 = http.request(request2) # Net::HTTPResponse object
-        body2 = response2.body.force_encoding('UTF-8')
-        page2 = Nokogiri::HTML(body2)
+    s = nil
+    # if read_from_disk && File.exists?(file_path)# READ FROM DISK
+    if File.exists?(file_path)# READ FROM DISK
+      s = File.read(file_path)
+    else # READ FROM INTERNET
+      return
+      # url = "http://www.cineplanet.cl/"
+      # if Rails.env == "Production" && Settings.proxy.present?
+      #   proxy_ip = Settings.proxy.split(':')[0]
+      #   proxy_port = Settings.proxy.split(':')[1]
+      #   s = HTTP.via(proxy_ip, proxy_port.to_i).get(url).to_s
+      # else
+      #   s = Net::HTTP.get(URI(url)).force_encoding('UTF-8')
+      # end
+      # s.gsub!('&nbsp;', ' ')
+      #
+      # File.open(file_path, 'w') do |f|
+      #   f.puts s
+      # end
+    end
+    
+    page = Nokogiri::HTML(s)
+    hash = { movieFunctions: [] }
 
-        titulo = page2.css('div[class="superior titulo-tamano-superior-modificado"]')
-        next if titulo == nil
-        titulo = titulo.text.superclean
-    
-        movieFunction = { name: titulo, functions: [] }
-    
-        theater_found = false
-        page2.css("div.contenedor-lista-peliculas2 div.texto-lista").each do |div|
-          strong = div.css("strong").text.superclean
-          # si strong.empty?, entonces se está en los horarios
-          if strong.empty? && theater_found
-            if spans = div.css('span.flotar-izquierda')
+    page.css('#lista-pelicula div.img a').each_with_index do |item, index|
       
-              date_array = spans[0].text.split
-              dia = date_array[1].to_i
-              if parse_days.map(&:day).include?(dia)
-                horarios = spans[1].text.superclean.gsub(' ', ', ')
-                function = { day: date_array.to_s, showtimes: horarios, dia: dia }
-                movieFunction[:functions] << function if function[:showtimes].length > 0
-              end
-            end
-          else
-            break if theater_found
-            if theater_name == "Costanera Center" && (strong == theater_name || strong == "Costanera Prime")
-              theater_found = true
-            elsif transliterate(strong).underscore == transliterate(theater_name).underscore
-              theater_found = true
+      file_path2 = File.join(dir_path, "cineplanet_#{index}.txt")
+      # if read_from_disk && File.exists?(file_path2)
+      if File.exists?(file_path2)# READ FROM DISK
+        s2 = File.read(file_path2)
+      else
+        return
+        # url2 = item[:href]
+        # if Rails.env == "Production" && Settings.proxy.present?
+        #   proxy_ip = Settings.proxy.split(':')[0]
+        #   proxy_port = Settings.proxy.split(':')[1]
+        #   s2 = HTTP.via(proxy_ip, proxy_port.to_i).get(url2).to_s
+        # else
+        #   s2 = Net::HTTP.get(URI(url2)).force_encoding('UTF-8')
+        # end
+        # s2.gsub!('&nbsp;', ' ')
+        #
+        # File.open(file_path2, 'w') do |f|
+        #   f.puts s2
+        # end
+      end
+      
+      page2 = Nokogiri::HTML(s2) 
+  
+      titulo = page2.css('div[class="superior titulo-tamano-superior-modificado"]')
+      next if titulo == nil
+      titulo = titulo.text.superclean
+      
+      movieFunction = { name: titulo, functions: [] }
+      
+      theater_found = false
+      page2.css("div.contenedor-lista-peliculas2 div.texto-lista").each do |div|
+        strong = div.css("strong").text.superclean
+        # si strong.empty?, entonces se está en los horarios
+        if strong.empty? && theater_found
+          if spans = div.css('span.flotar-izquierda')
+        
+            date_array = spans[0].text.split
+            dia = date_array[1].to_i
+            if parse_days.map(&:day).include?(dia)
+              horarios = spans[1].text.superclean.gsub(' ', ', ')
+              function = { day: date_array.to_s, showtimes: horarios, dia: dia }
+              movieFunction[:functions] << function if function[:showtimes].length > 0
             end
           end
+        else
+          break if theater_found
+          if theater_name == "Costanera Center" && (strong == theater_name || strong == "Costanera Prime")
+            theater_found = true
+          elsif transliterate(strong).underscore == transliterate(theater_name).underscore
+            theater_found = true
+          end
         end
-        hash[:movieFunctions] << movieFunction if movieFunction[:functions].length > 0
       end
-      return hash
+      hash[:movieFunctions] << movieFunction if movieFunction[:functions].length > 0
     end
+    return hash
   end
+  
 end
