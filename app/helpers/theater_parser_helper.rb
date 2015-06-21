@@ -296,8 +296,6 @@ module TheaterParserHelper
     FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
     file_path = File.join(dir_path, "cineplanet.txt")
     
-    return unless File.exists?(file_path)
-    
     s = nil
     if File.exists?(file_path)
       s = File.read(file_path)
@@ -309,16 +307,18 @@ module TheaterParserHelper
     hash = { movieFunctions: [] }
 
     page.css('#lista-pelicula div.img a').each_with_index do |item, index|
-      
+
       file_path2 = File.join(dir_path, "cineplanet_#{index}.txt")
+
+      s2=nil
       if File.exists?(file_path2)
         s2 = File.read(file_path2)
       else
         return
       end
       
-      page2 = Nokogiri::HTML(s2) 
-  
+      page2 = Nokogiri::HTML(s2)
+      
       titulo = page2.css('div[class="superior titulo-tamano-superior-modificado"]')
       next if titulo == nil
       titulo = titulo.text.superclean

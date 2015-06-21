@@ -39,7 +39,7 @@ class Function < ActiveRecord::Base
   # SHOWTIMES METHODS
   def self.create_showtimes(function, horarios)
     Function.create_array_from_horarios_string(horarios).each do |h|
-      if h.size >= 5
+      if h.size >= 4
         h = h.gsub(/(;)/, ":")
         horaminuto = h.split(":")
         horaminuto[0] = horaminuto[0].to_i
