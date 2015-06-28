@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.1.2'
+ruby '2.2.2'
 
 gem 'rails', '4.1.6'
 
@@ -8,7 +8,6 @@ gem 'http', require: false
 gem 'whenever', require: false
 
 group :test do
-  gem 'sqlite3'
   gem "capybara", "~> 2.1.0"
   gem "database_cleaner", "~> 1.0.1"
   gem "launchy", "~> 2.3.0"
