@@ -36,5 +36,5 @@ every 1.day, at: '5am' do
 end
 
 every 30.minutes do
-  rake 'parse_cinemas:all'
+  rake 'parse:cinemas'
 end

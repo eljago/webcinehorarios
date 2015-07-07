@@ -1,9 +1,9 @@
 require "#{Rails.root}/app/helpers/theater_parser_helper"
 include TheaterParserHelper
 
-namespace :parse_cinemas do
+namespace :parse do
   desc "Parse Cinemark"
-  task :all => :environment do
+  task :cinemas => :environment do
     
     time_start = Time.current
     

@@ -1,6 +1,6 @@
-namespace :parse do
+namespace :cap_parse do
   desc "Fetch Shows scores"
-  task :scores do
+  task :metacritic do
     on roles(:app) do
       within "#{current_path}" do
         with rails_env: :production do
