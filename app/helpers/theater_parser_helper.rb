@@ -165,9 +165,9 @@ module TheaterParserHelper
       movieFunction = { name: titulo, functions: []}
       
       item.css('div.version-types-wrap span').each do |item|
-        item_reformatted = item.text.superclean
-        if item_reformatted != 'Tradicional'
-          movieFunction[:name] = "#{movieFunction[:name]} #{item_reformatted}"
+        item_class = item.attr('class').gsub('version-', '')
+        if item_class != 'trad'
+          movieFunction[:name] = "#{movieFunction[:name]} #{item_class}"
         end
       end
       
