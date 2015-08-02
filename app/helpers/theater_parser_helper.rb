@@ -47,7 +47,7 @@ module TheaterParserHelper
     hash[:movieFunctions].each do |hash_movie_function|
       titulo = hash_movie_function[:name]
       detected_function_types = []
-      parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).underscore # Name of the show read from the webpage then formatted
+      parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).downcase # Name of the show read from the webpage then formatted
       
       movieFunctions = { name: titulo }
       parse_detector_types.each do |pdt|
@@ -58,7 +58,7 @@ module TheaterParserHelper
 
           # Remove the Movie Type from the Parsed Show Name
           # Parsed Show Name is gonna be used to detect the movie in the database.
-         parsed_show_name.gsub!(transliterate(pdt.name.gsub(/\s+/, "")).underscore, "")
+         parsed_show_name.gsub!(transliterate(pdt.name.gsub(/\s+/, "")).downcase, "")
         end
       end
       parsed_show_name.gsub!(/[^a-z0-9]/i, '')
@@ -344,7 +344,7 @@ module TheaterParserHelper
           break if theater_found
           if theater_name == "Costanera Center" && (strong == theater_name || strong == "Costanera Prime")
             theater_found = true
-          elsif transliterate(strong).underscore == transliterate(theater_name).underscore
+          elsif transliterate(strong).downcase == transliterate(theater_name).downcase
             theater_found = true
           end
         end
