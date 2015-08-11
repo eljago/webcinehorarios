@@ -37,17 +37,11 @@ group :development do
   gem 'annotate', '~> 2.6.5'
 
   gem 'clipboard', require: false
+  gem 'capistrano', '~> 3.1'
+  gem 'capistrano-bundler', '~> 1.1.2'
+  gem 'capistrano-rails', '~> 1.1.1'
+  gem 'capistrano-rbenv', '~> 2.0'
 end
-
-group :development do
-    gem 'capistrano',         require: false
-    gem 'capistrano-rbenv',   require: false
-    gem 'capistrano-rails',   require: false
-    gem 'capistrano-bundler', require: false
-    gem 'capistrano3-puma',   require: false
-end
-gem 'puma'
-
 gem "capistrano-db-tasks", require: false
 gem 'rack-mini-profiler'
 
