@@ -10,7 +10,7 @@ namespace :parse do
       require 'watir'
       require 'watir-webdriver'
 
-      db_theaters = Cinema.where(name: "Cine Hoyts").first.theaters
+      db_theaters = Cinema.where(name: "Cine Hoyts").first.theaters + Cinema.where(name: "Cinemundo").first.theaters
       theaters = []
     
       db_theaters.each do |db_theater|
@@ -30,7 +30,9 @@ namespace :parse do
             fecha_string = fecha["Fecha"]
             movieFunction = { functions: [] }
             pelicula["Formatos"].each do |formato|
-              movieFunction[:name] = "#{formato['Nombre']} #{pelicula['Titulo']}"
+              formatos = formato['Nombre'].gsub("[TRAD]", "").gsub("ORI", "")
+              name = pelicula['Titulo'].gsub("SANFIC:", "")
+              movieFunction[:name] = "#{formatos} #{name}"
               function = { showtimes: [], day: fecha_string, dia: fecha_string.split.first.to_i }
               swtimes = []
               formato["Horarios"].each do |horario|
