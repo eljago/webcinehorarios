@@ -1,7 +1,5 @@
 require "#{Rails.root}/app/helpers/theater_parser_helper"
 include TheaterParserHelper
-require 'watir'
-require 'watir-webdriver'
 
 namespace :parse do
   desc "Parse Cinemark"
@@ -9,6 +7,9 @@ namespace :parse do
     
     # if Rails.env.production?
     if Rails.env.development?
+      require 'watir'
+      require 'watir-webdriver'
+
       db_theaters = Cinema.where(name: "Cine Hoyts").first.theaters
       theaters = []
     
