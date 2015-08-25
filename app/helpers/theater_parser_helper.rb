@@ -44,6 +44,7 @@ module TheaterParserHelper
     end
     
     functions_to_save = []
+    hash = hash.first if hash.class == Array && hash.length > 0
     hash[:movieFunctions].each do |hash_movie_function|
       titulo = hash_movie_function[:name]
       detected_function_types = []

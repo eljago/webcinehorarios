@@ -68,17 +68,17 @@ namespace :parse do
         task_parse_theater theater
       end
       
-      time_end = Time.current
-      duration = time_end - time_start
-      min = (duration / 60).round
-      sec = (duration % 60).round
-
-      date = Date.current
-      from = "noreply@cinehorarios.cl"
-      subject = "PARSE CINE HOYTS COMPLETE #{date.day}/#{date.month}/#{date.year}"
-      content = "Operación duró #{min} minutos y #{sec} segundos."
-      contact_ticket = ContactTicket.new(from: from, subject: subject, content: content)
-      ContactMailer.parse_complete_mailer(contact_ticket).deliver
+      # time_end = Time.current
+      # duration = time_end - time_start
+      # min = (duration / 60).round
+      # sec = (duration % 60).round
+      #
+      # date = Date.current
+      # from = "noreply@cinehorarios.cl"
+      # subject = "PARSE CINE HOYTS COMPLETE #{date.day}/#{date.month}/#{date.year}"
+      # content = "Operación duró #{min} minutos y #{sec} segundos."
+      # contact_ticket = ContactTicket.new(from: from, subject: subject, content: content)
+      # ContactMailer.parse_complete_mailer(contact_ticket).deliver
     end
     
   end
