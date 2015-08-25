@@ -38,7 +38,7 @@ module TheaterParserHelper
     elsif cinema.slug == "cinemark"
       hash = parse_cinemark(theater.web_url, parse_days, date)
     elsif cinema.slug == "cine-hoyts" || cinema.slug == "cinemundo"
-      hash = parse_cinehoyts(theater.web_url, parse_days, theater.name)
+      hash = parse_cinehoyts(theater.id)
     elsif cinema.slug == "cineplanet"
       hash = parse_cineplanet(theater.web_url, parse_days, theater.name)
     end
@@ -194,100 +194,18 @@ module TheaterParserHelper
     return hash
   end
   
-  def parse_cinehoyts url, parse_days, theater_name
+  def parse_cinehoyts theater_id
     
-    theater_web_id = url.split('/').last
-    dir_path = Rails.root.join(*%w( tmp cache functions ))
-    FileUtils.mkdir(dir_path) unless File.exists?(dir_path)
-    file_path = File.join(dir_path, "cinehoyts.txt")
-    max_old_time = 60*20
-
-    read_from_disk = nil
-    if File.exists? file_path # FILE EXISTS
-      time_creation = File.ctime(file_path)
-      seconds_created_ago = Time.current - time_creation
-      if seconds_created_ago > max_old_time
-        read_from_disk = false
-      else
-        read_from_disk = true
-      end
-    else # FILE DOESN'T EXISTS
-      read_from_disk = false
-    end
-    
-    s = nil
-    if read_from_disk && File.exists?(file_path)# READ FROM DISK
+    file_path = Rails.root.join(*%w( tmp cache functions cine_hoyts.json ))
+    if File.exists?(file_path)
       s = File.read(file_path)
-    else # READ FROM INTERNET
-      url1 = "http://www.cinehoyts.cl/Cartelera"
-      if Rails.env == "Production"
-        proxy_ip = Settings.proxy.split(':')[0]
-        proxy_port = Settings.proxy.split(':')[1]
-        s = HTTP.via(proxy_ip, proxy_port.to_i).get(url1).to_s
-      else
-        s = open(URI.escape(url1)).read
-      end
-      s.gsub!('&nbsp;', ' ')
-    
-      File.open(file_path, 'w') do |f|
-        f.puts s
-      end
-    end
-    
-    page = Nokogiri::HTML(s)
-    hash = { movieFunctions: [] }
-
-    page.css('p[class="fuente_azul fuente_listado"]').each_with_index do |a, index|
-      
-      file_path2 = File.join(dir_path, "cinehoyts_#{index}.txt")
-      if read_from_disk && File.exists?(file_path2)
-        s2 = File.read(file_path2)
-      else
-        url2 = "http://www.cinehoyts.cl#{a.parent['href']}"
-        if Rails.env == "Production"
-          proxy_ip = Settings.proxy.split(':')[0]
-          proxy_port = Settings.proxy.split(':')[1]
-          s2 = HTTP.via(proxy_ip, proxy_port.to_i).get(url2).to_s
-        else
-          s2 = open(URI.escape(url2)).read
-        end
-        s2.gsub!('&nbsp;', ' ') 
-        
-        File.open(file_path2, 'w') do |f|
-          f.puts s2
-        end
-      end
-      
-      page2 = Nokogiri::HTML(s2)
-      name = a.text
-      
-      page2.css("div#cine#{theater_web_id} div[class=\"row diez_m_t\"]").each do |functions_row|
-        day = functions_row.css('.col-lg-2').first.text.superclean
-        dia = day.split[1].to_i
-        
-        if parse_days.map(&:day).include?(dia)
-          functions_row.css('.comprar_funcion').each do |showtime|
-            clean_showtime_splitted = showtime.text.superclean.split
-            time = clean_showtime_splitted.first
-            function_types = clean_showtime_splitted[1..clean_showtime_splitted.length-1].join(' ')
-      
-            movie_name = "#{name} #{function_types}"
-            movie_functions_hash = hash[:movieFunctions].get_hash_with_key_value(:name, movie_name)
-            if movie_functions_hash
-              function_hash = movie_functions_hash[:functions].get_hash_with_key_value(:dia, dia)
-              if function_hash
-                function_hash[:showtimes] << "#{time}, "
-              else
-                movie_functions_hash[:functions] << { day: day, dia: dia, showtimes: "#{time}, " }
-              end
-            else
-              hash[:movieFunctions] << { name: movie_name, functions: [ { day: day, dia: dia, showtimes: "#{time}, " } ] }
-            end
-          end
+      hash_array = eval s
+      hash_array.each do |theater_item|
+        if theater_item[:theater_id].present? && theater_item[:theater_id] == theater_id
+          return theater_item
         end
       end
     end
-    return hash
   end
   
   def parse_cineplanet url, parse_days, theater_name
