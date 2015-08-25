@@ -28,9 +28,10 @@ namespace :parse do
         complejos_a_parsear.first["Fechas"].each do |fecha|
           fecha["Peliculas"].each do |pelicula|
             fecha_string = fecha["Fecha"]
-            movieFunction = { name: pelicula["Titulo"], functions: [] }
+            movieFunction = { functions: [] }
             pelicula["Formatos"].each do |formato|
-              function = { function_types: formato["Nombre"], showtimes: [], day: fecha_string, dia: fecha_string.split.first.to_i }
+              movieFunction[:name] = "#{formato['Nombre']} #{pelicula['Titulo']}"
+              function = { showtimes: [], day: fecha_string, dia: fecha_string.split.first.to_i }
               swtimes = []
               formato["Horarios"].each do |horario|
                 swtimes << horario["Hora"]
@@ -60,6 +61,10 @@ namespace :parse do
       
       cinehoyts_theaters = Cinema.where(name: "Cine Hoyts").first.theaters
       cinehoyts_theaters.each do |theater|
+        task_parse_theater theater
+      end
+      cinemundo_theaters = Cinema.where(name: "Cinemundo").first.theaters
+      cinemundo_theaters.each do |theater|
         task_parse_theater theater
       end
       
