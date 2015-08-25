@@ -30,8 +30,8 @@ namespace :parse do
             fecha_string = fecha["Fecha"]
             movieFunction = { functions: [] }
             pelicula["Formatos"].each do |formato|
-              formatos = formato['Nombre'].gsub("[TRAD]", "")
-              name = pelicula['Titulo'].gsub("SANFIC:", "").gsub("ORI", "")
+              formatos = formato['Nombre'].gsub("[TRAD]", "").gsub("ORI", "")
+              name = pelicula['Titulo'].gsub("SANFIC:", "")
               movieFunction[:name] = "#{formatos} #{name}"
               function = { showtimes: [], day: fecha_string, dia: fecha_string.split.first.to_i }
               swtimes = []
