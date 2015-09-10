@@ -10,41 +10,54 @@ namespace :parse do
       require 'watir'
       require 'watir-webdriver'
 
-      db_theaters = Cinema.where(name: "Cine Hoyts").first.theaters + Cinema.where(name: "Cinemundo").first.theaters
-      theaters = []
-    
-      db_theaters.each do |db_theater|
-        theater = {theater_id: db_theater.id, movieFunctions: []}
+      
+      regions = ['http://www.cinehoyts.cl/cartelera/santiago-oriente',
+        'http://www.cinehoyts.cl/cartelera/norte-y-centro-de-chile',
+        'http://www.cinehoyts.cl/cartelera/santiago-centro',
+        'http://www.cinehoyts.cl/cartelera/santiago-poniente-y-norte',
+        'http://www.cinehoyts.cl/cartelera/santiago-sur',
+        'http://www.cinehoyts.cl/cartelera/sur-de-chile']
 
+      theaters = []
+        
+      regions.each do |region_url|
+        
         browser = Watir::Browser.new :chrome
         begin
-          browser.goto db_theater.web_url
+          browser.goto region_url
         rescue Net::ReadTimeout
           browser.close
         end
-        puts db_theater.web_url
     
         complejos_a_parsear = browser.execute_script('return ComplejosAParsear;')
-        complejos_a_parsear.first["Fechas"].each do |fecha|
-          fecha["Peliculas"].each do |pelicula|
-            fecha_string = fecha["Fecha"]
-            movieFunction = { functions: [] }
-            pelicula["Formatos"].each do |formato|
-              formatos = formato['Nombre'].gsub("[TRAD]", "").gsub("ORI", "")
-              name = pelicula['Titulo'].gsub("SANFIC:", "")
-              movieFunction[:name] = "#{formatos} #{name}"
-              function = { showtimes: [], day: fecha_string, dia: fecha_string.split.first.to_i }
-              swtimes = []
-              formato["Horarios"].each do |horario|
-                swtimes << horario["Hora"]
+        complejos_a_parsear.each do |complejo|
+          
+          codigo_complejo = complejo["CodigoComplejo"]
+          db_theater = Theater.find_by(web_url: "#{region_url}/#{codigo_complejo}")
+          
+          theater = {theater_id: db_theater.id, movieFunctions: []}
+          
+          complejo["Fechas"].each do |fecha| 
+            fecha["Peliculas"].each do |pelicula|
+              fecha_string = fecha["Fecha"]
+              pelicula["Formatos"].each do |formato|
+                movieFunction = { functions: [] }
+                formatos = formato['Nombre'].gsub("[TRAD]", "").gsub("ORI", "")
+                name = pelicula['Titulo'].gsub("SANFIC:", "")
+                movieFunction[:name] = "#{formatos} #{name}"
+                function = { showtimes: [], day: fecha_string, dia: fecha_string.split.first.to_i }
+                swtimes = []
+                formato["Horarios"].each do |horario|
+                  swtimes << horario["Hora"]
+                end
+                function[:showtimes] = swtimes.join(", ")
+                movieFunction[:functions] << function
+                theater[:movieFunctions] << movieFunction
               end
-              function[:showtimes] = swtimes.join(", ")
-              movieFunction[:functions] << function
             end
-            theater[:movieFunctions] << movieFunction
           end
+          theaters << theater
         end if complejos_a_parsear.length > 0
-        theaters << theater
 
         browser.close
       end
