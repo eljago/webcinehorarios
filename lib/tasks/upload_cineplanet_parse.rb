@@ -5,7 +5,7 @@ require 'net/http'
 require 'nokogiri'
 require 'clipboard'
 
-dir_path = "#{ENV['HOME']}/MEGAsync/Ruby/RailsProjects/webcinehorarios/tmp/cache"
+dir_path = "#{ENV['HOME']}/Documents/RailsProjects/webcinehorarios/tmp/cache"
 functions_dir = "#{dir_path}/functions"
 Dir.foreach(functions_dir) do |file_name|
   next if file_name == '.' or file_name == '..'
