@@ -5,8 +5,8 @@ namespace :parse do
   desc "Parse Cinemark"
   task :cinehoyts => :environment do
     
-    if Rails.env.production?
-    # if Rails.env.development?
+    # if Rails.env.production?
+    if Rails.env.development?
       require 'watir'
       require 'watir-webdriver'
 
@@ -69,8 +69,8 @@ namespace :parse do
         file.write theaters.to_json
       end
       
-    elsif Rails.env.development?
-    # elsif Rails.env.production?
+    # elsif Rails.env.development?
+    elsif Rails.env.production?
       
       time_start = Time.current
       
