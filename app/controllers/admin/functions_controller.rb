@@ -249,6 +249,10 @@ class Admin::FunctionsController < ApplicationController
 
     redirect_to admin_orphan_parsed_shows_path, notice: "Actualizados #{parsed_shows_updated_count} parsed shows, #{functions_updated_count} functiones. #{destroyed_count} Parsed Shows Destruidos"
   end
+  def destroy_all_parsed_shows
+    ParsedShow.destroy_all
+    redirect_to admin_orphan_parsed_shows_path, notice: 'Destruidos'
+  end
   
   
   private

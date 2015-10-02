@@ -358,6 +358,7 @@ Webcinehorarios::Application.routes.draw do
     post 'show_person_roles/sort' => 'show_person_roles#sort', as: 'show_person_roles_sort'
     
     get 'orphan_parsed_shows' => 'functions#orphan_parsed_shows'
+    post 'destroy_all_parsed_shows' => 'functions#destroy_all_parsed_shows'
     post 'create_parsed_shows' => 'functions#create_parsed_shows'
     
     resources :settings, only: [:index, :edit, :update]

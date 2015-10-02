@@ -1,25 +1,33 @@
+
+<%= content_tag :p do %>
+	<%= form_tag admin_destroy_all_parsed_shows_path, method: :destroy do %>
+		<%= submit_tag "Destroy ALL Parsed Show", class: 'btn btn-danger' %>
+	<% end %>
+<% end %>
+
 <% if @parsed_shows && @parsed_shows.count > 0 %>
+	
+<%= content_tag :p do %>
+	<%= button_tag "Check All", class: 'button-parsed-shows btn' %>
+<% end %>
 
 	<%= form_tag admin_create_parsed_shows_path, method: :post do %>
 	
 		<% @parsed_shows.each_with_index do |item, index| %>
-		  <%= simple_fields_for "orphan_parsed_shows_#{index}" do |f| %>
-			
-				<%= f.hidden_field :parsed_show_id, value: item.id %>
-		    <%= f.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" } %>
-			
-	      <strong>
-	        <%= item[:name] %>
-				</strong>
-				<%= f.check_box :destroy %>
-			
+			<%= content_tag :p do %>
+			  <%= simple_fields_for "orphan_parsed_shows_#{index}" do |f| %>
+				
+					<%= f.hidden_field :parsed_show_id, value: item.id %>
+			    <%= f.collection_select :show_id, @shows, :id, :name, {include_blank: true}, { class: "chzn-select" } %>
+				
+		      <strong>
+		        <%= item[:name] %>
+					</strong>
+					<%= f.check_box :destroy %>
+				
+				<% end %>
 			<% end %>
-		<br />
-		<br />
 		<% end %>
-
-		<br />
-		<br />
 	  <div class="form-actions">
 	    <%= submit_tag :submit, class: 'btn btn-primary' %>
 	  </div>
