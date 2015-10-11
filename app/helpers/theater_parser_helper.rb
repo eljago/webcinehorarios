@@ -15,17 +15,12 @@ module TheaterParserHelper
   end
   
   def task_parse_theater theater
-    # cinema = Cinema.includes(:theaters).where({name: 'Cinemark', theaters: {active: true}}).first
     cinema = theater.cinema
     function_types = cinema.function_types.order(:name)
     shows = Show.order(:name).select('shows.id, shows.name')
     parse_detector_types = cinema.parse_detector_types.order('LENGTH(name) DESC')
     date = Date.current
     parse_days_count = 14
-    
-    # if cinema.slug == 'cinemundo' || cinema.slug == 'cine-hoyts'
-    #   date = date+1 if Time.current.hour > 19
-    # end
     
     parse_days = []
     parse_days_count.times do |n|
