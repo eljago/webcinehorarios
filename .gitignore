@@ -38,3 +38,5 @@ dump.rdb
 /config/secrets.yml
 
 .dropbox.attr
+
+passenger.*
