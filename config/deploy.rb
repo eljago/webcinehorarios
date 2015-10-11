@@ -13,7 +13,7 @@ set :rbenv_roles, :all # default value
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
 
 set :application, 'webcinehorarios'
-set :repo_url, 'ssh://perforce@107.170.169.97:1525/home/perforce/repos/webcinehorarios.git'
+set :repo_url, 'https://Ghar@bitbucket.org/Ghar/webcinehorarios.git'
 
 set :deploy_to, '/home/jago/apps/webcinehorarios'
 
