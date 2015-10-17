@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150218053244) do
+ActiveRecord::Schema.define(version: 20151017195214) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -334,13 +334,14 @@ ActiveRecord::Schema.define(version: 20150218053244) do
     t.text     "information"
     t.integer  "cinema_id"
     t.integer  "city_id"
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.string   "web_url"
     t.boolean  "active"
     t.string   "slug"
-    t.decimal  "latitude",    precision: 15, scale: 10
-    t.decimal  "longitude",   precision: 15, scale: 10
+    t.decimal  "latitude",     precision: 15, scale: 10
+    t.decimal  "longitude",    precision: 15, scale: 10
+    t.string   "parse_helper"
   end
 
   add_index "theaters", ["city_id", "cinema_id"], name: "index_theaters_on_city_id_and_cinema_id", using: :btree

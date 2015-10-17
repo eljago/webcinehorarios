@@ -1,7 +1,7 @@
 class Admin::TheatersController < ApplicationController
   before_filter :get_theaterable
   before_filter :get_theater, only: [:show, :edit, :update, :destroy]
-  
+
   def index
     @theaters =
       if params[:city_id]
@@ -10,17 +10,17 @@ class Admin::TheatersController < ApplicationController
         @theaterable.theaters.includes(:city).order('cities.name, theaters.name')
       end
   end
-  
+
   def show
   end
-  
+
   def new
     @theater = @theaterable.theaters.new
   end
-  
+
   def edit
   end
-  
+
   def create
     @theater = @theaterable.theaters.new(theater_params)
 
@@ -30,7 +30,7 @@ class Admin::TheatersController < ApplicationController
       render action: "new"
     end
   end
-  
+
   def update
     if @theater.update_attributes(theater_params)
       redirect_to [:admin, @theaterable, :theaters], notice: 'Theater was successfully updated.'
@@ -38,19 +38,19 @@ class Admin::TheatersController < ApplicationController
       render action: "edit"
     end
   end
-  
+
   def destroy
     @theater.destroy
 
     redirect_to [:admin, @theaterable, :theaters]
   end
-  
+
   private
-  
+
   def get_theater
     @theater = Theater.find(params[:id])
   end
-  
+
   def get_theaterable
     @theaterable ||=
       if params[:city_id]
@@ -59,8 +59,8 @@ class Admin::TheatersController < ApplicationController
         Cinema.find(params[:cinema_id])
       end
   end
-  
+
   def theater_params
-    params.require(:theater).permit(:cinema_id, :city_id, :address, :information, :latitude, :longitude, :name, :web_url, :active, function_type_ids: [])
+    params.require(:theater).permit(:cinema_id, :city_id, :address, :information, :latitude, :longitude, :name, :web_url, :active, :parse_helper, function_type_ids: [])
   end
 end
