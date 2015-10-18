@@ -2,21 +2,21 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session, :if => Proc.new { |c| c.request.format == 'application/json' }
   before_filter :authorize
-  
+
   delegate :allow?, to: :current_permission
   helper_method :allow?
-  
-  
+
+
   def raise_route_not_found!
-    render :template => "errors/404", :status => 404
+    render :template => "errors/404", content_type: 'text/html', :status => 404
   end
-  
+
   private
-  
+
   def current_permission
     @current_permission ||= Permission.new(current_member)
   end
-  
+
   def authorize
     # if current member is not allowed:
     unless current_permission.allow?(params[:controller], params[:action])
@@ -27,11 +27,11 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
   def after_sign_in_path_for(resource)
     admin_path
   end
-  
+
 
   def get_date
     @date = Date.current
@@ -40,6 +40,6 @@ class ApplicationController < ActionController::Base
       @date = Date.new(date_array[0].to_i, date_array[1].to_i, date_array[2].to_i)
     end
   end
-  
-    
+
+
 end

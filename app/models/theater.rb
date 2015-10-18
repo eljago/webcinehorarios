@@ -27,17 +27,17 @@
 class Theater < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
-  
+
   # attr_accessible :cinema_id, :city_id, :address, :information, :latitude, :longitude, :name, :web_url, :function_type_ids, :active
-  
+
   belongs_to :city
   belongs_to :cinema
   has_many :functions, :dependent => :destroy
-  
+
   validates :name, :presence => :true
-  
+
   accepts_nested_attributes_for :functions
-  
+
   def self.find_id_by_name name
     theater = where(name: name).first
     if theater
@@ -47,7 +47,53 @@ class Theater < ActiveRecord::Base
     end
   end
 
-  
+
+
+  def task_parsed_hash hash
+    function_types = cinema.function_types.order(:name)
+    parse_detector_types = cinema.parse_detector_types.order('LENGTH(name) DESC')
+    current_date = Date.current
+    parse_days_count = 7
+
+    functions_to_save = []
+
+    hash[:movieFunctions].each do |hash_movie_function|
+
+      titulo = hash_movie_function[:name]
+      parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).downcase # Name of the show read from the webpage then formatted
+      parsed_show_name.gsub!(/[^a-z0-9]/i, '')
+      parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
+
+      next if hash_movie_function[:theaters][parse_helper].blank?
+
+      hash_movie_function[:theaters][parse_helper].each do |functions_data|
+        detected_function_types = []
+        if functions_data[:function_types].present?
+          functions_data[:function_types].each do |hft|
+            parse_detector_types.each do |pdt|
+              detected_function_types << pdt.function_type_id if pdt.name.downcase == hft.downcase
+            end
+          end
+        end
+        if functions_data[:functions].present?
+          functions_data[:functions].each do |hash_function|
+            if hash_function[:showtimes].size >= 5
+              function = functions.new
+              function.show_id = parsed_show.show_id
+              function.function_type_ids = detected_function_types
+              function.date = current_date.advance_to_day(hash_function[:dia])
+              function.parsed_show = parsed_show
+              Function.create_showtimes function, hash_function[:showtimes]
+              functions_to_save << function if function.showtimes.length > 0
+            end
+          end
+        end
+      end
+    end
+    override_functions(functions_to_save, current_date, parse_days_count) if functions_to_save.length > 0
+  end
+
+
   def override_functions new_functions, start_date, parse_days_count
 
     date_range = start_date..(start_date + parse_days_count.to_i-1)
@@ -63,7 +109,7 @@ class Theater < ActiveRecord::Base
     current_functions = functions.where(date: date_range).includes(:function_types, :showtimes)
     functions_to_destroy = []
     indexes_to_save = Array.new(new_functions.count, true)
-    
+
     current_functions.each do |function|
       found_identical = false
       new_functions.each_with_index do |new_function, index|
@@ -76,7 +122,7 @@ class Theater < ActiveRecord::Base
       end
       functions_to_destroy << function unless found_identical
     end
-    
+
     functions_to_destroy.each do |f|
       f.destroy if days_with_new_functions[f.date]
     end
