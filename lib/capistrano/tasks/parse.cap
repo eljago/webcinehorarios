@@ -1,15 +1,15 @@
 namespace :cap_parse do
   desc "Fetch Shows scores"
-  task :cinemas do
+  task :cinemark do
     on roles(:app) do
       within "#{current_path}" do
         with rails_env: :production do
-          execute :rake, "parse:cinemas"
+          execute :rake, "parse:cinemark"
         end
       end
     end
   end
-	
+
 	task :cineplanet do
 	  on roles(:app) do
 	    within "#{current_path}" do
@@ -19,7 +19,7 @@ namespace :cap_parse do
       end
 	  end
 	end
-  
+
 	task :cinehoyts do
 	  on roles(:app) do
 	    within "#{current_path}" do
