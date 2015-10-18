@@ -1,13 +1,19 @@
 <%= form_for [:admin, @theaterable, @theater], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
   <%= render_errors @theater %>
-	
+
   <div class="form-group">
     <%= f.label :name, 'Nombre:', class: 'col-lg-2 control-label' %>
 		<div class="col-lg-5">
     	<%= f.text_field :name, class: 'form-control' %>
     </div>
   </div>
-	
+  <div class="form-group">
+    <%= f.label :parse_helper, 'Parse Helper:', class: 'col-lg-2 control-label' %>
+		<div class="col-lg-5">
+    	<%= f.text_field :parse_helper, class: 'form-control' %>
+    </div>
+  </div>
+
   <div class="form-group">
     <%= f.label :active, 'Activo?:', class: 'col-lg-2 control-label' %>
 		<div class="col-lg-5">
@@ -44,7 +50,7 @@
     	<%= f.number_field :longitude, step: :any, class: 'form-control' %>
     </div>
   </div>
-	
+
 	<% cities = City.select([:id, :name]).order('name ASC') %>
 	<% if cities.count(:all) > 0 %>
 		<div class="form-group">
@@ -61,7 +67,7 @@
 			</div>
 		</div>
 	<% end %>
-	
+
 	<% cinemas = Cinema.select([:id, :name]).order('name ASC') %>
 	<% if cinemas.count(:all) > 0 %>
 		<div class="form-group">
@@ -78,7 +84,7 @@
 			</div>
 		</div>
 	<% end %>
-	
+
   <div class="form-group">
     <div class="col-lg-offset-2 col-lg-10">
     	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
@@ -90,4 +96,3 @@
   <i class="icon-arrow-left"></i>
   Volver
 <% end %>
-	
