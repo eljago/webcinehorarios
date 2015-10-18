@@ -1,7 +1,5 @@
 require 'net/http'
 require 'nokogiri'
-require "#{Rails.root}/app/helpers/theater_parser_helper"
-include TheaterParserHelper
 
 namespace :parse do
   desc "Parse Cinemark"
