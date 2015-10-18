@@ -7,3 +7,5 @@ set :ssh_options, {
   forward_agent: true,
   port: 1525
 }
+
+set :keep_releases, 10
