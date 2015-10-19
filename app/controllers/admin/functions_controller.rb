@@ -1,6 +1,4 @@
 # encoding: utf-8
-include TheaterParserHelper
-include ActiveSupport::Inflector
 
 class Admin::FunctionsController < ApplicationController
   before_filter :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day, :delete_week]
