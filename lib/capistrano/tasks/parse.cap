@@ -14,7 +14,7 @@ namespace :cap_parse do
 	  on roles(:app) do
 	    within "#{current_path}" do
         with rails_env: :production do
-          execute :rake, "parse:cineplanet"
+          execute :rake, "parse:cineplanet_prod"
         end
       end
 	  end

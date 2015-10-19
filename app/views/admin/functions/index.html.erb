@@ -12,27 +12,7 @@
   <%= link_to 'Copiar dia', {controller: 'functions', action: 'copy_last_day', date: params[:date]}, method: :post, class: 'btn btn-default' %>
   <%= link_to 'Borrar día', {controller: 'functions', action: 'delete_day', date: params[:date]}, data: { confirm: '¿Está seguro que quiere borrar todas las funciones de este día?' }, method: :post, class: 'btn btn-danger' %>
   <%= link_to 'Borrar Semana', {controller: 'functions', action: 'delete_week', date: params[:date]}, data: { confirm: '¿Está seguro que quiere borrar todas las funciones de este día en adelante?' }, method: :post, class: 'btn btn-danger' %>
-	
-	<% if ["cinemundo", "cinestar", "cinemark", "cine-hoyts", "cineplanet"].include? @theater.cinema.slug %>
-	  <%= form_for :parse_theater, :url => { controller: :functions, action: :parse_theater }, method: :get, html: {style: "display: inline;"} do |f| %>
-	    <%= f.hidden_field :date, value: params[:date] %>
-	    <%= f.hidden_field :parse_type, value: 'day' %>
-	    <%= f.submit "Parse dia", class: 'btn btn-primary' %>
-	  <% end %>
-	  <%= form_for :parse_theater, :url => { controller: :functions, action: :parse_theater }, method: :get, html: {style: "display: inline;"} do |f| %>
-	    <%= f.hidden_field :date, value: params[:date] %>
-	    <%= f.hidden_field :parse_type, value: 'week' %>
-	    <%= f.submit "Parse semana", class: 'btn btn-primary' %>
-	  <% end %>
-		
-	<% elsif @theater.slug == 'cinemall-quilpue' %>
-	  <%= form_for :parse_theater, :url => { controller: :functions, action: :parse_theater }, method: :get, html: {style: "display: inline;"} do |f| %>
-	    <%= f.hidden_field :date, value: params[:date] %>
-	    <%= f.hidden_field :parse_type, value: 'day' %>
-	    <%= f.submit "Parse dia", class: 'btn btn-primary' %>
-	  <% end %>
-	<% end %>
-		
+
 </div>
 <%= render 'shared/date_pagination' %>
 <h2>

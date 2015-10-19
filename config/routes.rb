@@ -232,19 +232,19 @@
 require 'api_constraints'
 
 Webcinehorarios::Application.routes.draw do
-  
+
   devise_for :members
 
   root :to => 'home#index'
 
   ##### API #####
   namespace :api, defaults: { format: 'json' } do
-    
+
     ##### V3 #####
     scope module: :v3, constraints: ApiConstraints.new(version: 3) do
-      
+
       resources :shows, only: :show do
-        collection do 
+        collection do
           get 'billboard'
           get 'comingsoon'
           get ':show_id/show_theaters' => 'theaters#show_theaters'
@@ -252,11 +252,11 @@ Webcinehorarios::Application.routes.draw do
           get ':show_id/show_functions' => 'functions#show_functions'
         end
       end
-      
+
       resources :awards, only: :index
-      
+
       resources :videos, only: :index
-      
+
       resources :theaters, only: [:index, :show] do
         resources :functions, only: :index
         collection do
@@ -268,19 +268,19 @@ Webcinehorarios::Application.routes.draw do
         end
       end
     end
-    
+
     ##### V4 #####
     scope module: :v4, constraints: ApiConstraints.new(version: 4, default: true) do
-      
+
       resources :theaters, only: :index do
         collection do
           get 'favorites'
         end
         resources :functions, only: :index
       end
-      
+
       resources :videos, only: :index
-      
+
       resources :shows, only: :show do
         collection do
           get 'billboard'
@@ -288,14 +288,14 @@ Webcinehorarios::Application.routes.draw do
         end
         get 'theaters'
       end
-      
+
     end
-    
+
   end
-  
+
   # ADMIN
   namespace :admin do
-    
+
     resources :videos
     resources :awards do
       resources :award_specific_categories
@@ -303,13 +303,13 @@ Webcinehorarios::Application.routes.draw do
     resources :award_specific_categories
     resources :award_categories
     resources :award_types
-        
+
     resources :opinions
 
     resources :cinemas, except: :show do
       resources :theaters
     end
-    
+
     get '' => 'dashboard#index', as: '/'
     resources :contact_tickets, only: [:index, :show, :create]
     resources :genres
@@ -318,7 +318,7 @@ Webcinehorarios::Application.routes.draw do
         get 'select_people'
       end
     end
-    
+
     resources :function_types do
       resources :parse_detector_types
     end
@@ -335,34 +335,29 @@ Webcinehorarios::Application.routes.draw do
     resources :theaters do
       resources :functions do
         collection do
-          get :parse_theater
-          get 'new_parse'
-          post 'create_parse'
-          post 'create_ajax_parse'
           post 'delete_week', as: 'functions_delete_week'
           post 'delete_day', as: 'functions_delete_day'
           post 'copy_last_day', as: 'functions_copy'
-          post 'new_parse_ajax'
         end
       end
     end
     resources :shows do
-      get 'simple_show'
-      collection do 
+      get 'simple_show' # used by select2 ajax
+      collection do
         get 'billboard'
         get 'comingsoon'
         get 'select_shows'
-      end 
+      end
     end
     # For Sorting Actors
     post 'show_person_roles/sort' => 'show_person_roles#sort', as: 'show_person_roles_sort'
-    
+
     get 'orphan_parsed_shows' => 'functions#orphan_parsed_shows'
     post 'destroy_all_parsed_shows' => 'functions#destroy_all_parsed_shows'
     post 'create_parsed_shows' => 'functions#create_parsed_shows'
-    
+
     resources :settings, only: [:index, :edit, :update]
   end
-  
+
   get '*unmatched_route', :to => 'application#raise_route_not_found!'
 end

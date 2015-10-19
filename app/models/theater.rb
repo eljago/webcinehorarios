@@ -24,6 +24,7 @@
 #  index_theaters_on_slug                   (slug) UNIQUE
 #
 
+
 class Theater < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
@@ -57,39 +58,41 @@ class Theater < ActiveRecord::Base
 
     functions_to_save = []
 
-    hash[:movieFunctions].each do |hash_movie_function|
+    hash["movieFunctions"].each do |hash_movie_function|
 
-      titulo = hash_movie_function[:name]
+      titulo = hash_movie_function["name"]
       parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).downcase # Name of the show read from the webpage then formatted
       parsed_show_name.gsub!(/[^a-z0-9]/i, '')
       parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
 
-      next if hash_movie_function[:theaters][parse_helper].blank?
+      next if hash_movie_function["theaters"][parse_helper].blank?
 
-      hash_movie_function[:theaters][parse_helper].each do |functions_data|
+      hash_movie_function["theaters"][parse_helper].each do |functions_data|
         detected_function_types = []
-        if functions_data[:function_types].present?
-          functions_data[:function_types].each do |hft|
+        if functions_data["function_types"].present?
+          functions_data["function_types"].each do |hft|
             parse_detector_types.each do |pdt|
-              detected_function_types << pdt.function_type_id if pdt.name.downcase == hft.downcase
+              if !detected_function_types.include?(pdt.function_type_id) && pdt.name.downcase == hft.downcase
+                detected_function_types << pdt.function_type_id
+              end
             end
           end
         end
-        if functions_data[:functions].present?
-          functions_data[:functions].each do |hash_function|
-            if hash_function[:showtimes].size >= 5
+        if functions_data["functions"].present?
+          functions_data["functions"].each do |hash_function|
+            if hash_function["showtimes"].size >= 5
               function = functions.new
               function.show_id = parsed_show.show_id
               function.function_type_ids = detected_function_types
-              function.date = current_date.advance_to_day(hash_function[:dia])
+              function.date = current_date.advance_to_day(hash_function["dia"])
               function.parsed_show = parsed_show
-              Function.create_showtimes function, hash_function[:showtimes]
+              Function.create_showtimes function, hash_function["showtimes"]
               functions_to_save << function if function.showtimes.length > 0
             end
           end
         end
       end
-    end
+    end if hash["movieFunctions"].present?
     override_functions(functions_to_save, current_date, parse_days_count) if functions_to_save.length > 0
   end
 

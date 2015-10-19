@@ -1,6 +1,9 @@
 require 'net/http'
 require 'nokogiri'
 
+include ActiveSupport::Inflector # transliterate
+include ActionView::Helpers::TranslationHelper # l
+
 namespace :parse do
   desc "Parse Cinemark"
   task :cinemark => :environment do
@@ -15,7 +18,7 @@ namespace :parse do
     uri = URI('http://www.cinemark.cl/movies')
     user_agent = {'User-Agent' => 'Firefox 28/Android: Mozilla/5.0 (Android; Mobile; rv:28.0) Gecko/24.0 Firefox/28.0'}
 
-    hash = { movieFunctions: [] }
+    hash = { "movieFunctions" => [] }
 
     Net::HTTP.new(uri.host).start do |http|
 
@@ -34,7 +37,7 @@ namespace :parse do
 
         page2 = Nokogiri::HTML(body2)
         title = page2.css('#page-title h2').text
-        movieFunction = {name: title, theaters: {}}
+        movieFunction = {"name" => title, "theaters" => {}}
 
         page2.css('div#main ul.movie-showtime-panel').each do |lu_theater|
 
@@ -44,23 +47,23 @@ namespace :parse do
           lu_theater.children.each do |li_functions_days|
             if li_functions_days.attr('class') == 'showtime-detail'
               li_functions_days.css('li.showtime-item').each do |li_showtime| # 18-Oct: 20:10 22:50
-                date_string = li_showtime.css('span.showtime-day').first.text.split('-') # 18-Oct
-                dia = date_string.first.to_i # 18
-                mes = date_string.last.downcase.gsub(':','') # oct
+                date_array = li_showtime.css('span.showtime-day').first.text.split('-') # 18-Oct
+                dia = date_array.first.to_i # 18
+                mes = date_array.last.downcase.gsub(':','') # oct
                 mesValid = l(current_date, format: '%b').to_s.downcase # oct
 
                 if parse_days.map(&:day).include?(dia) &&
                   (mes == mesValid || (dia < current_date.day && (current_date..current_date+(parse_days.count-1)).map(&:day).include?(dia)))
 
-                  function = {showtimes: "", dia: dia}
+                  function = {"showtimes" => "", "dia" => dia}
                   li_showtime.css('span.showtime-hour').each_with_index do |span, index|
                     if index == 0
-                      function[:showtimes] << "#{span.text}" # 20:10
+                      function["showtimes"] << "#{span.text}" # 20:10
                     else
-                      function[:showtimes] << ", #{span.text}" # 20:10, 22:50
+                      function["showtimes"] << ", #{span.text}" # 20:10, 22:50
                     end
                   end
-                  movieFunction[:theaters][theater_slug].last[:functions] << function
+                  movieFunction["theaters"][theater_slug].last["functions"] << function if function["showtimes"].length > 0
                 end
               end
             else
@@ -68,16 +71,16 @@ namespace :parse do
               function_types_array = function_types_raw.split(';')
               function_types_array << 'DOB' if !function_types_array.include?('SUB')
 
-              movieFunction[:theaters][theater_slug] = [] if movieFunction[:theaters][theater_slug].blank?
-              movieFunction[:theaters][theater_slug] << {function_types: function_types_array, functions: []}
+              movieFunction["theaters"][theater_slug] = [] if movieFunction["theaters"][theater_slug].blank?
+              movieFunction["theaters"][theater_slug] << {"function_types" => function_types_array, "functions" => []}
             end
           end
         end
-        hash[:movieFunctions] << movieFunction
+        hash["movieFunctions"] << movieFunction
       end
     end
 
-    Cinema.where(name: "Cinemark").first.theaters.each do |theater|
+    Cinema.find_by(name: "Cinemark").theaters.each do |theater|
       theater.task_parsed_hash hash
     end
 

@@ -1,5 +1,4 @@
-include ActiveSupport::Inflector
-include ActionView::Helpers::TranslationHelper
+
 
 module TheaterParserHelper
   require 'http'
@@ -166,48 +165,6 @@ module TheaterParserHelper
           end
           function[:showtimes] = showtimes.join(', ')
           function[:dia] = dia
-          movieFunction[:functions] << function if function[:showtimes].length > 0
-        end
-      end
-      hash[:movieFunctions] << movieFunction if movieFunction[:functions].length > 0
-    end
-    return hash
-  end
-
-  def parse_cinemark url, parse_days, date
-    s = open(URI.escape(url)).read
-    s.gsub!('&nbsp;', ' ')
-    page = Nokogiri::HTML(s)
-
-    hash = { movieFunctions: [] }
-
-    page.css('div.movie-list-inner').each do |item|
-      titulo = item.css('h3 span').text.superclean
-
-      movieFunction = { name: titulo, functions: []}
-
-      item.css('div.version-types-wrap span').each do |item|
-        item_class = item.attr('class').gsub('version-', '')
-        if item_class != 'trad'
-          movieFunction[:name] = "#{movieFunction[:name]} #{item_class}"
-        end
-      end
-
-      item.css('li.showtime-item').each do |item|
-        function = { showtimes: [] }
-        function[:day] = item.css('span.showtime-day').text.superclean
-        dia = function[:day].split('-')[0].to_i
-        mes = function[:day].split('-')[1].superclean.downcase.gsub(':','')
-
-        mesValid = l(date, format: '%b').to_s.downcase
-
-        if parse_days.map(&:day).include?(dia) && (mes == mesValid || (dia < date.day && (date..date+(parse_days.count-1)).map(&:day).include?(dia)))
-          horarios = ""
-          item.css('span.showtime-hour').each do |item|
-            horarios << "#{item.text}, "
-          end
-          function[:dia] = dia
-          function[:showtimes] = horarios
           movieFunction[:functions] << function if function[:showtimes].length > 0
         end
       end
