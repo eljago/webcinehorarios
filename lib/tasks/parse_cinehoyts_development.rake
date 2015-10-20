@@ -61,9 +61,9 @@ namespace :parse do
             date_array = fecha["Fecha"].split
             dia = date_array.first.to_i
             mes = date_array.last.downcase
-            mes_valid = l(current_date.advance_to_day(dia), format: '%B').to_s.downcase
+            indx = parse_days.map(&:day).index(dia)
 
-            if parse_days.map(&:day).include?(dia) && mes == mes_valid
+            if indx && mes == l(parse_days[indx], format: '%B').to_s.downcase
               fecha["Peliculas"].each do |pelicula|
                 titulo = pelicula['Titulo'].gsub("SANFIC:", "").titleize
                 movieFunction = hash_get_movieFunction(hash, titulo)

@@ -67,10 +67,9 @@ namespace :parse do
                 date_array = spans[0].text.split
                 mes = date_array[0].superclean.downcase # jueves
                 dia = date_array[1].to_i # 18
-                week_day = l(current_date.advance_to_day(dia), format: '%A').to_s.downcase # jueves
-
-
-                if parse_days.map(&:day).include?(dia) && week_day == mes
+                indx = parse_days.map(&:day).index(dia)
+                
+                if indx && mes == l(parse_days[indx], format: '%A').to_s.downcase
                   horarios = spans[1].text.superclean.gsub(/\s+/, ', ')
                   function = { showtimes: horarios, dia: dia }
                   movieFunction[:theaters][valid_theater_slug].last[:functions] << function if function[:showtimes].length > 0

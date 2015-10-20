@@ -50,11 +50,9 @@ namespace :parse do
                 date_array = li_showtime.css('span.showtime-day').first.text.split('-') # 18-Oct
                 dia = date_array.first.to_i # 18
                 mes = date_array.last.downcase.gsub(':','') # oct
-                mesValid = l(current_date, format: '%b').to_s.downcase # oct
+                indx = parse_days.map(&:day).index(dia)
 
-                if parse_days.map(&:day).include?(dia) &&
-                  (mes == mesValid || (dia < current_date.day && (current_date..current_date+(parse_days.count-1)).map(&:day).include?(dia)))
-
+                if indx && mes == l(parse_days[indx], format: '%b').to_s.downcase
                   function = {"showtimes" => "", "dia" => dia}
                   li_showtime.css('span.showtime-hour').each_with_index do |span, index|
                     if index == 0
@@ -76,7 +74,7 @@ namespace :parse do
             end
           end
         end
-        hash["movieFunctions"] << movieFunction
+        hash["movieFunctions"] << movieFunction if movieFunction["theaters"].keys.length > 0
       end
     end
 
