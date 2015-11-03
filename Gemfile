@@ -60,6 +60,7 @@ gem "select2-rails"
 gem 'bootstrap-sass', '~> 3.2.0'
 gem "autoprefixer-rails"
 gem "font-awesome-rails"
+gem 'jquery-minicolors-rails'
 
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails', '~> 5.0.0'

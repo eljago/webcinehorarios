@@ -14,6 +14,8 @@
 //= require jquery.turbolinks
 //= require jquery-ui
 //= require jquery_ujs
+//= require jquery.minicolors
+//= require jquery.minicolors.simple_form
 //= require bootstrap-sprockets
 //= require select2
 //= require select2_locale_es

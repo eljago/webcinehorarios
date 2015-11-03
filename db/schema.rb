@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151017195214) do
+ActiveRecord::Schema.define(version: 20151103004924) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20151017195214) do
 
   create_table "function_types", force: true do |t|
     t.string "name"
+    t.string "color"
   end
 
   create_table "function_types_functions", id: false, force: true do |t|

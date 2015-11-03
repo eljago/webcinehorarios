@@ -2,8 +2,9 @@
 #
 # Table name: function_types
 #
-#  id   :integer          not null, primary key
-#  name :string(255)
+#  id    :integer          not null, primary key
+#  name  :string(255)
+#  color :string(255)
 #
 
 class FunctionType < ActiveRecord::Base

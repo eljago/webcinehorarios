@@ -161,6 +161,9 @@ GEM
       http_parser.rb (~> 0.6.0)
     http_parser.rb (0.6.0)
     i18n (0.6.11)
+    jquery-minicolors-rails (2.1.4.0)
+      jquery-rails
+      rails (>= 3.2.8)
     jquery-rails (3.1.1)
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
@@ -355,6 +358,7 @@ DEPENDENCIES
   guard-rspec
   hirb
   http
+  jquery-minicolors-rails
   jquery-rails
   jquery-turbolinks
   jquery-ui-rails (~> 5.0.0)
@@ -392,4 +396,4 @@ DEPENDENCIES
   wirb
 
 BUNDLED WITH
-   1.10.5
+   1.10.6

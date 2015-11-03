@@ -45,6 +45,6 @@ class Admin::FunctionTypesController < ApplicationController
   end
   
   def function_type_params
-    params.require(:function_type).permit :name, cinema_ids: []
+    params.require(:function_type).permit :name, :color, cinema_ids: []
   end
 end

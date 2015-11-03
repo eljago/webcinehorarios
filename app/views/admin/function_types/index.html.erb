@@ -9,7 +9,7 @@
   <% @function_types.each do |function_type| %>
     <tr>
       <td>
-        <%= link_to function_type.name, [:admin, function_type, :parse_detector_types] %>
+        <%= link_to function_type.name, [:admin, function_type, :parse_detector_types], style: "color: #{function_type.color};" %>
       </td>
       <td>
         <%= render_index_actions [function_type], only: [:edit, :destroy] %>
