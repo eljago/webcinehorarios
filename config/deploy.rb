@@ -34,5 +34,4 @@ namespace :deploy do
   after :publishing, 'deploy:restart'
   after :finishing, 'deploy:cleanup'
   before :deploy, 'deploy:check_revision'
-  after :deploy, 'deploy:copy_minicolor_assets'
 end
