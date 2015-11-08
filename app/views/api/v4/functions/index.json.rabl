@@ -4,9 +4,8 @@ cache ['v4', @cache_date, Digest::MD5.hexdigest(@functions.map(&:id).join(','))]
 
 attributes :id, :date
 
-glue :show do
-	attributes :name, :image_url
-  attributes :id => :show_id
+child :show do
+	attributes :id, :name, :image_url
 	glue :portrait_image do
 		attributes :image_url => :portrait_image
 	end
