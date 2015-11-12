@@ -1,15 +1,5 @@
 <div id="carousel">
 	<div class="container">
-		<% flash.each do |name, msg| %>
-			<% if name == :notice && msg.is_a?(String) %>
-				<div class="alert alert-success">
-					<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-					<%= content_tag :div, :id => "flash_success" do %>
-						<%= msg %>
-					<% end %>
-				</div>
-			<% end %>
-		<% end %>
 		<%= render 'carousel' %>
 	</div>
 </div>

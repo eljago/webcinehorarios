@@ -7,11 +7,11 @@ $(document).ready(function(){
   });
 	
   // Hide alert messages after timeout
-  setTimeout(function() {
+/*  setTimeout(function() {
 		$(".alert").fadeTo(500, 0).slideUp(500, function(){
 			$(this).remove();
 		});
-	}, 1000);
+	}, 1000);*/
 
 	$(".features-scroll").on( "click", function() {
     var divLoc = $('#features').offset();

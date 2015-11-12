@@ -1,14 +1,5 @@
 <%= form_for [:admin, @contact_ticket], html: { role: 'form', class: "form-horizontal"} do |f| %>
-	<% flash.each do |name, msg| %>
-		<% if name != :notice && msg.is_a?(String) %>
-			<div class="alert alert-danger alert-dismissable">
-  			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-				<%= content_tag :div, :id => "flash_error" do %>
-					<strong>Error!</strong><%= "  #{msg}" %>
-				<% end %>
-			</div>
-		<% end %>
-	<% end %>
+	<%= render 'layouts/messages' %>
 				
 	<div class="form-group">
 		<%= f.label :name, 'Nombre:', class: "col-lg-3 control-label" %>
