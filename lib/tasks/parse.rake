@@ -7,9 +7,9 @@ namespace :parse do
 
     date = Date.current
     shows = Show.joins('left outer join functions on shows.id = functions.show_id')
-    .where('functions.date >= ? OR shows.debut > ?',date, date)
+    .where('(functions.date >= ? OR (shows.debut > ? OR shows.debut IS ?)) AND shows.active = ?',date, date, nil, true)
     .uniq
-
+    
     shows.each do |show|
       puts show.name
       should_save_show = false
