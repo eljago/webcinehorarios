@@ -5,9 +5,9 @@ module Api
       
       def index
         if params[:theater_id].present?
-          @functions = Function.where(theater_id: params[:theater_id]).joins(:show)
-          .where(date: @date, show_id: 1..Float::INFINITY)
-          .order('shows.debut DESC, shows.id')
+          @shows = Show.joins(:functions).where(id: 1..Float::INFINITY)
+          .where('functions.theater_id = ? AND functions.date = ?', params[:theater_id], @date)
+          .order('shows.debut DESC, shows.id').uniq
           @cache_date = @date.strftime '%Y%m%d'
         else
           render_missing_params

@@ -1,5 +1,7 @@
 collection :functions
 
+attributes :id, :date
+
 node :showtimes do |f|
 	f.showtimes.map do |showtime|
 		l showtime.time, format: :normal_time
