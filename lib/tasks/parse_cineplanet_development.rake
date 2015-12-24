@@ -5,7 +5,7 @@ include ActiveSupport::Inflector # transliterate
 include ActionView::Helpers::TranslationHelper # l
 
 namespace :parse do
-  desc "Parse Cineplanet"
+  desc "Parse Cineplanet Development"
   task :cineplanet_dev => :environment do
 
     if Rails.env.development?

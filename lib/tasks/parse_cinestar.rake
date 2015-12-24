@@ -5,7 +5,7 @@ include ActiveSupport::Inflector # transliterate
 include ActionView::Helpers::TranslationHelper # l
 
 namespace :parse do
-  desc "Parse Cinemark"
+  desc "Parse CineStar"
   task :cinestar => :environment do
 
     current_date = Date.current

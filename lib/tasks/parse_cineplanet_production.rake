@@ -1,5 +1,5 @@
 namespace :parse do
-  desc "Parse Cineplanet"
+  desc "Parse Cineplanet Production"
   task :cineplanet_prod => :environment do
 
     dir_path = Rails.root.join(*%w( tmp cache functions ))

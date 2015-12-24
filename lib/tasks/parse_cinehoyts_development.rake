@@ -14,7 +14,7 @@ def hash_get_movieFunction hash, titulo
 end
 
 namespace :parse do
-  desc "Parse Cinemark"
+  desc "Parse Cine Hoyts Development"
   task :cinehoyts_dev => :environment do
 
     if Rails.env.development?

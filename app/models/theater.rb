@@ -95,6 +95,16 @@ class Theater < ActiveRecord::Base
     end if hash["movieFunctions"].present?
     override_functions(functions_to_save, current_date, parse_days_count) if functions_to_save.length > 0
   end
+  
+  def task_parsed_functions_array functions_array
+    functions_to_save = []
+    
+    functions_array.each do |function_hash|
+      
+    end
+    
+    override_functions(functions_to_save, Date.current, 7) if functions_to_save.length > 0
+  end
 
 
   def override_functions new_functions, start_date, parse_days_count
