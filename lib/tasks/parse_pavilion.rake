@@ -23,7 +23,8 @@ namespace :parse do
       parse_days << current_date + n
     end
     
-    theaters_array = [{code: 'theater20070', slug: 'pavilion-gran-avenida'}]
+    theaters_array = [{code: 'theater20070', slug: 'pavilion-gran-avenida'},
+                      {code: 'theater20069', slug: 'pavilion-punta-arenas'}]
 
     user_agent = {'User-Agent' => 'Firefox 28/Android: Mozilla/5.0 (Android; Mobile; rv:28.0) Gecko/24.0 Firefox/28.0'}
 
