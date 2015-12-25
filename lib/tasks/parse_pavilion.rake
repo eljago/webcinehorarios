@@ -28,9 +28,9 @@ namespace :parse do
 
     user_agent = {'User-Agent' => 'Firefox 28/Android: Mozilla/5.0 (Android; Mobile; rv:28.0) Gecko/24.0 Firefox/28.0'}
 
-    functions = []
-    
     theaters_array.each do |theater_hash|
+      
+      functions = []
       theater = Theater.find(theater_hash[:slug])
       parse_detector_types = theater.cinema.parse_detector_types.order('LENGTH(name) DESC')
       
@@ -85,6 +85,7 @@ namespace :parse do
         
         end # end Net::
       end # end parse_days.each
+      
       theater.override_functions(functions, parse_days.first, parse_days_count) if functions.length > 0
     end
     
