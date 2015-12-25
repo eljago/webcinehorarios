@@ -51,6 +51,7 @@ namespace :parse do
           browser.close
         end
 
+        Watir::Wait.until { browser.execute_script("return jQuery.active") == 0 }
         complejos_a_parsear = browser.execute_script('return ComplejosAParsear;')
         complejos_a_parsear.each do |complejo|
 
