@@ -8,7 +8,9 @@ class ApplicationController < ActionController::Base
 
 
   def raise_route_not_found!
-    render :template => "errors/404", content_type: 'text/html', :status => 404
+    respond_to do |format|
+      format.all { render :status => 404, :nothing => true }
+    end
   end
 
   private
