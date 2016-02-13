@@ -3,6 +3,8 @@ ruby '2.2.2'
 
 gem 'rails', '4.1.6'
 
+gem 'react-rails', '~> 1.6.0'
+
 gem 'nokogiri', require: false
 gem 'http', require: false
 gem 'whenever', require: false
@@ -17,7 +19,7 @@ end
 group :development, :test do
   gem 'rspec-rails', '2.13.1'
   gem "factory_girl_rails", "~> 4.2.1"
-  gem 'guard-rspec'
+  gem 'guard-rspec', require: false
   gem 'watir', require: false
   gem 'watir-webdriver', require: false
 end
@@ -78,7 +80,7 @@ gem 'sucker_punch'
 
 # gems used for image uploading
 gem 'carrierwave', :github => "jnicklas/carrierwave"
-gem 'carrierwave_backgrounder'
+
 # gem 'fog'
 # gem 'unf'
 gem 'mini_magick'

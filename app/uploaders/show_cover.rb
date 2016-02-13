@@ -1,10 +1,8 @@
 # encoding: utf-8
 
 class ShowCover < CarrierWave::Uploader::Base
-  include CarrierWave::MimeTypes
   include CarrierWave::MiniMagick
   
-  process :set_content_type
   storage :file
   # storage :fog
   
