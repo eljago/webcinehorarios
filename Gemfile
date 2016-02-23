@@ -57,7 +57,7 @@ gem 'font-awesome-sass-rails'
 gem "recaptcha", :require => "recaptcha/rails"
 
 # gem 'chosen-rails'
-gem "select2-rails"
+gem "select2-rails", '3.5.9.3'
 
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'bh', '~> 1.2'

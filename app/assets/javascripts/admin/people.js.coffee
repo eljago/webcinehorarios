@@ -2,6 +2,7 @@ func = (e) ->
 	id = e.val()
 	e.select2
 		minimumInputLength: 3
+		placeholder: 'Buscar personas'
 		ajax:
 			url: e.data('source')
 			dataType: 'json'
