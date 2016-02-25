@@ -6,7 +6,7 @@ include ActionView::Helpers::TranslationHelper # l
 
 namespace :parse do
   desc "Parse Antay"
-  task :pavilion => :environment do
+  task :antay => :environment do
 
     current_date = Date.current
     parse_days_count = 7
