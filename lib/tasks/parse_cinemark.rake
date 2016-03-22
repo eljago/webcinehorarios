@@ -28,7 +28,7 @@ namespace :parse do
 
       page = Nokogiri::HTML(body)
 
-      page.css('#main li.movie-list-li').each do |item|
+      page.css('li.movie-list-li').each do |item|
         uri2 =  URI(item.css('a').first['href'])
 
         request2 = Net::HTTP::Get.new(uri2, user_agent)
@@ -37,6 +37,7 @@ namespace :parse do
 
         page2 = Nokogiri::HTML(body2)
         title = page2.css('#page-title h2').text
+        puts title
         movieFunction = {"name" => title, "theaters" => {}}
 
         page2.css('div#main ul.movie-showtime-panel').each do |lu_theater|
