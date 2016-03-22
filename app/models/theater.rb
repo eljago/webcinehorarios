@@ -9,8 +9,8 @@
 #  information  :text
 #  cinema_id    :integer
 #  city_id      :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  web_url      :string(255)
 #  active       :boolean
 #  slug         :string(255)
@@ -23,7 +23,6 @@
 #  index_theaters_on_city_id_and_cinema_id  (city_id,cinema_id)
 #  index_theaters_on_slug                   (slug) UNIQUE
 #
-
 
 class Theater < ActiveRecord::Base
   extend FriendlyId

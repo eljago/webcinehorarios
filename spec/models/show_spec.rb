@@ -9,8 +9,8 @@
 #  duration              :integer
 #  name_original         :string(255)
 #  rating                :string(255)
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
+#  created_at            :datetime
+#  updated_at            :datetime
 #  debut                 :date
 #  year                  :integer
 #  active                :boolean

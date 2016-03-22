@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
 
   create_table "api_keys", force: true do |t|
     t.string   "access_token"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "award_categories", force: true do |t|
@@ -32,8 +32,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.integer  "winner_show"
     t.integer  "award_id"
     t.integer  "award_category_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "award_specific_categories", ["award_id", "award_category_id"], name: "award_s_categories", using: :btree
@@ -57,16 +57,16 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.string   "name"
     t.integer  "vtr"
     t.integer  "directv"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "cinemas", force: true do |t|
     t.string   "name"
     t.string   "image"
     t.text     "information"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "slug"
     t.string   "image_tmp"
   end
@@ -82,8 +82,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.string   "name"
     t.string   "image"
     t.integer  "country_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "slug"
   end
 
@@ -95,8 +95,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.text     "content"
     t.integer  "member_id"
     t.integer  "show_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "comments", ["member_id"], name: "index_comments_on_member_id", using: :btree
@@ -107,14 +107,14 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.string   "from"
     t.string   "subject"
     t.text     "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "countries", force: true do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "slug"
   end
 
@@ -135,8 +135,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
   create_table "functions", force: true do |t|
     t.integer  "theater_id"
     t.integer  "show_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.date     "date"
     t.integer  "parsed_show_id"
   end
@@ -164,8 +164,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.string   "image"
     t.integer  "imageable_id"
     t.string   "imageable_type"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "image_tmp"
     t.integer  "width"
     t.integer  "height"
@@ -186,8 +186,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "authentication_token"
     t.boolean  "admin",                  default: false
   end
@@ -207,8 +207,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.boolean  "winner"
     t.integer  "award_specific_category_id"
     t.integer  "show_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "nominations", ["award_specific_category_id", "show_id"], name: "index_nominations_on_award_specific_category_id_and_show_id", using: :btree
@@ -231,8 +231,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
   create_table "parsed_shows", force: true do |t|
     t.string   "name"
     t.integer  "show_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "parsed_shows", ["show_id"], name: "index_parsed_shows_on_show_id", using: :btree
@@ -240,8 +240,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
   create_table "people", force: true do |t|
     t.string   "name"
     t.string   "image"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "image_tmp"
     t.string   "slug"
     t.string   "imdb_code"
@@ -253,8 +253,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.datetime "time"
     t.string   "name"
     t.integer  "channel_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "programs", ["channel_id"], name: "index_programs_on_channel_id", using: :btree
@@ -274,8 +274,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.text     "value"
     t.integer  "thing_id"
     t.string   "thing_type", limit: 30
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "settings", ["thing_type", "thing_id", "var"], name: "index_settings_on_thing_type_and_thing_id_and_var", unique: true, using: :btree
@@ -288,8 +288,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.boolean  "creator"
     t.boolean  "producer"
     t.boolean  "director"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "character"
     t.integer  "position"
   end
@@ -303,8 +303,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.integer  "duration"
     t.string   "name_original"
     t.string   "rating"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.date     "debut"
     t.integer  "year"
     t.boolean  "active"
@@ -335,8 +335,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.text     "information"
     t.integer  "cinema_id"
     t.integer  "city_id"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "web_url"
     t.boolean  "active"
     t.string   "slug"
@@ -351,8 +351,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
   create_table "users", force: true do |t|
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "name"
     t.boolean  "admin"
     t.string   "slug"
@@ -365,8 +365,8 @@ ActiveRecord::Schema.define(version: 20151231010256) do
     t.string   "code"
     t.integer  "videoable_id"
     t.string   "videoable_type"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "image"
     t.string   "image_tmp"
     t.boolean  "outstanding"

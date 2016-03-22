@@ -53,5 +53,9 @@ module Webcinehorarios
       g.view_specs false
       g.helper_specs false
     end
+
+    # GraphQL
+    config.autoload_paths << Rails.root.join('app', 'graph', 'types')
+
   end
 end
