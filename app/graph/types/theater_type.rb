@@ -6,7 +6,14 @@ TheaterType = GraphQL::ObjectType.define do
 
   # `id` exposes the UUID
   global_id_field :id
-  field :cinema, -> {CinemaType}
+  
+  field :theater_id do
+  	type types.Int
+  	resolve -> (theater, args, ctx) {
+  		theater.id
+  	}
+  end
+  field :cinema_id, types.Int, "Cinema ID"
   field :active, types.Boolean, "Is the Theater Active?"
   field :name, types.String, "Name of the Theater"
   field :address, types.String, "Address of the Theater"

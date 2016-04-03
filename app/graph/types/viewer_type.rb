@@ -12,7 +12,7 @@ ViewerType = GraphQL::ObjectType.define do
   connection :cinemas, CinemaType.connection_type do
     description 'Cinemas'
 
-    resolve -> (object, args, ctx){
+    resolve -> (obj, args, ctx){
       Cinema.all
     }
   end
@@ -24,12 +24,34 @@ ViewerType = GraphQL::ObjectType.define do
     }
   end
 
-  field :show do
-    type ShowType
-    argument :id, !types.ID
+  connection :functions, ShowFunctionType.connection_type do
+    description 'Get Functions from a theater from a given date'
+
+    argument :theater_id, types.Int, "Functions' theater"
+    argument :date, types.String, "Functions' date"
     resolve -> (obj, args, ctx) {
-      Show.find(args[:id])
+      Function.where({theater_id: args[:theater_id], date: args[:date]})
+      # .includes(:show => :genres).order('genres.name')
+      # .includes(:function_types).order('function_types.name')
+      # .includes(:showtimes).order('showtimes.time')
     }
   end
-  
+
+  field :show do
+    type ShowType
+    argument :show_id, types.Int, "Show's id"
+    resolve -> (obj, args, ctx) {
+      Show.find(args[:show_id])
+    }
+  end
+
+  connection :show_functions, ShowType.connection_type do
+    argument :theater_id, types.Int
+    argument :date, types.String
+    resolve -> (obj, args, ctx) {
+      Show.joins(:functions).where(id: 1..Float::INFINITY)
+        .where(functions: {theater_id: args[:theater_id], date: args[:date]})
+        .order('shows.debut DESC, shows.id').uniq
+    }
+  end
 end
