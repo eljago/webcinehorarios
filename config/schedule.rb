@@ -38,4 +38,5 @@ end
 every 30.minutes do
   rake 'parse:cinemark'
   rake 'parse:pavilion'
+  rake 'parse:cinestar'
 end

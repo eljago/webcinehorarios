@@ -3,9 +3,17 @@ require 'nokogiri'
 
 include ActiveSupport::Inflector # transliterate
 include ActionView::Helpers::TranslationHelper # l
+    
+def get_times node
+  if node.next_sibling['href'].present?
+    return Time.strptime(node.text.superclean[-8..-1], "%I:%M %P").strftime("%H:%M") + ', ' + get_times(node.next_sibling)
+  else
+    return Time.strptime(node.text.superclean[-8..-1], "%I:%M %P").strftime("%H:%M")
+  end
+end
 
 namespace :parse do
-  desc "Parse CineStar"
+  desc "Parse cinestar"
   task :cinestar => :environment do
 
     current_date = Date.current
@@ -14,70 +22,74 @@ namespace :parse do
     parse_days_count.times do |n|
       parse_days << current_date + n
     end
+    
+    theaters_array = [{code: 'theater20100', slug: 'curico'},
+                      {code: 'theater20099', slug: 'los-andes'},
+                      {code: 'theater20101', slug: 'san-fernando'}]
 
-    uri = URI('http://www.cinestar.cl/cartelera/')
     user_agent = {'User-Agent' => 'Firefox 28/Android: Mozilla/5.0 (Android; Mobile; rv:28.0) Gecko/24.0 Firefox/28.0'}
 
-    hash = { "movieFunctions" => [] }
+    theaters_array.each do |theater_hash|
+      
+      functions = []
+      theater = Theater.find(theater_hash[:slug])
+      parse_detector_types = theater.cinema.parse_detector_types.order('LENGTH(name) DESC')
+      
+      parse_days.each do |date|
 
-    Net::HTTP.new(uri.host).start do |http|
+        uri = URI("https://www.cinepapaya.com/cl/cinestar/#{date.strftime('%Y-%m-%d')}")
+        Net::HTTP.new(uri.host).start do |http|
 
-      request = Net::HTTP::Get.new(uri, user_agent)
-      response = http.request(request)
-      body = response.body.force_encoding('UTF-8')
+          request = Net::HTTP::Get.new(uri, user_agent)
+          response = http.request(request)
+          body = response.body.force_encoding('UTF-8')
 
-      page = Nokogiri::HTML(body)
-
-      page.css('#lista-peliculas div#box1 div#foto_interior1 a').each do |movie_a|
-
-        link = movie_a['href']
-        break if link.blank?
-        uri2 = "http://www.cinestar.cl/#{link}"
-        request2 = Net::HTTP::Get.new(uri2, user_agent)
-        response2 = http.request(request2)
-        body2 = response2.body.force_encoding('UTF-8')
-        page2 = Nokogiri::HTML(body2)
-
-        titulo = transliterate(page2.css('div#texto_sucursal h2').first.text.superclean).titleize
-        movieFunction = {"name" => titulo, "theaters" => {}}
-
-        page2.css('section#horario div.aparecerCine div.cine').each do |item|
-          theater_slug = item["id"]
-          item.css('div.peliVariedad').each do |item2|
-            function_types = item2.css('h5').text.scan(/\((.*?)\)/).map { |ft| (ft[0] if ft[0].present?) }
-
-            functions = []
-            item2.css('span.horarioTitulo').each do |span_horario|
-              date_array = span_horario.css('span.diaHora').text.superclean.downcase.split # ["20", "Oct", "2015", ":"]
-              dia = date_array.first.to_i # 20
-              mes = date_array[1] # oct
-              indx = parse_days.map(&:day).index(dia)
-
-              if indx && mes == l(parse_days[indx], format: '%b').to_s.downcase
-                function = {"showtimes" => "", "dia" => dia}
-                span_horario.css('a.horarioHora').each_with_index do |a_showtime, index|
-                  if index == 0
-                    function["showtimes"] << "#{a_showtime.text.superclean}" # 20:10
-                  else
-                    function["showtimes"] << ", #{a_showtime.text.superclean}" # 20:10, 22:50
+          page = Nokogiri::HTML(body)
+        
+          parsed_day = page.css('div.date-tabs div.items a[class="item active"] div.day').text.superclean
+        
+          if parsed_day.to_i == date.day
+            page.css("div##{theater_hash[:code]} div.theater-showtime-box div.col-info").each do |show_box|
+            
+              title_node = show_box.css('h2.title')
+              titulo = title_node.text.superclean
+              parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).downcase # Name of the show read from the webpage then formatted
+              parsed_show_name.gsub!(/[^a-z0-9]/i, '')
+              parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
+              
+              h2s = show_box.css('h2')
+              h2s.each_with_index do |h2, index|
+                next if index == 0
+                
+                function_types = h2.text.superclean.split
+                detected_function_types = []
+                function_types.each do |hft|
+                  parse_detector_types.each do |pdt|
+                    if !detected_function_types.include?(pdt.function_type_id) && pdt.name.downcase == hft.downcase
+                      detected_function_types << pdt.function_type_id
+                    end
                   end
                 end
-                functions << function if function["showtimes"].length > 0
+                
+                function = theater.functions.new
+                function.show_id = parsed_show.show_id
+                function.function_type_ids = detected_function_types
+                function.date = date
+                function.parsed_show = parsed_show
+                times = get_times(h2.next_sibling)
+                Function.create_showtimes(function, times)
+                functions << function
               end
-            end
-            if functions.length > 0
-              movieFunction["theaters"][theater_slug] = [] if movieFunction["theaters"][theater_slug].blank?
-              movieFunction["theaters"][theater_slug] << {"function_types" => function_types, "functions" => functions}
+            
             end
           end
-        end
-        hash["movieFunctions"] << movieFunction if movieFunction["theaters"].keys.length > 0
-      end
+        
+        end # end Net::
+      end # end parse_days.each
+      
+      theater.override_functions(functions, parse_days.first, parse_days_count) if functions.length > 0
     end
-
-    Cinema.find_by(name: "CineStar").theaters.each do |theater|
-      theater.task_parsed_hash hash
-    end
-
+    
+    
   end
 end
