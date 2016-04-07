@@ -8,7 +8,10 @@ module Graph
       def create
         query_string = params[:query]
         query_variables = params[:variables] || {}
-        result = RelaySchema.execute(query_string, variables: query_variables)
+        cache_key = Digest::MD5.hexdigest query_string
+        result = Rails.cache.fetch(cache_key, expires_in: 5.minutes) do
+          RelaySchema.execute(query_string, variables: query_variables)
+        end
         render json: result
       end
 
