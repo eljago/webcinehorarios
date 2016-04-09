@@ -56,7 +56,9 @@ class Theater < ActiveRecord::Base
   end
 
   def flush_cache
-    Rails.cache.delete([self.class.name, "api_theaters"])
+    Cinema.select(:id).each do |cinema|
+      Rails.cache.delete([self.class.name, "api_theaters", cinema.id])
+    end
   end
 
   def task_parsed_hash hash
