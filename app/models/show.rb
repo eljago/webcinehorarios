@@ -82,4 +82,27 @@ class Show < ActiveRecord::Base
   def producers
     people.includes('show_person_roles').where('show_person_roles.producer'=>true)
   end
+
+
+  def self.api_theater_shows theater_id, date
+    includes(functions: [:function_types, :showtimes]).includes(:genres)
+      .where(functions: {theater_id: theater_id, date: date})
+      .order('shows.debut DESC, genres.name, function_types.name, showtimes.time')
+  end
+
+  def self.cached_api_theater_shows theater_id, date
+    times_joined = Showtime.select(:id, :time).joins(:function).where(functions: {theater_id: theater_id, date: date}).order(:time).uniq
+    .map do |showtime|
+      showtime.time.strftime "%H%M"
+    end.join(',')
+    funciton_types_joined = Function.select(:id).includes(:function_types).where({theater_id: theater_id, date: date}).order(:id).uniq.map do |function|
+      function.function_types.map(&:name).join(',')
+    end.join(',')
+    showtimes_cache_key = Digest::MD5.hexdigest(times_joined)
+    function_types_cache_key = Digest::MD5.hexdigest(funciton_types_joined)
+
+    Rails.cache.fetch([name, showtimes_cache_key, function_types_cache_key], expires_in: 30.minutes) do
+      api_theater_shows(theater_id, date).to_a
+    end
+  end
 end

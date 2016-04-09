@@ -17,31 +17,24 @@ ViewerType = GraphQL::ObjectType.define do
     }
   end
 
-  connection :api_theaters, TheaterType.connection_type do
-    description 'Active Chilean theaters'
+  field :api_theaters do
+    type types[TheaterType]
+    
+    argument :cinema_id, types.Int
+
     resolve -> (obj, args, ctx) {
-      Theater.cached_api_theaters
+      Theater.cached_api_theaters args[:cinema_id]
     }
   end
 
-  connection :functions, ShowFunctionType.connection_type do
-    description 'Get Functions from a theater from a given date'
+  field :api_theater_shows do
+    type types[ShowType]
 
-    argument :theater_id, types.Int, "Functions' theater"
-    argument :date, types.String, "Functions' date"
-    resolve -> (obj, args, ctx) {
-      Function.where({theater_id: args[:theater_id], date: args[:date]})
-    }
-  end
-
-  field :show, ShowType
-
-  connection :theater_shows, ShowType.connection_type do
     argument :theater_id, types.Int
     argument :date, types.String
-    resolve -> (obj, args, ctx) {
-      Show.joins(:functions => :theater).where(functions: {theater_id: args[:theater_id], date: args[:date]})
-        .order('shows.debut DESC').uniq
+
+    resolve -> (obj, args, context) {
+      Show.cached_api_theater_shows args[:theater_id], args[:date]
     }
   end
 end

@@ -89,6 +89,7 @@ gem 'mini_magick'
 
 gem 'graphql'
 gem "graphql-relay"
+gem 'graphql-batch'
 
 gem 'rabl'
 gem 'oj'

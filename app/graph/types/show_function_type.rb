@@ -18,20 +18,21 @@ ShowFunctionType = GraphQL::ObjectType.define do
 
 
   field :showtimes do
-    type types.String
+    type types[types.String]
+    
     resolve -> (show_function, args, ctx) {
-      show_function.showtimes.order(:time).map do |showtime|
+      show_function.showtimes.map do |showtime|
         I18n.l showtime.time, format: :normal_time
-      end.join(", ")
+      end
     }
   end
 
   field :function_types do
-    type types.String
+    type types[types.String]
+
     resolve -> (show_function, args, ctx) {
-      show_function.function_types.order(:name).map(&:name).join(', ')
+      show_function.function_types.map(&:name)
     }
   end
 
-  field :show, ShowType
 end

@@ -47,7 +47,17 @@ class Theater < ActiveRecord::Base
     end
   end
 
+  after_commit :flush_cache
 
+  def self.cached_api_theaters cinema_id
+    Rails.cache.fetch([name, 'api_theaters', cinema_id]) do
+      where(cinema_id: cinema_id, active: true).order([:cinema_id, :name]).to_a
+    end
+  end
+
+  def flush_cache
+    Rails.cache.delete([self.class.name, "api_theaters"])
+  end
 
   def task_parsed_hash hash
     function_types = cinema.function_types.order(:name)
