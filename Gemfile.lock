@@ -151,9 +151,6 @@ GEM
       rails
     graphql (0.11.0)
       parslet (~> 1.6)
-    graphql-batch (0.2.0)
-      graphql (~> 0.8)
-      promise.rb (~> 0.7.0.rc2)
     graphql-relay (0.7.1)
       graphql (~> 0.8)
     guard (2.13.0)
@@ -231,7 +228,6 @@ GEM
       activerecord (>= 3.1)
       activesupport (>= 3.1)
       arel
-    promise.rb (0.7.0)
     pry (0.10.3)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -392,7 +388,6 @@ DEPENDENCIES
   friendly_id
   graphiql-rails
   graphql
-  graphql-batch
   graphql-relay
   guard-rspec
   hirb
