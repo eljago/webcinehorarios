@@ -149,10 +149,10 @@ GEM
     git-version-bump (0.15.1)
     graphiql-rails (1.0.2)
       rails
-    graphql (0.11.0)
+    graphql (0.12.0)
       parslet (~> 1.6)
-    graphql-relay (0.7.1)
-      graphql (~> 0.8)
+    graphql-relay (0.9.1)
+      graphql (~> 0.12)
     guard (2.13.0)
       formatador (>= 0.2.4)
       listen (>= 2.7, <= 4.0)

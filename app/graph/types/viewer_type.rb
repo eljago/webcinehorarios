@@ -8,15 +8,6 @@ ViewerType = GraphQL::ObjectType.define do
   # `id` exposes the UUID
   global_id_field :id
 
-  # Fetch all posts
-  connection :cinemas, CinemaType.connection_type do
-    description 'Cinemas'
-
-    resolve -> (obj, args, ctx){
-      Cinema.all
-    }
-  end
-
   field :api_theaters do
     type types[TheaterType]
     
@@ -35,6 +26,22 @@ ViewerType = GraphQL::ObjectType.define do
 
     resolve -> (obj, args, context) {
       Show.cached_api_theater_shows args[:theater_id], args[:date]
+    }
+  end
+
+  field :api_billboard do
+    type types[ShowType]
+
+    resolve -> (obj, args, context) {
+      Show.cached_api_billboard
+    }
+  end
+
+  field :api_coming_soon do
+    type types[ShowType]
+
+    resolve -> (obj, args, context) {
+      Show.cached_api_coming_soon
     }
   end
 end

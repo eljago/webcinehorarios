@@ -13,8 +13,8 @@ ShowFunctionType = GraphQL::ObjectType.define do
   		show_function.id
   	}
   end
-  field :theater_id, types.Int, "Theater id"
-  field :date, types.String, "Show Function date"
+  field :theater_id, types.Int
+  field :date, types.String
 
 
   field :showtimes do

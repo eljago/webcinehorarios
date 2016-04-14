@@ -84,6 +84,9 @@ class Show < ActiveRecord::Base
   end
 
 
+  ### API ###
+
+  # THEATERS cinema_id
   def self.api_theater_shows theater_id, date
     includes(functions: [:function_types, :showtimes]).includes(:genres)
       .where(functions: {theater_id: theater_id, date: date})
@@ -95,14 +98,50 @@ class Show < ActiveRecord::Base
     .map do |showtime|
       showtime.time.strftime "%H%M"
     end.join(',')
+
     funciton_types_joined = Function.select(:id).includes(:function_types).where({theater_id: theater_id, date: date}).order(:id).uniq.map do |function|
       function.function_types.map(&:name).join(',')
     end.join(',')
+
     showtimes_cache_key = Digest::MD5.hexdigest(times_joined)
     function_types_cache_key = Digest::MD5.hexdigest(funciton_types_joined)
 
-    Rails.cache.fetch([name, showtimes_cache_key, function_types_cache_key], expires_in: 30.minutes) do
+    Rails.cache.fetch([name, theater_id, date, showtimes_cache_key, function_types_cache_key], expires_in: 30.minutes) do
       api_theater_shows(theater_id, date).to_a
+    end
+  end
+
+  # BILLBOARD
+
+  def self.cached_api_billboard
+    current_day = Date.current
+    date = current_day + ((3-current_day.wday) % 7)
+    shows = joins(:functions).select(:id, :updated_at)
+      .where('shows.active = ? AND shows.debut <= ? AND functions.date = ?', true, date, current_day)
+      .order(:id).uniq
+
+    shows_cache_keys = shows.map(&:cache_key).join(',')
+    cache_key = Digest::MD5.hexdigest(shows_cache_keys)
+
+    Rails.cache.fetch([name, 'billboard', cache_key], expires_in: 30.minutes) do
+      shows_ids = shows.map(&:id)
+      where(id: shows_ids).includes(:genres).order('genres.name').to_a
+    end
+  end
+
+  # COMING SOON
+
+  def self.cached_api_coming_soon
+    shows = where('active = ? AND (debut > ? OR debut IS ?)', true, Date.current, nil)
+      .select(:id, :updated_at, :debut)
+      .order(:debut).uniq
+
+    shows_cache_keys = shows.map(&:cache_key).join(',')
+    cache_key = Digest::MD5.hexdigest(shows_cache_keys)
+
+    Rails.cache.fetch([name, 'coming_soon', cache_key], expires_in: 30.minutes) do
+      shows_ids = shows.map(&:id)
+      where(id: shows_ids).order(:debut).includes(:genres).order('genres.name').to_a
     end
   end
 end
