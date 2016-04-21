@@ -7,8 +7,7 @@ ShowFunctionType = GraphQL::ObjectType.define do
   # `id` exposes the UUID
   global_id_field :id
   
-  field :function_id do
-  	type types.Int
+  field :function_id, types.Int do
   	resolve -> (show_function, args, ctx) {
   		show_function.id
   	}
@@ -17,9 +16,7 @@ ShowFunctionType = GraphQL::ObjectType.define do
   field :date, types.String
 
 
-  field :showtimes do
-    type types[types.String]
-    
+  field :showtimes, types[types.String] do
     resolve -> (show_function, args, ctx) {
       show_function.showtimes.map do |showtime|
         I18n.l showtime.time, format: :normal_time
@@ -27,9 +24,7 @@ ShowFunctionType = GraphQL::ObjectType.define do
     }
   end
 
-  field :function_types do
-    type types[types.String]
-
+  field :function_types, types[types.String] do
     resolve -> (show_function, args, ctx) {
       show_function.function_types.map(&:name)
     }

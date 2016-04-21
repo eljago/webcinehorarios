@@ -7,8 +7,7 @@ TheaterType = GraphQL::ObjectType.define do
   # `id` exposes the UUID
   global_id_field :id
   
-  field :theater_id do
-  	type types.Int
+  field :theater_id, types.Int do
   	resolve -> (theater, args, ctx) {
   		theater.id
   	}
