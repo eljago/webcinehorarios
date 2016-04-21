@@ -6,8 +6,8 @@
 #  name       :string(255)
 #  vtr        :integer
 #  directv    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 class Channel < ActiveRecord::Base

@@ -9,8 +9,8 @@
 #  duration              :integer
 #  name_original         :string(255)
 #  rating                :string(255)
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
+#  created_at            :datetime
+#  updated_at            :datetime
 #  debut                 :date
 #  year                  :integer
 #  active                :boolean
@@ -53,6 +53,8 @@ class Show < ActiveRecord::Base
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :show_person_roles, allow_destroy: true
 
+  after_commit :flush_cache
+
   mount_uploader :image, ShowCover
   
   include PgSearch
@@ -81,5 +83,80 @@ class Show < ActiveRecord::Base
   end
   def producers
     people.includes('show_person_roles').where('show_person_roles.producer'=>true)
+  end
+
+
+  ### API ###
+
+  # THEATERS cinema_id
+  def self.api_theater_shows theater_id, date_start, date_end
+    includes(functions: [:function_types, :showtimes]).includes(:genres)
+      .where(functions: {theater_id: theater_id, date: date_start..date_end})
+      .order('shows.debut DESC, genres.name, function_types.name, showtimes.time')
+  end
+
+  def self.cached_api_theater_shows theater_id, date_start, date_end
+    times_joined = Showtime.select(:id, :time).joins(:function).where(functions: {theater_id: theater_id, date: date_start..date_end}).order(:time).uniq
+    .map do |showtime|
+      showtime.time.strftime "%H%M"
+    end.join(',')
+
+    funciton_types_joined = Function.select(:id).includes(:function_types).where({theater_id: theater_id, date: date_start..date_end}).order(:id).uniq.map do |function|
+      function.function_types.map(&:name).join(',')
+    end.join(',')
+
+    showtimes_cache_key = Digest::MD5.hexdigest(times_joined)
+    function_types_cache_key = Digest::MD5.hexdigest(funciton_types_joined)
+
+    Rails.cache.fetch([name, theater_id, date_start, date_end, showtimes_cache_key, function_types_cache_key], expires_in: 30.minutes) do
+      api_theater_shows(theater_id, date_start, date_end).to_a
+    end
+  end
+
+  def flush_cache
+    Rails.cache.delete([self.class.name, id])
+  end
+
+  # BILLBOARD
+
+  def self.cached_api_billboard
+    current_day = Date.current
+    date = current_day + ((3-current_day.wday) % 7)
+    shows = joins(:functions).select(:id, :updated_at)
+      .where('shows.active = ? AND shows.debut <= ? AND functions.date = ?', true, date, current_day)
+      .order(:id).uniq
+
+    shows_cache_keys = shows.map(&:cache_key).join(',')
+    cache_key = Digest::MD5.hexdigest(shows_cache_keys)
+
+    Rails.cache.fetch([name, 'billboard', cache_key], expires_in: 30.minutes) do
+      shows_ids = shows.map(&:id)
+      where(id: shows_ids).includes(:genres).order('genres.name').to_a
+    end
+  end
+
+  # COMING SOON
+
+  def self.cached_api_coming_soon
+    shows = where('active = ? AND (debut > ? OR debut IS ?)', true, Date.current, nil)
+      .select(:id, :updated_at, :debut)
+      .order(:debut).uniq
+
+    shows_cache_keys = shows.map(&:cache_key).join(',')
+    cache_key = Digest::MD5.hexdigest(shows_cache_keys)
+
+    Rails.cache.fetch([name, 'coming_soon', cache_key], expires_in: 30.minutes) do
+      shows_ids = shows.map(&:id)
+      where(id: shows_ids).order(:debut).includes(:genres).order('genres.name').to_a
+    end
+  end
+
+  # SHOW
+  def self.cached_api_show id
+    Rails.cache.fetch([name, id]) do
+      where(id: id).includes(:portrait_image, :genres, :images, :videos, :show_person_roles => :person)
+      .where('videos.video_type = ?', 0)
+      .order('genres.name, videos.created_at DESC, images.created_at DESC').first
+    end
   end
 end

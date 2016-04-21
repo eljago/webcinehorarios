@@ -7,8 +7,8 @@
 #  from       :string(255)
 #  subject    :string(255)
 #  content    :text
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 class ContactTicket < ActiveRecord::Base

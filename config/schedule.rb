@@ -31,6 +31,10 @@ every 6.hours do
   # rake "maintain:functions"
 end
 
+every 1.day, at: '4am' do
+	rake 'cache:clear_all'
+end
+
 every 1.day, at: '5am' do
   command '/sbin/shutdown -r +5'
 end

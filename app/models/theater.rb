@@ -9,8 +9,8 @@
 #  information  :text
 #  cinema_id    :integer
 #  city_id      :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #  web_url      :string(255)
 #  active       :boolean
 #  slug         :string(255)
@@ -23,7 +23,6 @@
 #  index_theaters_on_city_id_and_cinema_id  (city_id,cinema_id)
 #  index_theaters_on_slug                   (slug) UNIQUE
 #
-
 
 class Theater < ActiveRecord::Base
   extend FriendlyId
@@ -48,7 +47,19 @@ class Theater < ActiveRecord::Base
     end
   end
 
+  after_commit :flush_cache
 
+  def self.cached_api_theaters cinema_id
+    Rails.cache.fetch([name, 'api_theaters', cinema_id]) do
+      where(cinema_id: cinema_id, active: true).order([:cinema_id, :name]).to_a
+    end
+  end
+
+  def flush_cache
+    Cinema.select(:id).each do |cinema|
+      Rails.cache.delete([self.class.name, "api_theaters", cinema.id])
+    end
+  end
 
   def task_parsed_hash hash
     function_types = cinema.function_types.order(:name)

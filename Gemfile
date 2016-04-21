@@ -45,6 +45,8 @@ group :development do
   gem 'capistrano-bundler', '~> 1.1.2'
   gem 'capistrano-rails', '~> 1.1.1'
   gem 'capistrano-rbenv', '~> 2.0'
+  
+  gem "graphiql-rails"
 end
 gem "capistrano-db-tasks", require: false
 gem 'rack-mini-profiler'
@@ -84,6 +86,9 @@ gem 'carrierwave', :github => "jnicklas/carrierwave"
 # gem 'fog'
 # gem 'unf'
 gem 'mini_magick'
+
+gem 'graphql'
+gem "graphql-relay"
 
 gem 'rabl'
 gem 'oj'

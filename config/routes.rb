@@ -237,6 +237,12 @@ Webcinehorarios::Application.routes.draw do
 
   root :to => 'home#index'
 
+  namespace :graph, defaults: { format: 'json' }  do
+  	scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true)  do
+			resources :queries, via: [:post, :options]
+	  end
+	end
+
   ##### API #####
   namespace :api, defaults: { format: 'json' } do
 
@@ -357,6 +363,10 @@ Webcinehorarios::Application.routes.draw do
     post 'create_parsed_shows' => 'functions#create_parsed_shows'
 
     resources :settings, only: [:index, :edit, :update]
+  end
+
+	if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graph/queries"
   end
 
   get '*unmatched_route', :to => 'application#raise_route_not_found!'
