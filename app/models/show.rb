@@ -131,7 +131,8 @@ class Show < ActiveRecord::Base
 
     Rails.cache.fetch([name, 'billboard', cache_key], expires_in: 30.minutes) do
       shows_ids = shows.map(&:id)
-      where(id: shows_ids).includes(:genres).order('genres.name').to_a
+      where(id: shows_ids).order('shows.debut DESC')
+      .includes(:genres).order('genres.name').to_a
     end
   end
 
