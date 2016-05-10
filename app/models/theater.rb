@@ -66,6 +66,7 @@ class Theater < ActiveRecord::Base
     parse_detector_types = cinema.parse_detector_types.order('LENGTH(name) DESC')
     current_date = Date.current
     parse_days_count = 7
+    date_range = current_date..(current_date+parse_days_count-1)
 
     functions_to_save = []
 
@@ -92,10 +93,12 @@ class Theater < ActiveRecord::Base
         if functions_data["functions"].present?
           functions_data["functions"].each do |hash_function|
             if hash_function["showtimes"].size >= 5
+              f_date = current_date.advance_to_day(hash_function["dia"])
+              next if !date_range.include?(f_date)
               function = functions.new
               function.show_id = parsed_show.show_id
               function.function_type_ids = detected_function_types
-              function.date = current_date.advance_to_day(hash_function["dia"])
+              function.date = f_date
               function.parsed_show = parsed_show
               Function.create_showtimes function, hash_function["showtimes"]
               functions_to_save << function if function.showtimes.length > 0
@@ -111,16 +114,18 @@ class Theater < ActiveRecord::Base
   def override_functions new_functions, start_date, parse_days_count
 
     date_range = start_date..(start_date + parse_days_count.to_i-1)
-    days_with_new_functions = Hash.new
-    date_range.each do |date|
-      days_with_new_functions[date] = false;
+
+    current_functions = functions.includes(:function_types, :showtimes)
+    
+    current_functions_ids = {}
+    current_functions.each do |f|
+      current_functions_ids[f.date] = [] if current_functions_ids[f.date].blank?
+      current_functions_ids[f.date] << f.id
     end
-    new_functions.each do |func|
-      break if days_with_new_functions.values.all?
-      days_with_new_functions[func.date] = true if days_with_new_functions[func.date] == false
+    current_functions_ids.keys.each do |key|
+      current_functions_ids[key].sort!
     end
 
-    current_functions = functions.where(date: date_range).includes(:function_types, :showtimes)
     functions_to_destroy = []
     indexes_to_save = Array.new(new_functions.count, true)
 
@@ -137,8 +142,17 @@ class Theater < ActiveRecord::Base
       functions_to_destroy << function unless found_identical
     end
 
+    f_to_destroy_ids = {}
     functions_to_destroy.each do |f|
-      f.destroy if days_with_new_functions[f.date]
+      f_to_destroy_ids[f.date] = [] if f_to_destroy_ids[f.date].blank?
+      f_to_destroy_ids[f.date] << f.id
+    end
+    f_to_destroy_ids.keys.each do |key|
+      f_to_destroy_ids[key].sort!
+    end
+
+    functions_to_destroy.each do |f|
+      f.destroy if !date_range.include?(f.date) || current_functions_ids[f.date] == f_to_destroy_ids[f.date]
     end
     indexes_to_save.each_with_index do |should_save, index|
       new_functions[index].save if should_save
