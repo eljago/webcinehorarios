@@ -115,16 +115,16 @@ class Theater < ActiveRecord::Base
 
     current_functions = functions.includes(:function_types, :showtimes)
 
-    new_functions_count = {}
+    new_functions_hash = {}
     new_functions.each do |f|
-      new_functions_count[f.date] = 0 if new_functions_count[f.date].blank?
-      new_functions_count[f.date] += 1
+      new_functions_hash[f.date] = [] if new_functions_hash[f.date].blank?
+      new_functions_hash[f.date] << f
     end
 
-    current_functions_count = {}
+    current_functions_hash = {}
     current_functions.each do |f|
-      current_functions_count[f.date] = 0 if current_functions_count[f.date].blank?
-      current_functions_count[f.date] += 1
+      current_functions_hash[f.date] = [] if current_functions_hash[f.date].blank?
+      current_functions_hash[f.date] << f
     end
 
     functions_to_destroy = []
@@ -143,16 +143,27 @@ class Theater < ActiveRecord::Base
       functions_to_destroy << function unless found_identical
     end
 
-    functions_to_destroy_count = {}
+    functions_to_destroy_hash = {}
     functions_to_destroy.each do |f|
-      functions_to_destroy_count[f.date] = 0 if functions_to_destroy_count[f.date].blank?
-      functions_to_destroy_count[f.date] += 1
+      functions_to_destroy_hash[f.date] = [] if functions_to_destroy_hash[f.date].blank?
+      functions_to_destroy_hash[f.date] << f
     end
 
     functions_to_destroy.each do |f|
-      if new_functions_count[f.date] != 0 ||
-        current_functions_count[f.date] - functions_to_destroy_count[f.date] > 0
+      if new_functions_hash[f.date].present? && new_functions_hash[f.date].length != 0
         f.destroy
+      else
+        current_showtimes_array = []
+        current_functions_hash[f.date].each do |f2|
+          current_showtimes_array << f2.showtimes.map {|s| s.time.strftime("%H%M").to_i}.sort
+        end
+        destroy_showtimes_array = []
+        functions_to_destroy_hash[f.date].each do |f2|
+          destroy_showtimes_array << f2.showtimes.map {|s| s.time.strftime("%H%M").to_i}.sort
+        end
+        if current_showtimes_array != destroy_showtimes_array
+          f.destroy
+        end
       end
     end
 
