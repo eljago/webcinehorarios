@@ -113,17 +113,18 @@ class Theater < ActiveRecord::Base
   
   def override_functions new_functions, start_date, parse_days_count
 
-    date_range = start_date..(start_date + parse_days_count.to_i-1)
-
     current_functions = functions.includes(:function_types, :showtimes)
-    
-    current_functions_ids = {}
-    current_functions.each do |f|
-      current_functions_ids[f.date] = [] if current_functions_ids[f.date].blank?
-      current_functions_ids[f.date] << f.id
+
+    new_functions_count = {}
+    new_functions.each do |f|
+      new_functions_count[f.date] = 0 if new_functions_count[f.date].blank?
+      new_functions_count[f.date] += 1
     end
-    current_functions_ids.keys.each do |key|
-      current_functions_ids[key].sort!
+
+    current_functions_count = {}
+    current_functions.each do |f|
+      current_functions_count[f.date] = 0 if current_functions_count[f.date].blank?
+      current_functions_count[f.date] += 1
     end
 
     functions_to_destroy = []
@@ -142,18 +143,19 @@ class Theater < ActiveRecord::Base
       functions_to_destroy << function unless found_identical
     end
 
-    f_to_destroy_ids = {}
+    functions_to_destroy_count = {}
     functions_to_destroy.each do |f|
-      f_to_destroy_ids[f.date] = [] if f_to_destroy_ids[f.date].blank?
-      f_to_destroy_ids[f.date] << f.id
-    end
-    f_to_destroy_ids.keys.each do |key|
-      f_to_destroy_ids[key].sort!
+      functions_to_destroy_count[f.date] = 0 if functions_to_destroy_count[f.date].blank?
+      functions_to_destroy_count[f.date] += 1
     end
 
     functions_to_destroy.each do |f|
-      f.destroy if !date_range.include?(f.date) || current_functions_ids[f.date] == f_to_destroy_ids[f.date]
+      if new_functions_count[f.date] != 0 ||
+        current_functions_count[f.date] - functions_to_destroy_count[f.date] > 0
+        f.destroy
+      end
     end
+
     indexes_to_save.each_with_index do |should_save, index|
       new_functions[index].save if should_save
     end
