@@ -14,4 +14,6 @@ VideoType = GraphQL::ObjectType.define do
   field :name, types.String
   field :image_url, types.String
   field :code, types.String
+
+  field :show, -> { ShowType }
 end

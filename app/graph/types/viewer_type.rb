@@ -39,11 +39,18 @@ ViewerType = GraphQL::ObjectType.define do
   end
 
   field :api_show, ShowType do
-
     argument :show_id, types.Int
 
     resolve -> (obj, args, context) {
       Show.cached_api_show args[:show_id]
+    }
+  end
+
+  field :api_videos, types[VideoType] do
+    argument :page, types.Int
+    resolve -> (obj, args, context) {
+      page = args[:page].blank? ? 1 : args[:page];
+      Video.cached_api_videos page
     }
   end
 end

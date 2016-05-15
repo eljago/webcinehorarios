@@ -11,14 +11,20 @@ NodeIdentification = GraphQL::Relay::GlobalNodeIdentification.define do
   # return a GraphQL ObjectType to expose that object
   type_from_object -> (object) do
 
-    if object.is_a?(Show)
+    if object.is_a? Show
       ShowType
-    elsif object.is_a?(Theater)
+    elsif object.is_a? Theater
       TheaterType
-    elsif object.is_a?(Function)
+    elsif object.is_a? Function
       ShowFunctionType
-    elsif object.is_a?(Cinema)
+    elsif object.is_a? Cinema
     	CinemaType
+    elsif object.is_a? Video
+      VideoType
+    elsif object.is_a? Image
+      ImageType
+    elsif object.is_a? Person
+      PersonType
     else
       ViewerType
     end
