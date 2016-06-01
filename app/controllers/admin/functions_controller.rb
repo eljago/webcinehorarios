@@ -118,12 +118,17 @@ class Admin::FunctionsController < ApplicationController
     parsed_shows_updated_count = 0
     functions_updated_count = 0
     destroyed_count = 0
+    functions_destroyed_count = 0
 
     count = 0
     while hash = params["orphan_parsed_shows_#{count}"]
       parsed_show = ParsedShow.find(hash[:parsed_show_id])
       if hash[:destroy].to_i == 1
         parsed_show.destroy
+        parsed_show.functions.each do |f|
+          f.destroy
+          functions_destroyed_count = functions_destroyed_count + 1
+        end
         destroyed_count = destroyed_count + 1
       elsif hash[:show_id].present?
         parsed_show.show_id = hash[:show_id]
@@ -138,7 +143,7 @@ class Admin::FunctionsController < ApplicationController
       count = count + 1
     end
 
-    redirect_to admin_orphan_parsed_shows_path, notice: "Actualizados #{parsed_shows_updated_count} parsed shows, #{functions_updated_count} functiones. #{destroyed_count} Parsed Shows Destruidos"
+    redirect_to admin_orphan_parsed_shows_path, notice: "Actualizados #{parsed_shows_updated_count} parsed shows, #{functions_updated_count} functiones. #{destroyed_count} Parsed Shows destruidos. #{functions_destroyed_count} Funciones destruidas."
   end
   # PARSED SHOWS DESTROY ALL PARSED SHOWS
   def destroy_all_parsed_shows
