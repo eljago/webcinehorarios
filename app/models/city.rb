@@ -6,8 +6,8 @@
 #  name       :string(255)
 #  image      :string(255)
 #  country_id :integer
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #  slug       :string(255)
 #
 # Indexes

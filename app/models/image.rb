@@ -7,8 +7,8 @@
 #  image            :string(255)
 #  imageable_id     :integer
 #  imageable_type   :string(255)
-#  created_at       :datetime
-#  updated_at       :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #  image_tmp        :string(255)
 #  width            :integer
 #  height           :integer

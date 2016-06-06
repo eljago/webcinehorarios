@@ -9,8 +9,8 @@
 #  duration              :integer
 #  name_original         :string(255)
 #  rating                :string(255)
-#  created_at            :datetime
-#  updated_at            :datetime
+#  created_at            :datetime         not null
+#  updated_at            :datetime         not null
 #  debut                 :date
 #  year                  :integer
 #  active                :boolean
@@ -46,6 +46,7 @@ class Show < ActiveRecord::Base
   has_one :portrait_image, class_name: 'Image', foreign_key: :show_portrait_id
   has_many :nominations
   has_many :award_specific_nominations, through: :nominations
+  has_many :show_debuts, dependent: :destroy
   
   validates :name, presence: :true
   

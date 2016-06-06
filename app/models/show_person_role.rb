@@ -10,8 +10,8 @@
 #  creator    :boolean
 #  producer   :boolean
 #  director   :boolean
-#  created_at :datetime
-#  updated_at :datetime
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #  character  :string(255)
 #  position   :integer
 #

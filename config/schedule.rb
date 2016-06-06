@@ -44,3 +44,7 @@ every 30.minutes do
   rake 'parse:pavilion'
   rake 'parse:cinestar'
 end
+
+every 12.hours do
+	rake "parse:cinemark_coming_soon"
+end

@@ -7,8 +7,8 @@
 #  code           :string(255)
 #  videoable_id   :integer
 #  videoable_type :string(255)
-#  created_at     :datetime
-#  updated_at     :datetime
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
 #  image          :string(255)
 #  image_tmp      :string(255)
 #  outstanding    :boolean

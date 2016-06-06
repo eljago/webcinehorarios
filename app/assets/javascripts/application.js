@@ -22,4 +22,7 @@
 //= require turbolinks
 //= require nprogress
 //= require nprogress-turbolinks
+//= require react
+//= require react_ujs
+//= require components
 //= require_tree .
