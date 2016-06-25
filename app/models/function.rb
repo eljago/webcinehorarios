@@ -84,10 +84,10 @@ class Function < ActiveRecord::Base
     return false if fts != lfts
     
     sts = function.showtimes.sort.map do |showtime|
-      (showtime.time.hour.to_s + showtime.time.min.to_s).to_i
+      (showtime.time.hour.to_s + showtime.time.min.to_s + showtime.time.day.to_s).to_i
     end
     lsts = showtimes.sort.map do |showtime|
-      (showtime.time.hour.to_s + showtime.time.min.to_s).to_i
+      (showtime.time.hour.to_s + showtime.time.min.to_s + showtime.time.day.to_s).to_i
     end
     return false if sts != lsts
     
