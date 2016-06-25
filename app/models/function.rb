@@ -45,7 +45,8 @@ class Function < ActiveRecord::Base
         horaminuto[0] = horaminuto[0].to_i
         horaminuto[1] = horaminuto[1].to_i
         begin
-          date = horaminuto[0] < 5 ? function.date+1 : function.date
+          # date = horaminuto[0] < 5 ? function.date+1 : function.date
+          date = function.date
           time = DateTime.new.in_time_zone("America/Santiago").change(year: date.year, month: date.month, day: date.day, hour: horaminuto[0], min: horaminuto[1])
         rescue NoMethodError
           next
@@ -53,27 +54,6 @@ class Function < ActiveRecord::Base
         function.showtimes << Showtime.new(time: time)
       end
     end
-  end
-  
-  def self.get_showtimes_usin_string horarios, date
-    new_showtimes = []
-    Function.create_array_from_horarios_string(horarios).each do |h|
-      if h.size >= 5
-        h = h.gsub(/(;)/, ":")
-        horaminuto = h.split(":")
-        horaminuto[0] = horaminuto[0].to_i
-        horaminuto[1] = horaminuto[1].to_i
-        begin
-          new_date = horaminuto[0] < 5 ? date+1 : date
-          time = DateTime.new.in_time_zone("America/Santiago").change(year: date.year, month: date.month, day: date.day, hour: horaminuto[0], min: horaminuto[1])
-        rescue NoMethodError
-          next
-        end
-        showTime = Showtime.new(time: time)
-        new_showtimes << showTime
-      end
-    end
-    new_showtimes
   end
   
   def self.create_extra_showtimes_from_params(func, theater, params)
