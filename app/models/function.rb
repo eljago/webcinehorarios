@@ -38,6 +38,8 @@ class Function < ActiveRecord::Base
   
   # SHOWTIMES METHODS
   def self.create_showtimes(function, horarios)
+    # CINEMARK HAS CINEMA_ID = 1. CINEMARK SHOWS PAST MIDNIGHT SHOWTIMES TIMES ON NEXT DAY.
+    date = function.theater.cinema_id != 1 && horaminuto[0] < 5 ? function.date+1 : function.date
     Function.create_array_from_horarios_string(horarios).each do |h|
       if h.size >= 4
         h = h.gsub(/(;)/, ":")
@@ -45,8 +47,6 @@ class Function < ActiveRecord::Base
         horaminuto[0] = horaminuto[0].to_i
         horaminuto[1] = horaminuto[1].to_i
         begin
-          # date = horaminuto[0] < 5 ? function.date+1 : function.date
-          date = function.date
           time = DateTime.new.in_time_zone("America/Santiago").change(year: date.year, month: date.month, day: date.day, hour: horaminuto[0], min: horaminuto[1])
         rescue NoMethodError
           next
