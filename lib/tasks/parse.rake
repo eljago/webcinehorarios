@@ -51,8 +51,8 @@ namespace :parse do
           puts "Timeout::Error: #{$!}\n"
         rescue
           if $!.to_s === '404 Not Found'
-            show.update_attribute(:metacritic_url, '')
-            show.update_attribute(:metacritic_score, 0)
+            show.update_attribute(:metacritic_url, nil)
+            show.update_attribute(:metacritic_score, nil)
             puts "reseted metacritic code and score\n"
           end
           puts "Connection failed: #{$!}\n"
@@ -77,8 +77,8 @@ namespace :parse do
           puts "Timeout::Error: #{$!}\n"
         rescue
           if $!.to_s === '404 Not Found'
-            show.update_attribute(:imdb_code, '')
-            show.update_attribute(:imdb_score, 0)
+            show.update_attribute(:imdb_code, nil)
+            show.update_attribute(:imdb_score, nil)
             puts "reseted imdb code and score\n"
           end
           puts "Connection failed: #{$!}\n"
@@ -89,8 +89,8 @@ namespace :parse do
         response = fetch(show.rotten_tomatoes_url)
         if response.present?
           if response.code === '404'
-            show.update_attribute(:rotten_tomatoes_url, '')
-            show.update_attribute(:rotten_tomatoes_score, 0)
+            show.update_attribute(:rotten_tomatoes_url, nil)
+            show.update_attribute(:rotten_tomatoes_score, nil)
             puts "reseted imdb code and score\n"
           else
             body = response.body
