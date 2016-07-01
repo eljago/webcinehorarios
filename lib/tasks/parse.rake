@@ -13,7 +13,7 @@ def fetch(uri_str, limit = 10)
     fetch(location, limit - 1)
   else
     # response.value
-    nil
+    response
   end
 end
 
@@ -88,17 +88,23 @@ namespace :parse do
       unless show.rotten_tomatoes_url.blank?
         response = fetch(show.rotten_tomatoes_url)
         if response.present?
-          body = response.body
-          if body.present?
-            page = Nokogiri::HTML(body)
+          if response.code === '404'
+            show.update_attribute(:rotten_tomatoes_url, '')
+            show.update_attribute(:rotten_tomatoes_score, 0)
+            puts "reseted imdb code and score\n"
+          else
+            body = response.body
+            if body.present?
+              page = Nokogiri::HTML(body)
 
-            span = page.css("#all-critics-numbers span.meter-value").first
-            if span.present?
-              score = span.text[0..1].to_i
-              if score != 0
-                puts "\t\troten: #{score}"
-                show.update_attribute(:rotten_tomatoes_score, score)
-                should_save_show = true
+              span = page.css("#all-critics-numbers span.meter-value").first
+              if span.present?
+                score = span.text[0..1].to_i
+                if score != 0
+                  puts "\t\troten: #{score}"
+                  show.update_attribute(:rotten_tomatoes_score, score)
+                  should_save_show = true
+                end
               end
             end
           end
