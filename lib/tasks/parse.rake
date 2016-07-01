@@ -1,3 +1,22 @@
+def fetch(uri_str, limit = 10)
+  # You should choose a better exception.
+  raise ArgumentError, 'too many HTTP redirects' if limit == 0
+
+  response = Net::HTTP.get_response(URI(uri_str))
+
+  case response
+  when Net::HTTPSuccess then
+    response
+  when Net::HTTPRedirection then
+    location = response['location']
+    warn "redirected to #{location}"
+    fetch(location, limit - 1)
+  else
+    # response.value
+    nil
+  end
+end
+
 namespace :parse do
   desc "Parse Metacritic"
   task :metacritic => :environment do
@@ -31,6 +50,11 @@ namespace :parse do
         rescue Timeout::Error
           puts "Timeout::Error: #{$!}\n"
         rescue
+          if $!.to_s === '404 Not Found'
+            show.update_attribute(:metacritic_url, '')
+            show.update_attribute(:metacritic_score, 0)
+            puts "reseted metacritic code and score\n"
+          end
           puts "Connection failed: #{$!}\n"
         end
       end
@@ -52,21 +76,25 @@ namespace :parse do
         rescue Timeout::Error
           puts "Timeout::Error: #{$!}\n"
         rescue
+          if $!.to_s === '404 Not Found'
+            show.update_attribute(:imdb_code, '')
+            show.update_attribute(:imdb_score, 0)
+            puts "reseted imdb code and score\n"
+          end
           puts "Connection failed: #{$!}\n"
         end
       end
 
       unless show.rotten_tomatoes_url.blank?
-        begin
-          timeout(10) do
-            url = show.rotten_tomatoes_url
-            s = open(url).read
-            s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ')
-            page = Nokogiri::HTML(s)
+        response = fetch(show.rotten_tomatoes_url)
+        if response.present?
+          body = response.body
+          if body.present?
+            page = Nokogiri::HTML(body)
 
-            span = page.css("#all-critics-numbers span[itemprop=ratingValue]").first
-            if span != nil
-              score = span.text.to_i
+            span = page.css("#all-critics-numbers span.meter-value").first
+            if span.present?
+              score = span.text[0..1].to_i
               if score != 0
                 puts "\t\troten: #{score}"
                 show.update_attribute(:rotten_tomatoes_score, score)
@@ -74,10 +102,6 @@ namespace :parse do
               end
             end
           end
-        rescue Timeout::Error
-          puts "Timeout::Error: #{$!}\n"
-        rescue
-          puts "Connection failed: #{$!}\n"
         end
       end
     end
