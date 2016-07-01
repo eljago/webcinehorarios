@@ -1,184 +1,170 @@
-<nav class="navbar navbar-default" role="navigation">
-	<div class="container-fluid">
-	  <div class="navbar-header">
-	    <button type="button" class="navbar-toggle" data-hover="collapse" data-target="#navbar-cine-horarios">
-	      <span class="sr-only">Toggle navigation</span>
-	      <span class="icon-bar"></span>
-	      <span class="icon-bar"></span>
-	      <span class="icon-bar"></span>
-	    </button>
-	  </div>
-	  <div class="collapse navbar-collapse" id="navbar-cine-horarios">
-			
-			<% if current_member.try(:admin?) %>
-		    <ul class="nav navbar-nav">
-		      <li>
-						<%= link_to admin_path do %>
-							<i class="icon-home"></i>
-							Inicio
-						<% end %>
-					</li>
-					<li class="dropdown">
-		        <a href="#" class="dropdown-toggle" data-hover="dropdown">Admin <b class="caret"></b></a>
-		        <ul class="dropdown-menu">
-				      <li>
-								<%= link_to admin_contact_tickets_path do %>
-									<i class="icon-tag"></i>
-									Contactos
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to admin_opinions_path do %>
-									<i class="icon-comments"></i>
-									Opiniones
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to admin_countries_path do %>
-									<i class="icon-globe"></i>
-									Países
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to admin_genres_path do %>
-									<i class="icon-comments"></i>
-									Géneros
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to admin_function_types_path do %>
-									<i class="icon-bookmark"></i>
-									Tipos de Función
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to admin_settings_path do %>
-									<i class="icon-cog"></i>
-									Ajustes
-								<% end %>
-							</li>
-		        </ul>
-		      </li>
-					<li class="dropdown">
-		        <a href="#" class="dropdown-toggle" data-hover="dropdown">
-							<i class="icon-group"></i>
-							Actores
-							<b class="caret"></b>
-						</a>
-		        <ul class="dropdown-menu">
-				      <li>
-								<%= link_to new_admin_person_path do %>
-									<i class="icon-user"></i>
-									Nuevo Actor
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to admin_people_path do %>
-									<i class="icon-group"></i>
-									Todos los Actores
-								<% end %>
-							</li>
-		        </ul>
-		      </li>
-					<li class="dropdown">
-		        <a href="#" class="dropdown-toggle" data-hover="dropdown"><i class="icon-building"></i> Cines <b class="caret"></b></a>
-		        <ul class="dropdown-menu">
-				      <li>
-								<%= link_to admin_cinemas_path do %>
-									Todos
-								<% end %>
-							</li>
-							<% Cinema.all.each do |cinema| %>
-					      <li>
-									<%= link_to admin_cinema_theaters_path(cinema) do %>
-										<%= image_tag cinema.image, size: "20x20" %>
-										<%= cinema.name %>
-									<% end %>
-								</li>
-							<% end %>
-		    		</ul>
-					</li>
-					<li class="dropdown">
-		        <a href="#" class="dropdown-toggle" data-hover="dropdown">
-							<i class="icon-film"></i> Shows <b class="caret"></b>
-						</a>
-		        <ul class="dropdown-menu">
-				      <li>
-								<%= link_to new_admin_show_path do %>
-									Nuevo
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to admin_shows_path do %>
-									Todos
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to billboard_admin_shows_path do %>
-									Cartelera
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to comingsoon_admin_shows_path do %>
-									Próximamente
-								<% end %>
-							</li>
-		    		</ul>
-					</li>
-					<li class="dropdown">
-		        <a href="#" class="dropdown-toggle" data-hover="dropdown">
-							<i class="icon-trophy"></i> Awards <b class="caret"></b>
-						</a>
-		        <ul class="dropdown-menu">
-				      <li>
-								<%= link_to admin_awards_path do %>
-									Awards
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to admin_award_categories_path do %>
-									Award Categories
-								<% end %>
-							</li>
-				      <li>
-								<%= link_to admin_award_types_path do %>
-									Award Types
-								<% end %>
-							</li>
-		    		</ul>
-					</li>
-				
-		      <li>
-						<%= link_to [:admin, :videos] do %>
-							<i class="icon-play"></i>
-							Videos
-						<% end %>
-					</li>
-				
-		      <li>
-						<%= link_to [:admin, :orphan_parsed_shows] do %>
-							<i class="icon-play"></i>
-							Parsed Shows
-						<% end %>
-					</li>
-		    </ul>
-				
-			<% end %>
-			
-			<ul class="nav navbar-nav navbar-right">
-				<% if member_signed_in? %>
-						<li>
-							 <%= link_to current_member.email, edit_member_registration_path %>
-						</li>
-					<li>
-				 	 <%= link_to "Cerrar Sesión", destroy_member_session_path, method: :delete %>
-					</li>
-				<% else %>
-					<li>
-				  	<%= link_to "Iniciar Sesión", new_member_session_path %>
-					</li>
-				<% end %>
-			</ul>
-	  </div>
-  </div>
-</nav>
+<%= navbar fluid: true, position: :top do %>
+
+  <%= vertical do %>
+  	<% if member_signed_in? %>
+      <%= link_to admin_path do %>
+        <%= fa_icon "home", text: "Inicio" %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= horizontal do %>
+  	<% if member_signed_in? %>
+      <%= nav class: 'navbar-left' do %>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-hover="dropdown">
+            Admin
+            <%= fa_icon "caret-down" %>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to admin_contact_tickets_path do %>
+                <%= fa_icon "tag", text: "Contactos" %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to admin_opinions_path do %>
+                <%= fa_icon "comments", text: "Opiniones" %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to admin_countries_path do %>
+                <%= fa_icon "globe", text: "Países" %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to admin_genres_path do %>
+                <%= fa_icon "comments", text: "Géneros" %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to admin_function_types_path do %>
+                <%= fa_icon "bookmark", text: "Tipos de Función" %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to admin_settings_path do %>
+                <%= fa_icon "cog", text: "Ajustes" %>
+              <% end %>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-hover="dropdown">
+            <%= fa_icon "group", text: "Actores" %>
+            <%= fa_icon "caret-down" %>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to new_admin_person_path do %>
+                <%= fa_icon "user", text: "Nuevo Actor" %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to admin_people_path do %>
+                <%= fa_icon "group", text: "Todos los Actores" %>
+              <% end %>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-hover="dropdown">
+            <%= fa_icon "building", text: "Cines" %>
+            <%= fa_icon "caret-down" %>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to admin_cinemas_path do %>
+                Todos
+              <% end %>
+            </li>
+            <% Cinema.all.each do |cinema| %>
+              <li>
+                <%= link_to admin_cinema_theaters_path(cinema) do %>
+                  <%= image_tag cinema.image, size: "20x20" %>
+                  <%= cinema.name %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-hover="dropdown">
+            <%= fa_icon "film", text: "Shows" %>
+            <%= fa_icon "caret-down" %>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to new_admin_show_path do %>
+                Nuevo
+              <% end %>
+            </li>
+            <li>
+              <%= link_to admin_shows_path do %>
+                Todos
+              <% end %>
+            </li>
+            <li>
+              <%= link_to billboard_admin_shows_path do %>
+                Cartelera
+              <% end %>
+            </li>
+            <li>
+              <%= link_to comingsoon_admin_shows_path do %>
+                Próximamente
+              <% end %>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-hover="dropdown">
+            <%= fa_icon "trophy", text: "Awards" %>
+            <%= fa_icon "caret-down" %>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to admin_awards_path do %>
+                Awards
+              <% end %>
+            </li>
+            <li>
+              <%= link_to admin_award_categories_path do %>
+                Award Categories
+              <% end %>
+            </li>
+            <li>
+              <%= link_to admin_award_types_path do %>
+                Award Types
+              <% end %>
+            </li>
+          </ul>
+        </li>
+
+        <%= link_to [:admin, :videos] do %>
+          <%= fa_icon "play", text: "Videos" %>
+        <% end %>
+
+        <%= link_to [:admin, :orphan_parsed_shows] do %>
+          <%= fa_icon "play", text: "Parsed Shows" %>
+        <% end %>
+
+      <% end %>
+  	<% end %>
+
+    <%= nav id: 'navbar-cine-horarios', class: 'navbar-right' do %>
+      <% if member_signed_in? %>
+        <%= link_to current_member.email, edit_member_registration_path %>
+        <%= link_to "Cerrar Sesión", destroy_member_session_path, method: :delete %>
+      <% else %>
+        <%= link_to "Iniciar Sesión", new_member_session_path %>
+      <% end %>
+    <% end %>
+
+  <% end %>
+
+<% end %>

@@ -1,28 +1,23 @@
-<%= simple_form_for [:admin, @person], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
+<%= form_for [:admin, @person], layout: :horizontal do |f| %>
   <%= render_errors @person %>
-	
+
 	<% people = Person.select([:id, :name]).order(:name) %>
-	
+
 	<% if people.count(:all) > 0 %>
   	<div class="form-group">
-			<div class="col-lg-5 col-lg-offset-2">
-				<%= f.hidden_field :id, class: 'people-select ajax', style: "width: 90%;", data: { source: select_people_admin_people_path } %>
+			<div class="col-sm-9 col-sm-offset-3">
+				<%= f.hidden_field :id, class: 'people-select ajax', style: "width: 100%;",
+              data: { source: select_people_admin_people_path } %>
 			</div>
 		</div>
 	<% end %>
-	
-	<%= f.input :name %>
-	<%= f.input :imdb_code %>
-	<%= f.input :remote_image_url %>
-	<%= f.input :image %>
 
-  <div class="form-group">
-    <div class="col-lg-offset-2 col-lg-5">
-    	<%= f.submit 'Guardar', class: 'btn btn-primary' %>
-    </div>
-  </div>
+	<%= f.text_field :name %>
+	<%= f.text_field :imdb_code %>
+	<%= f.text_field :remote_image_url %>
+	<%= f.file_field :image %>
+
+  <%= f.submit 'Guardar' %>
 <% end %>
 
-<%= link_to [:admin, :people], class: 'btn btn-default' do %>
-	<i class="icon-arrow-left"></i> Volver
-<% end %>
+<%= render_backbutton [:admin, :people] %>

@@ -11,9 +11,9 @@
 	</head>
 
 	<body id="admin">
-		
+
 		<%= render 'layouts/navbar_application' %>
-		
+
 		<div class="container">
 			<%= render_navigation if current_member && current_member.admin? %>
 			<%= render 'layouts/messages' %>

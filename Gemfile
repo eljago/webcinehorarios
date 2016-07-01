@@ -33,11 +33,11 @@ group :development do
   gem 'hirb'
   gem 'wirb'
   gem 'awesome_print'
-  
+
   gem 'railroady'
-  
+
   gem 'spring'
-  
+
   gem 'annotate', '~> 2.6.5'
 
   gem 'clipboard', require: false
@@ -45,7 +45,7 @@ group :development do
   gem 'capistrano-bundler', '~> 1.1.2'
   gem 'capistrano-rails', '~> 1.1.1'
   gem 'capistrano-rbenv', '~> 2.0'
-  
+
   gem "graphiql-rails"
 end
 gem "capistrano-db-tasks", require: false
@@ -53,8 +53,6 @@ gem 'rack-mini-profiler'
 
 gem 'pg'
 gem 'pg_search'
-
-gem 'font-awesome-sass-rails'
 
 gem "recaptcha", :require => "recaptcha/rails"
 
