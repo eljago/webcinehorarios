@@ -19,10 +19,8 @@ ViewerType = GraphQL::ObjectType.define do
   field :api_theater_shows, types[ShowType] do
     argument :theater_id, types.Int
     argument :date_start, types.String
-    argument :date_end, types.String
-
     resolve -> (obj, args, context) {
-      Show.cached_api_theater_shows args[:theater_id], args[:date_start], args[:date_end]
+      Show.cached_api_theater_shows args[:theater_id], args[:date_start]
     }
   end
 

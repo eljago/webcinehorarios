@@ -90,27 +90,29 @@ class Show < ActiveRecord::Base
   ### API ###
 
   # THEATERS cinema_id
-  def self.api_theater_shows theater_id, date_start, date_end
+  def self.api_theater_shows theater_id, date_range
     includes(functions: [:function_types, :showtimes]).includes(:genres)
-      .where(functions: {theater_id: theater_id, date: date_start..date_end})
+      .where(functions: {theater_id: theater_id, date: date_range})
       .order('shows.debut DESC, genres.name, function_types.name, showtimes.time')
   end
 
-  def self.cached_api_theater_shows theater_id, date_start, date_end
-    times_joined = Showtime.select(:id, :time).joins(:function).where(functions: {theater_id: theater_id, date: date_start..date_end}).order(:time).uniq
+  def self.cached_api_theater_shows theater_id, date_start
+    date_start = Date.parse(date_start)
+    date_range = date_start..date_start+6
+    times_joined = Showtime.select(:id, :time).joins(:function).where(functions: {theater_id: theater_id, date: date_range}).order(:time).uniq
     .map do |showtime|
       showtime.time.strftime "%H%M"
     end.join(',')
 
-    funciton_types_joined = Function.select(:id).includes(:function_types).where({theater_id: theater_id, date: date_start..date_end}).order(:id).uniq.map do |function|
+    funciton_types_joined = Function.select(:id).includes(:function_types).where({theater_id: theater_id, date: date_range}).order(:id).uniq.map do |function|
       function.function_types.map(&:name).join(',')
     end.join(',')
 
     showtimes_cache_key = Digest::MD5.hexdigest(times_joined)
     function_types_cache_key = Digest::MD5.hexdigest(funciton_types_joined)
 
-    Rails.cache.fetch([name, theater_id, date_start, date_end, showtimes_cache_key, function_types_cache_key], expires_in: 30.minutes) do
-      api_theater_shows(theater_id, date_start, date_end).to_a
+    Rails.cache.fetch([name, theater_id, date_start, showtimes_cache_key, function_types_cache_key], expires_in: 30.minutes) do
+      api_theater_shows(theater_id, date_range).to_a
     end
   end
 
