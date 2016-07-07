@@ -404,7 +404,7 @@ DEPENDENCIES
   rack-mini-profiler
   railroady
   rails (= 4.1.6)
-  rails-settings-cached (= 0.4.1)
+  rails-settings-cached
   react-rails (~> 1.6.0)
   recaptcha
   rspec-rails (= 2.13.1)
