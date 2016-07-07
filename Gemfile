@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.2.2'
+ruby '2.3.1'
 
 gem 'rails', '4.1.6'
 
@@ -58,7 +58,6 @@ gem 'pg_search'
 
 gem "recaptcha", :require => "recaptcha/rails"
 
-# gem 'chosen-rails'
 gem "select2-rails", '3.5.9.3'
 
 gem 'bootstrap-sass', '~> 3.2.0'
@@ -98,7 +97,7 @@ gem 'json'
 
 gem "friendly_id"
 
-gem "rails-settings-cached", "0.4.1"
+gem "rails-settings-cached"
 
 gem 'devise'
 gem 'simple_token_authentication'

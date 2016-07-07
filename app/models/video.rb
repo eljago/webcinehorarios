@@ -34,8 +34,8 @@ class Video < ActiveRecord::Base
   
 
   def self.cached_api_videos page = 1
-    videos = select(:id, :created_at, :updated_at).joins(:show)
-    	.where('shows.active = ?', true)
+    videos = select(:id, :created_at, :updated_at, :outstanding).joins(:show)
+    	.where('shows.active = ? AND videos.outstanding = ?', true, true)
     	.order('videos.created_at DESC')
     	.paginate(page: page, per_page: 15).uniq
 

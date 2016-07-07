@@ -5,7 +5,7 @@ class Admin::ShowPersonRolesController < ApplicationController
   def sort
     if params[:show_person_roles].present?
       params[:show_person_roles].each_with_index do |id, index|
-        ShowPersonRole.update_all({position: index+1}, {id: id})
+        ShowPersonRole.where(id: id).update_all(position: index+1)
       end
     end
     
