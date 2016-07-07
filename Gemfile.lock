@@ -1,3 +1,21 @@
+GIT
+  remote: git://github.com/jnicklas/carrierwave.git
+  revision: b31f7ce006bade550be0ad946d0b993b799358e3
+  specs:
+    carrierwave (0.11.0)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
+
+GIT
+  remote: git://github.com/plataformatec/simple_form.git
+  revision: eb4e01d386a0d3fffcdeabd705cecfe817acdee3
+  tag: v3.1.0.rc2
+  specs:
+    simple_form (3.1.0.rc2)
+      actionpack (~> 4.0)
+      activemodel (~> 4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
