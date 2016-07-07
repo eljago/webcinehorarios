@@ -367,6 +367,7 @@ Webcinehorarios::Application.routes.draw do
 
 	if Rails.env.development?
     mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graph/queries"
+    mount RailsDb::Engine => '/rails/db', :as => 'rails_db'
   end
 
   get '*unmatched_route', :to => 'application#raise_route_not_found!'

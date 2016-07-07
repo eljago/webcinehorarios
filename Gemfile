@@ -34,6 +34,8 @@ group :development do
   gem 'wirb'
   gem 'awesome_print'
 
+  gem 'rails_db', '~> 1.3'
+
   gem 'railroady'
 
   gem 'spring'
