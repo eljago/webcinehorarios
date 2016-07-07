@@ -160,7 +160,7 @@ class Show < ActiveRecord::Base
     Rails.cache.fetch([name, id]) do
       where(id: id).includes(:portrait_image, :genres, :images, :videos, :show_person_roles => :person)
       .where('videos.video_type = ?', 0)
-      .order('genres.name, videos.created_at DESC, images.created_at DESC').first
+      .order('genres.name, videos.created_at DESC, images.created_at DESC, show_person_roles.position').first
     end
   end
 end
