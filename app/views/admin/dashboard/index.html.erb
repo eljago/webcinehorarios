@@ -12,7 +12,7 @@
 	      <th style="width: 150px;">Theater</th>
 	      <% 8.times do |n| %>
 	        <th>
-	          <%= l Date.current + n, format: :short %>
+	          <%= I18n.l Date.current + n, format: :short %>
 	        </th>
 	      <% end %>
 	    </tr>
