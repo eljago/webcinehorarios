@@ -1,0 +1,5 @@
+<% if current_member && current_member.admin? %>
+	<%= react_component('Admin', { }, { server_side: true }) %>
+<% end %>
+
+<%= console %>

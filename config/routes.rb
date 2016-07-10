@@ -302,6 +302,8 @@ Webcinehorarios::Application.routes.draw do
 
   # ADMIN
   namespace :admin do
+  	
+    get '' => 'home#index', as: '/'
 
     resources :videos
     resources :awards do
@@ -317,7 +319,6 @@ Webcinehorarios::Application.routes.draw do
       resources :theaters
     end
 
-    get '' => 'dashboard#index', as: '/'
     resources :contact_tickets, only: [:index, :show, :create]
     resources :genres
     resources :people do

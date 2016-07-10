@@ -10,18 +10,11 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+
 //= require jquery
-//= require jquery.turbolinks
-//= require jquery-ui
 //= require jquery_ujs
-//= require jquery.minicolors
-//= require jquery.minicolors.simple_form
-//= require bootstrap-sprockets
-//= require select2
-//= require select2_locale_es
 //= require turbolinks
-//= require nprogress
-//= require nprogress-turbolinks
+//= require bootstrap
 //= require react_integration
 //= require react_bundle
-//= require_tree .
+

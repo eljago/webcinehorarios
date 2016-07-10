@@ -10,16 +10,12 @@
 		<%= favicon_link_tag 'favicon.ico' %>
 	</head>
 
-	<body id="admin">
+	<body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/react-bootstrap/0.29.5/react-bootstrap.min.js"></script>
 
 		<%= render 'layouts/react_hot_assets' %>
-
-		<%= render 'layouts/navbar_application' %>
-
-		<div class="container">
-			<%= render_navigation if current_member && current_member.admin? %>
-			<%= render 'layouts/messages' %>
-			<%= yield %>
-		</div>
+		
+		<%= yield %>
+		
 	</body>
 </html>
