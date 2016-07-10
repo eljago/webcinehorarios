@@ -14,7 +14,7 @@ child :show_person_roles => :people do
 	end
 end
 node :debut do |s|
-	s.debut.blank? ? nil : l(s.debut, format: :longi).capitalize
+	s.debut.blank? ? nil : I18n.l(s.debut, format: :longi).capitalize
 end
 node :genres do |s|
 	s.genres.order('genres.name ASC').select(:name).map do |genre|

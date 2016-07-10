@@ -9,5 +9,5 @@ glue :portrait_image do
 end
 
 node :debut do |s|
-	s.debut.blank? ? nil : l(s.debut, format: :longi).capitalize
+	s.debut.blank? ? nil : I18n.l(s.debut, format: :longi).capitalize
 end

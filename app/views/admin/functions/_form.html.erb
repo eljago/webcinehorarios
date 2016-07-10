@@ -16,10 +16,10 @@
       <div class="col-md-9 col-sm-9">
         <div class="row">
           <div class="col-md-4 col-sm-4 col-xs-4" style="text-align: right;">
-            <%= I18n.localize(date, format: :long) %>
+            <%= I18n.l(date, format: :long) %>
           </div>
           <div class="col-md-8 col-sm-8 col-xs-8">
-            <%= text_field_tag :horarios, @function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', '), size: 50 %>
+            <%= text_field_tag :horarios, @function.showtimes.map{ |showtime| I18n.l(showtime.time, format: :normal_time ) }.join(', '), size: 50 %>
           </div>
         </div>
         <br/>
@@ -27,7 +27,7 @@
           <% 7.times do |n| %>
             <div class="row">
               <div class="col-md-4 col-sm-4 col-xs-4" style="text-align: right;">
-                <%= I18n.localize(date = date.next, format: :long) %>
+                <%= I18n.l(date = date.next, format: :long) %>
               </div>
               <div class="col-md-8 col-sm-8 col-xs-8">
                 <%= text_field_tag "horarios_extra_#{n}", "", size: 50 %>

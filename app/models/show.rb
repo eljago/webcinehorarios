@@ -32,9 +32,7 @@
 class Show < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
-  
-  # attr_accessible :show_person_roles_attributes, :genre_ids, :active, :year, :debut, :name, :image, :information, :duration, :name_original, :rating, :remote_image_url, :images_attributes, :videos_attributes, :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score
-  
+    
   has_many :images, as: :imageable, dependent: :destroy
   has_and_belongs_to_many :genres
   has_many :functions, dependent: :destroy
@@ -59,7 +57,7 @@ class Show < ActiveRecord::Base
   mount_uploader :image, ShowCover
   
   include PgSearch
-  pg_search_scope :search, against: [:name],
+  pg_search_scope :search, against: [:name, :name_original, :imdb_code],
     using: {tsearch: {dictionary: "spanish"}}
   
   def self.text_search(query)

@@ -3,7 +3,7 @@ ruby '2.3.1'
 
 gem 'rails', '4.1.6'
 
-gem 'react-rails', '~> 1.6.0'
+gem 'react_webpack_rails'
 
 gem 'nokogiri', require: false
 gem 'http', require: false
@@ -68,7 +68,6 @@ gem 'jquery-minicolors-rails'
 
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails', '~> 5.0.0'
-gem 'simple_form', github: 'plataformatec/simple_form', tag: 'v3.1.0.rc2'
 gem 'acts_as_list'
 
 gem 'will_paginate', '~> 3.0'
@@ -79,8 +78,10 @@ gem 'nprogress-rails'
 
 gem 'sucker_punch'
 
+gem 'haml'
+
 # gems used for image uploading
-gem 'carrierwave', :github => "jnicklas/carrierwave"
+gem 'carrierwave'
 
 # gem 'fog'
 # gem 'unf'

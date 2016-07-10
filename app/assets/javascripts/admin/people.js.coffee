@@ -32,3 +32,4 @@ ready = ->
 			$.post($(this).data('update-url'), $(this).sortable('serialize'))
 
 $(document).ready(ready)
+$(document).on('turbolinks:load', ready);

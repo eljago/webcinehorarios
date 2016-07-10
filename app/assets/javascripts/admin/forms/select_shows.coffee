@@ -24,6 +24,7 @@ func = (e) ->
 ready = ->
 	$('.shows-select').each (i, e) =>
 		func($(e))
-	$('.chzn-select').select2({ width: 'resolve' });   
+	$('select.chzn-select').select2 width: 'resolve'
 
 $(document).ready(ready)
+$(document).on('turbolinks:load', ready)

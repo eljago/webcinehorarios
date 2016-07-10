@@ -4,7 +4,7 @@ attributes :id, :date
 
 node :showtimes do |f|
 	f.showtimes.map do |showtime|
-		l showtime.time, format: :normal_time
+		I18n.l showtime.time, format: :normal_time
 	end.join(", ")
 end
 

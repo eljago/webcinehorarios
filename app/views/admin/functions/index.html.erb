@@ -50,7 +50,7 @@
         <%= function.function_types.map(&:name).join(', ') %>
       </td>
       <td>
-        <%= function.showtimes.map{ |showtime| l(showtime.time.in_time_zone("America/Santiago"), format: :normal_time ) }.join(', ') %>
+        <%= function.showtimes.map{ |showtime| I18n.l(showtime.time.in_time_zone("America/Santiago"), format: :normal_time ) }.join(', ') %>
       </td>
       <td width="200">
         <%= link_to edit_admin_theater_function_path(@theater.id, function.id, date: params[:date]), class: 'btn btn-default' do %>

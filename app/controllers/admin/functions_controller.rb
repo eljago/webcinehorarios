@@ -46,7 +46,7 @@ class Admin::FunctionsController < ApplicationController
 
   def update
     @function.assign_attributes(function_params)
-    if (Function.create_string_from_horarios(params[:horarios]) != @function.showtimes.map{ |showtime| l(showtime.time, format: :normal_time ) }.join(', '))
+    if (Function.create_string_from_horarios(params[:horarios]) != @function.showtimes.map{ |showtime| I18n.l(showtime.time, format: :normal_time ) }.join(', '))
       @function.showtimes = []
       Function.create_showtimes @function, params[:horarios]
     end

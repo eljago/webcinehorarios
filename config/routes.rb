@@ -233,6 +233,7 @@ require 'api_constraints'
 
 Webcinehorarios::Application.routes.draw do
 
+  get 'react_examples/component', to: 'react_examples#component', as: :component
   devise_for :members
 
   root :to => 'home#index'

@@ -22,7 +22,7 @@ child :functions do
 	end
 	node :showtimes do |f|
 		f.showtimes.order('showtimes.time ASC').select(:time).map do |showtime|
-			l showtime.time, format: :normal_time
+			I18n.l showtime.time, format: :normal_time
 		end.join(', ')
 	end
 end

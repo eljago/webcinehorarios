@@ -11,10 +11,6 @@
 /db/*.sqlite3
 /db/*.sql
 
-# Ignore all logfiles and tempfiles.
-/log/*.log
-/tmp
-
 # Ignore other unneeded files.
 doc/
 *.swp
@@ -39,4 +35,14 @@ dump.rdb
 
 .dropbox.attr
 
-passenger.*
+passenger.*/node_modules
+/app/assets/javascripts/react_bundle.js
+/app/assets/stylesheets/react_bundle.css
+
+# Ignore all logfiles and tempfiles.
+/log/*
+!/log/.keep
+/tmp
+/node_modules
+/app/assets/javascripts/react_bundle.js
+/app/assets/stylesheets/react_bundle.css
