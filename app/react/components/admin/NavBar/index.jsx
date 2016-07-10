@@ -1,9 +1,21 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import {Nav, Navbar, NavDropdown, MenuItem, NavItem} from 'react-bootstrap'
 
 export default class NavBar extends React.Component {
 
-  render () {
+	componentDidMount() {
+    console.log('did mount')
+    this._removeHref()
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+    console.log('did update')
+    this._removeHref()
+	}
+
+  render() {
+    console.log('render')
     return(
     	<Navbar inverse>
 		    <Navbar.Header>
@@ -14,9 +26,9 @@ export default class NavBar extends React.Component {
 		    </Navbar.Header>
 		    <Navbar.Collapse>
 		      <Nav>
-		        <NavItem handleSelect={this.handleSelect} eventKey={1} href="#">Link</NavItem>
+		        <NavItem eventKey={1} href="#">Link</NavItem>
 		        <NavItem eventKey={2} href="#">Link</NavItem>
-		        <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+		        <NavDropdown onClick={this._removeHref.bind(this)} ref={'dropdown'} eventKey={3} title="Dropdown" id="basic-nav-dropdown">
 		          <MenuItem eventKey={3.1}>Action</MenuItem>
 		          <MenuItem eventKey={3.2}>Another action</MenuItem>
 		          <MenuItem eventKey={3.3}>Something else here</MenuItem>
@@ -30,12 +42,13 @@ export default class NavBar extends React.Component {
 		      </Nav>
 		    </Navbar.Collapse>
 		  </Navbar>
-    );
+    )
   }
 
-  _handleSelect(event, eventKey){
-	 	console.log(event)
-		console.log(eventKey)
+	_removeHref() {
+    const dropdownLink = ReactDOM.findDOMNode(this.refs.dropdown).querySelector(".dropdown-toggle")
+    dropdownLink.removeAttribute("href")
+    console.log(dropdownLink);
 	}
 }
 
