@@ -1,7 +1,7 @@
 import React from 'react'
 import {Button} from 'react-bootstrap'
 
-export default class Dashboard extends React.Component {
+export default class HomeIndex extends React.Component {
 
   render () {
     return(

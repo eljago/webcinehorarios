@@ -15,7 +15,12 @@
 
 		<%= render 'layouts/react_hot_assets' %>
 		
-		<%= yield %>
-		
+  	<div>
+  		<%= react_component('NavBar', { }, { server_side: true }) %>
+  		<div className="container">
+				<%= yield %>
+    	</div>
+  	</div>
+
 	</body>
 </html>
