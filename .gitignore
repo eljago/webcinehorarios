@@ -35,14 +35,13 @@ dump.rdb
 
 .dropbox.attr
 
-passenger.*/node_modules
-/app/assets/javascripts/react_bundle.js
-/app/assets/stylesheets/react_bundle.css
+passenger.*
 
 # Ignore all logfiles and tempfiles.
 /log/*
 !/log/.keep
 /tmp
+
 /node_modules
 /app/assets/javascripts/react_bundle.js
 /app/assets/stylesheets/react_bundle.css
