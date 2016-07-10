@@ -1,6 +1,6 @@
 class Admin::TheatersController < ApplicationController
-  before_filter :get_theaterable
-  before_filter :get_theater, only: [:show, :edit, :update, :destroy]
+  before_action :get_theaterable
+  before_action :get_theater, only: [:show, :edit, :update, :destroy]
 
   def index
     @theaters =

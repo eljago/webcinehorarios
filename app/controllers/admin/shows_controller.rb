@@ -4,8 +4,8 @@ require 'open-uri'
 require 'json'
 class Admin::ShowsController < ApplicationController
   
-  before_filter :get_show, only: :destroy
-  before_filter :set_previous_url, only: [:index, :billboard, :comingsoon]
+  before_action :get_show, only: :destroy
+  before_action :set_previous_url, only: [:index, :billboard, :comingsoon]
   
   def set_previous_url
     if action_name == 'index'

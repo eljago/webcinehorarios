@@ -12,6 +12,8 @@
 #  index_show_debuts_on_show_id  (show_id)
 #
 
-class ShowDebut < ActiveRecord::Base
+class ShowDebut < ApplicationRecord
+
   belongs_to :show
+  
 end

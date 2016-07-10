@@ -1,6 +1,6 @@
 class Admin::ChannelsController < ApplicationController
   
-  before_filter :get_channel, only: [:show, :edit, :update, :destroy]
+  before_action :get_channel, only: [:show, :edit, :update, :destroy]
   
   def index
     @channels = Channel.all

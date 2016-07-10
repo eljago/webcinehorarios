@@ -16,9 +16,9 @@
 #  index_comments_on_show_id    (show_id)
 #
 
-class Comment < ActiveRecord::Base
-  # attr_accessible :author, :content, :member_id, :show
-  
+class Comment < ApplicationRecord
+
   belongs_to :member
   belongs_to :show
+  
 end

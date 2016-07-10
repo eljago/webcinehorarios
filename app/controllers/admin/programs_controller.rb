@@ -1,7 +1,7 @@
 class Admin::ProgramsController < ApplicationController
   
-  before_filter :get_channel, only: [:index, :new, :create]
-  before_filter :get_program_channel, only: [:show, :edit, :update, :destroy]
+  before_action :get_channel, only: [:index, :new, :create]
+  before_action :get_program_channel, only: [:show, :edit, :update, :destroy]
   
   def index
     @programs = @channel.programs.order(:name)

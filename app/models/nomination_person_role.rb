@@ -11,9 +11,9 @@
 #  index_nomination_person_roles_on_nomination_id_and_person_id  (nomination_id,person_id)
 #
 
-class NominationPersonRole < ActiveRecord::Base
-  # attr_accessible :person_id, :nomination_id
-  
+class NominationPersonRole < ApplicationRecord
+
   belongs_to :person
   belongs_to :nomination
+  
 end

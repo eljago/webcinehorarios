@@ -1,7 +1,7 @@
 # encoding: utf-8
 class Admin::CountriesController < ApplicationController
   
-  before_filter :get_country, only: [:edit, :update, :destroy]
+  before_action :get_country, only: [:edit, :update, :destroy]
   
   def index
     @countries = Country.all

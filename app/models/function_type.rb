@@ -7,9 +7,8 @@
 #  color :string(255)
 #
 
-class FunctionType < ActiveRecord::Base
-  # attr_accessible :name, :cinema_ids
-  
+class FunctionType < ApplicationRecord
+	
   has_and_belongs_to_many :functions
   has_and_belongs_to_many :cinemas
   has_many :parse_detector_types, :dependent => :destroy

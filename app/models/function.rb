@@ -17,8 +17,7 @@
 #  index_functions_on_theater_id      (theater_id)
 #
 
-class Function < ActiveRecord::Base
-  # attr_accessible :theater_id, :show_id, :function_type_ids, :date, :showtimes_ids
+class Function < ApplicationRecord
   
   belongs_to :theater
   belongs_to :show

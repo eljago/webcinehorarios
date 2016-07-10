@@ -16,11 +16,9 @@
 #  index_people_on_slug  (slug) UNIQUE
 #
 
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
-  
-  # attr_accessible :birthdate, :birthplace, :deathdate, :height, :information, :name, :image, :remote_image_url, :imdb_code
   
   has_many :show_person_roles, :dependent => :destroy
   has_many :shows, through: :show_person_roles

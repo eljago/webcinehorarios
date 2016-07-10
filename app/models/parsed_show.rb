@@ -13,9 +13,9 @@
 #  index_parsed_shows_on_show_id  (show_id)
 #
 
-class ParsedShow < ActiveRecord::Base
-  # attr_accessible :name, :show_id
-  
+class ParsedShow < ApplicationRecord
+	
   belongs_to :show
   has_many :functions
+
 end

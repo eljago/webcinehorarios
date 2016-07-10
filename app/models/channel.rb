@@ -10,8 +10,8 @@
 #  updated_at :datetime         not null
 #
 
-class Channel < ActiveRecord::Base
-  # attr_accessible :directv, :name, :vtr
-  
+class Channel < ApplicationRecord
+
   has_many :programs
+  
 end

@@ -20,11 +20,10 @@
 #  index_show_person_roles_on_person_id_and_show_id  (person_id,show_id)
 #
 
-class ShowPersonRole < ActiveRecord::Base
+class ShowPersonRole < ApplicationRecord
   acts_as_list
-  
-  # attr_accessible :actor, :writer, :creator, :producer, :director, :person_id, :show_id, :character
   
   belongs_to :show
   belongs_to :person
+
 end

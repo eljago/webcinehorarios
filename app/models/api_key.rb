@@ -8,7 +8,7 @@
 #  updated_at   :datetime         not null
 #
 
-class ApiKey < ActiveRecord::Base
+class ApiKey < ApplicationRecord
   before_create :generate_access_token
   
   private

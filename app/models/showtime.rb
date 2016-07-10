@@ -11,9 +11,7 @@
 #  index_showtimes_on_function_id  (function_id)
 #
 
-class Showtime < ActiveRecord::Base
-  
-  # attr_accessible :time
+class Showtime < ApplicationRecord
   
   validates :time, presence: true
   validates :function, presence: true

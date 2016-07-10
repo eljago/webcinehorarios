@@ -1,6 +1,6 @@
 class Admin::PeopleController < ApplicationController
   
-  before_filter :get_person, only: [:show, :edit, :update, :destroy]
+  before_action :get_person, only: [:show, :edit, :update, :destroy]
   
   def index
     # letter = params[:letter].blank? ? 'A' : params[:letter] 

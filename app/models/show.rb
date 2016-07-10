@@ -29,7 +29,7 @@
 #  index_shows_on_slug  (slug) UNIQUE
 #
 
-class Show < ActiveRecord::Base
+class Show < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
     

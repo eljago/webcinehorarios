@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 class Admin::FunctionsController < ApplicationController
-  before_filter :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day, :delete_week]
-  before_filter :get_function, only: [:edit, :update, :destroy]
+  before_action :get_theater, only: [:index, :new, :create, :copy_last_day, :delete_day, :delete_week]
+  before_action :get_function, only: [:edit, :update, :destroy]
 
   def index
     @dates_array = ((Date.current-2)..(Date.current+7))

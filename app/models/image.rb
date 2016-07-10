@@ -20,9 +20,8 @@
 #  index_images_on_show_portrait_id                 (show_portrait_id)
 #
 
-class Image < ActiveRecord::Base
-  # attr_accessible :name, :image, :remote_image_url, :width, :height, :show_portrait_id
-  
+class Image < ApplicationRecord
+	
   belongs_to :imageable, polymorphic: true
   
   mount_uploader :image, ShowImagesUploader

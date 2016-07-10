@@ -16,14 +16,13 @@
 #  index_cities_on_slug        (slug) UNIQUE
 #
 
-class City < ActiveRecord::Base
+class City < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
-  
-  # attr_accessible :name, :theater_ids
   
   belongs_to :country
   has_many :theaters
 
   validates :name, :presence => :true
+  
 end

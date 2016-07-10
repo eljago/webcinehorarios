@@ -6,8 +6,8 @@
 #  name :string(255)
 #
 
-class AwardType < ActiveRecord::Base
-  # attr_accessible :name
-  
+class AwardType < ApplicationRecord
+
   has_many :awards
+  
 end

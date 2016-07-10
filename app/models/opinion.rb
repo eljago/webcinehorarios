@@ -8,6 +8,6 @@
 #  date    :date
 #
 
-class Opinion < ActiveRecord::Base
-  # attr_accessible :author, :comment, :date
+class Opinion < ApplicationRecord
+	
 end

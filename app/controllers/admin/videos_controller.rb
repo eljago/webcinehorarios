@@ -4,7 +4,7 @@ require 'json'
 
 class Admin::VideosController < ApplicationController
   
-  before_filter :get_video, only: [:edit, :update, :destroy]
+  before_action :get_video, only: [:edit, :update, :destroy]
   
   def index
     @videos = Video.order('videos.created_at DESC').page(params[:page]).per_page(10)

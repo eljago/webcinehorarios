@@ -15,8 +15,7 @@
 #  index_awards_on_award_type_id  (award_type_id)
 #
 
-class Award < ActiveRecord::Base
-  # attr_accessible :name, :active, :date, :image, :award_specific_categories_attributes, :award_type_id
+class Award < ApplicationRecord
   
   has_many :award_specific_categories, dependent: :destroy
   has_many :award_categories, through: :award_specific_nominations

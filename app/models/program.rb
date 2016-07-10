@@ -14,7 +14,8 @@
 #  index_programs_on_channel_id  (channel_id)
 #
 
-class Program < ActiveRecord::Base
+class Program < ApplicationRecord
+	
   belongs_to :channel
-  # attr_accessible :name, :time
+
 end

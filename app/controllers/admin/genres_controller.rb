@@ -1,6 +1,6 @@
 class Admin::GenresController < ApplicationController
 
-  before_filter :get_genre, only: [:edit, :update, :destroy]
+  before_action :get_genre, only: [:edit, :update, :destroy]
   
   def index
     @genres = Genre.order(:name).all

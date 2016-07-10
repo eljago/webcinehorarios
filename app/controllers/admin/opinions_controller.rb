@@ -1,5 +1,5 @@
 class Admin::OpinionsController < ApplicationController
-  before_filter :get_opinion, only: [:edit, :update, :destroy]
+  before_action :get_opinion, only: [:edit, :update, :destroy]
   
   def index
     @opinions = Opinion.all

@@ -1,6 +1,6 @@
 class Admin::PagesController < ApplicationController
   
-  before_filter :get_page, only: [:show, :edit, :update, :destroy]
+  before_action :get_page, only: [:show, :edit, :update, :destroy]
   
   def index
     @pages = Page.all

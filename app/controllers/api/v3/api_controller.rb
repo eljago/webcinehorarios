@@ -1,7 +1,7 @@
 module Api
   module V3
     class ApiController < ApplicationController
-      before_filter :restrict_access
+      before_action :restrict_access
       respond_to :json
   
       private 

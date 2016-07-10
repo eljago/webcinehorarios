@@ -1,6 +1,6 @@
 class Admin::FunctionTypesController < ApplicationController
   
-  before_filter :get_function_type, only: [:edit, :update, :destroy]
+  before_action :get_function_type, only: [:edit, :update, :destroy]
 
   def index
     @function_types = FunctionType.all

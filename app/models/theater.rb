@@ -24,11 +24,9 @@
 #  index_theaters_on_slug                   (slug) UNIQUE
 #
 
-class Theater < ActiveRecord::Base
+class Theater < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
-
-  # attr_accessible :cinema_id, :city_id, :address, :information, :latitude, :longitude, :name, :web_url, :function_type_ids, :active
 
   belongs_to :city
   belongs_to :cinema

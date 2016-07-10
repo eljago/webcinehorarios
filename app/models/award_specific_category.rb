@@ -16,9 +16,8 @@
 #  award_s_categories  (award_id,award_category_id)
 #
 
-class AwardSpecificCategory < ActiveRecord::Base
-  # attr_accessible :name, :award_category_id, :award_id, :nominations_attributes, :winner_type
-  
+class AwardSpecificCategory < ApplicationRecord
+	
   belongs_to :award
   belongs_to :award_category
   has_many :shows, through: :nominations
