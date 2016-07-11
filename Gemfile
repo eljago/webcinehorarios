@@ -52,7 +52,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # OTHER GEMS
 
-gem 'react_webpack_rails'
+gem "react_on_rails", "~> 5"
 
 gem 'rails-i18n', '~> 5.0.0'
 
