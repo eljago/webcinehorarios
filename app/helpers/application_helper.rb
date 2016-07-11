@@ -21,4 +21,64 @@ module ApplicationHelper
     link_to(name, '#', class: "btn btn-success add_fields", data: {id: id, fields: fields.gsub("\n", "")})
   end
   
+  def render_navbar
+    render 'shared/react_navbar', navbar_items_data: 
+    [
+      {
+        type: 'header',
+        href: admin_path,
+        title: 'Admin'
+      },
+      {
+        type: 'collapse',
+        items: [
+          {
+            type: 'nav',
+            items: [
+              {
+                type: 'nav_item',
+                href: admin_path,
+                title: 'Link1'
+              },
+              {
+                type: 'dropdown',
+                id: 'dropdown-1',
+                title: 'Dropdown',
+                items: [
+                  {
+                    type: 'menu_item',
+                    href: admin_path,
+                    title: 'Dropdown Item 1'
+                  },
+                  {
+                    type: 'divider'
+                  },
+                  {
+                    type: 'menu_item',
+                    href: admin_path,
+                    title: 'Dropdown Item 2'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            type: 'nav_pull_right',
+            items: [
+              {
+                type: 'nav_item',
+                href: admin_path,
+                title: 'Link1'
+              },
+              {
+                type: 'nav_item',
+                href: admin_path,
+                title: 'Link2'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  end
 end

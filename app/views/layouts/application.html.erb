@@ -11,7 +11,10 @@
 	</head>
 
 	<body>
-		
+		<% if current_member && current_member.admin? %>
+			<%= render_navbar %>
+		<% end %>
+
 		<%= yield %>
 
 	</body>
