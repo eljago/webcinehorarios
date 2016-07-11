@@ -47,5 +47,3 @@ passenger.*
 .byebug_history
 
 /node_modules
-/app/assets/javascripts/react_bundle.js
-/app/assets/stylesheets/react_bundle.css
