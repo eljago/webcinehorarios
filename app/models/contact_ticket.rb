@@ -1,16 +1,3 @@
-# == Schema Information
-#
-# Table name: contact_tickets
-#
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  from       :string(255)
-#  subject    :string(255)
-#  content    :text
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#
-
 class ContactTicket < ApplicationRecord
 
   validates :name, presence: true

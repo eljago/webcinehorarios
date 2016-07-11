@@ -1,12 +1,3 @@
-# == Schema Information
-#
-# Table name: function_types
-#
-#  id    :integer          not null, primary key
-#  name  :string(255)
-#  color :string(255)
-#
-
 class FunctionType < ApplicationRecord
 	
   has_and_belongs_to_many :functions

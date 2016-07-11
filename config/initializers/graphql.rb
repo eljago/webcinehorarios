@@ -1,1 +1,0 @@
-# Rails.config.autoload_paths << Rails.root.join('app', 'graph', 'types')

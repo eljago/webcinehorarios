@@ -1,19 +1,3 @@
-# == Schema Information
-#
-# Table name: nominations
-#
-#  id                         :integer          not null, primary key
-#  winner                     :boolean
-#  award_specific_category_id :integer
-#  show_id                    :integer
-#  created_at                 :datetime         not null
-#  updated_at                 :datetime         not null
-#
-# Indexes
-#
-#  index_nominations_on_award_specific_category_id_and_show_id  (award_specific_category_id,show_id)
-#
-
 class Nomination < ApplicationRecord
 
   belongs_to :award_specific_category

@@ -1,21 +1,3 @@
-# == Schema Information
-#
-# Table name: award_specific_categories
-#
-#  id                :integer          not null, primary key
-#  name              :string(255)
-#  winner_type       :string(255)
-#  winner_show       :integer
-#  award_id          :integer
-#  award_category_id :integer
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#
-# Indexes
-#
-#  award_s_categories  (award_id,award_category_id)
-#
-
 class AwardSpecificCategory < ApplicationRecord
 	
   belongs_to :award

@@ -53,6 +53,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # OTHER GEMS
 
 gem "react_on_rails", "~> 5"
+gem 'bootstrap-sass', '~> 3.3.6'
 
 gem 'rails-i18n', '~> 5.0.0'
 
@@ -85,8 +86,6 @@ group :development do
   gem 'rails_db', '~> 1.3'
 
   gem 'railroady'
-
-  gem 'annotate'
 
   gem 'capistrano', '~> 3.1'
   gem 'capistrano-bundler', '~> 1.1.2'

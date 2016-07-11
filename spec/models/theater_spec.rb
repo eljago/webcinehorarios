@@ -1,29 +1,3 @@
-# == Schema Information
-#
-# Table name: theaters
-#
-#  id           :integer          not null, primary key
-#  name         :string(255)
-#  image        :string(255)
-#  address      :string(255)
-#  information  :text
-#  cinema_id    :integer
-#  city_id      :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  web_url      :string(255)
-#  active       :boolean
-#  slug         :string(255)
-#  latitude     :decimal(15, 10)
-#  longitude    :decimal(15, 10)
-#  parse_helper :string(255)
-#
-# Indexes
-#
-#  index_theaters_on_city_id_and_cinema_id  (city_id,cinema_id)
-#  index_theaters_on_slug                   (slug) UNIQUE
-#
-
 require 'spec_helper'
 
 describe Theater do

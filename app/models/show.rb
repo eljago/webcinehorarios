@@ -1,34 +1,3 @@
-# == Schema Information
-#
-# Table name: shows
-#
-#  id                    :integer          not null, primary key
-#  name                  :string(255)
-#  image                 :string(255)
-#  information           :text
-#  duration              :integer
-#  name_original         :string(255)
-#  rating                :string(255)
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
-#  debut                 :date
-#  year                  :integer
-#  active                :boolean
-#  image_tmp             :string(255)
-#  facebook_id           :string(255)
-#  metacritic_url        :string(255)
-#  metacritic_score      :integer
-#  imdb_code             :string(255)
-#  imdb_score            :integer
-#  rotten_tomatoes_url   :string(255)
-#  rotten_tomatoes_score :integer
-#  slug                  :string(255)
-#
-# Indexes
-#
-#  index_shows_on_slug  (slug) UNIQUE
-#
-
 class Show < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
