@@ -1,7 +1,9 @@
-import React, { PropTypes } from 'react';
-import _ from 'lodash';
-import ShowsMain from '../components/ShowsMain';
-import ShowModal from '../components/ShowModal';
+import React, { PropTypes } from 'react'
+import ReactDOM from 'react-dom'
+import Immutable from 'immutable'
+import _ from 'lodash'
+import ShowsMain from '../components/ShowsMain'
+import ShowModal from '../components/ShowModal'
 
 export default class Shows extends React.Component {
 
@@ -10,7 +12,7 @@ export default class Shows extends React.Component {
     this.state = {
       editingShow: null,
       page: 1,
-      shows: []
+      shows: Immutable.List()
     }
     _.bindAll(this, 
       [
@@ -40,40 +42,39 @@ export default class Shows extends React.Component {
           handleSubmit={this._handleSubmit}
         />
       </div>
-    );
+    )
   }
 
   _updateShowsTable() {
     $.getJSON(`/api/shows.json?page=${this.state.page}`, (response) => {
       this.setState({
-        shows: response
-      });
-    });
+        shows: Immutable.fromJS(response)
+      })
+    })
   }
 
   _handleSubmit(show) {
-    console.log(show);
     $.ajax({
-      url: `/api/shows/${show.id}`,
+      url: `/api/shows/${show.get('id')}`,
       type: 'PUT',
       data: {
         shows: {
-          name: show.name
+          name: show.get('name')
         }
       },
       success: (response) => {
         this.setState({
           editingShow: null
         })
+        this._updateShowsTable()
       }
-    });
-    this._updateShowsTable();
+    })
   }
 
   _handleEdit(show) {
     this.setState({
       editingShow: show
-    });
+    })
   }
 
   _handleDelete(id) {
@@ -81,18 +82,18 @@ export default class Shows extends React.Component {
       url: `/api/shows/${id}`,
       type: 'DELETE',
       success: (response) => {
-        this._removeShowClient(id);
+        this._removeShowClient(id)
       }
-    });
+    })
   }
 
   _removeItemClient(id) {
     let newShows = this.state.shows.filter((show) => {
-      return show.id != id;
-    });
+      return show.get('id') != id;
+    })
     this.setState({
       shows: newShows,
       editingShow: null,
-    });
+    })
   }
 }

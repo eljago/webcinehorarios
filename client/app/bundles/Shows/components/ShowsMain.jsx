@@ -4,7 +4,7 @@ import {Table, Button} from 'react-bootstrap'
 // Simple example of a React "smart" component
 export default class ShowsMain extends React.Component {
   static propTypes = {
-    shows: PropTypes.array.isRequired,
+    shows: PropTypes.object.isRequired,
     handleEdit: PropTypes.func.isRequired
   };
 
@@ -12,8 +12,8 @@ export default class ShowsMain extends React.Component {
     const tableRows = this.props.shows.map((show) => {
       return(
         <tr>
-          <td>{show.id}</td>
-          <td>{show.name}</td>
+          <td>{show.get('id')}</td>
+          <td>{show.get('name')}</td>
           <td><Button onClick={() => this.props.handleEdit(show)}>Editar</Button></td>
         </tr>
       );

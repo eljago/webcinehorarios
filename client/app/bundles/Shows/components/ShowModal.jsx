@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
-import Immutable from 'immutable';
 import {Modal, Button, Form, FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 
 // Simple example of a React "smart" component
@@ -20,14 +19,14 @@ export default class ShowModal extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      show: Immutable.fromJS(nextProps.show)
+      show: nextProps.show
     })
   }
 
   render() {
     const show = this.state.show
     const modalVisible = show != null
-    const modalTitle = this.props.show ? this.props.show.name : "Crear Show"
+    const modalTitle = this.props.show ? this.props.show.get('name') : "Crear Show"
     return (
       <Modal show={modalVisible} onHide={this._close}>
         <Modal.Header closeButton>
@@ -73,6 +72,6 @@ export default class ShowModal extends React.Component {
   }
 
   _handleSubmit() {
-    this.props.handleSubmit(this.state.show.toObject());
+    this.props.handleSubmit(this.state.show);
   }
 }
