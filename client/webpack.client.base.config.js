@@ -23,6 +23,7 @@ module.exports = {
     app: [
       './app/bundles/HelloWorld/startup/clientRegistration',
       './app/bundles/NavBarApp/startup/clientRegistration',
+      './app/bundles/Shows/startup/clientRegistration',
     ],
   },
   resolve: {

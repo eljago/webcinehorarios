@@ -15,6 +15,11 @@ Rails.application.routes.draw do
   ##### API #####
   namespace :api, defaults: { format: 'json' } do
 
+    ##### V1 #####
+    scope module: :v1 do
+      resources :shows, only: [:index, :destroy, :update]
+    end
+
     ##### V3 #####
     scope module: :v3, constraints: ApiConstraints.new(version: 3) do
 

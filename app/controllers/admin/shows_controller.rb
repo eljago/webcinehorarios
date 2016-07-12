@@ -22,7 +22,7 @@ class Admin::ShowsController < ApplicationController
   def index
     # letter = params[:letter].blank? ? 'A' : params[:letter] 
     # @shows = Show.where('name like ?', "#{letter}%").order(:name)
-    @shows = Show.text_search(params[:query]).paginate(page: params[:page], per_page: 10)
+    # @shows = Show.text_search(params[:query]).paginate(page: params[:page], per_page: 10)
   end
   
   def show

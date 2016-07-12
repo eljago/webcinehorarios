@@ -1,27 +1,27 @@
-module Api
-  module V1
-    class ShowsController < Api::V1::ApiController
-      
-      def billboard
-        date = Date.current
-        @shows = Show.joins(:functions).where(active: true, functions: {date: date}).includes(:genres)
-        .select('shows.id, shows.name, shows.duration, shows.name_original, shows.image, shows.debut, shows.rating')
-        .order("debut DESC").uniq
-      end
-      
-      def comingsoon
-        date = Date.current
-        @shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', date, nil, true)
-        .select('shows.id, shows.name, shows.debut, shows.name_original, shows.image, shows.debut')
-        .order("debut ASC").all
-      end
-      
-      def show
-        @show = Show.select('shows.id, shows.name, shows.image, shows.duration, 
-        shows.name_original, shows.information, shows.debut, shows.rating, shows.year, shows.facebook_id')
-        .includes(:show_person_roles => :person).order('show_person_roles.position').find(params[:id])
-      end
-      
-    end
+class Api::V1::ShowsController < Api::V1::ApiController
+
+  def index
+    respond_with Show.order('created_at DESC').paginate(page: params[:page], per_page: 10).all
+  end
+
+  def create
+    respond_with :api, :v1, Show.create(show_params)
+  end
+
+  def destroy
+    respond_with Show.destroy(params[:id])
+  end
+
+  def update
+    puts show_params
+    show = Show.find(params[:id])
+    show.update_attributes(show_params)
+    respond_with show, json: show
+  end
+
+  private
+
+  def show_params
+    params.require(:shows).permit(:name)
   end
 end
