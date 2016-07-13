@@ -160,7 +160,7 @@ class Admin::FunctionsController < ApplicationController
   end
 
   def get_theater
-    @theater ||= Theater.find(params[:theater_id])
+    @theater ||= Theater.friendly.find(params[:theater_id])
   end
 
   def function_params

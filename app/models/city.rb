@@ -6,5 +6,4 @@ class City < ApplicationRecord
   has_many :theaters
 
   validates :name, :presence => :true
-  
 end

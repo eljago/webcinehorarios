@@ -12,14 +12,14 @@ export default class Shows extends React.Component {
     this.state = {
       editingShow: null,
       page: 1,
-      shows: Immutable.List()
+      shows: Immutable.List(),
+      canSubmit: true
     }
     _.bindAll(this, 
       [
         '_updateShowsTable',
-        '_removeItemClient',
         '_handleDelete',
-        '_handleSubmit',
+        '_handleUpdate',
         '_handleEdit'
       ]
     );
@@ -39,7 +39,8 @@ export default class Shows extends React.Component {
         />
         <ShowModal
           show={this.state.editingShow}
-          handleSubmit={this._handleSubmit}
+          handleUpdate={this._handleUpdate}
+          canSubmit={this.state.canSubmit}
         />
       </div>
     )
@@ -48,32 +49,33 @@ export default class Shows extends React.Component {
   _updateShowsTable() {
     $.getJSON(`/api/shows.json?page=${this.state.page}`, (response) => {
       this.setState({
-        shows: Immutable.fromJS(response)
+        shows: Immutable.fromJS(response),
+        editingShow: null
       })
     })
   }
 
-  _handleSubmit(show) {
-    $.ajax({
-      url: `/api/shows/${show.get('id')}`,
-      type: 'PUT',
-      data: {
-        shows: {
-          name: show.get('name')
-        }
-      },
-      success: (response) => {
-        this.setState({
-          editingShow: null
-        })
-        this._updateShowsTable()
-      }
+  _handleEdit(immutableShow) {
+    this.setState({
+      editingShow: immutableShow
     })
   }
 
-  _handleEdit(show) {
-    this.setState({
-      editingShow: show
+  _handleUpdate(immutableShow) {
+    this.setState({canSubmit: false})
+    $.ajax({
+      url: `/api/shows/${immutableShow.get('id')}`,
+      type: 'PUT',
+      data: {
+        shows: immutableShow.toJS()
+      },
+      success: (response) => {
+        this.setState({
+          editingShow: null,
+          canSubmit: true
+        })
+        this._updateShowsTable()
+      }
     })
   }
 
@@ -82,18 +84,8 @@ export default class Shows extends React.Component {
       url: `/api/shows/${id}`,
       type: 'DELETE',
       success: (response) => {
-        this._removeShowClient(id)
+        this._updateShowsTable(id)
       }
-    })
-  }
-
-  _removeItemClient(id) {
-    let newShows = this.state.shows.filter((show) => {
-      return show.get('id') != id;
-    })
-    this.setState({
-      shows: newShows,
-      editingShow: null,
     })
   }
 }

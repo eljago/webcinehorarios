@@ -1,6 +1,6 @@
 class Person < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: [:slugged, :finders]
+  friendly_id :slug_candidates, use: [:slugged, :finders]
   
   has_many :show_person_roles, :dependent => :destroy
   has_many :shows, through: :show_person_roles
@@ -21,5 +21,9 @@ class Person < ApplicationRecord
     else
       order('created_at desc')
     end
+  end
+
+  def slug_candidates
+    [ :name, [:name, :imdb_code] ]
   end
 end

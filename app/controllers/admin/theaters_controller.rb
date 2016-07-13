@@ -54,9 +54,9 @@ class Admin::TheatersController < ApplicationController
   def get_theaterable
     @theaterable ||=
       if params[:city_id]
-        City.find(params[:city_id])
+        City.friendly.find(params[:city_id])
       elsif params[:cinema_id]
-        Cinema.find(params[:cinema_id])
+        Cinema.friendly.find(params[:cinema_id])
       end
   end
 

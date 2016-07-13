@@ -54,6 +54,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem "react_on_rails", "~> 5"
 gem 'bootstrap-sass', '~> 3.3.6'
+gem 'font-awesome-rails'
 
 gem 'rails-i18n', '~> 5.0.0'
 

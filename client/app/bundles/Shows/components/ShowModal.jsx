@@ -6,7 +6,8 @@ import {Modal, Button, Form, FormControl, ControlLabel, FormGroup} from 'react-b
 export default class ShowModal extends React.Component {
   static propTypes = {
     show: PropTypes.object,
-    handleSubmit: PropTypes.func.isRequired
+    handleUpdate: PropTypes.func.isRequired,
+    canSubmit: PropTypes.boolean
   };
 
   constructor(props) {
@@ -14,7 +15,7 @@ export default class ShowModal extends React.Component {
     this.state = {
       show: props.show
     }
-    _.bindAll(this, '_handleSubmit', '_close', '_handleChange')
+    _.bindAll(this, '_handleUpdate', '_close', '_handleChange')
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,6 +35,7 @@ export default class ShowModal extends React.Component {
         </Modal.Header>
         <Modal.Body>
           <Form horizontal>
+
             <FormGroup controlId="formShowName">
               <ControlLabel>Nombre</ControlLabel>
               <FormControl
@@ -43,10 +45,22 @@ export default class ShowModal extends React.Component {
                 onChange={this._handleChange}
               />
             </FormGroup>
+
+            <FormGroup controlId="formShowRemoteImage">
+              <ControlLabel>Remote Image URL</ControlLabel>
+              <FormControl
+                type="text"
+                placeholder="Remote Image URL"
+                onChange={this._handleChange}
+              />
+            </FormGroup>
+
+            <Button onClick={this._handleUpdate} target disabled={!this.props.canSubmit} type="submit">
+              Submit
+            </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this._handleSubmit}>Submit</Button>
           <Button onClick={this._close}>Close</Button>
         </Modal.Footer>
       </Modal>
@@ -58,6 +72,9 @@ export default class ShowModal extends React.Component {
     let show = this.state.show;
     if (formControl.id === 'formShowName') {
       show = show.set('name', e.target.value)
+    }
+    if (formControl.id === 'formShowRemoteImage') {
+      show = show.set('remote_image_url', e.target.value)
     }
 
     this.setState({
@@ -71,7 +88,7 @@ export default class ShowModal extends React.Component {
     })
   }
 
-  _handleSubmit() {
-    this.props.handleSubmit(this.state.show);
+  _handleUpdate() {
+    this.props.handleUpdate(this.state.show);
   }
 }

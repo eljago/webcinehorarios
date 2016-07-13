@@ -61,7 +61,7 @@ class Admin::PeopleController < ApplicationController
   private
   
   def get_person
-    @person = Person.find(params[:id])
+    @person = Person.friendly.find(params[:id])
   end
   
   def person_params
