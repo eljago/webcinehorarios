@@ -77,7 +77,7 @@ class Admin::ShowsController < ApplicationController
   end
   
   def update
-    @show = Show.find(params[:id])
+    @show = Show.friendly.find(params[:id])
     instance_show_params = show_params
     if instance_show_params[:videos_attributes]
       instance_show_params[:videos_attributes].each do |key, video|
@@ -92,7 +92,6 @@ class Admin::ShowsController < ApplicationController
               video_json = JSON.parse(s)
               video[:remote_image_url] = video_json.first["thumbnail_large"]
             end
-            
           elsif video[:_destroy] == "false"
             db_video = @show.videos.find(video[:id].to_i)
             unless db_video && db_video.code == video[:code]

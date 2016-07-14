@@ -36,6 +36,7 @@
     "react-bootstrap": "^0.29.5",
     "react-dom": "^0.14.8 || ^15.0.0",
     "react-on-rails": "5.2.0",
+    "validator": "^5.4.0",
     "webpack": "^1.12.14"
   },
   "devDependencies": {}

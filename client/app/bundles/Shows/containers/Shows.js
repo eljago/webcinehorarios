@@ -19,7 +19,7 @@ export default class Shows extends React.Component {
       [
         '_updateShowsTable',
         '_handleDelete',
-        '_handleUpdate',
+        '_handleSubmit',
         '_handleEdit'
       ]
     );
@@ -39,7 +39,7 @@ export default class Shows extends React.Component {
         />
         <ShowModal
           show={this.state.editingShow}
-          handleUpdate={this._handleUpdate}
+          handleSubmit={this._handleSubmit}
           canSubmit={this.state.canSubmit}
         />
       </div>
@@ -61,13 +61,16 @@ export default class Shows extends React.Component {
     })
   }
 
-  _handleUpdate(immutableShow) {
+  _handleSubmit(immutableShow) {
     this.setState({canSubmit: false})
     $.ajax({
       url: `/api/shows/${immutableShow.get('id')}`,
       type: 'PUT',
       data: {
-        shows: immutableShow.toJS()
+        shows: {
+          name: immutableShow.get('name'),
+          remote_image_url: immutableShow.get('remote_image_url')
+        }
       },
       success: (response) => {
         this.setState({

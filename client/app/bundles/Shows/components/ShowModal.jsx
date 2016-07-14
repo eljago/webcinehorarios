@@ -1,12 +1,22 @@
-import React, { PropTypes } from 'react';
-import _ from 'lodash';
-import {Modal, Button, Form, FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
+import React, { PropTypes } from 'react'
+import _ from 'lodash'
+import {
+  Modal,
+  Button,
+  Form,
+  FormControl,
+  ControlLabel,
+  FormGroup,
+  HelpBlock
+} from 'react-bootstrap'
+import Immutable from 'immutable';
 
-// Simple example of a React "smart" component
+import FormFieldText from '../../../lib/forms/FormFieldText'
+
 export default class ShowModal extends React.Component {
   static propTypes = {
     show: PropTypes.object,
-    handleUpdate: PropTypes.func.isRequired,
+    handleSubmit: PropTypes.func.isRequired,
     canSubmit: PropTypes.boolean
   };
 
@@ -15,7 +25,11 @@ export default class ShowModal extends React.Component {
     this.state = {
       show: props.show
     }
-    _.bindAll(this, '_handleUpdate', '_close', '_handleChange')
+    _.bindAll(this,
+      '_handleSubmit',
+      '_close',
+      '_onChange',
+    )
   }
 
   componentWillReceiveProps(nextProps) {
@@ -25,39 +39,39 @@ export default class ShowModal extends React.Component {
   }
 
   render() {
-    const show = this.state.show
-    const modalVisible = show != null
     const modalTitle = this.props.show ? this.props.show.get('name') : "Crear Show"
+    const show = this.state.show
     return (
-      <Modal show={modalVisible} onHide={this._close}>
+      <Modal show={show != null} onHide={this._close}>
         <Modal.Header closeButton>
           <Modal.Title>{modalTitle}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form horizontal>
+          <Form horizontal ref={'form'}>
 
-            <FormGroup controlId="formShowName">
-              <ControlLabel>Nombre</ControlLabel>
-              <FormControl
-                type="text"
-                value={show ? show.get('name') : ''}
-                placeholder="Nombre"
-                onChange={this._handleChange}
-              />
-            </FormGroup>
+            <FormFieldText
+              controlId='name'
+              label={'Nombre'}
+              initialValue={show ? show.get('name') : ''}
+              validations={['notNull']}
+              onChange={this._onChange}
+            />
 
-            <FormGroup controlId="formShowRemoteImage">
-              <ControlLabel>Remote Image URL</ControlLabel>
-              <FormControl
-                type="text"
-                placeholder="Remote Image URL"
-                onChange={this._handleChange}
-              />
-            </FormGroup>
+            <FormFieldText
+              controlId='remote_image_url'
+              label={'Remote Image URL'}
+              onChange={this._onChange}
+            />
 
-            <Button onClick={this._handleUpdate} target disabled={!this.props.canSubmit} type="submit">
+            <Button
+              onClick={this._handleSubmit}
+              target
+              disabled={!(this.props.canSubmit)}
+              type="submit"
+            >
               Submit
             </Button>
+
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -67,18 +81,9 @@ export default class ShowModal extends React.Component {
     );
   }
 
-  _handleChange(e) {
-    const formControl = e.target;
-    let show = this.state.show;
-    if (formControl.id === 'formShowName') {
-      show = show.set('name', e.target.value)
-    }
-    if (formControl.id === 'formShowRemoteImage') {
-      show = show.set('remote_image_url', e.target.value)
-    }
-
+  _onChange(controlId, value) {
     this.setState({
-      show: show
+      show: this.state.show.set(controlId, value)
     })
   }
 
@@ -88,7 +93,7 @@ export default class ShowModal extends React.Component {
     })
   }
 
-  _handleUpdate() {
-    this.props.handleUpdate(this.state.show);
+  _handleSubmit() {
+    this.props.handleSubmit(this.state.show);
   }
 }
