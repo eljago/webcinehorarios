@@ -10,17 +10,18 @@ export default class Shows extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      editingShow: null,
+      modalShow: this._getEmptyShow(),
       page: 1,
       shows: Immutable.List(),
-      canSubmit: true
     }
     _.bindAll(this, 
       [
         '_updateShowsTable',
         '_handleDelete',
         '_handleSubmit',
-        '_handleEdit'
+        '_handleEdit',
+        '_openModal',
+        '_closeModal',
       ]
     );
   }
@@ -38,46 +39,47 @@ export default class Shows extends React.Component {
           handleDelete={this._handleDelete}
         />
         <ShowModal
-          show={this.state.editingShow}
+          ref='modal'
+          show={this.state.modalShow}
           handleSubmit={this._handleSubmit}
-          canSubmit={this.state.canSubmit}
         />
       </div>
     )
   }
 
+  _openModal() {
+    this.refs.modal.open()
+  }
+
+  _closeModal() {
+    this.refs.modal.close()
+  }
+
   _updateShowsTable() {
     $.getJSON(`/api/shows.json?page=${this.state.page}`, (response) => {
       this.setState({
-        shows: Immutable.fromJS(response),
-        editingShow: null
-      })
-    })
+        shows: Immutable.fromJS(response)
+      });
+    });
   }
 
   _handleEdit(immutableShow) {
     this.setState({
-      editingShow: immutableShow
-    })
+      modalShow: immutableShow
+    });
+    this._openModal();
   }
 
   _handleSubmit(immutableShow) {
-    this.setState({canSubmit: false})
     $.ajax({
       url: `/api/shows/${immutableShow.get('id')}`,
       type: 'PUT',
       data: {
-        shows: {
-          name: immutableShow.get('name'),
-          remote_image_url: immutableShow.get('remote_image_url')
-        }
+        shows: immutableShow.toJS()
       },
       success: (response) => {
-        this.setState({
-          editingShow: null,
-          canSubmit: true
-        })
-        this._updateShowsTable()
+        this._updateShowsTable();
+        this._closeModal();
       }
     })
   }
@@ -87,8 +89,16 @@ export default class Shows extends React.Component {
       url: `/api/shows/${id}`,
       type: 'DELETE',
       success: (response) => {
-        this._updateShowsTable(id)
+        this._updateShowsTable(id);
       }
     })
+  }
+
+  _getEmptyShow() {
+    return Immutable.fromJS({
+      name: '',
+      remote_image_url: '',
+      image: ''
+    });
   }
 }

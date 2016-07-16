@@ -6,22 +6,22 @@ import validator from 'validator';
 export default class FormFieldText extends React.Component {
   static propTypes = {
     controlId: PropTypes.string,
+    onChange: PropTypes.func,
     label: PropTypes.string,
     initialValue: PropTypes.string,
     validations: PropTypes.array,
-    onChange: PropTypes.func
   };
   static defaultProps = {
     label: '',
+    initialValue: '',
     validations: [],
-    initialValue: ''
   };
 
   constructor(props) {
     super(props)
     this.state = {
       currentValue: props.initialValue,
-      failedValidations: []
+      failedValidations: [],
     };
     _.bindAll(this, '_handleChange');
   }
@@ -35,7 +35,7 @@ export default class FormFieldText extends React.Component {
       controlId,
       label,
       initialValue
-    } = this.props
+    } = this.props;
 
     return(
       <FormGroup
@@ -47,9 +47,10 @@ export default class FormFieldText extends React.Component {
           type="text"
           value={this.state.currentValue}
           placeholder={label}
-          onChange={(e) => this._handleChange(e.target.value)}
+          onChange={(e) => {
+            this._handleChange(_.replace(e.target.value,'  ', ' '))
+          }}
         />
-
         {this._getFeedback()}
         {this._getHelpBlocks()}
       </FormGroup>
@@ -57,43 +58,46 @@ export default class FormFieldText extends React.Component {
   }
 
   _handleChange(newValue) {
-    let failedValidations = []
+    let failedValidations = [];
     const {validations, onChange, controlId} = this.props;
+
     _.forIn(validations, (value, key) => {
       if (value === 'notNull' && validator.isNull(newValue)) {
-        failedValidations.push('notNull')
+        failedValidations.push('notNull');
       }
-    })
+    });
     this.setState({
       currentValue: newValue,
-      failedValidations: failedValidations
-    })
-    onChange(controlId, newValue);
+      failedValidations: failedValidations,
+    });
+    onChange(controlId, _.trim(newValue));
   }
 
   _getValidationState() {
-    if (this.props.validations.length == 0) return null
-    let validationState = 'success'
+    if (this.props.validations.length == 0)
+      return null;
+    let validationState = 'success';
     if (this.hasErrors()) {
-      validationState = 'error'
+      validationState = 'error';
     }
-    return validationState
+    return validationState;
   }
 
   _getFeedback() {
     if (this.props.validations.length > 0)
-      return (<FormControl.Feedback />)
-    return null
+      return (<FormControl.Feedback />);
+    return null;
   }
-
   _getHelpBlocks() {
-    let helpBlocks = []
+    let helpBlocks = [];
     _.forIn(this.state.failedValidations, (value, key) => {
       if (value === 'notNull') {
-        helpBlocks.push(<HelpBlock>{this.props.label} no puede estar en blanco.</HelpBlock>);
+        helpBlocks.push(
+          <HelpBlock>{this.props.label} no puede estar en blanco.</HelpBlock>
+        );
       }
     });
-    return helpBlocks
+    return helpBlocks;
   }
 
   hasErrors() {

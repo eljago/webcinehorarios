@@ -24,7 +24,9 @@ class Api::V1::ShowsController < Api::V1::ApiController
   def show_params
     params.require(:shows).permit(
       :name,
-      :remote_image_url
+      :remote_image_url,
+      :image,
+      :imdb_code,
     )
   end
 end

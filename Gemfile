@@ -126,6 +126,7 @@ gem 'haml'
 
 # gems used for image uploading
 gem 'carrierwave'
+gem 'carrierwave-base64'
 
 # gem 'fog'
 # gem 'unf'
