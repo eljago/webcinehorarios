@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import {FormGroup, FormControl} from 'react-bootstrap'
+import validator from 'validator';
 
 export default class FormFieldFile extends React.Component {
   static propTypes = {
@@ -37,7 +38,18 @@ export default class FormFieldFile extends React.Component {
       reader.readAsDataURL(file)
 
       reader.onload = () => {
-        onChange(controlId, reader.result);
+        if (validator.isDataURI(reader.result)) {
+          const dataTypeArray = file.type.split("/");
+          if (
+            dataTypeArray[0] === 'image'
+            && 
+            ["jpg","jpeg","gif","png"].includes(dataTypeArray[1])
+            &&
+            validator.isBase64(reader.result.split(',')[1])
+          ) {
+            onChange(controlId, reader.result);
+          }
+        }
       }
     }
     else {

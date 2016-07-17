@@ -110,11 +110,15 @@ export default class ShowModal extends React.Component {
 
   _handleSubmit() {
     let showToSubmit = this.state.currentShow;
-    if (_.trim(showToSubmit.get('remote_image_url')).length == 0) {
-      showToSubmit = showToSubmit.delete('remote_image_url')
-    }
     if (_.trim(showToSubmit.get('image')).length == 0) {
-      showToSubmit = showToSubmit.delete('image')
+      showToSubmit = showToSubmit.delete('image');
+    }
+    if (_.trim(showToSubmit.get('remote_image_url')).length == 0) {
+      showToSubmit = showToSubmit.delete('remote_image_url');
+    }
+    else {
+      // don't send file image if remote_image_url is present
+      showToSubmit = showToSubmit.delete('image');
     }
     this.props.handleSubmit(showToSubmit);
   }
