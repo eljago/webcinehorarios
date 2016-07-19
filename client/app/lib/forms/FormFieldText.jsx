@@ -5,6 +5,7 @@ import validator from 'validator';
 
 export default class FormFieldText extends React.Component {
   static propTypes = {
+    type: PropTypes.string,
     controlId: PropTypes.string,
     onChange: PropTypes.func,
     label: PropTypes.string,
@@ -12,6 +13,7 @@ export default class FormFieldText extends React.Component {
     validations: PropTypes.array,
   };
   static defaultProps = {
+    type: 'text',
     label: '',
     initialValue: '',
     validations: [],
@@ -44,12 +46,13 @@ export default class FormFieldText extends React.Component {
       >
         <ControlLabel>{label}</ControlLabel>
         <FormControl
-          type="text"
+          type={this.props.type}
           value={this.state.currentValue}
           placeholder={label}
           onChange={(e) => {
             this._handleChange(_.replace(e.target.value,'  ', ' '))
           }}
+          required
         />
         {this._getFeedback()}
         {this._getHelpBlocks()}

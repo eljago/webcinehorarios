@@ -1,9 +1,3 @@
 <% provide(:title, "#{@show.name} Edit") %>
-<%= render 'breadcrumbs' %>
-<h1>Editar Shows</h1>
 
-<%= render 'form' %>
-&nbsp;
-<%= link_to [:admin, @show], class: 'btn btn-default' do %>
-	<i class="icon-edit"></i> Mostrar
-<% end %>
+<%= react_component 'ShowEdit', props: {show: @show}, prerender: false %>

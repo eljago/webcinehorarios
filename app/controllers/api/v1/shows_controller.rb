@@ -13,7 +13,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
   end
 
   def update
-    puts show_params
     show = Show.find(params[:id])
     show.update_attributes(show_params)
     respond_with show, json: show

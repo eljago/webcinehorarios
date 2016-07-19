@@ -5,12 +5,11 @@ import {
   Button,
   Form,
 } from 'react-bootstrap'
-import Immutable from 'immutable';
 
 import FormFieldText from '../../../lib/forms/FormFieldText'
 import FormFieldFile from '../../../lib/forms/FormFieldFile'
 
-export default class ShowModal extends React.Component {
+export default class ShowForm extends React.Component {
   static propTypes = {
     show: PropTypes.object,
     handleSubmit: PropTypes.func.isRequired,
@@ -20,13 +19,12 @@ export default class ShowModal extends React.Component {
     super(props)
     this.state = {
       currentShow: props.show,
-      visible: false,
     }
     _.bindAll(this,
-      '_handleSubmit',
-      '_onChange',
-      'close',
-      'open',
+      [
+        '_handleSubmit',
+        '_onChange',
+      ]  
     )
   }
 
@@ -37,21 +35,18 @@ export default class ShowModal extends React.Component {
   }
 
   render() {
-    const modalTitle = this.props.show ? this.props.show.get('name') : "Crear Show"
+    const {show} = this.props;
+    if (show) {
+      const modalTitle = show ? show.get('name') : "Crear Show"
 
-    return (
-      <Modal show={this.state.visible} onHide={this.close}>
-        <Modal.Header closeButton>
-          <Modal.Title>{modalTitle}</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
+      return (
+        <div className="container">
           <Form horizontal ref={'form'}>
 
             <FormFieldText
               controlId='name'
               label={'Nombre'}
-              initialValue={this.props.show.get('name')}
+              initialValue={show.get('name')}
               validations={['notNull']}
               onChange={this._onChange}
             />
@@ -59,7 +54,7 @@ export default class ShowModal extends React.Component {
             <FormFieldText
               controlId='remote_image_url'
               label={'Remote Image URL'}
-              initialValue={this.props.show.get('remote_image_url')}
+              initialValue={show.get('remote_image_url')}
               onChange={this._onChange}
             />
 
@@ -71,7 +66,45 @@ export default class ShowModal extends React.Component {
             <FormFieldText
               controlId='imdb_code'
               label={'Imdb Code'}
-              initialValue={this.props.show.get('imdb_code')}
+              initialValue={show.get('imdb_code')}
+              onChange={this._onChange}
+            />
+
+            <FormFieldText
+              type='number'
+              controlId='imdb_score'
+              label={'Imdb Score'}
+              initialValue={show.get('imdb_score')}
+              onChange={this._onChange}
+            />
+
+            <FormFieldText
+              controlId='metacritic_url'
+              label={'Metacritic URL'}
+              initialValue={show.get('metacritic_url')}
+              onChange={this._onChange}
+            />
+
+            <FormFieldText
+              type='number'
+              controlId='metacritic_score'
+              label={'Metacritic Score'}
+              initialValue={show.get('metacritic_score')}
+              onChange={this._onChange}
+            />
+
+            <FormFieldText
+              controlId='rotten_tomatoes_url'
+              label={'Rotten Tomatoes URL'}
+              initialValue={show.get('rotten_tomatoes_url')}
+              onChange={this._onChange}
+            />
+
+            <FormFieldText
+              type='number'
+              controlId='rotten_tomatoes_score'
+              label={'Rotten Tomatoes Score'}
+              initialValue={show.get('rotten_tomatoes_score')}
               onChange={this._onChange}
             />
 
@@ -85,27 +118,18 @@ export default class ShowModal extends React.Component {
             </Button>
 
           </Form>
-        </Modal.Body>
-
-        <Modal.Footer>
-          <Button onClick={this.close}>Close</Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  }
-
-  open() {
-    this.setState({visible: true})
-  }
-
-  close() {
-    this.setState({visible: false})
+        </div>
+      );
+    }
+    else {
+      return null;
+    }
   }
 
   _onChange(controlId, value) {
     this.setState({
       currentShow: this.state.currentShow.set(controlId, value)
-    })
+    });
   }
 
   _handleSubmit() {

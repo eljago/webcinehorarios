@@ -1,4 +1,5 @@
 import ReactOnRails from 'react-on-rails';
-import Shows from './ShowsClient';
+import {Shows, ShowEdit} from './ShowsClient';
 
 ReactOnRails.register({ Shows });
+ReactOnRails.register({ ShowEdit });
