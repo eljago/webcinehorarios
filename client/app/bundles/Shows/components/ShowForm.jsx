@@ -52,6 +52,7 @@ export default class ShowForm extends React.Component {
           <Form horizontal ref={'form'}>
             <Row>
               <Col xs={8}>
+
                 <FormFieldText
                   controlId='name'
                   label={'Nombre'}
@@ -59,49 +60,26 @@ export default class ShowForm extends React.Component {
                   validations={['notNull']}
                   onChange={this._onChange}
                 />
-              </Col>
-              <Col xs={4}>
-                <FormFieldDate
-                  controlId='debut'
-                  label='Estreno'
-                  onChange={this._onChange}
-                />
-              </Col>
-            </Row>
 
-            <Row>
-              <Col xs={8}>
                 <FormFieldText
                   controlId='remote_image_url'
                   label={'Remote Image URL'}
                   initialValue={show.get('remote_image_url')}
                   onChange={this._onChange}
                 />
-              </Col>
-            </Row>
 
-            <Row>
-              <Col xs={8}>
                 <FormFieldFile
                   controlId='image'
                   onChange={this._onChange}
                 />
-              </Col>
-            </Row>
 
-            <Row>
-              <Col xs={8}>
                 <FormFieldText
                   controlId='imdb_code'
                   label={'Imdb Code'}
                   initialValue={show.get('imdb_code')}
                   onChange={this._onChange}
                 />
-              </Col>
-            </Row>
 
-            <Row>
-              <Col xs={8}>
                 <FormFieldText
                   type='number'
                   controlId='imdb_score'
@@ -109,22 +87,14 @@ export default class ShowForm extends React.Component {
                   initialValue={show.get('imdb_score')}
                   onChange={this._onChange}
                 />
-              </Col>
-            </Row>
 
-            <Row>
-              <Col xs={8}>
                 <FormFieldText
                   controlId='metacritic_url'
                   label={'Metacritic URL'}
                   initialValue={show.get('metacritic_url')}
                   onChange={this._onChange}
                 />
-              </Col>
-            </Row>
 
-            <Row>
-              <Col xs={8}>
                 <FormFieldText
                   type='number'
                   controlId='metacritic_score'
@@ -132,22 +102,14 @@ export default class ShowForm extends React.Component {
                   initialValue={show.get('metacritic_score')}
                   onChange={this._onChange}
                 />
-              </Col>
-            </Row>
 
-            <Row>
-              <Col xs={8}>
                 <FormFieldText
                   controlId='rotten_tomatoes_url'
                   label={'Rotten Tomatoes URL'}
                   initialValue={show.get('rotten_tomatoes_url')}
                   onChange={this._onChange}
                 />
-              </Col>
-            </Row>
 
-            <Row>
-              <Col xs={8}>
                 <FormFieldText
                   type='number'
                   controlId='rotten_tomatoes_score'
@@ -155,11 +117,7 @@ export default class ShowForm extends React.Component {
                   initialValue={show.get('rotten_tomatoes_score')}
                   onChange={this._onChange}
                 />
-              </Col>
-            </Row>
-            
-            <Row>
-              <Col xs={8}>
+
                 <Button
                   onClick={this._handleSubmit}
                   target
@@ -168,6 +126,17 @@ export default class ShowForm extends React.Component {
                 >
                   Submit
                 </Button>
+
+              </Col>
+
+              <Col xs={4}>
+              
+                <FormFieldDate
+                  controlId='debut'
+                  label='Estreno'
+                  onChange={this._onChange}
+                />
+
               </Col>
             </Row>
 

@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 import _ from 'lodash'
 import moment from 'moment'
-// import DatePicker from 'react-datepicker'
-var DatePicker = require("react-bootstrap-date-picker");
+var DateTimeField = require('react-bootstrap-datetimepicker');
 
 export default class FormFieldDate extends React.Component {
   static propTypes = {
@@ -18,7 +17,7 @@ export default class FormFieldDate extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      date: new Date().toISOString()
+      date: moment().format("YYYY-MM-DD")
     };
     _.bindAll(this, '_handleChange');
   }
@@ -32,17 +31,21 @@ export default class FormFieldDate extends React.Component {
     return(
       <FormGroup controlId={controlId}>
         <ControlLabel>{label}</ControlLabel>
-        <DatePicker
-          value={this.state.date}
+        <DateTimeField
+          dateTime={this.state.date}
           onChange={this._handleChange}
+          format='YYYY-MM-DD'
+          viewMode="date"
+          inputFormat="DD-MM-YYYY"
         />
       </FormGroup>
     );
   }
 
   _handleChange(date) {
+    console.log(date)
     const {controlId, onChange} = this.props;
     this.setState({date});
-    onChange(controlId, moment(date).format('YYYY-MM-DD'));
+    onChange(controlId, date);
   }
 }

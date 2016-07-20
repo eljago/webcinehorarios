@@ -12,6 +12,7 @@
  *
  *= require_self
  *= require ./my_bootstrap
+ *= require ./react_bootstrap_datetimepicker
  */
 
 .turbolinks-progress-bar {
