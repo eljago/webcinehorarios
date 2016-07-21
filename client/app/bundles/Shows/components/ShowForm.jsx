@@ -129,8 +129,8 @@ export default class ShowForm extends React.Component {
 
               </Col>
 
-              <Col xs={4}>
-              
+              <Col xs={3} xsOffset={1}>
+
                 <FormFieldDate
                   controlId='debut'
                   label='Estreno'
