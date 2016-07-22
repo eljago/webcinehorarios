@@ -1,7 +1,7 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
-import {Checkbox, ControlLabel, FormGroup} from 'react-bootstrap'
+import {Checkbox, ControlLabel, FormGroup, Row, Col} from 'react-bootstrap'
 import _ from 'lodash'
 
 export default class FormFieldCheckboxGroup extends React.Component {
@@ -11,9 +11,11 @@ export default class FormFieldCheckboxGroup extends React.Component {
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
     selectedValues: PropTypes.array,
+    columns: PropTypes.number,
   };
   static defaultProps = {
     label: '',
+    columns: 1,
   };
 
   constructor(props) {
@@ -21,15 +23,20 @@ export default class FormFieldCheckboxGroup extends React.Component {
     this.state = {
       selectedValues: props.selectedValues
     };
-    _.bindAll(this, ['_handleChange', '_getCheckboxElements']);
+    _.bindAll(this, [
+      '_handleChange',
+    ]);
   }
 
   render() {
     const {controlId, label} = this.props;
+    
     return(
       <FormGroup controlId={controlId}>
         <ControlLabel>{label}</ControlLabel>
-        {this._getCheckboxElements()}
+        <Row>
+          {this._getCheckboxColumns()}
+        </Row>
       </FormGroup>
     );
   }
@@ -47,6 +54,28 @@ export default class FormFieldCheckboxGroup extends React.Component {
         </Checkbox>
       );
     });
+  }
+
+  _getCheckboxColumns() {
+    const {columns} = this.props;
+    const checkboxElements = this._getCheckboxElements();
+    const length = checkboxElements.length;
+    let checkboxCols = [];
+    for (var column = 0; column < columns; column++) {
+      let innerElements = []; 
+      _.forIn(checkboxElements, (el, index) => {
+        const elementsPerCol = _.floor(length/columns);
+        if (index >= elementsPerCol * column && index < elementsPerCol * (column+1)) {
+          innerElements.push(el)
+        }
+      });
+      checkboxCols.push(
+        <Col xs={12/columns}>
+          {innerElements}
+        </Col>
+      );
+    }
+    return checkboxCols;
   }
 
   _handleChange(value) {

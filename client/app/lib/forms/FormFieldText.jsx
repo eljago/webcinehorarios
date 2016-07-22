@@ -3,7 +3,6 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import {FormControl, ControlLabel, FormGroup, HelpBlock} from 'react-bootstrap'
-import validator from 'validator';
 
 export default class FormFieldText extends React.Component {
   static propTypes = {
@@ -12,20 +11,21 @@ export default class FormFieldText extends React.Component {
     onChange: PropTypes.func,
     label: PropTypes.string,
     initialValue: PropTypes.string,
-    validations: PropTypes.array,
+    regExp: PropTypes.object,
   };
   static defaultProps = {
     type: 'text',
     label: '',
     initialValue: '',
-    validations: [],
+    regExp: null
   };
 
   constructor(props) {
-    super(props)
+    super(props);
+
     this.state = {
       currentValue: props.initialValue,
-      failedValidations: [],
+      valid: props.regExp ? props.regExp.test(props.initialValue) : true,
     };
     _.bindAll(this, '_handleChange');
   }
@@ -58,78 +58,35 @@ export default class FormFieldText extends React.Component {
           required
         />
         {this._getFeedback()}
-        {this._getHelpBlocks()}
       </FormGroup>
     )
   }
 
   _handleChange(newValue) {
-    this.setState({
-      currentValue: newValue,
-      failedValidations: this._getFailedValidations(newValue),
-    });
+    let newState = {currentValue: newValue};
+
+    if (this.props.regExp)
+      newState.valid = this.props.regExp.test(newValue);
+
+    this.setState(newState);
+
     const {onChange, controlId} = this.props;
     onChange(controlId, _.trim(newValue));
   }
 
   _getValidationState() {
-    if (this.props.validations.length > 0) {
-      if (this.hasErrors()) {
+    if (this.props.regExp) {
+      if (this.state.valid)
+        return 'success';
+      else
         return 'error';
-      }
-      return 'success';
     }
     return null;
   }
 
   _getFeedback() {
-    if (this.props.validations.length > 0)
+    if (this.props.regExp)
       return (<FormControl.Feedback />);
     return null;
-  }
-  _getHelpBlocks() {
-    let helpBlocks = [];
-    _.forIn(this.state.failedValidations, (validation, key) => {
-      switch (validation) {
-        case 'notNull':
-          helpBlocks.push(
-            <HelpBlock>{this.props.label} no puede estar en blanco.</HelpBlock>
-          );
-          break;
-        case 'regExp':
-          helpBlocks.push(
-            <HelpBlock>No tiene el formato correcto</HelpBlock>
-          );
-          break;
-        default:
-          break;
-      }
-    });
-    return helpBlocks;
-  }
-
-  hasErrors() {
-    return this.state.failedValidations.length > 0;
-  }
-
-  _getFailedValidations(newValue) {
-    let failedValidations = [];
-    _.forIn(this.props.validations, (validation) => {
-      switch (validation.name){
-        case 'notNull':
-          if (validator.isNull(newValue)) {
-            failedValidations.push(validation.name);
-          }
-          break;
-        case 'regExp':
-          if (!validation.regExp.test(newValue)) {
-            failedValidations.push(validation.name);
-          }
-          break;
-        default:
-          break;
-      }
-    });
-    return failedValidations;
   }
 }
