@@ -58,7 +58,7 @@ export default class ShowForm extends React.Component {
                   controlId='name'
                   label={'Nombre'}
                   initialValue={show.get('name')}
-                  validations={['notNull']}
+                  validations={[{name: 'notNull'}]}
                   onChange={this._onChange}
                 />
 
@@ -102,6 +102,9 @@ export default class ShowForm extends React.Component {
                       controlId='imdb_score'
                       label={'Imdb Score'}
                       initialValue={show.get('imdb_score')}
+                      validations={[
+                        {name: 'regExp', regExp: new RegExp("^([0-9]{2})$")}
+                      ]}
                       onChange={this._onChange}
                     />
                   </Col>

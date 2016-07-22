@@ -96,6 +96,11 @@ export default class FormFieldText extends React.Component {
             <HelpBlock>{this.props.label} no puede estar en blanco.</HelpBlock>
           );
           break;
+        case 'regExp':
+          helpBlocks.push(
+            <HelpBlock>No tiene el formato correcto</HelpBlock>
+          );
+          break;
         default:
           break;
       }
@@ -110,10 +115,15 @@ export default class FormFieldText extends React.Component {
   _getFailedValidations(newValue) {
     let failedValidations = [];
     _.forIn(this.props.validations, (validation) => {
-      switch (validation){
+      switch (validation.name){
         case 'notNull':
           if (validator.isNull(newValue)) {
-            failedValidations.push('notNull');
+            failedValidations.push(validation.name);
+          }
+          break;
+        case 'regExp':
+          if (!validation.regExp.test(newValue)) {
+            failedValidations.push(validation.name);
           }
           break;
         default:
