@@ -40,7 +40,7 @@ export default class FormFieldText extends React.Component {
 
     const typeProps = type === 'textarea' ? 
       {componentClass: type, rows: 7} : 
-      {type: type}
+      {type: type};
 
     return(
       <FormGroup
@@ -73,13 +73,13 @@ export default class FormFieldText extends React.Component {
   }
 
   _getValidationState() {
-    if (this.props.validations.length == 0)
-      return null;
-    let validationState = 'success';
-    if (this.hasErrors()) {
-      validationState = 'error';
+    if (this.props.validations.length > 0) {
+      if (this.hasErrors()) {
+        return 'error';
+      }
+      return 'success';
     }
-    return validationState;
+    return null;
   }
 
   _getFeedback() {
@@ -89,11 +89,15 @@ export default class FormFieldText extends React.Component {
   }
   _getHelpBlocks() {
     let helpBlocks = [];
-    _.forIn(this.state.failedValidations, (value, key) => {
-      if (value === 'notNull') {
-        helpBlocks.push(
-          <HelpBlock>{this.props.label} no puede estar en blanco.</HelpBlock>
-        );
+    _.forIn(this.state.failedValidations, (validation, key) => {
+      switch (validation) {
+        case 'notNull':
+          helpBlocks.push(
+            <HelpBlock>{this.props.label} no puede estar en blanco.</HelpBlock>
+          );
+          break;
+        default:
+          break;
       }
     });
     return helpBlocks;
@@ -103,7 +107,7 @@ export default class FormFieldText extends React.Component {
     return this.state.failedValidations.length > 0;
   }
 
-  _getFailedValidations(value) {
+  _getFailedValidations(newValue) {
     let failedValidations = [];
     _.forIn(this.props.validations, (validation) => {
       switch (validation){
