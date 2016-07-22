@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { PropTypes } from 'react'
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 import _ from 'lodash'
@@ -8,7 +10,8 @@ export default class FormFieldDate extends React.Component {
   static propTypes = {
     controlId: PropTypes.string,
     onChange: PropTypes.func,
-    label: PropTypes.string
+    label: PropTypes.string,
+    date: PropTypes.string,
   };
   static defaultProps = {
     label: '',
@@ -16,14 +19,11 @@ export default class FormFieldDate extends React.Component {
 
   constructor(props) {
     super(props)
+    const momentDate = props.date ? moment(props.date) : moment();
     this.state = {
-      date: moment().format("YYYY-MM-DD")
+      date: momentDate.format("YYYY-MM-DD")
     };
     _.bindAll(this, '_handleChange');
-  }
-
-  componentDidMount() {
-    this._handleChange(this.state.date);
   }
 
   render() {

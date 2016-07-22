@@ -39,7 +39,17 @@ class Admin::ShowsController < ApplicationController
   end
   
   def edit
-    @show = Show.includes(show_person_roles: :person).order('show_person_roles.position').find(params[:id])
+    show = Show.includes({show_person_roles: :person}, :genres)
+      .order('genres.name, show_person_roles.position').find(params[:id])
+    @show = show.as_json
+    @show["genres"] = show.genres.map do |genre|
+      {"id" => genre.id, "name" => genre.name}
+    end
+    @show["show_person_roles"] = show.show_person_roles.map do |spr|
+      {"person_id" => spr.person_id, "name" => spr.person.name, 
+        "actor" => spr.actor, "director" => spr.director, "character" => spr.character}
+    end
+    @genres = Genre.order(:name).all
   end
   
   def create

@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
@@ -19,10 +21,6 @@ export default class FormFieldSelect extends React.Component {
       currentValue: props.initialValue,
     };
     _.bindAll(this, '_handleChange');
-  }
-
-  componentDidMount() {
-    this._handleChange(this.state.currentValue);
   }
 
   render() {

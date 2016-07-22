@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { PropTypes } from 'react'
 import Immutable from 'immutable'
 import _ from 'lodash'
@@ -25,6 +27,7 @@ export default class ShowEdit extends React.Component {
       <ShowForm
         show={this.state.show}
         handleSubmit={this._handleSubmit}
+        genres={this.props.genres}
       />
     );
   }
@@ -40,7 +43,7 @@ export default class ShowEdit extends React.Component {
         }
       },
       success: (response) => {
-
+        
       }
     });
   }

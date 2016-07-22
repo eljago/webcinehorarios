@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { PropTypes } from 'react'
 import ReactDOM from 'react-dom'
 import Immutable from 'immutable'

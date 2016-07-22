@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { PropTypes } from 'react';
 import {Nav, Navbar, NavDropdown, MenuItem, NavItem} from 'react-bootstrap'
 import _ from 'lodash';

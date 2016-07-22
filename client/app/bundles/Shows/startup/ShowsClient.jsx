@@ -1,3 +1,5 @@
+'use strict';
+
 import React from 'react';
 import ShowsContainer from '../containers/Shows';
 import ShowEditContainer from '../containers/ShowEdit';

@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { PropTypes } from 'react';
 import {PageHeader, Button, Image, Grid, Row, Col} from 'react-bootstrap'
 

@@ -1,3 +1,5 @@
+'use strict';
+
 import ReactOnRails from 'react-on-rails';
 import {Shows, ShowEdit} from './ShowsClient';
 

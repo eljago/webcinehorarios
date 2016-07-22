@@ -1,6 +1,8 @@
+'use strict';
+
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
-import {FormGroup, FormControl} from 'react-bootstrap'
+import {FormGroup, FormControl, ControlLabel} from 'react-bootstrap'
 import validator from 'validator';
 
 export default class FormFieldFile extends React.Component {
@@ -19,10 +21,11 @@ export default class FormFieldFile extends React.Component {
       <FormGroup
         controlId={this.props.controlId}
       >
+        <ControlLabel>Local Image</ControlLabel>
         <FormControl
           type="file"
-          onChange={ this._handleChange }
-          multiple={ false } 
+          onChange={this._handleChange}
+          multiple={false} 
         />
       </FormGroup>
     );
@@ -54,7 +57,7 @@ export default class FormFieldFile extends React.Component {
     }
     else {
       onChange(controlId, '');
+      return false;
     }
-
   }
 }

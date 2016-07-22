@@ -25,7 +25,16 @@ class Api::V1::ShowsController < Api::V1::ApiController
       :name,
       :remote_image_url,
       :image,
+      :information,
       :imdb_code,
+      :imdb_score,
+      :metacritic_url,
+      :metacritic_score,
+      :rotten_tomatoes_url,
+      :rotten_tomatoes_score,
+      :debut,
+      :rating,
+      genre_ids: []
     )
   end
 end

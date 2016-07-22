@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import {FormControl, ControlLabel, FormGroup, HelpBlock} from 'react-bootstrap'
@@ -28,16 +30,17 @@ export default class FormFieldText extends React.Component {
     _.bindAll(this, '_handleChange');
   }
 
-  componentDidMount() {
-    this._handleChange(this.state.currentValue);
-  }
-
   render() {
     const {
       controlId,
       label,
-      initialValue
+      initialValue,
+      type
     } = this.props;
+
+    const typeProps = type === 'textarea' ? 
+      {componentClass: type, rows: 7} : 
+      {type: type}
 
     return(
       <FormGroup
@@ -46,7 +49,7 @@ export default class FormFieldText extends React.Component {
       >
         <ControlLabel>{label}</ControlLabel>
         <FormControl
-          type={this.props.type}
+          {...typeProps}
           value={this.state.currentValue}
           placeholder={label}
           onChange={(e) => {
@@ -61,18 +64,11 @@ export default class FormFieldText extends React.Component {
   }
 
   _handleChange(newValue) {
-    let failedValidations = [];
-    const {validations, onChange, controlId} = this.props;
-
-    _.forIn(validations, (value, key) => {
-      if (value === 'notNull' && validator.isNull(newValue)) {
-        failedValidations.push('notNull');
-      }
-    });
     this.setState({
       currentValue: newValue,
-      failedValidations: failedValidations,
+      failedValidations: this._getFailedValidations(newValue),
     });
+    const {onChange, controlId} = this.props;
     onChange(controlId, _.trim(newValue));
   }
 
@@ -105,5 +101,21 @@ export default class FormFieldText extends React.Component {
 
   hasErrors() {
     return this.state.failedValidations.length > 0;
+  }
+
+  _getFailedValidations(value) {
+    let failedValidations = [];
+    _.forIn(this.props.validations, (validation) => {
+      switch (validation){
+        case 'notNull':
+          if (validator.isNull(newValue)) {
+            failedValidations.push('notNull');
+          }
+          break;
+        default:
+          break;
+      }
+    });
+    return failedValidations;
   }
 }
