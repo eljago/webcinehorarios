@@ -18,8 +18,10 @@ import FormFieldCheckboxGroup from '../../../lib/forms/FormFieldCheckboxGroup'
 
 export default class ShowFormCast extends React.Component {
   static propTypes = {
+    controlId: PropTypes.string,
     cast: PropTypes.object,
     getPeopleOptions: PropTypes.func,
+    onChange: PropTypes.func,
   };
   static defaultProps = {
     cast: Immutable.List()
@@ -30,8 +32,9 @@ export default class ShowFormCast extends React.Component {
     this.state = {
       currentCast: props.cast
     };
-    _.bindAll(this, [
-      '_handleChange',
+    _.bindAll(this,[
+      '_handleChangeSelect',
+      '_handleChangeCharacter',
     ]);
   }
 
@@ -43,8 +46,23 @@ export default class ShowFormCast extends React.Component {
     );
   }
 
-  _handleChange(controlId, value) {
+  _handleChangeSelect(index, value) {
+    let indexPerson = this.state.currentCast.get(index);
+    indexPerson = indexPerson.set('person_id', value.value);
+    indexPerson = indexPerson.set('name', value.label);
+    const currentCast = this.state.currentCast.set(index, indexPerson);
+    this.setState({currentCast});
+    const show_person_roles_attributes = currentCast.toJS();
+    this.props.onChange(this.props.controlId, show_person_roles_attributes);
+  }
 
+  _handleChangeCharacter(index, character) {
+    let indexPerson = this.state.currentCast.get(index);
+    indexPerson = indexPerson.set('character', character);
+    const currentCast = this.state.currentCast.set(index, indexPerson);
+    this.setState({currentCast});
+    const show_person_roles_attributes = currentCast.toJS();
+    this.props.onChange(this.props.controlId, show_person_roles_attributes);
   }
 
   _getCastFields() {
@@ -53,19 +71,19 @@ export default class ShowFormCast extends React.Component {
         <Row>
           <Col xs={4}>
             <FormFieldSelect
-              controlId={person.person_id}
+              controlId={index}
               label={'Persona'}
-              onChange={this._handleChange}
+              onChange={this._handleChangeSelect}
               initialValue={{value: person.id, label: person.name}}
               getOptions={this.props.getPeopleOptions}
             />
           </Col>
           <Col xs={8}>
             <FormFieldText
-              controlId={person.person_id}
-              label={'Nombre'}
+              controlId={index}
+              label={'Character'}
               initialValue={person.character}
-              onChange={this._handleChange}
+              onChange={this._handleChangeCharacter}
             />
           </Col>
         </Row>

@@ -54,8 +54,10 @@ export default class ShowForm extends React.Component {
 
             <Tab eventKey={2} title="Cast">
               <ShowFormCast
+                controlId="show_person_roles_attributes"
                 cast={show.get('show_person_roles')}
                 getPeopleOptions={this.props.getPeopleOptions}
+                onChange={this._onChange}
               />
             </Tab>
 

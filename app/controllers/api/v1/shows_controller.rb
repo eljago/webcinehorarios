@@ -1,7 +1,6 @@
 class Api::V1::ShowsController < Api::V1::ApiController
 
   def index
-    puts params
     respond_with Show.order('created_at DESC').paginate(page: params[:page], per_page: 10).all
   end
 
@@ -35,7 +34,8 @@ class Api::V1::ShowsController < Api::V1::ApiController
       :rotten_tomatoes_score,
       :debut,
       :rating,
-      genre_ids: []
+      genre_ids: [],
+      show_person_roles_attributes: [:person_id, :character, :show_id, :actor, :director, :id]
     )
   end
 end
