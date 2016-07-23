@@ -7,21 +7,25 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 
+import Select from 'react-select';
+
 export default class FormFieldSelect extends React.Component {
   static propTypes = {
     controlId: PropTypes.string,
     onChange: PropTypes.func,
     label: PropTypes.string,
-    values: PropTypes.array,
+    getOptions: PropTypes.array,
+    initialValue: PropTypes.object,
   };
   static defaultProps = {
     label: '',
+    initialValue: '',
   };
 
   constructor(props) {
     super(props)
     this.state = {
-      currentValue: props.initialValue,
+      currentValue: props.initialValue
     };
     _.bindAll(this, '_handleChange');
   }
@@ -35,27 +39,19 @@ export default class FormFieldSelect extends React.Component {
     return(
       <FormGroup controlId={controlId}>
         <ControlLabel>{label}</ControlLabel>
-        <FormControl
-          componentClass="select"
-          placeholder={label}
-          onChange={(e) => {
-            this._handleChange(_.replace(e.target.value,'  ', ' '))
-          }}
-        >
-          {this._getOptions()}
-        </FormControl>
+        <Select.Async
+          name={controlId}
+          value={this.state.currentValue}
+          onChange={this._handleChange}
+          loadOptions={this.props.getOptions}
+        />
       </FormGroup>
     )
   }
 
-  _getOptions() {
-    return this.props.values.map((value) => {
-      return (<option value={value}>{value}</option>);
-    })
-  }
-
   _handleChange(newValue) {
+    this.setState({currentValue: newValue});
     const {onChange, controlId} = this.props;
-    onChange(controlId, newValue);
+    onChange(newValue.value, newValue.label);
   }
 }

@@ -18,6 +18,11 @@ Rails.application.routes.draw do
     ##### V1 #####
     scope module: :v1 do
       resources :shows, only: [:index, :destroy, :update]
+      resources :people, only: [] do
+        collection do
+          get 'select_people'
+        end
+      end
     end
 
     ##### V3 #####
@@ -75,7 +80,7 @@ Rails.application.routes.draw do
 
   # ADMIN
   namespace :admin do
-  	
+
     get '' => 'home#index', as: '/'
 
     resources :videos

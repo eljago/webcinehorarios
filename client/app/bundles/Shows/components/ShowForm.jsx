@@ -17,6 +17,7 @@ export default class ShowForm extends React.Component {
     handleSubmit: PropTypes.func.isRequired,
     genres: PropTypes.array,
     canSubmit: PropTypes.boolean,
+    getPeopleOptions: PropTypes.func,
   };
   static defaultProps = {
     genres: []
@@ -54,6 +55,7 @@ export default class ShowForm extends React.Component {
             <Tab eventKey={2} title="Cast">
               <ShowFormCast
                 cast={show.get('show_person_roles')}
+                getPeopleOptions={this.props.getPeopleOptions}
               />
             </Tab>
 

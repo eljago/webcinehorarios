@@ -18,7 +18,8 @@ import FormFieldCheckboxGroup from '../../../lib/forms/FormFieldCheckboxGroup'
 
 export default class ShowFormCast extends React.Component {
   static propTypes = {
-    cast: PropTypes.object
+    cast: PropTypes.object,
+    getPeopleOptions: PropTypes.func,
   };
   static defaultProps = {
     cast: Immutable.List()
@@ -50,7 +51,16 @@ export default class ShowFormCast extends React.Component {
     return this.state.currentCast.toJS().map((person, index) => {
       return(
         <Row>
-          <Col xs={12}>
+          <Col xs={4}>
+            <FormFieldSelect
+              controlId={person.person_id}
+              label={'Persona'}
+              onChange={this._handleChange}
+              initialValue={{value: person.id, label: person.name}}
+              getOptions={this.props.getPeopleOptions}
+            />
+          </Col>
+          <Col xs={8}>
             <FormFieldText
               controlId={person.person_id}
               label={'Nombre'}
