@@ -3,21 +3,18 @@
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import Immutable from 'immutable'
-import {
-  Button,
-  Form,
-  Row,
-  Col
-} from 'react-bootstrap'
 
-import {
-  FormFieldText,
-  FormFieldFile,
-  FormFieldSelect,
-  FormFieldDate,
-  FormFieldRadioGroup,
-  FormFieldCheckboxGroup,
-} from '../../../lib/forms'
+import Button from 'react-bootstrap/lib/Button';
+import Form from 'react-bootstrap/lib/Form';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
+
+import FormFieldText from '../../../lib/forms/FormFieldText'
+import FormFieldFile from '../../../lib/forms/FormFieldFile'
+import FormFieldSelect from '../../../lib/forms/FormFieldSelect'
+import FormFieldDate from '../../../lib/forms/FormFieldDate'
+import FormFieldRadioGroup from '../../../lib/forms/FormFieldRadioGroup'
+import FormFieldCheckboxGroup from '../../../lib/forms/FormFieldCheckboxGroup'
 
 export default class ShowFormCast extends React.Component {
   static propTypes = {

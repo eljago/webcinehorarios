@@ -2,7 +2,10 @@
 
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
-import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
+
+import FormControl from 'react-bootstrap/lib/FormControl';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 export default class FormFieldSelect extends React.Component {
   static propTypes = {

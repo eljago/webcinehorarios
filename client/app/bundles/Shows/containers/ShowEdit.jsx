@@ -14,8 +14,9 @@ export default class ShowEdit extends React.Component {
     super(props);
     this.state = {
       show: Immutable.fromJS(props.show),
+      canSubmit: true,
     };
-    _.bindAll(this, 
+    _.bindAll(this,
       [
         '_handleSubmit',
       ]
@@ -28,11 +29,13 @@ export default class ShowEdit extends React.Component {
         show={this.state.show}
         handleSubmit={this._handleSubmit}
         genres={this.props.genres}
+        canSubmit={this.state.canSubmit}
       />
     );
   }
 
   _handleSubmit(immutableShow) {
+    this.setState({canSubmit: false});
     $.ajax({
       url: `/api/shows/${this.props.show.id}`,
       type: 'PUT',
@@ -43,7 +46,7 @@ export default class ShowEdit extends React.Component {
         }
       },
       success: (response) => {
-        
+        window.location.replace('/admin/shows');
       }
     });
   }

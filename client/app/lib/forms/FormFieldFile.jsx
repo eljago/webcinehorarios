@@ -2,8 +2,11 @@
 
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
-import {FormGroup, FormControl, ControlLabel} from 'react-bootstrap'
 import validator from 'validator';
+
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import FormControl from 'react-bootstrap/lib/FormControl';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 
 export default class FormFieldFile extends React.Component {
   static propTypes = {
@@ -25,7 +28,7 @@ export default class FormFieldFile extends React.Component {
         <FormControl
           type="file"
           onChange={this._handleChange}
-          multiple={false} 
+          multiple={false}
         />
       </FormGroup>
     );
@@ -36,7 +39,7 @@ export default class FormFieldFile extends React.Component {
 
     let file = e.target.files[0]
     let reader = new FileReader()
-    
+
     if (file) {
       reader.readAsDataURL(file)
 
@@ -45,7 +48,7 @@ export default class FormFieldFile extends React.Component {
           const dataTypeArray = file.type.split("/");
           if (
             dataTypeArray[0] === 'image'
-            && 
+            &&
             ["jpg","jpeg","gif","png"].includes(dataTypeArray[1])
             &&
             validator.isBase64(reader.result.split(',')[1])

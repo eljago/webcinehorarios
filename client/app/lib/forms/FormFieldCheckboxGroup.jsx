@@ -1,8 +1,13 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
-import {Checkbox, ControlLabel, FormGroup, Row, Col} from 'react-bootstrap'
 import _ from 'lodash'
+
+import Checkbox from 'react-bootstrap/lib/Checkbox';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 export default class FormFieldCheckboxGroup extends React.Component {
   static propTypes = {
@@ -30,7 +35,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
 
   render() {
     const {controlId, label} = this.props;
-    
+
     return(
       <FormGroup controlId={controlId}>
         <ControlLabel>{label}</ControlLabel>
@@ -62,7 +67,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
     const length = checkboxElements.length;
     let checkboxCols = [];
     for (var column = 0; column < columns; column++) {
-      let innerElements = []; 
+      let innerElements = [];
       _.forIn(checkboxElements, (el, index) => {
         const elementsPerCol = _.floor(length/columns);
         if (index >= elementsPerCol * column && index < elementsPerCol * (column+1)) {

@@ -1,18 +1,15 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
-import {
-  Row,
-  Col
-} from 'react-bootstrap'
 
-import {
-  FormFieldText,
-  FormFieldFile,
-  FormFieldDate,
-  FormFieldRadioGroup,
-  FormFieldCheckboxGroup,
-} from '../../../lib/forms'
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
+
+import FormFieldText from '../../../lib/forms/FormFieldText'
+import FormFieldFile from '../../../lib/forms/FormFieldFile'
+import FormFieldDate from '../../../lib/forms/FormFieldDate'
+import FormFieldRadioGroup from '../../../lib/forms/FormFieldRadioGroup'
+import FormFieldCheckboxGroup from '../../../lib/forms/FormFieldCheckboxGroup'
 
 export default class ShowFormBasic extends React.Component {
   static propTypes = {
@@ -44,7 +41,7 @@ export default class ShowFormBasic extends React.Component {
             />
 
             <Row>
-              <Col xs={12} md={7} lg={8}>
+              <Col xs={12} md={8} lg={9}>
                 <FormFieldText
                   controlId='remote_image_url'
                   label={'Remote Image URL'}
@@ -52,7 +49,7 @@ export default class ShowFormBasic extends React.Component {
                   onChange={onChange}
                 />
               </Col>
-              <Col xs={12} md={4} mdOffset={1} lg={3} lgOffset={1}>
+              <Col xs={12} md={4} lg={3}>
                 <FormFieldFile
                   controlId='image'
                   onChange={onChange}
@@ -78,7 +75,7 @@ export default class ShowFormBasic extends React.Component {
                   regExp={new RegExp("^t{2}\\d{7}$")}
                 />
               </Col>
-              <Col md={3} mdOffset={1} lg={2} lgOffset={1}>
+              <Col md={4} lg={3}>
                 <FormFieldText
                   type='number'
                   controlId='imdb_score'
@@ -100,7 +97,7 @@ export default class ShowFormBasic extends React.Component {
                   regExp={new RegExp("^http://www.metacritic.com/movie/[\\w-]+/?$")}
                 />
               </Col>
-              <Col md={3} mdOffset={1} lg={2} lgOffset={1}>
+              <Col md={4} lg={3}>
                 <FormFieldText
                   type='number'
                   controlId='metacritic_score'
@@ -122,7 +119,7 @@ export default class ShowFormBasic extends React.Component {
                   regExp={new RegExp("^https://www.rottentomatoes.com/m/[\\w-]+/?$")}
                 />
               </Col>
-              <Col md={3} mdOffset={1} lg={2} lgOffset={1}>
+              <Col md={4} lg={3}>
                 <FormFieldText
                   type='number'
                   controlId='rotten_tomatoes_score'
@@ -136,7 +133,7 @@ export default class ShowFormBasic extends React.Component {
 
           </Col>
 
-          <Col md={3} mdOffset={1}>
+          <Col md={4}>
 
             <FormFieldDate
               controlId='debut'
@@ -146,7 +143,7 @@ export default class ShowFormBasic extends React.Component {
             />
 
             <Row>
-              <Col xs={6} md={12}>
+              <Col xs={3} md={12}>
                 <FormFieldRadioGroup
                   controlId='rating'
                   label='Rating'
@@ -160,7 +157,7 @@ export default class ShowFormBasic extends React.Component {
                   selectedValue={show.get('rating')}
                 />
               </Col>
-              <Col xs={6} md={12}>
+              <Col xs={9} md={12}>
                 <FormFieldCheckboxGroup
                   controlId='genre_ids'
                   label='Géneros'

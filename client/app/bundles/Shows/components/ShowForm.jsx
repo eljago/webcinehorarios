@@ -3,12 +3,10 @@
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import Immutable from 'immutable'
-import {
-  Button,
-  Form,
-  Tabs,
-  Tab,
-} from 'react-bootstrap'
+
+import Button from 'react-bootstrap/lib/Button';
+import Tabs from 'react-bootstrap/lib/Tabs';
+import Tab from 'react-bootstrap/lib/Tab';
 
 import ShowFormBasic from './ShowFormBasic'
 import ShowFormCast from './ShowFormCast'
@@ -17,7 +15,8 @@ export default class ShowForm extends React.Component {
   static propTypes = {
     show: PropTypes.object,
     handleSubmit: PropTypes.func.isRequired,
-    genres: PropTypes.array
+    genres: PropTypes.array,
+    canSubmit: PropTypes.boolean,
   };
   static defaultProps = {
     genres: []
@@ -32,7 +31,7 @@ export default class ShowForm extends React.Component {
       [
         '_handleSubmit',
         '_onChange',
-      ]  
+      ]
     )
   }
 
@@ -41,8 +40,8 @@ export default class ShowForm extends React.Component {
 
     return (
       <div className="container">
-        <Form horizontal ref={'form'}>
-          <Tabs defaultActiveKey={1} animation={false} id="uncontrolled-tab-example">
+        <form>
+          <Tabs defaultActiveKey={1} animation={true} id="uncontrolled-tab-example">
 
             <Tab eventKey={1} title="Basic Info">
               <ShowFormBasic
@@ -71,13 +70,13 @@ export default class ShowForm extends React.Component {
           <Button
             onClick={this._handleSubmit}
             target
-            disabled={false}
+            disabled={!this.props.canSubmit}
             type="submit"
           >
             Submit
           </Button>
 
-        </Form>
+        </form>
       </div>
     );
   }

@@ -1,8 +1,11 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
-import {Radio, ControlLabel, FormGroup} from 'react-bootstrap'
 import _ from 'lodash'
+
+import Radio from 'react-bootstrap/lib/Radio';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 export default class FormFieldRadioGroup extends React.Component {
   static propTypes = {

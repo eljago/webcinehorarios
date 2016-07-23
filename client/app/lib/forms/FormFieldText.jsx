@@ -2,7 +2,11 @@
 
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
-import {FormControl, ControlLabel, FormGroup, HelpBlock} from 'react-bootstrap'
+
+import FormControl from 'react-bootstrap/lib/FormControl';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 
 export default class FormFieldText extends React.Component {
   static propTypes = {
@@ -38,8 +42,8 @@ export default class FormFieldText extends React.Component {
       type
     } = this.props;
 
-    const typeProps = type === 'textarea' ? 
-      {componentClass: type, rows: 7} : 
+    const typeProps = type === 'textarea' ?
+      {componentClass: type, rows: 7} :
       {type: type};
 
     return(

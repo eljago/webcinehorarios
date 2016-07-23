@@ -1,10 +1,13 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
-import {FormControl, ControlLabel, FormGroup} from 'react-bootstrap'
 import _ from 'lodash'
 import moment from 'moment'
+
 import DateTimeField from 'react-bootstrap-datetimepicker'
+import FormControl from 'react-bootstrap/lib/FormControl';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 export default class FormFieldDate extends React.Component {
   static propTypes = {
