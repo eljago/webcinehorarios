@@ -66,7 +66,8 @@ export default class FormFieldText extends React.Component {
     )
   }
 
-  _handleChange(newValue) {
+  _handleChange(value) {
+    const newValue = _.trim(value);
     let newState = {currentValue: newValue};
 
     if (this.props.regExp)
@@ -75,7 +76,7 @@ export default class FormFieldText extends React.Component {
     this.setState(newState);
 
     const {onChange, controlId} = this.props;
-    onChange(controlId, _.trim(newValue));
+    onChange(controlId, newValue);
   }
 
   _getValidationState() {

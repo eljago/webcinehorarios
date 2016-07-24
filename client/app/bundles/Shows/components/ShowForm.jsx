@@ -42,7 +42,7 @@ export default class ShowForm extends React.Component {
     return (
       <div className="container">
         <form>
-          <Tabs defaultActiveKey={1} animation={true} id="uncontrolled-tab-example">
+          <Tabs defaultActiveKey={1} animation={false} id="uncontrolled-tab-example">
 
             <Tab eventKey={1} title="Basic Info">
               <ShowFormBasic
@@ -71,6 +71,8 @@ export default class ShowForm extends React.Component {
 
           </Tabs>
 
+          <br/>
+
           <Button
             onClick={this._handleSubmit}
             target
@@ -87,12 +89,16 @@ export default class ShowForm extends React.Component {
 
   _onChange(controlId, value) {
     let valueToSet = value;
-
-    if (_.isArray(valueToSet) && _.isEmpty(valueToSet)) {
+    let showChanges = this.state.showChanges;
+    if (_.isNil(valueToSet)) {
+      showChanges = showChanges.delete(controlId);
+    }
+    else if (_.isArray(valueToSet) && _.isEmpty(valueToSet)) {
       valueToSet = [" "];
     }
-
-    const showChanges = this.state.showChanges.set(controlId, valueToSet);
+    else {
+      showChanges = showChanges.set(controlId, valueToSet);
+    }
     this.setState({showChanges});
     console.log(showChanges.toJS());
   }

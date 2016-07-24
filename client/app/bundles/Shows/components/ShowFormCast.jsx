@@ -8,6 +8,9 @@ import Button from 'react-bootstrap/lib/Button';
 import Form from 'react-bootstrap/lib/Form';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 
 import FormFieldText from '../../../lib/forms/FormFieldText'
 import FormFieldFile from '../../../lib/forms/FormFieldFile'
@@ -35,13 +38,27 @@ export default class ShowFormCast extends React.Component {
     _.bindAll(this,[
       '_handleChangeSelect',
       '_handleChangeCharacter',
+      '_handleDelete',
+      '_handleNewPerson',
     ]);
   }
 
   render() {
     return(
       <div>
+
+        <br/>
+
         {this._getCastFields()}
+
+        <br/>
+
+        <Button
+          bsStyle="primary"
+          onClick={this._handleNewPerson}
+        >
+          Nuevo
+        </Button>
       </div>
     );
   }
@@ -65,8 +82,34 @@ export default class ShowFormCast extends React.Component {
     this.props.onChange(this.props.controlId, show_person_roles_attributes);
   }
 
+  _handleDelete(index) {
+    let currentCast = this.state.currentCast;
+    let indexPerson = currentCast.get(index);
+    if (indexPerson.get('id')) {
+      indexPerson = indexPerson.set('_destroy', true);
+      currentCast = currentCast.set(index, indexPerson);
+    }
+    else {
+      currentCast = currentCast.delete(index)
+    }
+    this.setState({currentCast});
+    const show_person_roles_attributes = currentCast.toJS();
+    this.props.onChange(this.props.controlId, show_person_roles_attributes);
+  }
+
+  _handleNewPerson() {
+    const newPerson = Immutable.Map();
+    const currentCast = this.state.currentCast.push(newPerson);
+    this.setState({currentCast});
+    const show_person_roles_attributes = currentCast.toJS();
+    this.props.onChange(this.props.controlId, show_person_roles_attributes);
+  }
+
   _getCastFields() {
     return this.state.currentCast.toJS().map((person, index) => {
+      if (person._destroy) {
+        return null;
+      }
       return(
         <Row>
           <Col xs={4}>
@@ -78,13 +121,34 @@ export default class ShowFormCast extends React.Component {
               getOptions={this.props.getPeopleOptions}
             />
           </Col>
-          <Col xs={8}>
+          <Col xs={4}>
             <FormFieldText
               controlId={index}
               label={'Character'}
               initialValue={person.character}
               onChange={this._handleChangeCharacter}
             />
+          </Col>
+          <Col xs={1}>
+            <FormGroup>
+              <ControlLabel>Actor</ControlLabel>
+              <Checkbox />
+            </FormGroup>
+          </Col>
+          <Col xs={1}>
+            <FormGroup>
+              <ControlLabel>Director</ControlLabel>
+              <Checkbox />
+            </FormGroup>
+          </Col>
+          <Col xs={2}>
+            <Button
+              bsStyle="danger"
+              onClick={() => {this._handleDelete(index)}}
+              style={{marginTop: 25}}
+            >
+              Eliminar
+            </Button>
           </Col>
         </Row>
       );

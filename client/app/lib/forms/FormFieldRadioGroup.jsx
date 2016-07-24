@@ -53,8 +53,12 @@ export default class FormFieldRadioGroup extends React.Component {
   }
 
   _handleChange(value) {
-    this.setState({selectedValue: value});
+    let newSelectedValue = "";
+    if (value != this.state.selectedValue) {
+      newSelectedValue = value;
+    }
+    this.setState({selectedValue: newSelectedValue});
     const {controlId, onChange} = this.props;
-    onChange(controlId, value);
+    onChange(controlId, newSelectedValue);
   }
 }

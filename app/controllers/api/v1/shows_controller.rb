@@ -35,7 +35,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
       :debut,
       :rating,
       genre_ids: [],
-      show_person_roles_attributes: [:person_id, :character, :show_id, :actor, :director, :id]
+      show_person_roles_attributes: [:person_id, :character, :show_id, :actor, :director, :id, :_destroy]
     )
   end
 end

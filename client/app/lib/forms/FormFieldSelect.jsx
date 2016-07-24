@@ -44,6 +44,7 @@ export default class FormFieldSelect extends React.Component {
           value={this.state.currentValue}
           onChange={this._handleChange}
           loadOptions={this.props.getOptions}
+          clearable={false}
         />
       </FormGroup>
     )
