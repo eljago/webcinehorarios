@@ -80,7 +80,7 @@ export default class FormBuilderShowBasic extends FormBuilder {
         ]
       },
       genres: {
-        controlId: 'genre_ids',
+        submitKey: 'genre_ids',
         fieldType: 'checkboxGroupField',
         label: 'Géneros',
         columns: 2,

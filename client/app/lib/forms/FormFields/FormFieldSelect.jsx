@@ -11,7 +11,7 @@ import Select from 'react-select';
 
 export default class FormFieldSelect extends React.Component {
   static propTypes = {
-    controlId: PropTypes.number,
+    submitKey: PropTypes.number,
     label: PropTypes.string,
     getOptions: PropTypes.array,
     initialValue: PropTypes.object,
@@ -23,23 +23,21 @@ export default class FormFieldSelect extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      currentValue: props.initialValue
-    };
+    this.state = {currentValue: props.initialValue};
     _.bindAll(this, '_handleChange');
   }
 
   render() {
     const {
-      controlId,
+      submitKey,
       label,
     } = this.props;
 
     return(
-      <FormGroup controlId={controlId}>
+      <FormGroup controlId={submitKey}>
         <ControlLabel>{label}</ControlLabel>
         <Select.Async
-          name={controlId}
+          name={submitKey}
           value={this.state.currentValue}
           onChange={this._handleChange}
           loadOptions={this.props.getOptions}

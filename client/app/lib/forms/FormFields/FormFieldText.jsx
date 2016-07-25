@@ -11,7 +11,7 @@ import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 export default class FormFieldText extends React.Component {
   static propTypes = {
     type: PropTypes.string,
-    controlId: PropTypes.string,
+    submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.string,
     regExp: PropTypes.object,
@@ -35,7 +35,7 @@ export default class FormFieldText extends React.Component {
 
   render() {
     const {
-      controlId,
+      submitKey,
       label,
       initialValue,
       type
@@ -47,7 +47,7 @@ export default class FormFieldText extends React.Component {
 
     return(
       <FormGroup
-        controlId={controlId}
+        controlId={submitKey}
         validationState={this._getValidationState()}
       >
         <ControlLabel>{label}</ControlLabel>
@@ -94,7 +94,7 @@ export default class FormFieldText extends React.Component {
   getResult() {
     if (this.state.currentValue !== this.props.initialValue) {
       let result = {}
-      result[this.props.controlId] = this.state.currentValue;
+      result[this.props.submitKey] = this.state.currentValue;
       return result;
     }
     return null;

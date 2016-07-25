@@ -10,23 +10,19 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 
 export default class FormFieldFile extends React.Component {
   static propTypes = {
-    controlId: PropTypes.string,
+    submitKey: PropTypes.string,
     label: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      currentValue: ''
-    }
+    this.state = {currentValue: ''}
     _.bindAll(this, '_handleChange');
   }
 
   render() {
     return(
-      <FormGroup
-        controlId={this.props.controlId}
-      >
+      <FormGroup controlId={this.props.submitKey}>
         <ControlLabel>{this.props.label}</ControlLabel>
         <FormControl
           type="file"
@@ -38,8 +34,6 @@ export default class FormFieldFile extends React.Component {
   }
 
   _handleChange(e) {
-    const {controlId} = this.props;
-
     let file = e.target.files[0]
     let reader = new FileReader()
 
@@ -69,7 +63,7 @@ export default class FormFieldFile extends React.Component {
   getResult() {
     if (!_.isEmpty(this.state.currentValue)) {
       let result = {}
-      result[this.props.controlId] = this.state.currentValue;
+      result[this.props.submitKey] = this.state.currentValue;
       return result;
     }
     return null;

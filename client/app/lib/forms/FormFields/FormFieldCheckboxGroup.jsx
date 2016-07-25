@@ -11,7 +11,7 @@ import Col from 'react-bootstrap/lib/Col';
 
 export default class FormFieldCheckboxGroup extends React.Component {
   static propTypes = {
-    controlId: PropTypes.string,
+    submitKey: PropTypes.string,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
     initialValue: PropTypes.array,
@@ -24,19 +24,15 @@ export default class FormFieldCheckboxGroup extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      currentValue: [].concat(props.initialValue)
-    };
-    _.bindAll(this, [
-      '_handleChange',
-    ]);
+    this.state = {currentValue: [].concat(props.initialValue)};
+    _.bindAll(this, '_handleChange');
   }
 
   render() {
-    const {controlId, label} = this.props;
+    const {submitKey, label} = this.props;
 
     return(
-      <FormGroup controlId={controlId}>
+      <FormGroup controlId={submitKey}>
         <ControlLabel>{label}</ControlLabel>
         <Row>
           {this._getCheckboxColumns()}
@@ -97,7 +93,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
     if (!_.isEqual(this.state.currentValue, this.props.initialValue)) {
       let result = {}
       const newValue = this.state.currentValue.length > 0 ? this.state.currentValue : [' ']
-      result[this.props.controlId] = newValue;
+      result[this.props.submitKey] = newValue;
       return result;
     }
     return null;

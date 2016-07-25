@@ -11,7 +11,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 export default class FormFieldDate extends React.Component {
   static propTypes = {
-    controlId: PropTypes.string,
+    submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.string,
   };
@@ -23,16 +23,14 @@ export default class FormFieldDate extends React.Component {
     super(props)
     const momentDate = props.initialValue ? moment(props.initialValue) : moment();
     this.initialValue = momentDate.format("YYYY-MM-DD");
-    this.state = {
-      currentValue: this.initialValue
-    };
+    this.state = {currentValue: this.initialValue};
     _.bindAll(this, '_handleChange');
   }
 
   render() {
-    const {controlId, label} = this.props;
+    const {submitKey, label} = this.props;
     return(
-      <FormGroup controlId={controlId}>
+      <FormGroup controlId={submitKey}>
         <ControlLabel>{label}</ControlLabel>
         <DateTimeField
           dateTime={this.state.currentValue}
@@ -52,7 +50,7 @@ export default class FormFieldDate extends React.Component {
   getResult() {
     if (!_.isEqual(this.state.currentValue, this.initialValue)) {
       let result = {}
-      result[this.props.controlId] = this.state.currentValue;
+      result[this.props.submitKey] = this.state.currentValue;
       return result;
     }
     return null;

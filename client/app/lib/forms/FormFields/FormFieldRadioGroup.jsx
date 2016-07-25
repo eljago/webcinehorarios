@@ -9,7 +9,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 export default class FormFieldRadioGroup extends React.Component {
   static propTypes = {
-    controlId: PropTypes.string,
+    submitKey: PropTypes.string,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
     initialValue: PropTypes.string,
@@ -20,16 +20,14 @@ export default class FormFieldRadioGroup extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      currentValue: props.initialValue
-    };
+    this.state = {currentValue: props.initialValue};
     _.bindAll(this, ['_handleChange', '_getRadioElements']);
   }
 
   render() {
-    const {controlId, label} = this.props;
+    const {submitKey, label} = this.props;
     return(
-      <FormGroup controlId={controlId}>
+      <FormGroup controlId={submitKey}>
         <ControlLabel>{label}</ControlLabel>
         {this._getRadioElements()}
       </FormGroup>
@@ -62,7 +60,7 @@ export default class FormFieldRadioGroup extends React.Component {
   getResult() {
     if (this.state.currentValue !== this.props.initialValue) {
       let result = {}
-      result[this.props.controlId] = this.state.currentValue;
+      result[this.props.submitKey] = this.state.currentValue;
       return result;
     }
     return null;

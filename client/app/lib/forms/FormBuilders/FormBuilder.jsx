@@ -23,7 +23,7 @@ export default class FormBuilder {
 
       const formFieldProps = {
         ref: fieldId,
-        controlId: fieldInfo.controlId ? fieldInfo.controlId : fieldId,
+        submitKey: fieldInfo.submitKey ? fieldInfo.submitKey : fieldId,
         label: fieldInfo.label
       }
       let aditionalProps;
