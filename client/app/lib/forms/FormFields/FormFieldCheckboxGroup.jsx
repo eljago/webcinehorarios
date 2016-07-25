@@ -12,10 +12,9 @@ import Col from 'react-bootstrap/lib/Col';
 export default class FormFieldCheckboxGroup extends React.Component {
   static propTypes = {
     controlId: PropTypes.string,
-    onChange: PropTypes.func,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
-    selectedValues: PropTypes.array,
+    initialValue: PropTypes.array,
     columns: PropTypes.number,
   };
   static defaultProps = {
@@ -26,7 +25,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedValues: props.selectedValues
+      currentValue: [].concat(props.initialValue)
     };
     _.bindAll(this, [
       '_handleChange',
@@ -50,7 +49,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
     return this.props.options.map((opt, i) => {
       return (
         <Checkbox
-          checked={this.state.selectedValues.includes(opt.value)}
+          checked={this.state.currentValue.includes(opt.value)}
           onChange={(e) => {
             this._handleChange(opt.value);
           }}
@@ -84,17 +83,23 @@ export default class FormFieldCheckboxGroup extends React.Component {
   }
 
   _handleChange(value) {
-    let selectedValues = this.state.selectedValues;
-    if (selectedValues.includes(value)) {
-      _.pull(selectedValues, value);
+    let currentValue = this.state.currentValue;
+    if (currentValue.includes(value)) {
+      _.pull(currentValue, value);
     }
     else {
-      selectedValues.push(value);
+      currentValue.push(value);
     }
-    this.setState({selectedValues});
-    const {controlId, onChange} = this.props;
-    onChange(controlId, selectedValues);
-    console.log(selectedValues);
-    console.log(value);
+    this.setState({currentValue});
+  }
+
+  getResult() {
+    if (!_.isEqual(this.state.currentValue, this.props.initialValue)) {
+      let result = {}
+      const newValue = this.state.currentValue.length > 0 ? this.state.currentValue : [' ']
+      result[this.props.controlId] = newValue;
+      return result;
+    }
+    return null;
   }
 }

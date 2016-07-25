@@ -12,9 +12,8 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 export default class FormFieldDate extends React.Component {
   static propTypes = {
     controlId: PropTypes.string,
-    onChange: PropTypes.func,
     label: PropTypes.string,
-    date: PropTypes.string,
+    initialValue: PropTypes.string,
   };
   static defaultProps = {
     label: '',
@@ -22,9 +21,10 @@ export default class FormFieldDate extends React.Component {
 
   constructor(props) {
     super(props)
-    const momentDate = props.date ? moment(props.date) : moment();
+    const momentDate = props.initialValue ? moment(props.initialValue) : moment();
+    this.initialValue = momentDate.format("YYYY-MM-DD");
     this.state = {
-      date: momentDate.format("YYYY-MM-DD")
+      currentValue: this.initialValue
     };
     _.bindAll(this, '_handleChange');
   }
@@ -35,7 +35,7 @@ export default class FormFieldDate extends React.Component {
       <FormGroup controlId={controlId}>
         <ControlLabel>{label}</ControlLabel>
         <DateTimeField
-          dateTime={this.state.date}
+          dateTime={this.state.currentValue}
           onChange={this._handleChange}
           format='YYYY-MM-DD'
           viewMode="date"
@@ -46,8 +46,15 @@ export default class FormFieldDate extends React.Component {
   }
 
   _handleChange(date) {
-    const {controlId, onChange} = this.props;
-    this.setState({date});
-    onChange(controlId, date);
+    this.setState({currentValue: date});
+  }
+
+  getResult() {
+    if (!_.isEqual(this.state.currentValue, this.initialValue)) {
+      let result = {}
+      result[this.props.controlId] = this.state.currentValue;
+      return result;
+    }
+    return null;
   }
 }

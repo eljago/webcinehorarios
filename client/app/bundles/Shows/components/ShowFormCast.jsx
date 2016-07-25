@@ -12,22 +12,21 @@ import Checkbox from 'react-bootstrap/lib/Checkbox';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 
-import FormFieldText from '../../../lib/forms/FormFieldText'
-import FormFieldFile from '../../../lib/forms/FormFieldFile'
-import FormFieldSelect from '../../../lib/forms/FormFieldSelect'
-import FormFieldDate from '../../../lib/forms/FormFieldDate'
-import FormFieldRadioGroup from '../../../lib/forms/FormFieldRadioGroup'
-import FormFieldCheckboxGroup from '../../../lib/forms/FormFieldCheckboxGroup'
+import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
+import FormFieldFile from '../../../lib/forms/FormFields/FormFieldFile'
+import FormFieldSelect from '../../../lib/forms/FormFields/FormFieldSelect'
+import FormFieldDate from '../../../lib/forms/FormFields/FormFieldDate'
+import FormFieldRadioGroup from '../../../lib/forms/FormFields/FormFieldRadioGroup'
+import FormFieldCheckboxGroup from '../../../lib/forms/FormFields/FormFieldCheckboxGroup'
 
 export default class ShowFormCast extends React.Component {
   static propTypes = {
     controlId: PropTypes.string,
     cast: PropTypes.object,
     getPeopleOptions: PropTypes.func,
-    onChange: PropTypes.func,
   };
   static defaultProps = {
-    cast: Immutable.List()
+    cast: []
   };
 
   constructor(props) {
@@ -64,49 +63,45 @@ export default class ShowFormCast extends React.Component {
   }
 
   _handleChangeSelect(index, value) {
-    let indexPerson = this.state.currentCast.get(index);
-    indexPerson = indexPerson.set('person_id', value.value);
-    indexPerson = indexPerson.set('name', value.label);
-    const currentCast = this.state.currentCast.set(index, indexPerson);
+    let indexPerson = this.state.currentCast[index];
+    indexPerson.person_id = value.value;
+    indexPerson.name = value.label;
+
+    let currentCast = this.state.currentCast;
+    currentCast[index] = indexPerson;
     this.setState({currentCast});
-    const show_person_roles_attributes = currentCast.toJS();
-    this.props.onChange(this.props.controlId, show_person_roles_attributes);
   }
 
   _handleChangeCharacter(index, character) {
-    let indexPerson = this.state.currentCast.get(index);
-    indexPerson = indexPerson.set('character', character);
-    const currentCast = this.state.currentCast.set(index, indexPerson);
+    let indexPerson = this.state.currentCast[index];
+    indexPerson.character = character;
+
+    let currentCast = this.state.currentCast;
+    currentCast[index] = indexPerson;
     this.setState({currentCast});
-    const show_person_roles_attributes = currentCast.toJS();
-    this.props.onChange(this.props.controlId, show_person_roles_attributes);
   }
 
   _handleDelete(index) {
     let currentCast = this.state.currentCast;
-    let indexPerson = currentCast.get(index);
-    if (indexPerson.get('id')) {
-      indexPerson = indexPerson.set('_destroy', true);
-      currentCast = currentCast.set(index, indexPerson);
+    let indexPerson = this.state.currentCast[index];
+    if (indexPerson.id) {
+      indexPerson._destory = true;
+      currentCast[index] = indexPerson;
     }
     else {
-      currentCast = currentCast.delete(index)
+      _.pullAt(currentCast, [index]);
     }
     this.setState({currentCast});
-    const show_person_roles_attributes = currentCast.toJS();
-    this.props.onChange(this.props.controlId, show_person_roles_attributes);
   }
 
   _handleNewPerson() {
-    const newPerson = Immutable.Map();
-    const currentCast = this.state.currentCast.push(newPerson);
+    let currentCast = this.state.currentCast;
+    currentCast.push({});
     this.setState({currentCast});
-    const show_person_roles_attributes = currentCast.toJS();
-    this.props.onChange(this.props.controlId, show_person_roles_attributes);
   }
 
   _getCastFields() {
-    return this.state.currentCast.toJS().map((person, index) => {
+    return this.state.currentCast.map((person, index) => {
       if (person._destroy) {
         return null;
       }

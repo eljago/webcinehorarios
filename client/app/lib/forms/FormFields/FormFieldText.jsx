@@ -12,7 +12,6 @@ export default class FormFieldText extends React.Component {
   static propTypes = {
     type: PropTypes.string,
     controlId: PropTypes.string,
-    onChange: PropTypes.func,
     label: PropTypes.string,
     initialValue: PropTypes.string,
     regExp: PropTypes.object,
@@ -74,9 +73,6 @@ export default class FormFieldText extends React.Component {
       newState.valid = this.props.regExp.test(newValue);
 
     this.setState(newState);
-
-    const {onChange, controlId} = this.props;
-    onChange(controlId, newValue);
   }
 
   _getValidationState() {
@@ -92,6 +88,15 @@ export default class FormFieldText extends React.Component {
   _getFeedback() {
     if (this.props.regExp)
       return (<FormControl.Feedback />);
+    return null;
+  }
+
+  getResult() {
+    if (this.state.currentValue !== this.props.initialValue) {
+      let result = {}
+      result[this.props.controlId] = this.state.currentValue;
+      return result;
+    }
     return null;
   }
 }

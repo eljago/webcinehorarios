@@ -5,171 +5,71 @@ import React, { PropTypes } from 'react'
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-import FormFieldText from '../../../lib/forms/FormFieldText'
-import FormFieldFile from '../../../lib/forms/FormFieldFile'
-import FormFieldDate from '../../../lib/forms/FormFieldDate'
-import FormFieldRadioGroup from '../../../lib/forms/FormFieldRadioGroup'
-import FormFieldCheckboxGroup from '../../../lib/forms/FormFieldCheckboxGroup'
-
 export default class ShowFormBasic extends React.Component {
   static propTypes = {
+    formBuilder: PropTypes.object,
     show: PropTypes.object,
-    onChange: PropTypes.func,
-    genres: PropTypes.array,
-  };
-  static defaultProps = {
-    genres: []
   };
 
   render() {
-    const {show} = this.props;
+    const {show, formBuilder} = this.props;
     if (show) {
-      const {onChange, genres} = this.props;
-      const modalTitle = show ? show.get('name') : "Crear Show"
+      const modalTitle = show ? show.name : "Crear Show"
 
       return (
         <Row>
           <Col md={8}>
-
-            <FormFieldText
-              controlId='name'
-              label={'Nombre'}
-              initialValue={show.get('name')}
-              regExp={new RegExp("^\\b.+\\b$")}
-              validations={[{name: 'notNull'}]}
-              onChange={onChange}
-            />
+            {formBuilder.getFormField(show, 'name')}
 
             <Row>
               <Col xs={12} md={8} lg={9}>
-                <FormFieldText
-                  controlId='remote_image_url'
-                  label={'Remote Image URL'}
-                  initialValue={show.get('remote_image_url')}
-                  onChange={onChange}
-                />
+                {formBuilder.getFormField(show, 'remote_image_url')}
               </Col>
               <Col xs={12} md={4} lg={3}>
-                <FormFieldFile
-                  controlId='image'
-                  onChange={onChange}
-                />
+                {formBuilder.getFormField(show, 'image')}
               </Col>
             </Row>
 
-            <FormFieldText
-              type="textarea"
-              controlId='information'
-              label={'Synopsis'}
-              initialValue={show.get('information')}
-              onChange={onChange}
-            />
+            {formBuilder.getFormField(show, 'information')}
 
             <Row>
               <Col md={8} lg={9}>
-                <FormFieldText
-                  controlId='imdb_code'
-                  label={'Imdb Code'}
-                  initialValue={show.get('imdb_code')}
-                  onChange={onChange}
-                  regExp={new RegExp("^t{2}\\d{7}$")}
-                />
+                {formBuilder.getFormField(show, 'imdb_code')}
               </Col>
               <Col md={4} lg={3}>
-                <FormFieldText
-                  type='number'
-                  controlId='imdb_score'
-                  label={'Imdb Score'}
-                  initialValue={show.get('imdb_score')}
-                  regExp={new RegExp("^([0-9]{2})$")}
-                  onChange={onChange}
-                />
+                {formBuilder.getFormField(show, 'imdb_score')}
               </Col>
             </Row>
 
             <Row>
               <Col md={8} lg={9}>
-                <FormFieldText
-                  controlId='metacritic_url'
-                  label={'Metacritic URL'}
-                  initialValue={show.get('metacritic_url')}
-                  onChange={onChange}
-                  regExp={new RegExp("^http://www.metacritic.com/movie/[\\w-]+/?$")}
-                />
+                {formBuilder.getFormField(show, 'metacritic_url')}
               </Col>
               <Col md={4} lg={3}>
-                <FormFieldText
-                  type='number'
-                  controlId='metacritic_score'
-                  label={'Metacritic Score'}
-                  initialValue={show.get('metacritic_score')}
-                  regExp={new RegExp("^([0-9]{2})$")}
-                  onChange={onChange}
-                />
+                {formBuilder.getFormField(show, 'metacritic_score')}
               </Col>
             </Row>
 
             <Row>
               <Col md={8} lg={9}>
-                <FormFieldText
-                  controlId='rotten_tomatoes_url'
-                  label={'Rotten Tomatoes URL'}
-                  initialValue={show.get('rotten_tomatoes_url')}
-                  onChange={onChange}
-                  regExp={new RegExp("^https://www.rottentomatoes.com/m/[\\w-]+/?$")}
-                />
+                {formBuilder.getFormField(show, 'rotten_tomatoes_url')}
               </Col>
               <Col md={4} lg={3}>
-                <FormFieldText
-                  type='number'
-                  controlId='rotten_tomatoes_score'
-                  label={'Rotten Tomatoes Score'}
-                  initialValue={show.get('rotten_tomatoes_score')}
-                  regExp={new RegExp("^([0-9]{2})$")}
-                  onChange={onChange}
-                />
+                {formBuilder.getFormField(show, 'rotten_tomatoes_score')}
               </Col>
             </Row>
 
           </Col>
 
           <Col md={4}>
-
-            <FormFieldDate
-              controlId='debut'
-              label='Estreno'
-              onChange={onChange}
-              date={show.get('debut')}
-            />
+            {formBuilder.getFormField(show, 'debut')}
 
             <Row>
               <Col xs={3} md={12}>
-                <FormFieldRadioGroup
-                  controlId='rating'
-                  label='Rating'
-                  onChange={onChange}
-                  options={[
-                    {value: 'TE', label: 'TE'},
-                    {value: 'TE+7', label: 'TE+7'},
-                    {value: '14+', label: '14+'},
-                    {value: '18+', label: '18+'},
-                  ]}
-                  selectedValue={show.get('rating')}
-                />
+                {formBuilder.getFormField(show, 'rating')}
               </Col>
               <Col xs={9} md={12}>
-                <FormFieldCheckboxGroup
-                  controlId='genre_ids'
-                  label='Géneros'
-                  onChange={onChange}
-                  columns={2}
-                  options={genres.map((genre) => {
-                    return {value: genre.id, label: genre.name};
-                  })}
-                  selectedValues={show.get('genres').toJS().map((genre) => {
-                    return genre.id;
-                  })}
-                />
+                {formBuilder.getFormField(show, 'genres')}
               </Col>
             </Row>
 
@@ -180,5 +80,15 @@ export default class ShowFormBasic extends React.Component {
     else {
       return null;
     }
+  }
+
+  getResult() {
+    let showResult = {};
+    _.forIn(this.refs, (formElement, key) => {
+      if (_.isFunction(formElement.getResult)) {
+        _.merge(showResult, formElement.getResult());
+      }
+    });
+    return showResult;
   }
 }

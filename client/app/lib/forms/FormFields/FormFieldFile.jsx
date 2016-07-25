@@ -11,11 +11,14 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 export default class FormFieldFile extends React.Component {
   static propTypes = {
     controlId: PropTypes.string,
-    onChange: PropTypes.func,
+    label: PropTypes.string,
   };
 
   constructor(props) {
-    super(props)
+    super(props);
+    this.state = {
+      currentValue: ''
+    }
     _.bindAll(this, '_handleChange');
   }
 
@@ -24,7 +27,7 @@ export default class FormFieldFile extends React.Component {
       <FormGroup
         controlId={this.props.controlId}
       >
-        <ControlLabel>Local Image</ControlLabel>
+        <ControlLabel>{this.props.label}</ControlLabel>
         <FormControl
           type="file"
           onChange={this._handleChange}
@@ -35,7 +38,7 @@ export default class FormFieldFile extends React.Component {
   }
 
   _handleChange(e) {
-    const {onChange, controlId} = this.props;
+    const {controlId} = this.props;
 
     let file = e.target.files[0]
     let reader = new FileReader()
@@ -52,15 +55,23 @@ export default class FormFieldFile extends React.Component {
             ["jpg","jpeg","gif","png"].includes(dataTypeArray[1])
             &&
             validator.isBase64(reader.result.split(',')[1])
-          ) {
-            onChange(controlId, reader.result);
+            ) {
+            this.setState({currentValue: reader.result});
           }
         }
       }
     }
     else {
-      onChange(controlId, '');
       return false;
     }
+  }
+
+  getResult() {
+    if (!_.isEmpty(this.state.currentValue)) {
+      let result = {}
+      result[this.props.controlId] = this.state.currentValue;
+      return result;
+    }
+    return null;
   }
 }

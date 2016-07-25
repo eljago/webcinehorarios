@@ -12,7 +12,6 @@ import Select from 'react-select';
 export default class FormFieldSelect extends React.Component {
   static propTypes = {
     controlId: PropTypes.number,
-    onChange: PropTypes.func,
     label: PropTypes.string,
     getOptions: PropTypes.array,
     initialValue: PropTypes.object,
@@ -52,7 +51,5 @@ export default class FormFieldSelect extends React.Component {
 
   _handleChange(newValue) {
     this.setState({currentValue: newValue});
-    const {onChange, controlId} = this.props;
-    onChange(controlId, newValue);
   }
 }

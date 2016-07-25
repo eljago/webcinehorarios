@@ -1,7 +1,6 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
-import Immutable from 'immutable'
 import _ from 'lodash'
 import ShowForm from '../components/ShowForm'
 
@@ -13,7 +12,6 @@ export default class ShowEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      show: Immutable.fromJS(props.show),
       canSubmit: true,
     };
     _.bindAll(this,
@@ -26,7 +24,7 @@ export default class ShowEdit extends React.Component {
   render() {
     return (
       <ShowForm
-        show={this.state.show}
+        show={this.props.show}
         handleSubmit={this._handleSubmit}
         genres={this.props.genres}
         canSubmit={this.state.canSubmit}
@@ -35,7 +33,7 @@ export default class ShowEdit extends React.Component {
     );
   }
 
-  _handleSubmit(immutableShow) {
+  _handleSubmit(showToSubmit) {
     this.setState({canSubmit: false});
     $.ajax({
       url: `/api/shows/${this.props.show.id}`,
@@ -43,11 +41,11 @@ export default class ShowEdit extends React.Component {
       data: {
         shows: {
           id: this.props.show.id,
-          ...immutableShow.toJS()
+          ...showToSubmit
         }
       },
       success: (response) => {
-        window.location.replace('/admin/shows');
+        // window.location.replace('/admin/shows');
       }
     });
   }

@@ -10,10 +10,9 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 export default class FormFieldRadioGroup extends React.Component {
   static propTypes = {
     controlId: PropTypes.string,
-    onChange: PropTypes.func,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
-    selectedValue: PropTypes.string,
+    initialValue: PropTypes.string,
   };
   static defaultProps = {
     label: '',
@@ -22,7 +21,7 @@ export default class FormFieldRadioGroup extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedValue: props.selectedValue
+      currentValue: props.initialValue
     };
     _.bindAll(this, ['_handleChange', '_getRadioElements']);
   }
@@ -41,7 +40,7 @@ export default class FormFieldRadioGroup extends React.Component {
     return this.props.options.map((opt, i) => {
       return (
         <Radio
-          checked={opt.value === this.state.selectedValue}
+          checked={opt.value === this.state.currentValue}
           onChange={(e) => {
             this._handleChange(opt.value);
           }}
@@ -54,11 +53,18 @@ export default class FormFieldRadioGroup extends React.Component {
 
   _handleChange(value) {
     let newSelectedValue = "";
-    if (value != this.state.selectedValue) {
+    if (value != this.state.currentValue) {
       newSelectedValue = value;
     }
-    this.setState({selectedValue: newSelectedValue});
-    const {controlId, onChange} = this.props;
-    onChange(controlId, newSelectedValue);
+    this.setState({currentValue: newSelectedValue});
+  }
+
+  getResult() {
+    if (this.state.currentValue !== this.props.initialValue) {
+      let result = {}
+      result[this.props.controlId] = this.state.currentValue;
+      return result;
+    }
+    return null;
   }
 }

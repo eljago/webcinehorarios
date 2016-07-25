@@ -24,7 +24,7 @@ export default class ShowsMain extends React.Component {
       return(
         <Row>
           <Col xs={1} md={1} lg={1}>{show.get('id')}</Col>
-          <Col xs={3} md={2} lg={2}><Image src={`http://cinehorarios.cl${show.getIn(['image', 'smallest', 'url'])}`} /></Col>
+          <Col xs={3} md={2} lg={2}><Image src={show.getIn(['image', 'smallest', 'url'])} /></Col>
           <Col xs={6} md={7} lg={7} fluid={true}>{show.get('name')}</Col>
           <Col xs={2} md={2} lg={2}>
             <Button href={href.get('edit')}>Editar</Button>
