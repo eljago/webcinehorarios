@@ -14,7 +14,7 @@ import ShowFormCast from './ShowFormCast'
 export default class ShowForm extends React.Component {
   static propTypes = {
     show: PropTypes.object,
-    handleSubmit: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
     genres: PropTypes.array,
     canSubmit: PropTypes.boolean,
     getPeopleOptions: PropTypes.func,
@@ -25,11 +25,7 @@ export default class ShowForm extends React.Component {
 
   constructor(props) {
     super(props)
-    _.bindAll(this,
-      [
-        '_handleSubmit',
-      ]
-    );
+    _.bindAll(this, '_handleSubmit');
     this.formBuilderBasic = new FormBuilderShowBasic(props.genres);
   }
 
@@ -88,6 +84,6 @@ export default class ShowForm extends React.Component {
       _.unset(showToSubmit,'remote_image_url');
     }
     console.log(showToSubmit);
-    this.props.handleSubmit(showToSubmit);
+    this.props.onSubmit(showToSubmit);
   }
 }
