@@ -9,22 +9,25 @@ import FormFieldSelect from '../FormFields/FormFieldSelect'
 import FormFieldDate from '../FormFields/FormFieldDate'
 import FormFieldRadioGroup from '../FormFields/FormFieldRadioGroup'
 import FormFieldCheckboxGroup from '../FormFields/FormFieldCheckboxGroup'
+import FormFieldHasManyDynamic from '../FormFields/FormFieldHasManyDynamic'
 
 export default class FormBuilder {
 
-  constructor(schema) {
+  constructor(object, schema) {
+    this.object = object;
     this.schema = schema;
   }
 
-  getFormField(object, fieldId) {
-    if (_.has(this.schema, fieldId)) {
-      const fieldInfo = this.schema[fieldId];
+  getFormField(schemaPath, objectPath = null) {
+    if (_.has(this.schema, schemaPath)) {
+      const fieldInfo = _.get(this.schema, schemaPath);
       const fieldType = fieldInfo.fieldType;
+      const fieldId = schemaPath.split('.')[0];
+      const objPath = objectPath ? objectPath : fieldId;
 
       const formFieldProps = {
-        ref: fieldId,
         submitKey: fieldInfo.submitKey ? fieldInfo.submitKey : fieldId,
-        label: fieldInfo.label
+        label: fieldInfo.label,
       }
       let aditionalProps;
 
@@ -33,20 +36,20 @@ export default class FormBuilder {
           aditionalProps = {
             type: 'number',
             regExp: fieldInfo.regExp,
-            initialValue: object[fieldId]
+            initialValue: _.get(this.object, objPath)
           };
         }
         else if (fieldInfo.textFieldType === 'textarea') {
           aditionalProps = {
             type: 'textarea',
-            initialValue: object[fieldId]
+            initialValue: _.get(this.object, objPath)
           };
         }
         else {
           aditionalProps = {
             type: 'text',
             regExp: fieldInfo.regExp,
-            initialValue: object[fieldId]
+            initialValue: _.get(this.object, objPath)
           };
         }
         return (
@@ -63,7 +66,7 @@ export default class FormBuilder {
       }
       else if (fieldType === 'dateField') {
         aditionalProps = {
-          initialValue: object[fieldId]
+          initialValue: _.get(this.object, objPath)
         };
         return (
           <FormFieldDate
@@ -74,7 +77,7 @@ export default class FormBuilder {
       }
       else if (fieldType === 'radioGroupField') {
         aditionalProps = {
-          initialValue: object[fieldId],
+          initialValue: _.get(this.object, objPath),
           options: fieldInfo.options
         };
         return (
@@ -86,7 +89,7 @@ export default class FormBuilder {
       }
       else if (fieldType === 'checkboxGroupField') {
         aditionalProps = {
-          initialValue: object[fieldId].map((value) => {
+          initialValue: _.get(this.object, objPath).map((value) => {
             return value.id;
           }),
           columns: fieldInfo.columns ? fieldInfo.columns : 1,
@@ -99,10 +102,13 @@ export default class FormBuilder {
           />
         );
       }
-      else if (fieldType === 'select') {
+      else if (fieldType === 'selectField') {
         aditionalProps = {
-          initialValue: {value: object[id], label: object[fieldId]},
-          getOptions: fieldInfo.getOptions
+          initialValue: {
+            value: _.get(this.object, "id"),
+            label: _.get(this.object, objPath)
+          },
+          getOptions: fieldInfo.getOptions,
         }
         return (
           <FormFieldSelect
@@ -111,9 +117,19 @@ export default class FormBuilder {
           />
         );
       }
-      else {
-        return null;
+      else if (fieldType === 'hasManyDynamic') {
+        aditionalProps = {
+          fieldId: fieldId,
+          formBuilder: this,
+        }
+        return (
+          <FormFieldHasManyDynamic
+            {...formFieldProps}
+            {...aditionalProps}
+          />
+        );
       }
     }
+    return null;
   }
 }

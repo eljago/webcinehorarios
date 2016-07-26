@@ -4,11 +4,10 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import FormBuilder from './FormBuilder'
 
-export default class FormBuilderShowBasic extends FormBuilder {
+export default class FormBuilderShow extends FormBuilder {
 
-  constructor(genres) {
-    super();
-    this.schema = {
+  constructor(show, genres, getPeopleSelectOptions) {
+    super(show, {
       name: {
         fieldType: 'textField',
         textFieldType: 'text',
@@ -80,14 +79,32 @@ export default class FormBuilderShowBasic extends FormBuilder {
         ]
       },
       genres: {
-        submitKey: 'genre_ids',
         fieldType: 'checkboxGroupField',
+        submitKey: 'genre_ids',
         label: 'Géneros',
         columns: 2,
         options: genres.map((genre) => {
           return {value: genre.id, label: genre.name};
         })
+      },
+      show_person_roles: {
+        fieldType: 'hasManyDynamic',
+        submitKey: 'show_person_roles_attributes',
+        label: 'Cast',
+        subFields: {
+          name: {
+            fieldType: 'selectField',
+            label: 'Persona',
+            getOptions: getPeopleSelectOptions
+          },
+          character: {
+            fieldType: 'textField',
+            textFieldType: 'text',
+            label: 'Personaje',
+            regExp: new RegExp("^\\b.+\\b$")
+          }
+        }
       }
-    }
+    });
   }
 }

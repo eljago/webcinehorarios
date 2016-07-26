@@ -28,16 +28,11 @@ export default class FormFieldSelect extends React.Component {
   }
 
   render() {
-    const {
-      submitKey,
-      label,
-    } = this.props;
-
     return(
-      <FormGroup controlId={submitKey}>
-        <ControlLabel>{label}</ControlLabel>
+      <FormGroup controlId={this.props.submitKey}>
+        <ControlLabel>{this.props.label}</ControlLabel>
         <Select.Async
-          name={submitKey}
+          name={this.props.submitKey}
           value={this.state.currentValue}
           onChange={this._handleChange}
           loadOptions={this.props.getOptions}
@@ -49,5 +44,13 @@ export default class FormFieldSelect extends React.Component {
 
   _handleChange(newValue) {
     this.setState({currentValue: newValue});
+  }
+
+  getResult() {
+    if (this.state.currentValue !== this.props.initialValue) {
+      let result = {}
+      return this.state.currentValue;
+    }
+    return null;
   }
 }

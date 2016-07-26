@@ -57,7 +57,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
   }
 
   _getCheckboxColumns() {
-    const {columns} = this.props;
+    const columns = this.props.columns;
     const checkboxElements = this._getCheckboxElements();
     const length = checkboxElements.length;
     let checkboxCols = [];

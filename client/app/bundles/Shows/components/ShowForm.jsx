@@ -7,26 +7,21 @@ import Button from 'react-bootstrap/lib/Button';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
 
-import FormBuilderShowBasic from '../../../lib/forms/FormBuilders/FormBuilderShowBasic'
 import ShowFormBasic from './ShowFormBasic'
 import ShowFormCast from './ShowFormCast'
 
+import FormBuilderShow from '../../../lib/forms/FormBuilders/FormBuilderShow'
+
 export default class ShowForm extends React.Component {
   static propTypes = {
-    show: PropTypes.object,
+    formBuilder: PropTypes.instanceOf(FormBuilderShow),
     onSubmit: PropTypes.func.isRequired,
-    genres: PropTypes.array,
     canSubmit: PropTypes.boolean,
-    getPeopleOptions: PropTypes.func,
-  };
-  static defaultProps = {
-    genres: []
   };
 
   constructor(props) {
     super(props)
     _.bindAll(this, '_handleSubmit');
-    this.formBuilderBasic = new FormBuilderShowBasic(props.genres);
   }
 
   render() {
@@ -37,18 +32,15 @@ export default class ShowForm extends React.Component {
 
             <Tab eventKey={1} title="Basic Info">
               <ShowFormBasic
-                formBuilder={this.formBuilderBasic}
+                formBuilder={this.props.formBuilder}
                 ref='formBasic'
-                show={this.props.show}
               />
             </Tab>
 
             <Tab eventKey={2} title="Cast">
               <ShowFormCast
+                formBuilder={this.props.formBuilder}
                 ref='formCast'
-                controlId="show_person_roles_attributes"
-                cast={this.props.show.show_person_roles}
-                getPeopleOptions={this.props.getPeopleOptions}
               />
             </Tab>
 

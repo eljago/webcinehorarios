@@ -16,12 +16,7 @@ export default class Shows extends React.Component {
       shows: Immutable.List(),
       hrefs: Immutable.List(),
     };
-    _.bindAll(this,
-      [
-        '_updateShowsTable',
-        '_handleDelete',
-      ]
-    );
+    _.bindAll(this, ['_updateShowsTable', '_handleDelete']);
   }
 
   componentDidMount() {

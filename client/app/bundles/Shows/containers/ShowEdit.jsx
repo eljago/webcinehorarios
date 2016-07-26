@@ -4,9 +4,12 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import ShowForm from '../components/ShowForm'
 
+import FormBuilderShow from '../../../lib/forms/FormBuilders/FormBuilderShow'
+
 export default class ShowEdit extends React.Component {
   static propTypes = {
-    show: PropTypes.object
+    show: PropTypes.object,
+    genres: PropTypes.array,
   };
 
   constructor(props) {
@@ -14,11 +17,8 @@ export default class ShowEdit extends React.Component {
     this.state = {
       canSubmit: true,
     };
-    _.bindAll(this,
-      [
-        '_handleSubmit',
-      ]
-    );
+    _.bindAll(this, '_handleSubmit');
+    this.formBuilder = new FormBuilderShow(props.show, props.genres, this._getPeopleSelectOptions);
   }
 
   render() {
@@ -26,9 +26,8 @@ export default class ShowEdit extends React.Component {
       <ShowForm
         show={this.props.show}
         onSubmit={this._handleSubmit}
-        genres={this.props.genres}
         canSubmit={this.state.canSubmit}
-        getPeopleOptions={this._getPeopleOptions}
+        formBuilder={this.formBuilder}
       />
     );
   }
@@ -50,7 +49,7 @@ export default class ShowEdit extends React.Component {
     });
   }
 
-  _getPeopleOptions(input, callback) {
+  _getPeopleSelectOptions(input, callback) {
     if (_.trim(input).length > 3) {
       $.getJSON(`/api/people/select_people?input=${input}`, (response) => {
         callback(null, {

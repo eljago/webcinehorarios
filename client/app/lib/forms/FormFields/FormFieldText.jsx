@@ -25,7 +25,6 @@ export default class FormFieldText extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       currentValue: props.initialValue,
       valid: props.regExp ? props.regExp.test(props.initialValue) : true,
@@ -42,8 +41,7 @@ export default class FormFieldText extends React.Component {
     } = this.props;
 
     const typeProps = type === 'textarea' ?
-      {componentClass: type, rows: 7} :
-      {type: type};
+      {componentClass: type, rows: 7} : {type: type};
 
     return(
       <FormGroup
@@ -66,11 +64,10 @@ export default class FormFieldText extends React.Component {
   }
 
   _handleChange(value) {
-    const newValue = _.trim(value);
-    let newState = {currentValue: newValue};
+    let newState = {currentValue: value};
 
     if (this.props.regExp)
-      newState.valid = this.props.regExp.test(newValue);
+      newState.valid = this.props.regExp.test(value);
 
     this.setState(newState);
   }
@@ -94,7 +91,7 @@ export default class FormFieldText extends React.Component {
   getResult() {
     if (this.state.currentValue !== this.props.initialValue) {
       let result = {}
-      result[this.props.submitKey] = this.state.currentValue;
+      result[this.props.submitKey] = _.trim(this.state.currentValue);
       return result;
     }
     return null;
