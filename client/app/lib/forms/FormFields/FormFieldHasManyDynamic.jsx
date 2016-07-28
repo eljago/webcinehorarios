@@ -1,10 +1,12 @@
 'use strict'
 
 import React, { PropTypes } from 'react'
+import Immutable from 'immutable'
 import _ from 'lodash'
 
 import FormGroup from 'react-bootstrap/lib/FormGroup'
 import ControlLabel from 'react-bootstrap/lib/ControlLabel'
+import Button from 'react-bootstrap/lib/Button'
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
@@ -20,13 +22,16 @@ export default class FormFieldHasManyDynamic extends React.Component {
 
   constructor(props) {
     super(props);
+    const {formBuilder, fieldId} = props;
     this.state = {
-      fieldsStatus: props.formBuilder.object[props.fieldId].map((value, index) => {
+      rowsStatus: Immutable.fromJS(formBuilder.object[fieldId].map((value, index) => {
         return {
-          index: index,
-          type: 'initialField'
+          id: value.id,
+          person_id: value.person_id,
+          position: index,
+          _destroy: false
         };
-      })
+      }))
     };
   }
 
@@ -39,34 +44,100 @@ export default class FormFieldHasManyDynamic extends React.Component {
     );
   }
 
-  _getRowFields() {
-    const formBuilder = this.props.formBuilder;
+  _handleDelete(rowIndex) {
     const fieldId = this.props.fieldId;
-    const subFieldsIds = Object.keys(formBuilder.schema[fieldId].subFields);
-    const rowFields = formBuilder.object[fieldId].map((value, index1) => {
-      return subFieldsIds.map((subFieldId, index2) => {
-        const schemaPath = `${fieldId}.subFields.${subFieldId}`;
-        const objectPath = `${fieldId}[${index1}].${subFieldId}`;
-        return(
-          <Col xs={3}>
-            {formBuilder.getFormField(schemaPath, objectPath)}
-          </Col>
-        );
+    let rowsStatus = this.state.rowsStatus;
+    let rowData = rowsStatus.get(rowIndex);
+    if (rowData.get('id')) {
+      rowData = rowData.set('_destroy', true);
+
+      const columnsKeys = this._getColumnsKeys()
+
+      _.forIn(columnsKeys, (key) => {
+        const ref = `${fieldId}${rowIndex}${key}`;
+        const formElement = this.refs[ref];
+        if (formElement && _.isFunction(formElement.getResult)) {
+          const columnResult = formElement.getResult();
+          rowData = rowData.merge(columnResult);
+        }
       });
-    });
-    return(
-      <Row>
-        {rowFields}
-      </Row>
-    );
+      rowsStatus = rowsStatus.set(rowIndex, rowData);
+      this.setState({rowsStatus});
+    }
+    else {
+      rowsStatus = rowsStatus.delete(rowIndex);
+    }
+    this.setState(rowsStatus);
   }
 
-  // getResult() {
-  //   if (!_.isEmpty(this.state.currentValue)) {
-  //     let result = {}
-  //     result[this.props.submitKey] = this.state.currentValue;
-  //     return result;
-  //   }
-  //   return null;
-  // }
+  _getRowFields() {
+    const {fieldId, formBuilder} = this.props;
+
+    const columnsKeys = this._getColumnsKeys()
+    // ["character", "actor", "director", etc]
+
+    const rowsStatus = this.state.rowsStatus;
+    const object = formBuilder.object;
+
+    let rowsFields = [];
+
+    rowsStatus.forEach((rowData, index) => {
+      if (rowData.get('_destroy')) {
+
+      }
+      else {
+        let columnFields = columnsKeys.map((subFieldId) => {
+          const schemaPath = `${fieldId}.subFields.${subFieldId}`;
+          const objectPath = `${fieldId}[${index}].${subFieldId}`;
+
+          return (
+            <Col xs={2}>
+              {formBuilder.getFormField(schemaPath, objectPath)}
+            </Col>
+          );
+        });
+        columnFields.push(
+          <Button
+            bsStyle="danger"
+            onClick={() => this._handleDelete(index)}
+          >
+            Borrar
+          </Button>
+        );
+        rowsFields.push(
+          <Row key={index}>{columnFields}</Row>
+        );
+      }
+    });
+
+    return rowsFields;
+  }
+
+  getResult() {
+    const {fieldId, formBuilder, submitKey} = this.props;
+
+    let rowsArray = [];
+    this.state.rowsStatus.forEach((rowData, index) => {
+      const columnsKeys = this._getColumnsKeys()
+      let rowResult = rowData;
+      _.forIn(columnsKeys, (key) => {
+        // ref is set in FormBuilder with this same format:
+        const ref = `${fieldId}${index}${key}`;
+        const formElement = this.refs[ref];
+        if (formElement && _.isFunction(formElement.getResult)) {
+          const columnResult = formElement.getResult();
+          rowResult = _.merge(rowResult, columnResult);
+        }
+      });
+      if (Object.keys(rowResult).length > 0) {
+        rowsArray.push(rowResult);
+      }
+    })
+    const result = {[submitKey]: rowsArray};
+    return result;
+  }
+
+  _getColumnsKeys() {
+    return Object.keys(this.props.formBuilder.schema[this.props.fieldId].subFields)
+  }
 }

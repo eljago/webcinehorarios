@@ -12,7 +12,7 @@ export default class FormBuilderShow extends FormBuilder {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Nombre',
-        regExp: new RegExp("^\\b.+\\b$")
+        regExp: /^\b.+\b$/
       },
       remote_image_url: {
         fieldType: 'textField',
@@ -32,37 +32,37 @@ export default class FormBuilderShow extends FormBuilder {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Imdb Code',
-        regExp: new RegExp("^t{2}\\d{7}$")
+        regExp: /^t{2}\d{7}$/
       },
       imdb_score: {
         fieldType: 'textField',
         textFieldType: 'number',
         label: 'Imdb Score',
-        regExp: new RegExp("^([0-9]{2})$")
+        regExp: /^\d{1,2}$/
       },
       metacritic_url: {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Metacritic Url',
-        regExp: new RegExp("^http://www.metacritic.com/movie/[\\w-]+/?$")
+        regExp: /^http:\/\/www\.metacritic\.com\/movie\/[\w-]+\/?$/
       },
       metacritic_score: {
         fieldType: 'textField',
         textFieldType: 'number',
         label: 'Metacritic Score',
-        regExp: new RegExp("^([0-9]{2})$")
+        regExp: /^\d{1,2}$/
       },
       rotten_tomatoes_url: {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Rotten Tomatoes Url',
-        regExp: new RegExp("^https://www.rottentomatoes.com/m/[\\w-]+/?$")
+        regExp: /^https:\/\/www\.rottentomatoes\.com\/m\/[\w-]+\/?$/
       },
       rotten_tomatoes_score: {
         fieldType: 'textField',
         textFieldType: 'number',
         label: 'Rotten Tomatoes Score',
-        regExp: new RegExp("^([0-9]{2})$")
+        regExp: /^\d{1,2}$/
       },
       debut: {
         fieldType: 'dateField',
@@ -95,13 +95,22 @@ export default class FormBuilderShow extends FormBuilder {
           name: {
             fieldType: 'selectField',
             label: 'Persona',
+            keyName: 'person_id',
             getOptions: getPeopleSelectOptions
           },
           character: {
             fieldType: 'textField',
             textFieldType: 'text',
             label: 'Personaje',
-            regExp: new RegExp("^\\b.+\\b$")
+            regExp: /^\b.+\b$/
+          },
+          director: {
+            fieldType: 'checkboxField',
+            label: 'Director'
+          },
+          actor: {
+            fieldType: 'checkboxField',
+            label: 'Actor'
           }
         }
       }

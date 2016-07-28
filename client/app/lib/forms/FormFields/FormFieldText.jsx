@@ -25,6 +25,7 @@ export default class FormFieldText extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
       currentValue: props.initialValue,
       valid: props.regExp ? props.regExp.test(props.initialValue) : true,

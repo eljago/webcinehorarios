@@ -45,10 +45,16 @@ class Admin::ShowsController < ApplicationController
     @show["genres"] = show.genres.map do |genre|
       {"id" => genre.id, "name" => genre.name}
     end
-    @show["show_person_roles"] = show.show_person_roles.map do |spr|
-      {"person_id" => spr.person_id, "name" => spr.person.name,
-        "actor" => spr.actor, "director" => spr.director,
-        "character" => spr.character, "id" => spr.id}
+    @show["show_person_roles"] = show.show_person_roles.includes(:person)
+      .order(:position).map do |spr|
+      {
+        "id" => spr.id,
+        "person_id" => spr.person_id,
+        "name" => spr.person.present? ? spr.person.name : '',
+        "actor" => spr.actor,
+        "director" => spr.director,
+        "character" => spr.character, "id" => spr.id
+      }
     end
     @genres = Genre.order(:name).all
   end

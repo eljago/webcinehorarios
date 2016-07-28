@@ -75,6 +75,10 @@ export default class ShowForm extends React.Component {
     if (showToSubmit.image && !_.isEmpty(showToSubmit.image)) {
       _.unset(showToSubmit,'remote_image_url');
     }
+
+    const dataShowCast = this.refs.formCast.getResult();
+    showToSubmit = _.merge(showToSubmit, dataShowCast);
+
     console.log(showToSubmit);
     this.props.onSubmit(showToSubmit);
   }

@@ -21,4 +21,14 @@ export default class ShowFormCast extends React.Component {
       </div>
     );
   }
+
+  getResult() {
+    let showResult = {};
+    _.forIn(this.refs, (formElement, key) => {
+      if (_.isFunction(formElement.getResult)) {
+        _.merge(showResult, formElement.getResult());
+      }
+    });
+    return showResult;
+  }
 }

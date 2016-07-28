@@ -13,6 +13,7 @@ export default class FormFieldSelect extends React.Component {
   static propTypes = {
     submitKey: PropTypes.number,
     label: PropTypes.string,
+    keyName: PropTypes.string,
     getOptions: PropTypes.array,
     initialValue: PropTypes.object,
   };
@@ -47,9 +48,10 @@ export default class FormFieldSelect extends React.Component {
   }
 
   getResult() {
-    if (this.state.currentValue !== this.props.initialValue) {
+    const initialValue = this.props.initialValue;
+    if (this.state.currentValue.value != initialValue.value) {
       let result = {}
-      return this.state.currentValue;
+      return {[this.props.keyName]: this.state.currentValue.value};
     }
     return null;
   }

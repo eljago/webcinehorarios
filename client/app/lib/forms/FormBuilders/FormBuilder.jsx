@@ -10,6 +10,7 @@ import FormFieldDate from '../FormFields/FormFieldDate'
 import FormFieldRadioGroup from '../FormFields/FormFieldRadioGroup'
 import FormFieldCheckboxGroup from '../FormFields/FormFieldCheckboxGroup'
 import FormFieldHasManyDynamic from '../FormFields/FormFieldHasManyDynamic'
+import FormFieldCheckbox from '../FormFields/FormFieldCheckbox'
 
 export default class FormBuilder {
 
@@ -22,10 +23,11 @@ export default class FormBuilder {
     if (_.has(this.schema, schemaPath)) {
       const fieldInfo = _.get(this.schema, schemaPath);
       const fieldType = fieldInfo.fieldType;
-      const fieldId = schemaPath.split('.')[0];
+      const fieldId = _.last(schemaPath.split('.'));
       const objPath = objectPath ? objectPath : fieldId;
 
       const formFieldProps = {
+        ref: objPath.replace(/(\W)/g,''),
         submitKey: fieldInfo.submitKey ? fieldInfo.submitKey : fieldId,
         label: fieldInfo.label,
       }
@@ -75,6 +77,17 @@ export default class FormBuilder {
           />
         );
       }
+      else if (fieldType === 'checkboxField') {
+        aditionalProps = {
+          initialValue: _.get(this.object, objPath)
+        };
+        return(
+          <FormFieldCheckbox
+            {...formFieldProps}
+            {...aditionalProps}
+          />
+        );
+      }
       else if (fieldType === 'radioGroupField') {
         aditionalProps = {
           initialValue: _.get(this.object, objPath),
@@ -108,6 +121,7 @@ export default class FormBuilder {
             value: _.get(this.object, "id"),
             label: _.get(this.object, objPath)
           },
+          keyName: fieldInfo.keyName,
           getOptions: fieldInfo.getOptions,
         }
         return (
