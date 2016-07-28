@@ -27,8 +27,6 @@ export default class FormFieldHasManyDynamic extends React.Component {
       rowsStatus: Immutable.fromJS(formBuilder.object[fieldId].map((value, index) => {
         return {
           id: value.id,
-          person_id: value.person_id,
-          position: index,
           _destroy: false
         };
       }))
@@ -119,22 +117,35 @@ export default class FormFieldHasManyDynamic extends React.Component {
     let rowsArray = [];
     this.state.rowsStatus.forEach((rowData, index) => {
       const columnsKeys = this._getColumnsKeys()
-      let rowResult = rowData;
-      _.forIn(columnsKeys, (key) => {
-        // ref is set in FormBuilder with this same format:
-        const ref = `${fieldId}${index}${key}`;
-        const formElement = this.refs[ref];
-        if (formElement && _.isFunction(formElement.getResult)) {
-          const columnResult = formElement.getResult();
-          rowResult = _.merge(rowResult, columnResult);
-        }
-      });
+
+      let rowResult = {};
+
+      if (!rowData.get('_destroy')) {
+        // if _destroy it's true, I don't care about setting the form values
+        _.forIn(columnsKeys, (key) => {
+          // ref is set in FormBuilder with this same format:
+          const ref = `${fieldId}${index}${key}`;
+          const formElement = this.refs[ref];
+          if (formElement && _.isFunction(formElement.getResult)) {
+            const columnResult = formElement.getResult();
+            _.merge(rowResult, columnResult);
+          }
+        });
+      }
+      else {
+
+      }
       if (Object.keys(rowResult).length > 0) {
+        _.merge(rowResult, rowData.toJS());
         rowsArray.push(rowResult);
       }
     })
-    const result = {[submitKey]: rowsArray};
-    return result;
+    if (rowsArray.length > 0) {
+      return {[submitKey]: rowsArray};
+    }
+    else {
+      return null;
+    }
   }
 
   _getColumnsKeys() {
