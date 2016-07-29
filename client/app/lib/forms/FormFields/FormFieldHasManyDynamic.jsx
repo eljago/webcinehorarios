@@ -96,6 +96,7 @@ export default class FormFieldHasManyDynamic extends React.Component {
         });
         columnFields.push(
           <Button
+            style={{marginTop: 24}}
             bsStyle="danger"
             onClick={() => this._handleDelete(index)}
           >

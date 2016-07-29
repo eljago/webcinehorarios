@@ -46,7 +46,7 @@ export default class FormFieldFile extends React.Component {
               responsive
             />
           </Col>
-          <Col xs={5}>
+          <Col xs={10}>
             <FormControl
               value={this.state.currentRemote}
               placeholder='Remote Image'
@@ -54,8 +54,7 @@ export default class FormFieldFile extends React.Component {
                 this._handleChangeRemote(_.replace(e.target.value,'  ', ' '))
               }}
             />
-          </Col>
-          <Col xs={5}>
+            <br />
             <FormControl
               type="file"
               onChange={this._handleChangeLocal}
