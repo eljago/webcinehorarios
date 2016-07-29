@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 
 import FormFieldText from '../FormFields/FormFieldText'
-import FormFieldFile from '../FormFields/FormFieldFile'
+import FormFieldImage from '../FormFields/FormFieldImage'
 import FormFieldSelect from '../FormFields/FormFieldSelect'
 import FormFieldDate from '../FormFields/FormFieldDate'
 import FormFieldRadioGroup from '../FormFields/FormFieldRadioGroup'
@@ -61,9 +61,14 @@ export default class FormBuilder {
           />
         );
       }
-      else if (fieldType === 'fileField') {
+      else if (fieldType === 'imageField') {
+        aditionalProps = {
+          submitKeyRemoteImage: fieldInfo.submitKeyRemoteImage,
+          submitKeyLocalImage: fieldInfo.submitKeyLocalImage,
+          initialValue: _.get(this.object, objPath)
+        };
         return (
-          <FormFieldFile {...formFieldProps} />
+          <FormFieldImage {...formFieldProps} />
         );
       }
       else if (fieldType === 'dateField') {

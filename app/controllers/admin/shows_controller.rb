@@ -51,6 +51,7 @@ class Admin::ShowsController < ApplicationController
         "id" => spr.id,
         "person_id" => spr.person_id,
         "name" => spr.person.present? ? spr.person.name : '',
+        'image_url' => spr.person.present? ? spr.person.image_url : '',
         "actor" => spr.actor,
         "director" => spr.director,
         "character" => spr.character, "id" => spr.id

@@ -31,6 +31,7 @@ export default class ShowForm extends React.Component {
           <Tabs defaultActiveKey={1} animation={false} id="uncontrolled-tab-example">
 
             <Tab eventKey={1} title="Basic Info">
+              <br/>
               <ShowFormBasic
                 formBuilder={this.props.formBuilder}
                 ref='formBasic'
@@ -38,6 +39,7 @@ export default class ShowForm extends React.Component {
             </Tab>
 
             <Tab eventKey={2} title="Cast">
+              <br/>
               <ShowFormCast
                 formBuilder={this.props.formBuilder}
                 ref='formCast'
@@ -45,10 +47,12 @@ export default class ShowForm extends React.Component {
             </Tab>
 
             <Tab eventKey={3} title="Images">
+              <br/>
               <div/>
             </Tab>
 
             <Tab eventKey={4} title="Videos">
+              <br/>
               <div/>
             </Tab>
 

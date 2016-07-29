@@ -6,6 +6,7 @@ import _ from 'lodash'
 
 import FormGroup from 'react-bootstrap/lib/FormGroup'
 import ControlLabel from 'react-bootstrap/lib/ControlLabel'
+import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Button from 'react-bootstrap/lib/Button'
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -36,7 +37,6 @@ export default class FormFieldHasManyDynamic extends React.Component {
   render() {
     return(
       <FormGroup controlId={this.props.submitKey}>
-        <ControlLabel>{this.props.label}</ControlLabel>
         {this._getRowFields()}
       </FormGroup>
     );

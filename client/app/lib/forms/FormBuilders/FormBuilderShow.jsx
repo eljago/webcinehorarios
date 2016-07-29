@@ -14,14 +14,11 @@ export default class FormBuilderShow extends FormBuilder {
         label: 'Nombre',
         regExp: /^\b.+\b$/
       },
-      remote_image_url: {
-        fieldType: 'textField',
-        textFieldType: 'text',
-        label: 'Remote Image URL'
-      },
-      image: {
-        fieldType: 'fileField',
-        label: 'Local Image'
+      image_url: {
+        fieldType: 'imageField',
+        label: 'Image',
+        submitKeyRemoteImage: 'remote_image_url',
+        submitKeyLocalImage: 'image',
       },
       information: {
         fieldType: 'textField',
