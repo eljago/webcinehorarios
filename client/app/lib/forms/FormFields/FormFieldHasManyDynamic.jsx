@@ -76,6 +76,7 @@ export default class FormFieldHasManyDynamic extends React.Component {
 
     const rowsStatus = this.state.rowsStatus;
     const object = formBuilder.object;
+    const schema = formBuilder.schema;
 
     let rowsFields = [];
 
@@ -84,13 +85,12 @@ export default class FormFieldHasManyDynamic extends React.Component {
 
       }
       else {
-        let columnFields = columnsKeys.map((subFieldId) => {
-          const schemaPath = `${fieldId}.subFields.${subFieldId}`;
-          const objectPath = `${fieldId}[${index}].${subFieldId}`;
-
+        let columnFields = columnsKeys.map((key) => {
+          const schemaPath = `${fieldId}.subFields.${key}`;
+          const colValue = _.get(schema, schemaPath).col;
           return (
-            <Col xs={2}>
-              {formBuilder.getFormField(schemaPath, objectPath)}
+            <Col xs={colValue ? colValue : 2}>
+              {formBuilder.getFormField(schemaPath, index)}
             </Col>
           );
         });
@@ -120,11 +120,12 @@ export default class FormFieldHasManyDynamic extends React.Component {
 
       let rowResult = {};
 
+      // if _destroy it's true, I don't care about setting the form values
       if (!rowData.get('_destroy')) {
-        // if _destroy it's true, I don't care about setting the form values
         _.forIn(columnsKeys, (key) => {
-          // ref is set in FormBuilder with this same format:
-          const ref = `${fieldId}${index}${key}`;
+          const schemaPath = `${fieldId}.subFields.${key}`;
+          let initialValuePath = _.get(formBuilder.schema, schemaPath).initialValuePath;
+          const ref = initialValuePath.replace(/\[\]/, `[${index}]`);
           const formElement = this.refs[ref];
           if (formElement && _.isFunction(formElement.getResult)) {
             const columnResult = formElement.getResult();

@@ -20,7 +20,7 @@ export default class ShowFormBasic extends React.Component {
         <Row>
           <Col md={8}>
             {formBuilder.getFormField('name')}
-            {formBuilder.getFormField('image_url')}
+            {formBuilder.getFormField('image')}
             {formBuilder.getFormField('information')}
 
             <Row>

@@ -14,33 +14,35 @@ import Col from 'react-bootstrap/lib/Col';
 export default class FormFieldFile extends React.Component {
   static propTypes = {
     submitKey: PropTypes.string,
-    submitKeyRemoteImage: PropTypes.string,
-    submitKeyLocalImage: PropTypes.string,
     label: PropTypes.string,
-    initalValue: PropTypes.string,
+    initialValue: PropTypes.string,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       currentRemote: '',
-      currentLocal: '',
-      submitValue: this.props.initalValue
+      currentLocal: ''
     }
     _.bindAll(this, ['_handleChangeRemote', '_handleChangeLocal']);
   }
 
   render() {
-    // let image_url = _.get(this.object, objPath);
-    // let smallest_image_url = image_url.replace(/(\w+\.\w+)$/, "smallest_$1");
-    // smallest_image_url = `http://cinehorarios.cl${smallest_image_url}`;
+    const {currentRemote, currentLocal} = this.state;
+    let thumb = this.props.initialValue;
+    if (currentRemote !== '') {
+      thumb = currentRemote;
+    }
+    else if (currentLocal !== '') {
+      thumb = currentLocal;
+    }
     return(
-      <FormGroup controlId={this.props.submitKeyRemoteImage}>
+      <FormGroup controlId={this.props.submitKey}>
         <ControlLabel>{this.props.label}</ControlLabel>
         <Row>
           <Col xs={2}>
             <Thumbnail
-              src={this.state.submitValue}
+              src={thumb}
               responsive
             />
           </Col>
@@ -66,16 +68,16 @@ export default class FormFieldFile extends React.Component {
   }
 
   _handleChangeRemote(value) {
-    if (validator.isURL(value) || validator.matches(value, /^.+\.(png|jpg|jpeg|gif)$/)) {
+    if (validator.isURL(value) && validator.matches(value, /^.+\.(png|jpg|jpeg|gif)$/)) {
       this.setState({
         currentRemote: value,
-        currentLocal: '',
-        submitValue: value
+        currentLocal: ''
       });
     }
     else {
       this.setState({
-        currentRemote: ''
+        currentRemote: '',
+        currentLocal: ''
       });
     }
   }
@@ -99,18 +101,19 @@ export default class FormFieldFile extends React.Component {
             ) {
             this.setState({
               currentLocal: reader.result,
-              currentRemote: '',
-              submitValue: reader.result
+              currentRemote: ''
             });
           }
           else {
             this.setState({
+              currentRemote: '',
               currentLocal: ''
             });
           }
         }
         else {
           this.setState({
+            currentRemote: '',
             currentLocal: ''
           });
         }
@@ -123,10 +126,10 @@ export default class FormFieldFile extends React.Component {
 
   getResult() {
     if (!_.isEmpty(this.state.currentRemote)) {
-      return {remote_image_url: this.state.submitValue};
+      return {remote_image_url: this.state.currentRemote};
     }
     else if (!_.isEmpty(this.state.currentLocal)) {
-      return {image: this.state.submitValue};
+      return {image: this.state.currentLocal};
     }
     return null;
   }

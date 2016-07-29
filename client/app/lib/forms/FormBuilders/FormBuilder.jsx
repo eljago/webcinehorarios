@@ -19,15 +19,18 @@ export default class FormBuilder {
     this.schema = schema;
   }
 
-  getFormField(schemaPath, objectPath = null) {
+  getFormField(schemaPath, index = null) {
     if (_.has(this.schema, schemaPath)) {
       const fieldInfo = _.get(this.schema, schemaPath);
       const fieldType = fieldInfo.fieldType;
       const fieldId = _.last(schemaPath.split('.'));
-      const objPath = objectPath ? objectPath : fieldId;
+      let initialValuePath = fieldInfo.initialValuePath;
+      if (_.isNumber(index)) {
+        initialValuePath = initialValuePath.replace(/\[\]/, `[${index}]`);
+      }
 
       const formFieldProps = {
-        ref: objPath.replace(/(\W)/g,''),
+        ref: initialValuePath,
         submitKey: fieldInfo.submitKey ? fieldInfo.submitKey : fieldId,
         label: fieldInfo.label,
       }
@@ -38,20 +41,20 @@ export default class FormBuilder {
           aditionalProps = {
             type: 'number',
             regExp: fieldInfo.regExp,
-            initialValue: _.get(this.object, objPath)
+            initialValue: _.get(this.object, initialValuePath)
           };
         }
         else if (fieldInfo.textFieldType === 'textarea') {
           aditionalProps = {
             type: 'textarea',
-            initialValue: _.get(this.object, objPath)
+            initialValue: _.get(this.object, initialValuePath)
           };
         }
         else {
           aditionalProps = {
             type: 'text',
             regExp: fieldInfo.regExp,
-            initialValue: _.get(this.object, objPath)
+            initialValue: _.get(this.object, initialValuePath)
           };
         }
         return (
@@ -63,17 +66,18 @@ export default class FormBuilder {
       }
       else if (fieldType === 'imageField') {
         aditionalProps = {
-          submitKeyRemoteImage: fieldInfo.submitKeyRemoteImage,
-          submitKeyLocalImage: fieldInfo.submitKeyLocalImage,
-          initialValue: _.get(this.object, objPath)
+          initialValue: _.get(this.object, initialValuePath)
         };
         return (
-          <FormFieldImage {...formFieldProps} />
+          <FormFieldImage
+            {...formFieldProps}
+            {...aditionalProps}
+          />
         );
       }
       else if (fieldType === 'dateField') {
         aditionalProps = {
-          initialValue: _.get(this.object, objPath)
+          initialValue: _.get(this.object, initialValuePath)
         };
         return (
           <FormFieldDate
@@ -84,7 +88,7 @@ export default class FormBuilder {
       }
       else if (fieldType === 'checkboxField') {
         aditionalProps = {
-          initialValue: _.get(this.object, objPath)
+          initialValue: _.get(this.object, initialValuePath)
         };
         return(
           <FormFieldCheckbox
@@ -95,7 +99,7 @@ export default class FormBuilder {
       }
       else if (fieldType === 'radioGroupField') {
         aditionalProps = {
-          initialValue: _.get(this.object, objPath),
+          initialValue: _.get(this.object, initialValuePath),
           options: fieldInfo.options
         };
         return (
@@ -107,7 +111,7 @@ export default class FormBuilder {
       }
       else if (fieldType === 'checkboxGroupField') {
         aditionalProps = {
-          initialValue: _.get(this.object, objPath).map((value) => {
+          initialValue: _.get(this.object, initialValuePath).map((value) => {
             return value.id;
           }),
           columns: fieldInfo.columns ? fieldInfo.columns : 1,
@@ -124,7 +128,7 @@ export default class FormBuilder {
         aditionalProps = {
           initialValue: {
             value: _.get(this.object, "id"),
-            label: _.get(this.object, objPath)
+            label: _.get(this.object, initialValuePath)
           },
           keyName: fieldInfo.keyName,
           getOptions: fieldInfo.getOptions,

@@ -51,10 +51,16 @@ class Admin::ShowsController < ApplicationController
         "id" => spr.id,
         "person_id" => spr.person_id,
         "name" => spr.person.present? ? spr.person.name : '',
-        'image_url' => spr.person.present? ? spr.person.image_url : '',
+        'image' => spr.person.present? ? spr.person.image.as_json[:image] : '',
         "actor" => spr.actor,
         "director" => spr.director,
         "character" => spr.character, "id" => spr.id
+      }
+    end
+    @show["images"] = show.images.order('images.updated_at DESC').map do |img|
+      {
+        "id" => img.id,
+        "image" => img.image.as_json[:image]
       }
     end
     @genres = Genre.order(:name).all
