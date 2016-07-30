@@ -33,6 +33,7 @@ export default class FormBuilder {
         ref: initialValuePath,
         submitKey: fieldInfo.submitKey ? fieldInfo.submitKey : fieldId,
         label: fieldInfo.label,
+        validations: fieldInfo.validations,
       }
       let aditionalProps;
 
@@ -40,7 +41,6 @@ export default class FormBuilder {
         if (fieldInfo.textFieldType === 'number') {
           aditionalProps = {
             type: 'number',
-            regExp: fieldInfo.regExp,
             initialValue: _.get(this.object, initialValuePath)
           };
         }
@@ -53,7 +53,6 @@ export default class FormBuilder {
         else {
           aditionalProps = {
             type: 'text',
-            regExp: fieldInfo.regExp,
             initialValue: _.get(this.object, initialValuePath)
           };
         }

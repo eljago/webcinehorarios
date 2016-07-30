@@ -12,8 +12,10 @@ export default class FormBuilderShow extends FormBuilder {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Nombre',
-        regExp: /^\b.+\b$/,
-        initialValuePath: 'name'
+        initialValuePath: 'name',
+        validations: {
+          isNull: true,
+        }
       },
       "image": {
         fieldType: 'imageField',
@@ -30,48 +32,103 @@ export default class FormBuilderShow extends FormBuilder {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Imdb Code',
-        regExp: /^t{2}\d{7}$/,
-        initialValuePath: 'imdb_code'
+        initialValuePath: 'imdb_code',
+        validations: {
+          matches: {
+            pattern: /^t{2}\d{7}$/,
+            message: 'Formato del código incorrecto',
+          }
+        }
       },
       imdb_score: {
         fieldType: 'textField',
         textFieldType: 'number',
         label: 'Imdb Score',
-        regExp: /^\d{1,2}$/,
-        initialValuePath: 'imdb_score'
+        initialValuePath: 'imdb_score',
+        validations: {
+          isLength: {
+            options: {
+              min: 0,
+              max: 2
+            }
+          },
+          isNumeric: true,
+        }
       },
       metacritic_url: {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Metacritic Url',
-        regExp: /^http:\/\/www\.metacritic\.com\/movie\/[\w-]+\/?$/,
-        initialValuePath: 'metacritic_url'
+        initialValuePath: 'metacritic_url',
+        validations: {
+          matches: {
+            pattern: /^http:\/\/www\.metacritic\.com\/movie\/[\w-]+\/?$/,
+            message: 'Formato de URL incorrecto',
+          },
+          isURL: {
+            options: {
+              protocols: ['http', 'https']
+            }
+          }
+        }
       },
       metacritic_score: {
         fieldType: 'textField',
         textFieldType: 'number',
         label: 'Metacritic Score',
-        regExp: /^\d{1,2}$/,
-        initialValuePath: 'metacritic_score'
+        initialValuePath: 'metacritic_score',
+        validations: {
+          isLength: {
+            options: {
+              min: 0,
+              max: 2
+            }
+          },
+          isNumeric: true,
+        }
       },
       rotten_tomatoes_url: {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Rotten Tomatoes Url',
-        regExp: /^https:\/\/www\.rottentomatoes\.com\/m\/[\w-]+\/?$/,
-        initialValuePath: 'rotten_tomatoes_url'
+        initialValuePath: 'rotten_tomatoes_url',
+        validations: {
+          matches: {
+            pattern: /^https:\/\/www\.rottentomatoes\.com\/m\/[\w-]+\/?$/,
+            message: 'Formato de URL incorrecto',
+          },
+          isURL: {
+            options: {
+              protocols: ['http', 'https']
+            }
+          }
+        },
       },
       rotten_tomatoes_score: {
         fieldType: 'textField',
         textFieldType: 'number',
         label: 'Rotten Tomatoes Score',
-        regExp: /^\d{1,2}$/,
-        initialValuePath: 'rotten_tomatoes_score'
+        initialValuePath: 'rotten_tomatoes_score',
+        validations: {
+          isLength: {
+            options: {
+              min: 0,
+              max: 2
+            }
+          },
+          isNumeric: true,
+        }
       },
       debut: {
         fieldType: 'dateField',
         label: 'Estreno',
-        initialValuePath: 'debut'
+        initialValuePath: 'debut',
+        validations: {
+          matches: {
+            pattern: /^\d{2}-\d{2}-\d{4}$/,
+            message: 'Formato de Fecha Incorrecto',
+          }
+        }
       },
       rating: {
         fieldType: 'radioGroupField',
@@ -112,7 +169,6 @@ export default class FormBuilderShow extends FormBuilder {
             fieldType: 'textField',
             textFieldType: 'text',
             label: 'Personaje',
-            regExp: /^\b.+\b$/,
             initialValuePath: 'show_person_roles[].character',
             col: 3,
           },

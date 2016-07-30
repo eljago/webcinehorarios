@@ -3,6 +3,8 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 
+import validate from './validate';
+
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
@@ -14,13 +16,13 @@ export default class FormFieldText extends React.Component {
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.string,
-    regExp: PropTypes.object,
+    validations: PropTypes.object,
   };
   static defaultProps = {
     type: 'text',
     label: '',
     initialValue: '',
-    regExp: null
+    validations: null,
   };
 
   constructor(props) {
@@ -28,9 +30,8 @@ export default class FormFieldText extends React.Component {
 
     this.state = {
       currentValue: props.initialValue,
-      valid: props.regExp ? props.regExp.test(props.initialValue) : true,
+      helpMessages: _.values(validate(props.initialValue, props.validations))
     };
-    _.bindAll(this, '_handleChange');
   }
 
   render() {
@@ -55,9 +56,8 @@ export default class FormFieldText extends React.Component {
           value={this.state.currentValue}
           placeholder={label}
           onChange={(e) => {
-            this._handleChange(_.replace(e.target.value,'  ', ' '))
+            this._handleChange(e.target.value)
           }}
-          required
         />
         {this._getFeedback()}
       </FormGroup>
@@ -65,27 +65,28 @@ export default class FormFieldText extends React.Component {
   }
 
   _handleChange(value) {
-    let newState = {currentValue: value};
-
-    if (this.props.regExp)
-      newState.valid = this.props.regExp.test(value);
-
-    this.setState(newState);
+    const newValue = _.replace(value, '  ', ' ');
+    this.setState({
+      currentValue: newValue,
+      helpMessages: _.values(validate(newValue, this.props.validations))
+    });
   }
 
   _getValidationState() {
-    if (this.props.regExp) {
-      if (this.state.valid)
-        return 'success';
-      else
-        return 'error';
+    if (this.props.validations) {
+      return this.state.helpMessages.length > 0 ? 'error' : 'success';
     }
     return null;
   }
 
   _getFeedback() {
-    if (this.props.regExp)
-      return (<FormControl.Feedback />);
+    if (this.props.validations) {
+      let helperElements = [<FormControl.Feedback />];
+      _.forIn(this.state.helpMessages, (message) => {
+        helperElements.push(<HelpBlock>{message}</HelpBlock>);
+      });
+      return helperElements;
+    }
     return null;
   }
 
