@@ -29,7 +29,7 @@ export default class ShowEdit extends React.Component {
         onSubmit={this._handleSubmit}
         submitting={this.state.submitting}
         formBuilder={this.formBuilder}
-        errors={this.state.erros}
+        errors={this.state.errors}
       />
     );
   }
@@ -53,14 +53,14 @@ export default class ShowEdit extends React.Component {
       error: (error) => {
         // Rails validations failed
         if (error.status == 422) {
-          // console.log(error.responseJSON.errors);
+          console.log(error.responseJSON.errors);
           this.setState({
-            errors: error.responseJSON.errors,
+            errors: !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
             submitting: false
           });
         }
         else if (error.status == 500) {
-          // console.log(error.statusText);
+          console.log(error.statusText);
           this.setState({
             submitting: false
           });

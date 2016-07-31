@@ -8,6 +8,7 @@ class Person < ApplicationRecord
   has_many :nominations, through: :nomination_person_roles
 
   validates :name, :presence => :true
+  validates :imdb_code, uniqueness: { case_sensitive: true }, allow_blank: true
 
   mount_uploader :image, PersonCover
 

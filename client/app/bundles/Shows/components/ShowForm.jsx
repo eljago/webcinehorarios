@@ -12,6 +12,7 @@ import ShowFormCast from './ShowFormCast'
 import ShowFormImages from './ShowFormImages'
 
 import FormBuilderShow from '../../../lib/forms/FormBuilders/FormBuilderShow'
+import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
 
 export default class ShowForm extends React.Component {
   static propTypes = {
@@ -30,6 +31,7 @@ export default class ShowForm extends React.Component {
     const submitting = this.props.submitting;
     return (
       <div className="container">
+        <ErrorMessages errors={this.props.errors} />
         <form>
           <Tabs defaultActiveKey={1} animation={false} id="uncontrolled-tab-example">
 
@@ -82,9 +84,6 @@ export default class ShowForm extends React.Component {
 
   _handleSubmit() {
     let showToSubmit = this.refs.formBasic.getResult();
-    if (showToSubmit.image && !_.isEmpty(showToSubmit.image)) {
-      _.unset(showToSubmit,'remote_image_url');
-    }
 
     const dataShowCast = this.refs.formCast.getResult();
     showToSubmit = _.merge(showToSubmit, dataShowCast);
