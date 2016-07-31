@@ -1,7 +1,8 @@
 class Api::V1::ShowsController < Api::V1::ApiController
 
   def index
-    respond_with Show.order('created_at DESC').paginate(page: params[:page], per_page: 10).all
+    respond_with Show.text_search(params[:query]).order('created_at DESC')
+      .paginate(page: params[:page], per_page: 10).all
   end
 
   def create
@@ -62,7 +63,8 @@ class Api::V1::ShowsController < Api::V1::ApiController
       images_attributes: [
         :id,
         :remote_image_url,
-        :image
+        :image,
+        :_destroy
       ]
     )
   end
