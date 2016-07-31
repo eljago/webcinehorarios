@@ -191,6 +191,7 @@ export default class FormBuilderShow extends FormBuilder {
         submitKey: 'images_attributes',
         label: 'Imágenes',
         initialValuePath: 'images',
+        formColumns: 2,
         subFields: {
           "image": {
             fieldType: 'imageField',

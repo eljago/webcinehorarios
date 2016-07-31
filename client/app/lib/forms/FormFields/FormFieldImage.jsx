@@ -40,13 +40,13 @@ export default class FormFieldFile extends React.Component {
       <FormGroup controlId={this.props.submitKey}>
         <ControlLabel>{this.props.label}</ControlLabel>
         <Row>
-          <Col xs={2}>
+          <Col md={2}>
             <Thumbnail
               src={thumb}
               responsive
             />
           </Col>
-          <Col xs={10}>
+          <Col md={10}>
             <FormControl
               value={this.state.currentRemote}
               placeholder='Remote Image'

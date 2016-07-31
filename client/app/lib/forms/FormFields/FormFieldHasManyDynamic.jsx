@@ -19,6 +19,7 @@ export default class FormFieldHasManyDynamic extends React.Component {
     label: PropTypes.string,
     fieldId: PropTypes.string,
     formBuilder: PropTypes.instanceOf(FormBuilder),
+    formColumns: PropTypes.number,
   };
 
   constructor(props) {
@@ -39,7 +40,9 @@ export default class FormFieldHasManyDynamic extends React.Component {
     return(
       <div>
         <FormGroup controlId={this.props.submitKey}>
-          {this._getRowFields()}
+          <Row>
+            {this._getRowFields()}
+          </Row>
         </FormGroup>
         <br />
         <Button onClick={this._onAddRow}>
@@ -50,6 +53,7 @@ export default class FormFieldHasManyDynamic extends React.Component {
   }
 
   _getRowFields() {
+    const {fieldId, formBuilder} = this.props;
     let rowsFields = [];
 
     const columnsKeys = this._getColumnsKeys()
@@ -59,7 +63,6 @@ export default class FormFieldHasManyDynamic extends React.Component {
       }
       else {
         let columnFields = columnsKeys.map((key) => {
-          const formBuilder = this.props.formBuilder;
           const schemaPath = this._getSchemaPath(key);
           const colValue = _.get(formBuilder.schema, schemaPath).col;
           return (
@@ -77,8 +80,11 @@ export default class FormFieldHasManyDynamic extends React.Component {
             Borrar
           </Button>
         );
+        const formCols = this.props.formColumns;
         rowsFields.push(
-          <Row key={index}>{columnFields}</Row>
+          <Col xs={12 / (formCols ? formCols : 1)}>
+            <Row key={index}>{columnFields}</Row>
+          </Col>
         );
       }
     });

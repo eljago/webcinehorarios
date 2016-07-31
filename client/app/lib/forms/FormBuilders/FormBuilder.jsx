@@ -143,6 +143,7 @@ export default class FormBuilder {
         aditionalProps = {
           fieldId: fieldId,
           formBuilder: this,
+          formColumns: fieldInfo.formColumns
         }
         return (
           <FormFieldHasManyDynamic
