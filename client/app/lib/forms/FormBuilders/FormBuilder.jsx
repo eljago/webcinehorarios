@@ -34,8 +34,7 @@ export default class FormBuilder {
         formBuilder: this,
         ref: initialValuePath,
         submitKey: fieldInfo.submitKey ? fieldInfo.submitKey : fieldId,
-        label: fieldInfo.label,
-        validations: fieldInfo.validations,
+        label: fieldInfo.label
       }
       let aditionalProps;
 

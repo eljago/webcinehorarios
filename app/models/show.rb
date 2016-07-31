@@ -15,15 +15,23 @@ class Show < ApplicationRecord
   has_many :award_specific_nominations, through: :nominations
   has_many :show_debuts, dependent: :destroy
 
-  validates :name, presence: :true
-  validates_associated :images
-  validates_associated :videos
-  validates_associated :show_person_roles
-  validates_associated :people
+  validates_associated :images, :videos, :show_person_roles, :people
 
-  accepts_nested_attributes_for :images, allow_destroy: true
-  accepts_nested_attributes_for :videos, allow_destroy: true
-  accepts_nested_attributes_for :show_person_roles, allow_destroy: true
+  validates :name, presence: :true
+  validates :debut, format: { with: /\A\d{2}-\d{2}-\d{4}\z/,
+    message: "%{value} no es un formato válido" }
+  validates :imdb_code, format: { with: /\At{2}\d{7}\z/,
+    message: "%{value} no es un formato válido" }
+  validates :metacritic_url, format: { with: /\Ahttp:\/\/www\.metacritic\.com\/movie\/[\w-]+\/?\z/,
+    message: "%{value} no es un formato válido" }
+  validates :rotten_tomatoes_url, format: { with: /\Ahttps:\/\/www\.rottentomatoes\.com\/m\/[\w-]+\/?\z/,
+    message: "%{value} no es un formato válido" }
+  validates :imdb_score, :metacritic_score, :rotten_tomatoes_score,
+    length: { in: 0..2 }
+  validates :imdb_score, :metacritic_score, :rotten_tomatoes_score,
+    numericality: { only_integer: true }
+
+  accepts_nested_attributes_for :images, :videos, :show_person_roles, allow_destroy: true
 
   after_commit :flush_cache
 

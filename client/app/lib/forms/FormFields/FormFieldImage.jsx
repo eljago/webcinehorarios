@@ -36,7 +36,9 @@ export default class FormFieldFile extends React.Component {
   }
 
   componentDidMount() {
-    this.props.setThumbSource(this.props.initialValue)
+    if (this.props.setThumbSource) {
+      this.props.setThumbSource(this.props.initialValue);
+    }
   }
 
   render() {

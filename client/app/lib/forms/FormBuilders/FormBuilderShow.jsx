@@ -13,9 +13,6 @@ export default class FormBuilderShow extends FormBuilder {
         textFieldType: 'text',
         label: 'Nombre',
         initialValuePath: 'name',
-        validations: {
-          isNull: true,
-        }
       },
       "image": {
         fieldType: 'imageField',
@@ -33,102 +30,41 @@ export default class FormBuilderShow extends FormBuilder {
         textFieldType: 'text',
         label: 'Imdb Code',
         initialValuePath: 'imdb_code',
-        validations: {
-          matches: {
-            pattern: /^t{2}\d{7}$/,
-            message: 'Formato del código incorrecto',
-          }
-        }
       },
       imdb_score: {
         fieldType: 'textField',
         textFieldType: 'number',
         label: 'Imdb Score',
         initialValuePath: 'imdb_score',
-        validations: {
-          isLength: {
-            options: {
-              min: 0,
-              max: 2
-            }
-          },
-          isNumeric: true,
-        }
       },
       metacritic_url: {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Metacritic Url',
         initialValuePath: 'metacritic_url',
-        validations: {
-          matches: {
-            pattern: /^http:\/\/www\.metacritic\.com\/movie\/[\w-]+\/?$/,
-            message: 'Formato de URL incorrecto',
-          },
-          isURL: {
-            options: {
-              protocols: ['http', 'https']
-            }
-          }
-        }
       },
       metacritic_score: {
         fieldType: 'textField',
         textFieldType: 'number',
         label: 'Metacritic Score',
         initialValuePath: 'metacritic_score',
-        validations: {
-          isLength: {
-            options: {
-              min: 0,
-              max: 2
-            }
-          },
-          isNumeric: true,
-        }
       },
       rotten_tomatoes_url: {
         fieldType: 'textField',
         textFieldType: 'text',
         label: 'Rotten Tomatoes Url',
-        initialValuePath: 'rotten_tomatoes_url',
-        validations: {
-          matches: {
-            pattern: /^https:\/\/www\.rottentomatoes\.com\/m\/[\w-]+\/?$/,
-            message: 'Formato de URL incorrecto',
-          },
-          isURL: {
-            options: {
-              protocols: ['http', 'https']
-            }
-          }
-        },
+        initialValuePath: 'rotten_tomatoes_url'
       },
       rotten_tomatoes_score: {
         fieldType: 'textField',
         textFieldType: 'number',
         label: 'Rotten Tomatoes Score',
-        initialValuePath: 'rotten_tomatoes_score',
-        validations: {
-          isLength: {
-            options: {
-              min: 0,
-              max: 2
-            }
-          },
-          isNumeric: true,
-        }
+        initialValuePath: 'rotten_tomatoes_score'
       },
       debut: {
         fieldType: 'dateField',
         label: 'Estreno',
-        initialValuePath: 'debut',
-        validations: {
-          matches: {
-            pattern: /^\d{2}-\d{2}-\d{4}$/,
-            message: 'Formato de Fecha Incorrecto',
-          }
-        }
+        initialValuePath: 'debut'
       },
       rating: {
         fieldType: 'radioGroupField',
