@@ -15,7 +15,7 @@ export default class ShowEdit extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      canSubmit: true,
+      submitting: false,
       errors: {}
     };
     _.bindAll(this, '_handleSubmit');
@@ -27,7 +27,7 @@ export default class ShowEdit extends React.Component {
       <ShowForm
         show={this.props.show}
         onSubmit={this._handleSubmit}
-        canSubmit={this.state.canSubmit}
+        submitting={this.state.submitting}
         formBuilder={this.formBuilder}
         errors={this.state.erros}
       />
@@ -35,7 +35,8 @@ export default class ShowEdit extends React.Component {
   }
 
   _handleSubmit(showToSubmit) {
-    this.setState({canSubmit: false});
+    this.setState({submitting: true});
+
     $.ajax({
       url: `/api/shows/${this.props.show.id}`,
       type: 'PUT',
@@ -46,22 +47,22 @@ export default class ShowEdit extends React.Component {
         }
       },
       success: (response) => {
-        // window.location.replace('/admin/shows');
+        window.location.replace('/admin/shows');
 
       },
       error: (error) => {
         // Rails validations failed
         if (error.status == 422) {
-          console.log(error.responseJSON.errors);
+          // console.log(error.responseJSON.errors);
           this.setState({
             errors: error.responseJSON.errors,
-            canSubmit: true
+            submitting: false
           });
         }
         else if (error.status == 500) {
-          console.log(error.statusText);
+          // console.log(error.statusText);
           this.setState({
-            canSubmit: true
+            submitting: false
           });
         }
       }
@@ -75,7 +76,7 @@ export default class ShowEdit extends React.Component {
             options: response.people,
             // CAREFUL! Only set this to true when there are no more options,
             // or more specific queries will not be sent to the server.
-            complete: true
+            complete: response.people.length >= 10
         });
       });
     }

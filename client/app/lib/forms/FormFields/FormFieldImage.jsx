@@ -11,12 +11,19 @@ import Thumbnail from 'react-bootstrap/lib/Thumbnail';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
+import FormBuilder from '../FormBuilders/FormBuilder'
+
 export default class FormFieldFile extends React.Component {
   static propTypes = {
+    fieldId: PropTypes.string,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.string,
   };
+  static defaultProps = {
+    initialValue: ''
+  }
 
   constructor(props) {
     super(props);
@@ -40,15 +47,15 @@ export default class FormFieldFile extends React.Component {
       <FormGroup controlId={this.props.submitKey}>
         <ControlLabel>{this.props.label}</ControlLabel>
         <Row>
-          <Col md={2}>
+          <Col md={4}>
             <Thumbnail
-              src={thumb}
+              src={thumb !== '' ? thumb : '/uploads/default_images/default.png'}
               responsive
             />
           </Col>
-          <Col md={10}>
+          <Col md={8}>
             <FormControl
-              value={this.state.currentRemote}
+              value={currentRemote}
               placeholder='Remote Image'
               onChange={(e) => {
                 this._handleChangeRemote(_.replace(e.target.value,'  ', ' '))
@@ -67,11 +74,18 @@ export default class FormFieldFile extends React.Component {
   }
 
   _handleChangeRemote(value) {
-    if (validator.isURL(value) && validator.matches(value, /^.+\.(png|jpg|jpeg|gif)$/)) {
-      this.setState({
-        currentRemote: value,
-        currentLocal: ''
-      });
+    if (validator.isURL(value)) {
+      $.get(value).done(() => {
+        this.setState({
+          currentRemote: value,
+          currentLocal: ''
+        });
+      }).fail(() => {
+        this.setState({
+          currentRemote: '',
+          currentLocal: ''
+        });
+      })
     }
     else {
       this.setState({

@@ -7,8 +7,12 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 
+import FormBuilder from '../FormBuilders/FormBuilder'
+
 export default class FormFieldCheckbox extends React.Component {
   static propTypes = {
+    fieldId: PropTypes.string,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.boolean,

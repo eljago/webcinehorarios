@@ -21,13 +21,13 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def select_shows
     q = params[:input].split.map(&:capitalize).join(" ")
-    searchResult = Show.select([:id, :name]).text_search(q).order(:name)
+    searchResult = Show.select([:id, :name, :image]).text_search(q).order(:name)
 
     respond_to do |format|
       format.json do
         render json: {
           shows: searchResult.map do |e|
-            {value: e.id, label: "#{e.name}"}
+            {value: e.id, label: "#{e.name}", image_url: e.image.smallest.url}
           end
         }
       end

@@ -10,8 +10,12 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
 
+import FormBuilder from '../FormBuilders/FormBuilder'
+
 export default class FormFieldText extends React.Component {
   static propTypes = {
+    fieldId: PropTypes.string,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
     type: PropTypes.string,
     submitKey: PropTypes.string,
     label: PropTypes.string,

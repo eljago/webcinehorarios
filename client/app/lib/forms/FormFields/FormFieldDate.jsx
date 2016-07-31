@@ -9,8 +9,12 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 
+import FormBuilder from '../FormBuilders/FormBuilder'
+
 export default class FormFieldDate extends React.Component {
   static propTypes = {
+    fieldId: PropTypes.string,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.string,

@@ -145,7 +145,7 @@ export default class FormBuilderShow extends FormBuilder {
         fieldType: 'checkboxGroupField',
         submitKey: 'genre_ids',
         label: 'Géneros',
-        columns: 2,
+        xs: 6,
         options: genres.map((genre) => {
           return {value: genre.id, label: genre.name};
         }),
@@ -156,33 +156,38 @@ export default class FormBuilderShow extends FormBuilder {
         submitKey: 'show_person_roles_attributes',
         label: 'Elenco',
         initialValuePath: 'show_person_roles',
+        xs: 12,
         subFields: {
           name: {
             fieldType: 'selectField',
             label: 'Persona',
             keyName: 'person_id',
             getOptions: getPeopleSelectOptions,
-            initialValuePath: 'show_person_roles[].name',
-            col: 2,
+            initialValuePath: 'show_person_roles[]',
+            xs: 12,
+            md: 6
           },
           character: {
             fieldType: 'textField',
             textFieldType: 'text',
             label: 'Personaje',
             initialValuePath: 'show_person_roles[].character',
-            col: 3,
+            xs: 12,
+            md: 3
           },
           director: {
             fieldType: 'checkboxField',
             label: 'Director',
             initialValuePath: 'show_person_roles[].director',
-            col: 3,
+            xs: 5,
+            md: 1
           },
           actor: {
             fieldType: 'checkboxField',
             label: 'Actor',
             initialValuePath: 'show_person_roles[].actor',
-            col: 3,
+            xs: 5,
+            md: 1
           }
         }
       },
@@ -191,13 +196,14 @@ export default class FormBuilderShow extends FormBuilder {
         submitKey: 'images_attributes',
         label: 'Imágenes',
         initialValuePath: 'images',
-        formColumns: 2,
+        xs: 12,
+        md: 6,
         subFields: {
           "image": {
             fieldType: 'imageField',
             label: 'Image',
             initialValuePath: 'images[].image.smaller.url',
-            col: 10,
+            md: 10,
           },
         }
       }

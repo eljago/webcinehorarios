@@ -17,7 +17,7 @@ export default class ShowForm extends React.Component {
   static propTypes = {
     formBuilder: PropTypes.instanceOf(FormBuilderShow),
     onSubmit: PropTypes.func.isRequired,
-    canSubmit: PropTypes.boolean,
+    submitting: PropTypes.boolean,
     errors: PropTypes.object,
   };
 
@@ -27,6 +27,7 @@ export default class ShowForm extends React.Component {
   }
 
   render() {
+    const submitting = this.props.submitting;
     return (
       <div className="container">
         <form>
@@ -66,12 +67,12 @@ export default class ShowForm extends React.Component {
           <br/>
 
           <Button
-            onClick={this._handleSubmit}
-            target
-            disabled={!this.props.canSubmit}
             type="submit"
+            bsStyle="primary"
+            disabled={submitting}
+            onClick={!submitting ? this._handleSubmit : null}
           >
-            Submit
+            {submitting ? 'Submitting...' : 'Submit'}
           </Button>
 
         </form>

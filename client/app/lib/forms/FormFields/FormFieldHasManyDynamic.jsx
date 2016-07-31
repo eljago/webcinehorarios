@@ -15,11 +15,10 @@ import FormBuilder from '../FormBuilders/FormBuilder'
 
 export default class FormFieldHasManyDynamic extends React.Component {
   static propTypes = {
-    submitKey: PropTypes.string,
-    label: PropTypes.string,
     fieldId: PropTypes.string,
     formBuilder: PropTypes.instanceOf(FormBuilder),
-    formColumns: PropTypes.number,
+    submitKey: PropTypes.string,
+    label: PropTypes.string,
   };
 
   constructor(props) {
@@ -45,7 +44,7 @@ export default class FormFieldHasManyDynamic extends React.Component {
           </Row>
         </FormGroup>
         <br />
-        <Button onClick={this._onAddRow}>
+        <Button onClick={this._onAddRow} bsStyle="success">
           Nuevo
         </Button>
       </div>
@@ -54,6 +53,7 @@ export default class FormFieldHasManyDynamic extends React.Component {
 
   _getRowFields() {
     const {fieldId, formBuilder} = this.props;
+    const formSchema = _.get(formBuilder.schema, fieldId);
     let rowsFields = [];
 
     const columnsKeys = this._getColumnsKeys()
@@ -63,14 +63,17 @@ export default class FormFieldHasManyDynamic extends React.Component {
       }
       else {
         let columnFields = columnsKeys.map((key) => {
-          const schemaPath = this._getSchemaPath(key);
-          const colValue = _.get(formBuilder.schema, schemaPath).col;
+          const schemaPath = this._getFieldSchema(key);
+          const fieldSchema = formSchema.subFields[key];
+          const xs = fieldSchema.xs ? fieldSchema.xs : null;
+          const md = fieldSchema.md ? fieldSchema.md : null;
           return (
-            <Col xs={colValue ? colValue : 2}>
+            <Col xs={xs} md={md}>
               {formBuilder.getFormField(schemaPath, index)}
             </Col>
           );
         });
+        // Delete Button
         columnFields.push(
           <Button
             style={{marginTop: 24}}
@@ -80,9 +83,11 @@ export default class FormFieldHasManyDynamic extends React.Component {
             Borrar
           </Button>
         );
-        const formCols = this.props.formColumns;
+        // Add Row
+        const xs = formSchema.xs ? formSchema.xs : null;
+        const md = formSchema.md ? formSchema.md : null;
         rowsFields.push(
-          <Col xs={12 / (formCols ? formCols : 1)}>
+          <Col xs={xs} md={md}>
             <Row key={index}>{columnFields}</Row>
           </Col>
         );
@@ -164,14 +169,14 @@ export default class FormFieldHasManyDynamic extends React.Component {
     return Object.keys(this.props.formBuilder.schema[this.props.fieldId].subFields)
   }
 
-  _getSchemaPath(key) {
-    return `${this.props.fieldId}.subFields.${key}`
+  _getFieldSchema(key) {
+    return `${this.props.fieldId}.subFields.${key}`;
   }
 
   _getFormElement(key, index) {
     const {fieldId, formBuilder} = this.props;
 
-    const schemaPath = this._getSchemaPath(key);
+    const schemaPath = this._getFieldSchema(key);
     let initialValuePath = _.get(formBuilder.schema, schemaPath).initialValuePath;
     const ref = initialValuePath.replace(/\[\]/, `[${index}]`);
     return this.refs[ref];

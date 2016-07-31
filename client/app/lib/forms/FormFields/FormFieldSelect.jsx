@@ -6,11 +6,18 @@ import _ from 'lodash';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Thumbnail from 'react-bootstrap/lib/Thumbnail';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 import Select from 'react-select';
 
+import FormBuilder from '../FormBuilders/FormBuilder'
+
 export default class FormFieldSelect extends React.Component {
   static propTypes = {
+    fieldId: PropTypes.string,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
     submitKey: PropTypes.number,
     label: PropTypes.string,
     keyName: PropTypes.string,
@@ -19,12 +26,14 @@ export default class FormFieldSelect extends React.Component {
   };
   static defaultProps = {
     label: '',
-    initialValue: '',
+    initialValue: ''
   };
 
   constructor(props) {
     super(props)
-    this.state = {currentValue: props.initialValue};
+    this.state = {
+      currentValue: props.initialValue
+    };
     _.bindAll(this, '_handleChange');
   }
 
@@ -32,13 +41,23 @@ export default class FormFieldSelect extends React.Component {
     return(
       <FormGroup controlId={this.props.submitKey}>
         <ControlLabel>{this.props.label}</ControlLabel>
-        <Select.Async
-          name={this.props.submitKey}
-          value={this.state.currentValue}
-          onChange={this._handleChange}
-          loadOptions={this.props.getOptions}
-          clearable={false}
-        />
+        <Row>
+          <Col md={4}>
+            <Thumbnail
+              src={this.state.currentValue.image_url}
+              responsive
+            />
+          </Col>
+          <Col md={8}>
+            <Select.Async
+              name={this.props.submitKey}
+              value={this.state.currentValue}
+              onChange={this._handleChange}
+              loadOptions={this.props.getOptions}
+              clearable={false}
+            />
+          </Col>
+        </Row>
       </FormGroup>
     )
   }

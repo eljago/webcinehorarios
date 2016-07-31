@@ -30,6 +30,8 @@ export default class FormBuilder {
       }
 
       const formFieldProps = {
+        fieldId: fieldId,
+        formBuilder: this,
         ref: initialValuePath,
         submitKey: fieldInfo.submitKey ? fieldInfo.submitKey : fieldId,
         label: fieldInfo.label,
@@ -113,7 +115,6 @@ export default class FormBuilder {
           initialValue: _.get(this.object, initialValuePath).map((value) => {
             return value.id;
           }),
-          columns: fieldInfo.columns ? fieldInfo.columns : 1,
           options: fieldInfo.options
         };
         return (
@@ -126,8 +127,9 @@ export default class FormBuilder {
       else if (fieldType === 'selectField') {
         aditionalProps = {
           initialValue: {
-            value: _.get(this.object, "id"),
-            label: _.get(this.object, initialValuePath)
+            value: _.get(this.object, `${initialValuePath}.id`),
+            label: _.get(this.object, `${initialValuePath}.name`),
+            image_url: _.get(this.object, `${initialValuePath}.image.smallest.url`),
           },
           keyName: fieldInfo.keyName,
           getOptions: fieldInfo.getOptions,
@@ -140,15 +142,9 @@ export default class FormBuilder {
         );
       }
       else if (fieldType === 'hasManyDynamic') {
-        aditionalProps = {
-          fieldId: fieldId,
-          formBuilder: this,
-          formColumns: fieldInfo.formColumns
-        }
         return (
           <FormFieldHasManyDynamic
             {...formFieldProps}
-            {...aditionalProps}
           />
         );
       }

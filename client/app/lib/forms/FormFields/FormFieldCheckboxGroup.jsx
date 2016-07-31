@@ -9,17 +9,19 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
+import FormBuilder from '../FormBuilders/FormBuilder'
+
 export default class FormFieldCheckboxGroup extends React.Component {
   static propTypes = {
+    fieldId: PropTypes.string,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
     submitKey: PropTypes.string,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
     initialValue: PropTypes.array,
-    columns: PropTypes.number,
   };
   static defaultProps = {
     label: '',
-    columns: 1,
   };
 
   constructor(props) {
@@ -57,24 +59,22 @@ export default class FormFieldCheckboxGroup extends React.Component {
   }
 
   _getCheckboxColumns() {
-    const columns = this.props.columns;
-    const checkboxElements = this._getCheckboxElements();
-    const length = checkboxElements.length;
+    const {fieldId, formBuilder} = this.props;
+
     let checkboxCols = [];
-    for (var column = 0; column < columns; column++) {
-      let innerElements = [];
-      _.forIn(checkboxElements, (el, index) => {
-        const elementsPerCol = _.floor(length/columns);
-        if (index >= elementsPerCol * column && index < elementsPerCol * (column+1)) {
-          innerElements.push(el)
-        }
-      });
+
+    const formSchema = _.get(formBuilder.schema, fieldId);
+    const xs = formSchema.xs ? formSchema.xs : null;
+    const md = formSchema.md ? formSchema.md : null;
+
+    const checkboxElements = this._getCheckboxElements();
+    _.forIn(checkboxElements, (el, index) => {
       checkboxCols.push(
-        <Col xs={12/columns}>
-          {innerElements}
+        <Col xs={xs} md={md}>
+          {el}
         </Col>
       );
-    }
+    });
     return checkboxCols;
   }
 
