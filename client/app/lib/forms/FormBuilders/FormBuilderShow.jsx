@@ -20,7 +20,7 @@ export default class FormBuilderShow extends FormBuilder {
       "image": {
         fieldType: 'imageField',
         label: 'Image',
-        initialValuePath: 'image.smaller.url',
+        initialValuePath: 'image.small.url',
       },
       information: {
         fieldType: 'textField',

@@ -69,7 +69,7 @@ export default class FormFieldHasManyDynamic extends React.Component {
           const md = fieldSchema.md ? fieldSchema.md : null;
           return (
             <Col xs={xs} md={md}>
-              {formBuilder.getFormField(schemaPath, index)}
+              {formBuilder.getFormField(schemaPath, {index: index})}
             </Col>
           );
         });

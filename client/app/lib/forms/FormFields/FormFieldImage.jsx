@@ -7,7 +7,7 @@ import validator from 'validator';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import Thumbnail from 'react-bootstrap/lib/Thumbnail';
+import Image from 'react-bootstrap/lib/Image';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
@@ -20,6 +20,7 @@ export default class FormFieldFile extends React.Component {
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.string,
+    setThumbSource: PropTypes.func,
   };
   static defaultProps = {
     initialValue: ''
@@ -34,28 +35,19 @@ export default class FormFieldFile extends React.Component {
     _.bindAll(this, ['_handleChangeRemote', '_handleChangeLocal']);
   }
 
+  componentDidMount() {
+    this.props.setThumbSource(this.props.initialValue)
+  }
+
   render() {
-    const {currentRemote, currentLocal} = this.state;
-    let thumb = this.props.initialValue;
-    if (currentRemote !== '') {
-      thumb = currentRemote;
-    }
-    else if (currentLocal !== '') {
-      thumb = currentLocal;
-    }
     return(
       <FormGroup controlId={this.props.submitKey}>
         <ControlLabel>{this.props.label}</ControlLabel>
         <Row>
-          <Col md={4}>
-            <Thumbnail
-              src={thumb !== '' ? thumb : '/uploads/default_images/default.png'}
-              responsive
-            />
-          </Col>
-          <Col md={8}>
+          {this._getThumbnailElement()}
+          <Col md={this.props.setThumbSource ? 12 : 8}>
             <FormControl
-              value={currentRemote}
+              value={this.props.currentRemote}
               placeholder='Remote Image'
               onChange={(e) => {
                 this._handleChangeRemote(_.replace(e.target.value,'  ', ' '))
@@ -73,6 +65,30 @@ export default class FormFieldFile extends React.Component {
     );
   }
 
+  _getThumbnailElement() {
+    if (this.props.setThumbSource) {
+      return null
+    }
+    else {
+      const {currentRemote, currentLocal} = this.state;
+      let thumb = this.props.initialValue;
+      if (currentRemote !== '') {
+        thumb = currentRemote;
+      }
+      else if (currentLocal !== '') {
+        thumb = currentLocal;
+      }
+      return (
+        <Col md={4}>
+          <Image
+            src={thumb !== '' ? thumb : '/uploads/default_images/default.png'}
+            responsive
+          />
+        </Col>
+      );
+    }
+  }
+
   _handleChangeRemote(value) {
     if (validator.isURL(value)) {
       $.get(value).done(() => {
@@ -80,11 +96,13 @@ export default class FormFieldFile extends React.Component {
           currentRemote: value,
           currentLocal: ''
         });
+        this.props.setThumbSource(value);
       }).fail(() => {
         this.setState({
           currentRemote: '',
           currentLocal: ''
         });
+        this.props.setThumbSource('');
       })
     }
     else {
@@ -92,6 +110,7 @@ export default class FormFieldFile extends React.Component {
         currentRemote: '',
         currentLocal: ''
       });
+      this.props.setThumbSource('');
     }
   }
 

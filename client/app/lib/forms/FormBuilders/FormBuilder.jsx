@@ -19,14 +19,14 @@ export default class FormBuilder {
     this.schema = schema;
   }
 
-  getFormField(schemaPath, index = null) {
+  getFormField(schemaPath, options = {}) {
     if (_.has(this.schema, schemaPath)) {
       const fieldInfo = _.get(this.schema, schemaPath);
       const fieldType = fieldInfo.fieldType;
       const fieldId = _.last(schemaPath.split('.'));
       let initialValuePath = fieldInfo.initialValuePath;
-      if (_.isNumber(index)) {
-        initialValuePath = initialValuePath.replace(/\[\]/, `[${index}]`);
+      if (_.isNumber(options.index)) {
+        initialValuePath = initialValuePath.replace(/\[\]/, `[${options.index}]`);
       }
 
       const formFieldProps = {
@@ -67,7 +67,8 @@ export default class FormBuilder {
       }
       else if (fieldType === 'imageField') {
         aditionalProps = {
-          initialValue: _.get(this.object, initialValuePath)
+          initialValue: _.get(this.object, initialValuePath),
+          setThumbSource: options.setThumbSource
         };
         return (
           <FormFieldImage
