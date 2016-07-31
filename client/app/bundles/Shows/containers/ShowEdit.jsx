@@ -16,6 +16,7 @@ export default class ShowEdit extends React.Component {
     super(props);
     this.state = {
       canSubmit: true,
+      errors: {}
     };
     _.bindAll(this, '_handleSubmit');
     this.formBuilder = new FormBuilderShow(props.show, props.genres, this._getPeopleSelectOptions);
@@ -28,6 +29,7 @@ export default class ShowEdit extends React.Component {
         onSubmit={this._handleSubmit}
         canSubmit={this.state.canSubmit}
         formBuilder={this.formBuilder}
+        errors={this.state.erros}
       />
     );
   }
@@ -45,6 +47,23 @@ export default class ShowEdit extends React.Component {
       },
       success: (response) => {
         // window.location.replace('/admin/shows');
+
+      },
+      error: (error) => {
+        // Rails validations failed
+        if (error.status == 422) {
+          console.log(error.responseJSON.errors);
+          this.setState({
+            errors: error.responseJSON.errors,
+            canSubmit: true
+          });
+        }
+        else if (error.status == 500) {
+          console.log(error.statusText);
+          this.setState({
+            canSubmit: true
+          });
+        }
       }
     });
   }

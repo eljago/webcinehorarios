@@ -1,7 +1,7 @@
 class Show < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: [:slugged, :finders]
-    
+
   has_many :images, as: :imageable, dependent: :destroy
   has_and_belongs_to_many :genres
   has_many :functions, dependent: :destroy
@@ -14,9 +14,13 @@ class Show < ApplicationRecord
   has_many :nominations
   has_many :award_specific_nominations, through: :nominations
   has_many :show_debuts, dependent: :destroy
-  
+
   validates :name, presence: :true
-  
+  validates_associated :images
+  validates_associated :videos
+  validates_associated :show_person_roles
+  validates_associated :people
+
   accepts_nested_attributes_for :images, allow_destroy: true
   accepts_nested_attributes_for :videos, allow_destroy: true
   accepts_nested_attributes_for :show_person_roles, allow_destroy: true
@@ -25,11 +29,11 @@ class Show < ApplicationRecord
 
   mount_uploader :image, ShowCover
   mount_base64_uploader :image, ShowCover
-  
+
   include PgSearch
   pg_search_scope :search, against: [:name, :name_original, :imdb_code],
     using: {tsearch: {dictionary: "spanish"}}
-  
+
   def self.text_search(query)
     if query.present?
       search(query)
@@ -37,7 +41,7 @@ class Show < ApplicationRecord
       order('created_at desc')
     end
   end
-  
+
   def actors
     people.includes('show_person_roles').where('show_person_roles.actor'=>true)
   end

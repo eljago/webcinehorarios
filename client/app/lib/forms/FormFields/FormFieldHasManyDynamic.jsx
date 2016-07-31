@@ -42,52 +42,47 @@ export default class FormFieldHasManyDynamic extends React.Component {
     );
   }
 
-  _handleDelete(rowIndex) {
+  _handleDelete(index) {
     const fieldId = this.props.fieldId;
     let rowsStatus = this.state.rowsStatus;
-    let rowData = rowsStatus.get(rowIndex);
+    let rowData = rowsStatus.get(index);
+
     if (rowData.get('id')) {
       rowData = rowData.set('_destroy', true);
 
       const columnsKeys = this._getColumnsKeys()
+      // ["character", "actor", "director", etc]
 
       _.forIn(columnsKeys, (key) => {
-        const ref = `${fieldId}${rowIndex}${key}`;
-        const formElement = this.refs[ref];
+        const formElement = this._getFormElement(key, index);
         if (formElement && _.isFunction(formElement.getResult)) {
           const columnResult = formElement.getResult();
           rowData = rowData.merge(columnResult);
         }
       });
-      rowsStatus = rowsStatus.set(rowIndex, rowData);
+      console.log(rowData.toJS());
+      rowsStatus = rowsStatus.set(index, rowData);
       this.setState({rowsStatus});
     }
     else {
-      rowsStatus = rowsStatus.delete(rowIndex);
+      rowsStatus = rowsStatus.delete(index);
     }
     this.setState(rowsStatus);
   }
 
   _getRowFields() {
-    const {fieldId, formBuilder} = this.props;
-
-    const columnsKeys = this._getColumnsKeys()
-    // ["character", "actor", "director", etc]
-
-    const rowsStatus = this.state.rowsStatus;
-    const object = formBuilder.object;
-    const schema = formBuilder.schema;
-
     let rowsFields = [];
 
-    rowsStatus.forEach((rowData, index) => {
+    const columnsKeys = this._getColumnsKeys()
+    this.state.rowsStatus.forEach((rowData, index) => {
       if (rowData.get('_destroy')) {
 
       }
       else {
         let columnFields = columnsKeys.map((key) => {
-          const schemaPath = `${fieldId}.subFields.${key}`;
-          const colValue = _.get(schema, schemaPath).col;
+          const formBuilder = this.props.formBuilder;
+          const schemaPath = this._getSchemaPath(key);
+          const colValue = _.get(formBuilder.schema, schemaPath).col;
           return (
             <Col xs={colValue ? colValue : 2}>
               {formBuilder.getFormField(schemaPath, index)}
@@ -113,37 +108,34 @@ export default class FormFieldHasManyDynamic extends React.Component {
   }
 
   getResult() {
-    const {fieldId, formBuilder, submitKey} = this.props;
-
     let rowsArray = [];
+
     this.state.rowsStatus.forEach((rowData, index) => {
       const columnsKeys = this._getColumnsKeys()
 
       let rowResult = {};
 
       // if _destroy it's true, I don't care about setting the form values
-      if (!rowData.get('_destroy')) {
+      if (rowData.get('_destroy')) {
+        _.merge(rowResult, rowData.toJS());
+      }
+      else {
         _.forIn(columnsKeys, (key) => {
-          const schemaPath = `${fieldId}.subFields.${key}`;
-          let initialValuePath = _.get(formBuilder.schema, schemaPath).initialValuePath;
-          const ref = initialValuePath.replace(/\[\]/, `[${index}]`);
-          const formElement = this.refs[ref];
+          const formElement = this._getFormElement(key, index);
           if (formElement && _.isFunction(formElement.getResult)) {
             const columnResult = formElement.getResult();
             _.merge(rowResult, columnResult);
           }
         });
       }
-      else {
-
-      }
+      // If this rows had changed, add it to the RowsArray that will be submitted
       if (Object.keys(rowResult).length > 0) {
         _.merge(rowResult, rowData.toJS());
         rowsArray.push(rowResult);
       }
     })
     if (rowsArray.length > 0) {
-      return {[submitKey]: rowsArray};
+      return {[this.props.submitKey]: rowsArray};
     }
     else {
       return null;
@@ -152,5 +144,18 @@ export default class FormFieldHasManyDynamic extends React.Component {
 
   _getColumnsKeys() {
     return Object.keys(this.props.formBuilder.schema[this.props.fieldId].subFields)
+  }
+
+  _getSchemaPath(key) {
+    return `${this.props.fieldId}.subFields.${key}`
+  }
+
+  _getFormElement(key, index) {
+    const {fieldId, formBuilder} = this.props;
+
+    const schemaPath = this._getSchemaPath(key);
+    let initialValuePath = _.get(formBuilder.schema, schemaPath).initialValuePath;
+    const ref = initialValuePath.replace(/\[\]/, `[${index}]`);
+    return this.refs[ref];
   }
 }

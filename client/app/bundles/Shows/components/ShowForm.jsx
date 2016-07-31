@@ -18,6 +18,7 @@ export default class ShowForm extends React.Component {
     formBuilder: PropTypes.instanceOf(FormBuilderShow),
     onSubmit: PropTypes.func.isRequired,
     canSubmit: PropTypes.boolean,
+    errors: PropTypes.object,
   };
 
   constructor(props) {
