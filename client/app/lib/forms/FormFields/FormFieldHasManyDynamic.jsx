@@ -42,34 +42,6 @@ export default class FormFieldHasManyDynamic extends React.Component {
     );
   }
 
-  _handleDelete(index) {
-    const fieldId = this.props.fieldId;
-    let rowsStatus = this.state.rowsStatus;
-    let rowData = rowsStatus.get(index);
-
-    if (rowData.get('id')) {
-      rowData = rowData.set('_destroy', true);
-
-      const columnsKeys = this._getColumnsKeys()
-      // ["character", "actor", "director", etc]
-
-      _.forIn(columnsKeys, (key) => {
-        const formElement = this._getFormElement(key, index);
-        if (formElement && _.isFunction(formElement.getResult)) {
-          const columnResult = formElement.getResult();
-          rowData = rowData.merge(columnResult);
-        }
-      });
-      console.log(rowData.toJS());
-      rowsStatus = rowsStatus.set(index, rowData);
-      this.setState({rowsStatus});
-    }
-    else {
-      rowsStatus = rowsStatus.delete(index);
-    }
-    this.setState(rowsStatus);
-  }
-
   _getRowFields() {
     let rowsFields = [];
 
@@ -105,6 +77,33 @@ export default class FormFieldHasManyDynamic extends React.Component {
     });
 
     return rowsFields;
+  }
+
+  _handleDelete(index) {
+    const fieldId = this.props.fieldId;
+    let rowsStatus = this.state.rowsStatus;
+    let rowData = rowsStatus.get(index);
+
+    if (rowData.get('id')) {
+      rowData = rowData.set('_destroy', true);
+
+      const columnsKeys = this._getColumnsKeys()
+      // ["character", "actor", "director", etc]
+
+      _.forIn(columnsKeys, (key) => {
+        const formElement = this._getFormElement(key, index);
+        if (formElement && _.isFunction(formElement.getResult)) {
+          const columnResult = formElement.getResult();
+          rowData = rowData.merge(columnResult);
+        }
+      });
+      rowsStatus = rowsStatus.set(index, rowData);
+      this.setState({rowsStatus});
+    }
+    else {
+      rowsStatus = rowsStatus.delete(index);
+    }
+    this.setState(rowsStatus);
   }
 
   getResult() {

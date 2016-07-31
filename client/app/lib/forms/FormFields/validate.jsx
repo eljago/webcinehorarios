@@ -6,8 +6,6 @@ import _ from 'lodash'
 export default (value, validations) => {
   let failedValidations = {};
 
-  console.log(validator.isDate("22-12-2016"))
-
   if (_.isString(value) && _.isObject(validations)) {
     _.forIn(validations, (validation, key) => {
       switch (key) {
