@@ -32,13 +32,20 @@ export default class FormFieldHasManyDynamic extends React.Component {
         };
       }))
     };
+    _.bindAll(this, '_onAddRow');
   }
 
   render() {
     return(
-      <FormGroup controlId={this.props.submitKey}>
-        {this._getRowFields()}
-      </FormGroup>
+      <div>
+        <FormGroup controlId={this.props.submitKey}>
+          {this._getRowFields()}
+        </FormGroup>
+        <br />
+        <Button onClick={this._onAddRow}>
+          Nuevo
+        </Button>
+      </div>
     );
   }
 
@@ -77,6 +84,12 @@ export default class FormFieldHasManyDynamic extends React.Component {
     });
 
     return rowsFields;
+  }
+
+  _onAddRow() {
+    const newRowStatus = Immutable.fromJS({_destroy: false});
+    const rowsStatus = this.state.rowsStatus.push(newRowStatus);
+    this.setState({rowsStatus});
   }
 
   _handleDelete(index) {

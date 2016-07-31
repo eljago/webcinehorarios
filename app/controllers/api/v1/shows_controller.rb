@@ -18,6 +18,21 @@ class Api::V1::ShowsController < Api::V1::ApiController
     respond_with show, json: show
   end
 
+  def select_shows
+    q = params[:input].split.map(&:capitalize).join(" ")
+    searchResult = Show.select([:id, :name]).text_search(q).order(:name)
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          shows: searchResult.map do |e|
+            {value: e.id, label: "#{e.name}"}
+          end
+        }
+      end
+    end
+  end
+
   private
 
   def show_params

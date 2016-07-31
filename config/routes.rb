@@ -17,7 +17,11 @@ Rails.application.routes.draw do
 
     ##### V1 #####
     scope module: :v1 do
-      resources :shows, only: [:index, :destroy, :update]
+      resources :shows, only: [:index, :destroy, :update] do
+        collection do
+          get 'select_shows'
+        end
+      end
       resources :people, only: [] do
         collection do
           get 'select_people'
