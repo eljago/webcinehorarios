@@ -127,7 +127,7 @@ export default class FormFieldHasManyDynamic extends React.Component {
     else {
       rowsStatus = rowsStatus.delete(index);
     }
-    this.setState(rowsStatus);
+    this.setState({rowsStatus});
   }
 
   getResult() {

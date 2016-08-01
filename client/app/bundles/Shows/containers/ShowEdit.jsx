@@ -19,7 +19,8 @@ export default class ShowEdit extends React.Component {
       errors: {}
     };
     _.bindAll(this, '_handleSubmit');
-    this.formBuilder = new FormBuilderShow(props.show, props.genres, this._getPeopleSelectOptions);
+    this.formBuilder = new FormBuilderShow(props.show, props.genres,
+      this._getPeopleSelectOptions, this._getVideoTypesOptions);
   }
 
   render() {
@@ -47,7 +48,7 @@ export default class ShowEdit extends React.Component {
         }
       },
       success: (response) => {
-        window.location.replace('/admin/shows');
+        // window.location.replace('/admin/shows');
 
       },
       error: (error) => {
@@ -77,12 +78,10 @@ export default class ShowEdit extends React.Component {
   }
 
   _getPeopleSelectOptions(input, callback) {
-    if (_.trim(input).length > 3) {
+    if (_.trim(input).length > 2) {
       $.getJSON(`/api/people/select_people?input=${input}`, (response) => {
         callback(null, {
             options: response.people,
-            // CAREFUL! Only set this to true when there are no more options,
-            // or more specific queries will not be sent to the server.
             complete: response.people.length >= 10
         });
       });
@@ -90,5 +89,14 @@ export default class ShowEdit extends React.Component {
     else {
       callback(null, {options: [], complete: false});
     }
+  }
+
+  _getVideoTypesOptions(input, callback) {
+    $.getJSON('/api/videos/select_video_types', (response) => {
+      callback(null, {
+          options: response.video_types,
+          complete: true
+      });
+    });
   }
 }

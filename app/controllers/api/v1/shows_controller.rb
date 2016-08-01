@@ -1,5 +1,7 @@
 class Api::V1::ShowsController < Api::V1::ApiController
 
+  before_action :set_videos_image_url, only: [:create, :update]
+
   def index
     respond_with Show.text_search(params[:query]).order('created_at DESC')
       .paginate(page: params[:page], per_page: 10).all
@@ -65,7 +67,46 @@ class Api::V1::ShowsController < Api::V1::ApiController
         :remote_image_url,
         :image,
         :_destroy
+      ],
+      videos_attributes: [
+        :id,
+        :name,
+        :code,
+        :video_type,
+        :remote_image_url,
+        :outstanding,
+        :_destroy
       ]
     )
   end
+
+  def set_videos_image_url
+    videos_attrs = params[:shows][:videos_attributes]
+    if videos_attrs.present?
+      videos_attrs.each do |index|
+        video_attributes = videos_attrs[index]
+        # IF ITS UPDATING AN EXISTING VIDEO ...
+        if video_attributes[:id].present?
+          db_video = Video.find(video_attributes[:id])
+          if db_video && db_video.code == video_attributes[:code] &&
+            db_video.video_type == video_attributes[:video_type]
+            return
+          end
+        end
+        # continue if the video is new or the code or video_type is different
+        if video_attributes[:code].present? && video_attributes[:video_type].present?
+          if video_attributes[:video_type] === 'youtube'
+            video_attributes[:remote_image_url] = "http://img.youtube.com/vi/#{video_attributes[:code]}/0.jpg"
+            puts video_attributes[:remote_image_url]
+          elsif video_attributes[:video_type] == "vimeo"
+            api_url = "http://vimeo.com/api/v2/video/#{video_attributes[:code]}.json"
+            s = open(URI.escape(api_url)).read
+            video_json = JSON.parse(s)
+            video_attributes[:remote_image_url] = video_json.first["thumbnail_large"]
+          end
+        end
+      end
+    end
+  end
+
 end

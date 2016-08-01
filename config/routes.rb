@@ -27,6 +27,11 @@ Rails.application.routes.draw do
           get 'select_people'
         end
       end
+      resources :videos, only: [] do
+        collection do
+          get 'select_video_types'
+        end
+      end
     end
 
     ##### V3 #####

@@ -17,7 +17,7 @@ class Show < ApplicationRecord
 
   validates_associated :images, :videos, :show_person_roles, :people
 
-  validates :name, presence: :true
+  validates :name, presence: true
   validates :imdb_code, format: { with: /\At{2}\d{7}\z/,
     message: "%{value} no es un formato válido" }, allow_blank: true
   validates :metacritic_url, format: { with: /\Ahttp:\/\/www\.metacritic\.com\/movie\/[\w-]+\/?\z/,

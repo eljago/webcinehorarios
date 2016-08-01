@@ -10,6 +10,7 @@ import Tab from 'react-bootstrap/lib/Tab';
 import ShowFormBasic from './ShowFormBasic'
 import ShowFormCast from './ShowFormCast'
 import ShowFormImages from './ShowFormImages'
+import ShowFormVideos from './ShowFormVideos'
 
 import FormBuilderShow from '../../../lib/forms/FormBuilders/FormBuilderShow'
 import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
@@ -61,6 +62,10 @@ export default class ShowForm extends React.Component {
 
             <Tab eventKey={4} title="Videos">
               <br/>
+              <ShowFormVideos
+                formBuilder={this.props.formBuilder}
+                ref='formVideos'
+              />
               <div/>
             </Tab>
 
@@ -90,6 +95,9 @@ export default class ShowForm extends React.Component {
 
     const dataShowImages = this.refs.formImages.getResult();
     showToSubmit = _.merge(showToSubmit, dataShowImages);
+
+    const dataShowVideos = this.refs.formVideos.getResult();
+    showToSubmit = _.merge(showToSubmit, dataShowVideos);
 
     console.log(showToSubmit);
     this.props.onSubmit(showToSubmit);

@@ -6,6 +6,9 @@ import _ from 'lodash';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Image from 'react-bootstrap/lib/Image';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 import Select from 'react-select';
 
@@ -37,13 +40,23 @@ export default class FormFieldSelect extends React.Component {
     return(
       <FormGroup controlId={this.props.submitKey}>
         <ControlLabel>{this.props.label}</ControlLabel>
-        <Select.Async
-          name={this.props.submitKey}
-          value={this.state.currentValue}
-          onChange={this._handleChange}
-          loadOptions={this.props.getOptions}
-          clearable={false}
-        />
+        <Row>
+          <Col md={2}>
+            <Image
+              src={this.state.currentValue.image_url}
+              responsive
+            />
+          </Col>
+          <Col md={10}>
+            <Select.Async
+              name={this.props.submitKey}
+              value={this.state.currentValue}
+              onChange={this._handleChange}
+              loadOptions={this.props.getOptions}
+              clearable={false}
+            />
+          </Col>
+        </Row>
       </FormGroup>
     )
   }

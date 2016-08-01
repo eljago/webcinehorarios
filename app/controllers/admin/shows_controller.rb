@@ -63,6 +63,15 @@ class Admin::ShowsController < ApplicationController
         "image" => img.image.as_json[:image]
       }
     end
+    @show["videos"] = show.videos.order('videos.created_at DESC').map do |video|
+      {
+        "id" => video.id,
+        "name" => video.name,
+        "code" => video.code,
+        "video_type" => video.video_type,
+        "outstanding" => video.outstanding
+      }
+    end
     @genres = Genre.order(:name).all
   end
 

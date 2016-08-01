@@ -6,6 +6,7 @@ import _ from 'lodash'
 import FormFieldText from '../FormFields/FormFieldText'
 import FormFieldImage from '../FormFields/FormFieldImage'
 import FormFieldSelect from '../FormFields/FormFieldSelect'
+import FormFieldSelectWithImage from '../FormFields/FormFieldSelectWithImage'
 import FormFieldDate from '../FormFields/FormFieldDate'
 import FormFieldRadioGroup from '../FormFields/FormFieldRadioGroup'
 import FormFieldCheckboxGroup from '../FormFields/FormFieldCheckboxGroup'
@@ -125,17 +126,34 @@ export default class FormBuilder {
         );
       }
       else if (fieldType === 'selectField') {
+        const selectFieldsPaths = fieldInfo.selectFieldsPaths;
+        const initialValue = _.mapValues(selectFieldsPaths, (valuePath) => {
+          const pathWithIndex = valuePath.replace(/\[\]/, `[${options.index}]`);
+          return _.get(this.object, pathWithIndex);
+        });
         aditionalProps = {
-          initialValue: {
-            value: _.get(this.object, `${initialValuePath}.id`),
-            label: _.get(this.object, `${initialValuePath}.name`),
-            image_url: _.get(this.object, `${initialValuePath}.image.smallest.url`),
-          },
-          keyName: fieldInfo.keyName,
+          initialValue: initialValue,
           getOptions: fieldInfo.getOptions,
-        }
+        };
         return (
           <FormFieldSelect
+            {...formFieldProps}
+            {...aditionalProps}
+          />
+        );
+      }
+      else if (fieldType === 'selectWithImageField') {
+        const selectFieldsPaths = fieldInfo.selectFieldsPaths;
+        const initialValue = _.mapValues(selectFieldsPaths, (valuePath) => {
+          const pathWithIndex = valuePath.replace(/\[\]/, `[${options.index}]`);
+          return _.get(this.object, pathWithIndex);
+        });
+        aditionalProps = {
+          initialValue: initialValue,
+          getOptions: fieldInfo.getOptions,
+        };
+        return (
+          <FormFieldSelectWithImage
             {...formFieldProps}
             {...aditionalProps}
           />

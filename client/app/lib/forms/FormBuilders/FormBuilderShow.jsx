@@ -6,7 +6,7 @@ import FormBuilder from './FormBuilder'
 
 export default class FormBuilderShow extends FormBuilder {
 
-  constructor(show, genres, getPeopleSelectOptions) {
+  constructor(show, genres, getPeopleSelectOptions, getVideoTypesOptions) {
     super(show, {
       name: {
         fieldType: 'textField',
@@ -94,12 +94,16 @@ export default class FormBuilderShow extends FormBuilder {
         initialValuePath: 'show_person_roles',
         xs: 12,
         subFields: {
-          name: {
-            fieldType: 'selectField',
+          person_id: {
+            fieldType: 'selectWithImageField',
             label: 'Persona',
-            keyName: 'person_id',
             getOptions: getPeopleSelectOptions,
-            initialValuePath: 'show_person_roles[]',
+            selectFieldsPaths: {
+              value: 'show_person_roles[].id',
+              label: 'show_person_roles[].name',
+              image_url: 'show_person_roles[].image.smallest.url'
+            },
+            initialValuePath: 'show_person_roles[].person_id',
             xs: 12,
             md: 6
           },
@@ -141,6 +145,45 @@ export default class FormBuilderShow extends FormBuilder {
             initialValuePath: 'images[].image.smaller.url',
             md: 10,
           },
+        }
+      },
+      videos: {
+        fieldType: 'hasManyDynamic',
+        submitKey: 'videos_attributes',
+        label: 'Videos',
+        initialValuePath: 'videos',
+        md: 4,
+        xs: 12,
+        subFields: {
+          name: {
+            fieldType: 'textField',
+            label: 'Nombre',
+            initialValuePath: 'videos[].name',
+            xs: 12,
+          },
+          code: {
+            fieldType: 'textField',
+            label: 'Código',
+            initialValuePath: 'videos[].code',
+            xs: 8,
+          },
+          outstanding: {
+            fieldType: 'checkboxField',
+            label: 'Destacado',
+            initialValuePath: 'videos[].outstanding',
+            xs: 4
+          },
+          video_type: {
+            fieldType: 'selectField',
+            label: 'Tipo',
+            getOptions: getVideoTypesOptions,
+            selectFieldsPaths: {
+              value: 'videos[].video_type',
+              label: 'videos[].video_type',
+            },
+            initialValuePath: 'videos[].video_type',
+            xs: 9,
+          }
         }
       }
     });
