@@ -137,12 +137,14 @@ export default class FormFieldFile extends React.Component {
               currentLocal: reader.result,
               currentRemote: ''
             });
+            this.props.setThumbSource(reader.result);
           }
           else {
             this.setState({
               currentRemote: '',
               currentLocal: ''
             });
+            this.props.setThumbSource('');
           }
         }
         else {
@@ -150,6 +152,7 @@ export default class FormFieldFile extends React.Component {
             currentRemote: '',
             currentLocal: ''
           });
+          this.props.setThumbSource('');
         }
       }
     }
