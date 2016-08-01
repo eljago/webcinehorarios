@@ -100,8 +100,10 @@ export default class NavBarComponent extends React.Component {
       }
     }
     else if (itemData.type === 'nav_item') {
+      // Data Method is set to 'delete' for sign out path
+      const dataMethod = {"data-method": itemData["data-method"]};
       return(
-        <NavItem href={itemData.href}>{itemData.title}</NavItem>
+        <NavItem {...dataMethod} href={itemData.href}>{itemData.title}</NavItem>
       )
     }
     else if (itemData.type === 'menu_item') {
