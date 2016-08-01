@@ -58,12 +58,19 @@ export default class ShowEdit extends React.Component {
             errors: !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
             submitting: false
           });
+          window.scrollTo(0, 0);
         }
         else if (error.status == 500) {
           console.log(error.statusText);
           this.setState({
+            errors: {
+              Error: [
+                'ERROR 500'
+              ]
+            },
             submitting: false
           });
+          window.scrollTo(0, 0);
         }
       }
     });
