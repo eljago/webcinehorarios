@@ -4,8 +4,6 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import ShowForm from '../components/ShowForm'
 
-import FormBuilderShow from '../../../lib/forms/FormBuilders/FormBuilderShow'
-
 export default class ShowEdit extends React.Component {
   static propTypes = {
     show: PropTypes.object,
@@ -18,10 +16,7 @@ export default class ShowEdit extends React.Component {
       submitting: false,
       errors: {}
     };
-    _.bindAll(this, '_handleSubmit');
-    this.formBuilder = new FormBuilderShow(props.show, props.genres,
-      this._getPeopleSelectOptions, this._getVideoTypesOptions);
-  }
+    _.bindAll(this, '_handleSubmit');  }
 
   render() {
     return (
@@ -29,8 +24,8 @@ export default class ShowEdit extends React.Component {
         show={this.props.show}
         onSubmit={this._handleSubmit}
         submitting={this.state.submitting}
-        formBuilder={this.formBuilder}
         errors={this.state.errors}
+        getShowPersonRolesOptions={this._getShowPersonRolesOptions}
       />
     );
   }
@@ -77,7 +72,7 @@ export default class ShowEdit extends React.Component {
     });
   }
 
-  _getPeopleSelectOptions(input, callback) {
+  _getShowPersonRolesOptions(input, callback) {
     if (_.trim(input).length > 2) {
       $.getJSON(`/api/people/select_people?input=${input}`, (response) => {
         callback(null, {

@@ -13,12 +13,11 @@ import FormBuilder from '../FormBuilders/FormBuilder'
 
 export default class FormFieldSelect extends React.Component {
   static propTypes = {
-    fieldId: PropTypes.string,
-    formBuilder: PropTypes.instanceOf(FormBuilder),
-    submitKey: PropTypes.number,
+    submitKey: PropTypes.string,
     label: PropTypes.string,
     getOptions: PropTypes.array,
     initialValue: PropTypes.object,
+    onChange: PropTypes.func,
   };
   static defaultProps = {
     label: '',
@@ -50,13 +49,16 @@ export default class FormFieldSelect extends React.Component {
 
   _handleChange(newValue) {
     this.setState({currentValue: newValue});
+    if (_.isFunction(this.props.onChange)) {
+      this.props.onChange(newValue);
+    }
   }
 
   getResult() {
     const initialValue = this.props.initialValue;
     if (this.state.currentValue.value != initialValue.value) {
       let result = {}
-      return {[this.props.fieldId]: this.state.currentValue.value};
+      return {[this.props.submitKey]: this.state.currentValue.value};
     }
     return null;
   }

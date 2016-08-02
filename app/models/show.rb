@@ -24,8 +24,8 @@ class Show < ApplicationRecord
     message: "%{value} no es un formato válido" }, allow_blank: true
   validates :rotten_tomatoes_url, format: { with: /\Ahttps:\/\/www\.rottentomatoes\.com\/m\/[\w-]+\/?\z/,
     message: "%{value} no es un formato válido" }, allow_blank: true
-  validates :imdb_code, :metacritic_url, :rotten_tomatoes_url,
-    uniqueness: { case_sensitive: true }
+  # validates :imdb_code, :metacritic_url, :rotten_tomatoes_url,
+  #   uniqueness: { case_sensitive: true }
   validates :imdb_score, :metacritic_score, :rotten_tomatoes_score,
     length: { in: 1..2 }, allow_blank: true
   validates :imdb_score, :metacritic_score, :rotten_tomatoes_score,

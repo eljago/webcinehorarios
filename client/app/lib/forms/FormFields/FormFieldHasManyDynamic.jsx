@@ -130,6 +130,23 @@ export default class FormFieldHasManyDynamic extends React.Component {
     this.setState({rowsStatus});
   }
 
+  _getColumnsKeys() {
+    return Object.keys(this.props.formBuilder.schema[this.props.fieldId].subFields)
+  }
+
+  _getFieldSchema(key) {
+    return `${this.props.fieldId}.subFields.${key}`;
+  }
+
+  _getFormElement(key, index) {
+    const {fieldId, formBuilder} = this.props;
+
+    const schemaPath = this._getFieldSchema(key);
+    let initialValuePath = _.get(formBuilder.schema, schemaPath).initialValuePath;
+    const ref = initialValuePath.replace(/\[\]/, `[${index}]`);
+    return this.refs[ref];
+  }
+
   getResult() {
     let rowsArray = [];
 
@@ -163,22 +180,5 @@ export default class FormFieldHasManyDynamic extends React.Component {
     else {
       return null;
     }
-  }
-
-  _getColumnsKeys() {
-    return Object.keys(this.props.formBuilder.schema[this.props.fieldId].subFields)
-  }
-
-  _getFieldSchema(key) {
-    return `${this.props.fieldId}.subFields.${key}`;
-  }
-
-  _getFormElement(key, index) {
-    const {fieldId, formBuilder} = this.props;
-
-    const schemaPath = this._getFieldSchema(key);
-    let initialValuePath = _.get(formBuilder.schema, schemaPath).initialValuePath;
-    const ref = initialValuePath.replace(/\[\]/, `[${index}]`);
-    return this.refs[ref];
   }
 }

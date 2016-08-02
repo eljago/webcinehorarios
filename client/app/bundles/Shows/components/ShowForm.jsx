@@ -7,20 +7,17 @@ import Button from 'react-bootstrap/lib/Button';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
 
-import ShowFormBasic from './ShowFormBasic'
-import ShowFormCast from './ShowFormCast'
-import ShowFormImages from './ShowFormImages'
-import ShowFormVideos from './ShowFormVideos'
+import FormCast from './FormCast'
 
-import FormBuilderShow from '../../../lib/forms/FormBuilders/FormBuilderShow'
 import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
 
 export default class ShowForm extends React.Component {
   static propTypes = {
-    formBuilder: PropTypes.instanceOf(FormBuilderShow),
+    show: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
     submitting: PropTypes.boolean,
     errors: PropTypes.object,
+    getShowPersonRolesOptions: PropTypes.func
   };
 
   constructor(props) {
@@ -38,34 +35,23 @@ export default class ShowForm extends React.Component {
 
             <Tab eventKey={1} title="Basic Info">
               <br/>
-              <ShowFormBasic
-                formBuilder={this.props.formBuilder}
-                ref='formBasic'
-              />
             </Tab>
 
             <Tab eventKey={2} title="Cast">
               <br/>
-              <ShowFormCast
-                formBuilder={this.props.formBuilder}
+              <FormCast
+                show_person_roles={this.props.show.show_person_roles}
+                getShowPersonRolesOptions={this.props.getShowPersonRolesOptions}
                 ref='formCast'
               />
             </Tab>
 
             <Tab eventKey={3} title="Images">
               <br/>
-              <ShowFormImages
-                formBuilder={this.props.formBuilder}
-                ref='formImages'
-              />
             </Tab>
 
             <Tab eventKey={4} title="Videos">
               <br/>
-              <ShowFormVideos
-                formBuilder={this.props.formBuilder}
-                ref='formVideos'
-              />
               <div/>
             </Tab>
 
@@ -88,16 +74,10 @@ export default class ShowForm extends React.Component {
   }
 
   _handleSubmit() {
-    let showToSubmit = this.refs.formBasic.getResult();
+    let showToSubmit = {}
 
     const dataShowCast = this.refs.formCast.getResult();
     showToSubmit = _.merge(showToSubmit, dataShowCast);
-
-    const dataShowImages = this.refs.formImages.getResult();
-    showToSubmit = _.merge(showToSubmit, dataShowImages);
-
-    const dataShowVideos = this.refs.formVideos.getResult();
-    showToSubmit = _.merge(showToSubmit, dataShowVideos);
 
     console.log(showToSubmit);
     this.props.onSubmit(showToSubmit);
