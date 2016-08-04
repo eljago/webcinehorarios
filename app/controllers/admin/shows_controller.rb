@@ -20,9 +20,11 @@ class Admin::ShowsController < ApplicationController
   end
 
   def index
-    # letter = params[:letter].blank? ? 'A' : params[:letter]
-    # @shows = Show.where('name like ?', "#{letter}%").order(:name)
-    # @shows = Show.text_search(params[:query]).paginate(page: params[:page], per_page: 10)
+    @title = 'Shows'
+    @app_name = 'ShowsApp'
+    @props = {}
+    @prerender = true
+    render file: Rails.root.join('app', 'views', 'react', '_render')
   end
 
   def show
@@ -41,11 +43,11 @@ class Admin::ShowsController < ApplicationController
   def edit
     show = Show.includes({show_person_roles: :person})
       .order('show_person_roles.position').find(params[:id])
-    @show = show.as_json
-    @show["genres"] = show.genres.map do |genre|
+    hash_show = show.as_json
+    hash_show["genres"] = show.genres.map do |genre|
       {"id" => genre.id, "name" => genre.name}
     end
-    @show["show_person_roles"] = show.show_person_roles.includes(:person)
+    hash_show["show_person_roles"] = show.show_person_roles.includes(:person)
       .order(:position).map do |spr|
       {
         "id" => spr.id,
@@ -57,13 +59,13 @@ class Admin::ShowsController < ApplicationController
         "character" => spr.character, "id" => spr.id
       }
     end
-    @show["images"] = show.images.order('images.updated_at DESC').map do |img|
+    hash_show["images"] = show.images.order('images.updated_at DESC').map do |img|
       {
         "id" => img.id,
         "image" => img.image.as_json[:image]
       }
     end
-    @show["videos"] = show.videos.order('videos.created_at DESC').map do |video|
+    hash_show["videos"] = show.videos.order('videos.created_at DESC').map do |video|
       {
         "id" => video.id,
         "name" => video.name,
@@ -72,7 +74,13 @@ class Admin::ShowsController < ApplicationController
         "outstanding" => video.outstanding
       }
     end
-    @genres = Genre.order(:name).all
+    genres = Genre.order(:name).all
+
+    @title = 'Shows'
+    @app_name = 'ShowEditApp'
+    @props = {show: hash_show, genres: genres}
+    @prerender = true
+    render file: 'react/render'
   end
 
   def create
