@@ -31,7 +31,7 @@ export default class ShowForm extends React.Component {
       <div className="container">
         <ErrorMessages errors={this.props.errors} />
         <form>
-          <Tabs defaultActiveKey={1} animation={false} id="uncontrolled-tab-example">
+          <Tabs defaultActiveKey={1} animation={false}>
 
             <Tab eventKey={1} title="Basic Info">
               <br/>

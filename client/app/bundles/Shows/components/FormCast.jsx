@@ -5,6 +5,7 @@ import _ from 'lodash'
 
 import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
 import FormFieldSelect from '../../../lib/forms/FormFields/FormFieldSelect'
+import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
@@ -40,8 +41,9 @@ export default class FormCast extends React.Component {
             'http://cinehorarios.cl/uploads/default_images/default.png';
 
           return([
-              <Col md={2}>
+              <Col md={1}>
                 <Image
+                  style={{width: 80, height: 100, "objectFit": 'cover'}}
                   src={imageSource}
                   responsive
                 />
@@ -59,6 +61,14 @@ export default class FormCast extends React.Component {
                   onChange={(newValue) => {
                     this._onChangeSelect(newValue, index);
                   }}
+                />
+              </Col>,
+              <Col md={4}>
+                <FormFieldText
+                  submitKey='character'
+                  label='Personaje'
+                  ref={`character${index}`}
+                  initialValue={spr.character}
                 />
               </Col>
             ]
