@@ -24,7 +24,7 @@ class Admin::ShowsController < ApplicationController
     @app_name = 'ShowsApp'
     @props = {}
     @prerender = true
-    render file: Rails.root.join('app', 'views', 'react', '_render')
+    render file: 'react/render'
   end
 
   def show
