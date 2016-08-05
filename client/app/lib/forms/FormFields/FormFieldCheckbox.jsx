@@ -7,12 +7,8 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 
-import FormBuilder from '../FormBuilders/FormBuilder'
-
 export default class FormFieldCheckbox extends React.Component {
   static propTypes = {
-    fieldId: PropTypes.string,
-    formBuilder: PropTypes.instanceOf(FormBuilder),
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.boolean,
@@ -48,9 +44,7 @@ export default class FormFieldCheckbox extends React.Component {
 
   getResult() {
     if (this.state.currentValue !== this.props.initialValue) {
-      let result = {}
-      result[this.props.submitKey] = this.state.currentValue;
-      return result;
+      return result[this.props.submitKey] = this.state.currentValue;
     }
     return null;
   }

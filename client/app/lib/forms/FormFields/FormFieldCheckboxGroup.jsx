@@ -9,12 +9,8 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-import FormBuilder from '../FormBuilders/FormBuilder'
-
 export default class FormFieldCheckboxGroup extends React.Component {
   static propTypes = {
-    fieldId: PropTypes.string,
-    formBuilder: PropTypes.instanceOf(FormBuilder),
     submitKey: PropTypes.string,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
@@ -37,7 +33,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
       <FormGroup controlId={submitKey}>
         <ControlLabel>{label}</ControlLabel>
         <Row>
-          {this._getCheckboxColumns()}
+          {this._getCheckboxElements()}
         </Row>
       </FormGroup>
     );
@@ -58,26 +54,6 @@ export default class FormFieldCheckboxGroup extends React.Component {
     });
   }
 
-  _getCheckboxColumns() {
-    const {fieldId, formBuilder} = this.props;
-
-    let checkboxCols = [];
-
-    const formSchema = _.get(formBuilder.schema, fieldId);
-    const xs = formSchema.xs ? formSchema.xs : null;
-    const md = formSchema.md ? formSchema.md : null;
-
-    const checkboxElements = this._getCheckboxElements();
-    _.forIn(checkboxElements, (el, index) => {
-      checkboxCols.push(
-        <Col xs={xs} md={md}>
-          {el}
-        </Col>
-      );
-    });
-    return checkboxCols;
-  }
-
   _handleChange(value) {
     let currentValue = this.state.currentValue;
     if (currentValue.includes(value)) {
@@ -91,10 +67,8 @@ export default class FormFieldCheckboxGroup extends React.Component {
 
   getResult() {
     if (!_.isEqual(this.state.currentValue, this.props.initialValue)) {
-      let result = {}
       const newValue = this.state.currentValue.length > 0 ? this.state.currentValue : [' ']
-      result[this.props.submitKey] = newValue;
-      return result;
+      return result[this.props.submitKey] = newValue;
     }
     return null;
   }

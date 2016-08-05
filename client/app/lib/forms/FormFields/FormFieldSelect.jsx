@@ -9,8 +9,6 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 import Select from 'react-select';
 
-import FormBuilder from '../FormBuilders/FormBuilder'
-
 export default class FormFieldSelect extends React.Component {
   static propTypes = {
     submitKey: PropTypes.string,
@@ -55,9 +53,7 @@ export default class FormFieldSelect extends React.Component {
   }
 
   getResult() {
-    const initialValue = this.props.initialValue;
-    if (this.state.currentValue.value != initialValue.value) {
-      let result = {}
+    if (this.state.currentValue.value != this.props.initialValue.value) {
       return {[this.props.submitKey]: this.state.currentValue.value};
     }
     return null;

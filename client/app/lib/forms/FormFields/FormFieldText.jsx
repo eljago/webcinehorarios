@@ -7,12 +7,8 @@ import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 
-import FormBuilder from '../FormBuilders/FormBuilder'
-
 export default class FormFieldText extends React.Component {
   static propTypes = {
-    fieldId: PropTypes.string,
-    formBuilder: PropTypes.instanceOf(FormBuilder),
     type: PropTypes.string,
     submitKey: PropTypes.string,
     label: PropTypes.string,
@@ -63,9 +59,7 @@ export default class FormFieldText extends React.Component {
 
   getResult() {
     if (this.state.currentValue !== this.props.initialValue) {
-      let result = {}
-      result[this.props.submitKey] = _.trim(this.state.currentValue);
-      return result;
+      return result[this.props.submitKey] = _.trim(this.state.currentValue);
     }
     return null;
   }

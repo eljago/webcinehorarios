@@ -66,9 +66,7 @@ export default class FormFieldSelect extends React.Component {
   }
 
   getResult() {
-    const initialValue = this.props.initialValue;
-    if (this.state.currentValue.value != initialValue.value) {
-      let result = {}
+    if (this.state.currentValue.value != this.props.initialValue.value) {
       return {[this.props.fieldId]: this.state.currentValue.value};
     }
     return null;

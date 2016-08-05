@@ -8,12 +8,14 @@ import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
 
 import FormCast from './FormCast'
+import ShowFormBasic from './ShowFormBasic'
 
 import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
 
 export default class ShowForm extends React.Component {
   static propTypes = {
     show: PropTypes.object,
+    genres: PropTypes.array,
     onSubmit: PropTypes.func.isRequired,
     submitting: PropTypes.boolean,
     errors: PropTypes.object,
@@ -35,6 +37,11 @@ export default class ShowForm extends React.Component {
 
             <Tab eventKey={1} title="Basic Info">
               <br/>
+              <ShowFormBasic
+                show={this.props.show}
+                genres={this.props.genres}
+                ref='formBasic'
+              />
             </Tab>
 
             <Tab eventKey={2} title="Cast">
@@ -75,6 +82,9 @@ export default class ShowForm extends React.Component {
 
   _handleSubmit() {
     let showToSubmit = {}
+
+    const dataShowBasic = this.refs.formBasic.getResult();
+    showToSubmit = _.merge(showToSubmit, dataShowBasic);
 
     const dataShowCast = this.refs.formCast.getResult();
     showToSubmit = _.merge(showToSubmit, dataShowCast);

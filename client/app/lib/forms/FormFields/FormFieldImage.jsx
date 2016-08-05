@@ -7,24 +7,12 @@ import validator from 'validator';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import Image from 'react-bootstrap/lib/Image';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
 
-import FormBuilder from '../FormBuilders/FormBuilder'
-
-export default class FormFieldFile extends React.Component {
+export default class FormFieldImage extends React.Component {
   static propTypes = {
-    fieldId: PropTypes.string,
-    formBuilder: PropTypes.instanceOf(FormBuilder),
-    submitKey: PropTypes.string,
-    label: PropTypes.string,
-    initialValue: PropTypes.string,
-    setThumbSource: PropTypes.func,
+    onChange: PropTypes.func,
+    initialValue: PropTypes.string
   };
-  static defaultProps = {
-    initialValue: ''
-  }
 
   constructor(props) {
     super(props);
@@ -36,84 +24,56 @@ export default class FormFieldFile extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.setThumbSource) {
-      this.props.setThumbSource(this.props.initialValue);
-    }
+    this._setStateAndOnChange('', '');
   }
 
   render() {
     return(
-      <FormGroup controlId={this.props.submitKey}>
-        <ControlLabel>{this.props.label}</ControlLabel>
-        <Row>
-          {this._getThumbnailElement()}
-          <Col md={this.props.setThumbSource ? 12 : 8}>
-            <FormControl
-              value={this.props.currentRemote}
-              placeholder='Remote Image'
-              onChange={(e) => {
-                this._handleChangeRemote(_.replace(e.target.value,'  ', ' '))
-              }}
-            />
-            <br />
-            <FormControl
-              type="file"
-              onChange={this._handleChangeLocal}
-              multiple={false}
-            />
-          </Col>
-        </Row>
+      <FormGroup controlId={(new Date()).getTime()}>
+        <ControlLabel>Remote Image URL</ControlLabel>
+        <FormControl
+          value={this.props.currentRemote}
+          placeholder='Remote Image'
+          onChange={(e) => {
+            this._handleChangeRemote(_.replace(e.target.value,'  ', ' '))
+          }}
+        />
+        <br />
+        <ControlLabel>Local Image</ControlLabel>
+        <FormControl
+          type="file"
+          onChange={this._handleChangeLocal}
+          multiple={false}
+        />
       </FormGroup>
     );
-  }
-
-  _getThumbnailElement() {
-    if (this.props.setThumbSource) {
-      return null
-    }
-    else {
-      const {currentRemote, currentLocal} = this.state;
-      let thumb = this.props.initialValue;
-      if (currentRemote !== '') {
-        thumb = currentRemote;
-      }
-      else if (currentLocal !== '') {
-        thumb = currentLocal;
-      }
-      return (
-        <Col md={4}>
-          <Image
-            src={thumb !== '' ? thumb : '/uploads/default_images/default.png'}
-            responsive
-          />
-        </Col>
-      );
-    }
   }
 
   _handleChangeRemote(value) {
     if (validator.isURL(value)) {
       $.get(value).done(() => {
-        this.setState({
-          currentRemote: value,
-          currentLocal: ''
-        });
-        this.props.setThumbSource(value);
+        this._setStateAndOnChange(value, '');
       }).fail(() => {
-        this.setState({
-          currentRemote: '',
-          currentLocal: ''
-        });
-        this.props.setThumbSource('');
+        this._setStateAndOnChange('', '');
       })
     }
     else {
-      this.setState({
-        currentRemote: '',
-        currentLocal: ''
-      });
-      this.props.setThumbSource('');
+      this._setStateAndOnChange('', '');
     }
+  }
+
+  _setStateAndOnChange(remoteImageUrl, localImage) {
+    this.setState({
+      currentRemote: remoteImageUrl,
+      currentLocal: localImage
+    });
+    this.props.onChange(!_.isEmpty(remoteImageUrl) ? remoteImageUrl :
+      (!_.isEmpty(localImage) ? localImage :
+        (!_.isEmpty(this.props.initialValue) ? this.props.initialValue :
+          '/uploads/default_images/default.png'
+        )
+      )
+    );
   }
 
   _handleChangeLocal(e) {
@@ -133,26 +93,14 @@ export default class FormFieldFile extends React.Component {
             &&
             validator.isBase64(reader.result.split(',')[1])
             ) {
-            this.setState({
-              currentLocal: reader.result,
-              currentRemote: ''
-            });
-            this.props.setThumbSource(reader.result);
+            this._setStateAndOnChange('', reader.result);
           }
           else {
-            this.setState({
-              currentRemote: '',
-              currentLocal: ''
-            });
-            this.props.setThumbSource('');
+            this._setStateAndOnChange('', '');
           }
         }
         else {
-          this.setState({
-            currentRemote: '',
-            currentLocal: ''
-          });
-          this.props.setThumbSource('');
+          this._setStateAndOnChange('', '');
         }
       }
     }

@@ -6,6 +6,7 @@ import _ from 'lodash'
 import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
 import FormFieldSelect from '../../../lib/forms/FormFields/FormFieldSelect'
 import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
+import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
@@ -34,11 +35,11 @@ export default class FormCast extends React.Component {
         label='Elenco'
         initialDataArray={this.props.show_person_roles}
         onDataArrayChanged={this._onDataArrayChanged}
-        dataKeys={['person_id']}
+        dataKeys={['person_id', 'character', 'director', 'actor']}
         getRowCols={(spr, index) => {
           const imageSource = this.state.images[index] ?
-            `http://cinehorarios.cl${this.state.images[index]}` :
-            'http://cinehorarios.cl/uploads/default_images/default.png';
+            this.state.images[index] :
+            '/uploads/default_images/default.png';
 
           return([
               <Col md={1}>
@@ -70,7 +71,23 @@ export default class FormCast extends React.Component {
                   ref={`character${index}`}
                   initialValue={spr.character}
                 />
-              </Col>
+              </Col>,
+              <Col md={1}>
+                <FormFieldCheckbox
+                  submitKey='actor'
+                  label='Actor'
+                  ref={`actor${index}`}
+                  initialValue={spr.actor}
+                />
+              </Col>,
+              <Col md={1}>
+                <FormFieldCheckbox
+                  submitKey='director'
+                  label='Director'
+                  ref={`director${index}`}
+                  initialValue={spr.director}
+                />
+              </Col>,
             ]
           );
         }}
@@ -97,7 +114,7 @@ export default class FormCast extends React.Component {
 
   getResult() {
     let showResult = {};
-    _.forIn(this.refs, (formElement, key) => {
+    _.forIn(this.refs, (formElement) => {
       if (_.isFunction(formElement.getResult)) {
         _.merge(showResult, formElement.getResult());
       }

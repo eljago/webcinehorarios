@@ -7,12 +7,8 @@ import Radio from 'react-bootstrap/lib/Radio';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
 
-import FormBuilder from '../FormBuilders/FormBuilder'
-
 export default class FormFieldRadioGroup extends React.Component {
   static propTypes = {
-    fieldId: PropTypes.string,
-    formBuilder: PropTypes.instanceOf(FormBuilder),
     submitKey: PropTypes.string,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
@@ -63,9 +59,7 @@ export default class FormFieldRadioGroup extends React.Component {
 
   getResult() {
     if (this.state.currentValue !== this.props.initialValue) {
-      let result = {}
-      result[this.props.submitKey] = this.state.currentValue;
-      return result;
+      return result[this.props.submitKey] = this.state.currentValue;
     }
     return null;
   }

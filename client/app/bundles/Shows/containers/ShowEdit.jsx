@@ -22,6 +22,7 @@ export default class ShowEdit extends React.Component {
     return (
       <ShowForm
         show={this.props.show}
+        genres={this.props.genres}
         onSubmit={this._handleSubmit}
         submitting={this.state.submitting}
         errors={this.state.errors}

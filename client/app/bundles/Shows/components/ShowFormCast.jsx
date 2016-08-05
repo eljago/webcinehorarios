@@ -24,7 +24,7 @@ export default class ShowFormCast extends React.Component {
 
   getResult() {
     let showResult = {};
-    _.forIn(this.refs, (formElement, key) => {
+    _.forIn(this.refs, (formElement) => {
       if (_.isFunction(formElement.getResult)) {
         _.merge(showResult, formElement.getResult());
       }

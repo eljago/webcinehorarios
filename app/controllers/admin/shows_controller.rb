@@ -41,7 +41,7 @@ class Admin::ShowsController < ApplicationController
   end
 
   def edit
-    show = Show.includes({show_person_roles: :person})
+    show = Show.includes(:show_person_roles)
       .order('show_person_roles.position').find(params[:id])
     hash_show = show.as_json
     hash_show["genres"] = show.genres.map do |genre|
@@ -56,7 +56,7 @@ class Admin::ShowsController < ApplicationController
         'image' => spr.person.present? ? spr.person.image.as_json[:image] : '',
         "actor" => spr.actor,
         "director" => spr.director,
-        "character" => spr.character, "id" => spr.id
+        "character" => spr.character
       }
     end
     hash_show["images"] = show.images.order('images.updated_at DESC').map do |img|
