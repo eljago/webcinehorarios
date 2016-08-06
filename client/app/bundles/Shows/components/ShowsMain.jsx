@@ -57,18 +57,21 @@ export default class ShowsMain extends React.Component {
     return (
       <div className="container">
         <PageHeader>Shows <small>Main</small></PageHeader>
-        <Pagination
-          prev
-          next
-          first
-          last
-          ellipsis
-          boundaryLinks
-          items={this.state.items}
-          maxButtons={22}
-          activePage={this.props.page}
-          onSelect={this.props.onChangePage}
-        />
+        <Row>
+          <Col xs={12}>
+            <Pagination
+              prev
+              next
+              first
+              last
+              ellipsis
+              items={this.state.items}
+              maxButtons={6}
+              activePage={this.props.page}
+              onSelect={this.props.onChangePage}
+            />
+          </Col>
+        </Row>
         <Grid>
           {tableRows}
         </Grid>
