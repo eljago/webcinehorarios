@@ -128,6 +128,12 @@ export default class ShowFormBasic extends React.Component {
         </Col>
 
         <Col md={4}>
+          <FormFieldCheckbox
+            submitKey='active'
+            label='Activo'
+            ref='active'
+            initialValue={show.active}
+          />
           <FormFieldDate
             submitKey='debut'
             label='Estreno'
