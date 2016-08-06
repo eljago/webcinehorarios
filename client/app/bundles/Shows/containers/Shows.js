@@ -13,6 +13,7 @@ export default class Shows extends React.Component {
     super(props);
     this.state = {
       page: 1,
+      showsPerPage: 15,
       shows: Immutable.List(),
       hrefs: Immutable.List(),
       showsCount: null,
@@ -29,6 +30,7 @@ export default class Shows extends React.Component {
     return (
       <ShowsMain
         page={this.state.page}
+        showsPerPage={this.state.showsPerPage}
         shows={this.state.shows}
         hrefs={this.state.hrefs}
         showsCount={this.state.showsCount}
@@ -39,7 +41,7 @@ export default class Shows extends React.Component {
   }
 
   _updateShowsTable(newPage = this.state.page) {
-    $.getJSON(`/api/shows.json?page=${newPage}`, (response) => {
+    $.getJSON(`/api/shows.json?page=${newPage}&perPage=${this.state.showsPerPage}`, (response) => {
       const showsHrefs = response.shows.map((show) => {
         return({
           edit: `/admin/shows/${show.slug}/edit`,

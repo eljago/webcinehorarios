@@ -14,6 +14,7 @@ import Pagination from 'react-bootstrap/lib/Pagination';
 export default class ShowsMain extends React.Component {
   static propTypes = {
     page: PropTypes.number.isRequired,
+    showsPerPage: PropTypes.number.isRequired,
     shows: PropTypes.object.isRequired,
     hrefs: PropTypes.array.isRequired,
     showsCount: PropTypes.number.isRequired,
@@ -23,14 +24,18 @@ export default class ShowsMain extends React.Component {
 
   constructor(props) {
     super(props);
-    this.itemsPerPage = 10;
-    this.items = Math.ceil(props.showsCount / this.itemsPerPage);
-    this.maxButtons = this.items < 5 ? this.items : 5;
+    this.state = this._getNewPaginatorState(props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.items = Math.ceil(nextProps.showsCount / this.itemsPerPage);
-    this.maxButtons = this.items < 5 ? this.items : 5;
+    this.setState(this._getNewPaginatorState(nextProps));
+  }
+
+  _getNewPaginatorState(props) {
+    const newItems = Math.ceil(props.showsCount / props.showsPerPage);
+    return {
+      items: newItems
+    };
   }
 
   render() {
@@ -59,8 +64,8 @@ export default class ShowsMain extends React.Component {
           last
           ellipsis
           boundaryLinks
-          items={this.items}
-          maxButtons={this.maxButtons}
+          items={this.state.items}
+          maxButtons={22}
           activePage={this.props.page}
           onSelect={this.props.onChangePage}
         />
