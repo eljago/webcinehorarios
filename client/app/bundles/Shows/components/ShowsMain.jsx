@@ -8,14 +8,30 @@ import Image from 'react-bootstrap/lib/Image';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+import Pagination from 'react-bootstrap/lib/Pagination';
 
 // Simple example of a React "smart" component
 export default class ShowsMain extends React.Component {
   static propTypes = {
+    page: PropTypes.number.isRequired,
     shows: PropTypes.object.isRequired,
     hrefs: PropTypes.array.isRequired,
+    showsCount: PropTypes.number.isRequired,
     handleEdit: PropTypes.func.isRequired,
+    onChangePage: PropTypes.func
   };
+
+  constructor(props) {
+    super(props);
+    this.itemsPerPage = 10;
+    this.items = Math.ceil(props.showsCount / this.itemsPerPage);
+    this.maxButtons = this.items < 5 ? this.items : 5;
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.items = Math.ceil(nextProps.showsCount / this.itemsPerPage);
+    this.maxButtons = this.items < 5 ? this.items : 5;
+  }
 
   render() {
     const {shows, hrefs} = this.props;
@@ -36,6 +52,18 @@ export default class ShowsMain extends React.Component {
     return (
       <div className="container">
         <PageHeader>Shows <small>Main</small></PageHeader>
+        <Pagination
+          prev
+          next
+          first
+          last
+          ellipsis
+          boundaryLinks
+          items={this.items}
+          maxButtons={this.maxButtons}
+          activePage={this.props.page}
+          onSelect={this.props.onChangePage}
+        />
         <Grid>
           {tableRows}
         </Grid>

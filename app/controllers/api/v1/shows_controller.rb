@@ -3,8 +3,11 @@ class Api::V1::ShowsController < Api::V1::ApiController
   before_action :set_videos_image_url, only: [:create, :update]
 
   def index
-    respond_with Show.text_search(params[:query]).order('created_at DESC')
+    shows_count = Show.text_search(params[:query]).count
+    shows = Show.text_search(params[:query]).order('created_at DESC')
       .paginate(page: params[:page], per_page: 10).all
+    response = {count: shows_count, shows: shows}
+    respond_with response
   end
 
   def create

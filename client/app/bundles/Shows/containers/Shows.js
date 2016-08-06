@@ -15,8 +15,9 @@ export default class Shows extends React.Component {
       page: 1,
       shows: Immutable.List(),
       hrefs: Immutable.List(),
+      showsCount: null
     };
-    _.bindAll(this, ['_updateShowsTable', '_handleDelete']);
+    _.bindAll(this, ['_updateShowsTable', '_handleDelete', '_onChangePage']);
   }
 
   componentDidMount() {
@@ -26,23 +27,27 @@ export default class Shows extends React.Component {
   render() {
     return (
       <ShowsMain
+        page={this.state.page}
         shows={this.state.shows}
         hrefs={this.state.hrefs}
+        showsCount={this.state.showsCount}
         handleDelete={this._handleDelete}
+        onChangePage={this._onChangePage}
       />
     );
   }
 
   _updateShowsTable() {
     $.getJSON(`/api/shows.json?page=${this.state.page}`, (response) => {
-      const showsHrefs = response.map((show) => {
+      const showsHrefs = response.shows.map((show) => {
         return({
           edit: `/admin/shows/${show.slug}/edit`,
         });
       });
       this.setState({
-        shows: Immutable.fromJS(response),
+        shows: Immutable.fromJS(response.shows),
         hrefs: Immutable.fromJS(showsHrefs),
+        showsCount: response.count
       });
     });
   }
@@ -55,5 +60,12 @@ export default class Shows extends React.Component {
         this._updateShowsTable();
       }
     });
+  }
+
+  _onChangePage(newPage) {
+    this.setState({page: newPage})
+    if (newPage != this.state.page) {
+      this._updateShowsTable(this.state.page);
+    }
   }
 }
