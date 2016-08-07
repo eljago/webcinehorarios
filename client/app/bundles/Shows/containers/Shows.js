@@ -81,6 +81,6 @@ export default class Shows extends React.Component {
   }
 
   _onSearchShow(searchValue) {
-    this._updateShowsTable(this.state.page, searchValue);
+    this._updateShowsTable(1, searchValue);
   }
 }
