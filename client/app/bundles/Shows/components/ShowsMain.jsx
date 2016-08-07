@@ -29,8 +29,8 @@ export default class ShowsMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...this._getNewPaginatorState(props),
-      searchValue: ''
+      ...this._getNewPaginatorState(props.showsCount, props.showsPerPage),
+      searchValue: '',
     };
     _.bindAll(this, [
       '_onSearch',
@@ -40,11 +40,13 @@ export default class ShowsMain extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(this._getNewPaginatorState(nextProps));
+    this.setState({
+      ...this._getNewPaginatorState(nextProps.showsCount, nextProps.showsPerPage),
+    });
   }
 
-  _getNewPaginatorState(props) {
-    const newItems = Math.ceil(props.showsCount / props.showsPerPage);
+  _getNewPaginatorState(showsCount, showsPerPage) {
+    const newItems = Math.ceil(showsCount / showsPerPage);
     return {
       items: newItems
     };
@@ -55,9 +57,9 @@ export default class ShowsMain extends React.Component {
     const tableRows = shows.map((show, i) => {
       const href = hrefs.get(i);
       return(
-        <Row>
+        <Row key={i}>
           <Col xs={1} md={1} lg={1}>{show.get('id')}</Col>
-          <Col xs={3} md={2} lg={2}><Image src={show.getIn(['image', 'smallest', 'url'])} /></Col>
+          <Col xs={3} md={2} lg={2}><Image src={`http://cinehorarios.cl${show.getIn(['image', 'smallest', 'url'])}`} /></Col>
           <Col xs={6} md={7} lg={7} fluid={true}>{show.get('name')}</Col>
           <Col xs={2} md={2} lg={2}>
             <Button href={href.get('edit')}>Editar</Button>
@@ -72,25 +74,25 @@ export default class ShowsMain extends React.Component {
         <form>
           <Row>
             <Col xs={10} md={4}>
-            <FormGroup>
-              <InputGroup>
-                <FormControl
-                  type="text"
-                  ref='searchInput'
-                  value={this.state.searchValue}
-                  placeholder="Buscar Show"
-                  onChange={this._handleSearchInputChange}
-                />
-                <InputGroup.Button>
-                  <Button
-                    bsStyle="danger"
-                    onClick={this._onResetSearchText}
-                  >
-                    Reset
-                  </Button>
-                </InputGroup.Button>
-              </InputGroup>
-            </FormGroup>
+              <FormGroup>
+                <InputGroup>
+                  <FormControl
+                    type="text"
+                    ref='searchInput'
+                    value={this.state.searchValue}
+                    placeholder="Buscar Show"
+                    onChange={this._handleSearchInputChange}
+                  />
+                  <InputGroup.Button>
+                    <Button
+                      bsStyle="danger"
+                      onClick={this._onResetSearchText}
+                    >
+                      Reset
+                    </Button>
+                  </InputGroup.Button>
+                </InputGroup>
+              </FormGroup>
             </Col>
             <Col xs={2}>
               <Button

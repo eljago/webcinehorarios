@@ -52,7 +52,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # OTHER GEMS
 
-gem "react_on_rails", "~> 6.0.5"
+gem "react_on_rails", "~> 6"
 gem 'therubyracer', platforms: :ruby
 
 gem 'bootstrap-sass', '~> 3.3.6'

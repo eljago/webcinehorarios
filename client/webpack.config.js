@@ -31,6 +31,9 @@ config = {
         NODE_ENV: JSON.stringify(nodeEnv),
       },
     }),
+    new webpack.DefinePlugin({
+      TRACE_TURBOLINKS: devBuild,
+    })
   ],
   module: {
     loaders: [
