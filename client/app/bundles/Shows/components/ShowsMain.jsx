@@ -9,6 +9,9 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Pagination from 'react-bootstrap/lib/Pagination';
+import FormGroup from 'react-bootstrap/lib/FormGroup';
+import FormControl from 'react-bootstrap/lib/FormControl';
+import InputGroup from 'react-bootstrap/lib/InputGroup';
 
 // Simple example of a React "smart" component
 export default class ShowsMain extends React.Component {
@@ -19,12 +22,21 @@ export default class ShowsMain extends React.Component {
     hrefs: PropTypes.array.isRequired,
     showsCount: PropTypes.number.isRequired,
     handleEdit: PropTypes.func.isRequired,
-    onChangePage: PropTypes.func
+    onChangePage: PropTypes.func,
+    onSearchShow: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
-    this.state = this._getNewPaginatorState(props);
+    this.state = {
+      ...this._getNewPaginatorState(props),
+      searchValue: ''
+    };
+    _.bindAll(this, [
+      '_onSearch',
+      '_handleSearchInputChange',
+      '_onResetSearchText'
+    ]);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,25 +69,62 @@ export default class ShowsMain extends React.Component {
     return (
       <div className="container">
         <PageHeader>Shows <small>Main</small></PageHeader>
-        <Row>
-          <Col xs={12}>
-            <Pagination
-              prev
-              next
-              first
-              last
-              ellipsis
-              items={this.state.items}
-              maxButtons={6}
-              activePage={this.props.page}
-              onSelect={this.props.onChangePage}
-            />
-          </Col>
-        </Row>
+        <form>
+          <Row>
+            <Col xs={10} md={4}>
+            <FormGroup>
+              <InputGroup>
+                <FormControl
+                  type="text"
+                  ref='searchInput'
+                  value={this.state.searchValue}
+                  placeholder="Buscar Show"
+                  onChange={this._handleSearchInputChange}
+                />
+                <InputGroup.Button>
+                  <Button
+                    bsStyle="danger"
+                    onClick={this._onResetSearchText}
+                  >
+                    Reset
+                  </Button>
+                </InputGroup.Button>
+              </InputGroup>
+            </FormGroup>
+            </Col>
+            <Col xs={2}>
+              <Button
+                type="submit"
+                onClick={this._onSearch}
+              >
+                Buscar
+              </Button>
+            </Col>
+          </Row>
+        </form>
+        <Pagination prev next first last ellipsis maxButtons={6}
+          items={this.state.items}
+          activePage={this.props.page}
+          onSelect={this.props.onChangePage}
+        />
         <Grid>
           {tableRows}
         </Grid>
       </div>
     )
+  }
+
+  _handleSearchInputChange(e) {
+    this.setState({searchValue: e.target.value});
+  }
+
+  _onSearch(e) {
+    this.props.onSearchShow(this.state.searchValue);
+    e.preventDefault();
+  }
+
+  _onResetSearchText() {
+    this.setState({searchValue: ''});
+    this.props.onSearchShow('');
   }
 }

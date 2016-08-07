@@ -7,6 +7,8 @@ import _ from 'lodash'
 import ShowsMain from '../components/ShowsMain'
 import ShowForm from '../components/ShowForm'
 
+const SHOWS_PER_PAGE = 15;
+
 export default class Shows extends React.Component {
 
   constructor(props) {
@@ -19,7 +21,12 @@ export default class Shows extends React.Component {
       showsCount: null,
 
     };
-    _.bindAll(this, ['_updateShowsTable', '_handleDelete', '_onChangePage']);
+    _.bindAll(this, [
+      '_updateShowsTable',
+      '_handleDelete',
+      '_onChangePage',
+      '_onSearchShow'
+    ]);
   }
 
   componentDidMount() {
@@ -30,18 +37,21 @@ export default class Shows extends React.Component {
     return (
       <ShowsMain
         page={this.state.page}
-        showsPerPage={this.state.showsPerPage}
+        showsPerPage={SHOWS_PER_PAGE}
         shows={this.state.shows}
         hrefs={this.state.hrefs}
         showsCount={this.state.showsCount}
         handleDelete={this._handleDelete}
         onChangePage={this._onChangePage}
+        onSearchShow={this._onSearchShow}
       />
     );
   }
 
-  _updateShowsTable(newPage = this.state.page) {
-    $.getJSON(`/api/shows.json?page=${newPage}&perPage=${this.state.showsPerPage}`, (response) => {
+  _updateShowsTable(newPage = this.state.page, searchValue = '') {
+    const queryString = 
+      `/api/shows.json?page=${newPage}&perPage=${SHOWS_PER_PAGE}&query=${searchValue}`;
+    $.getJSON(queryString, (response) => {
       const showsHrefs = response.shows.map((show) => {
         return({
           edit: `/admin/shows/${show.slug}/edit`,
@@ -68,5 +78,9 @@ export default class Shows extends React.Component {
 
   _onChangePage(newPage) {
     this._updateShowsTable(newPage);
+  }
+
+  _onSearchShow(searchValue) {
+    this._updateShowsTable(this.state.page, searchValue);
   }
 }
