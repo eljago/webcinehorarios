@@ -57,7 +57,7 @@ export default class ShowsMain extends React.Component {
     const tableRows = shows.map((show, i) => {
       const href = hrefs.get(i);
       return(
-        <Row key={`${this.props.page}-${i}`}>
+        <Row key={show.get('id')}>
           <Col xs={1} md={1} lg={1}>{show.get('id')}</Col>
           <Col xs={3} md={2} lg={2}><Image src={`http://cinehorarios.cl${show.getIn(['image', 'smallest', 'url'])}`} /></Col>
           <Col xs={6} md={7} lg={7} fluid={true}>{show.get('name')}</Col>
