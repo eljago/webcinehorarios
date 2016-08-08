@@ -33,7 +33,7 @@ export default class ShowEdit extends React.Component {
 
   _handleSubmit(showToSubmit) {
     this.setState({submitting: true});
-
+    
     $.ajax({
       url: `/api/shows/${this.props.show.id}`,
       type: 'PUT',

@@ -49,7 +49,7 @@ export default class FormFieldDate extends React.Component {
 
   getResult() {
     if (!_.isEqual(this.state.currentValue, this.initialValue)) {
-      return result[this.props.submitKey] = this.state.currentValue;
+      return {[this.props.submitKey]: this.state.currentValue};
     }
     return null;
   }

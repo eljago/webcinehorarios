@@ -53,13 +53,13 @@ export default class FormFieldText extends React.Component {
   }
 
   _handleChange(value) {
-    const newValue = _.replace(value, '  ', ' ');
-    this.setState({currentValue: newValue});
+    const currentValue = _.replace(value, '  ', ' ');
+    this.setState({currentValue});
   }
 
   getResult() {
     if (this.state.currentValue !== this.props.initialValue) {
-      return result[this.props.submitKey] = _.trim(this.state.currentValue);
+      return {[this.props.submitKey]: _.trim(this.state.currentValue)};
     }
     return null;
   }

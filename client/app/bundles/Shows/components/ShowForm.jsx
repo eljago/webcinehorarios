@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/lib/Button';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
 
-import FormCast from './FormCast'
+import ShowFormCast from './ShowFormCast'
 import ShowFormBasic from './ShowFormBasic'
 
 import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
@@ -46,7 +46,7 @@ export default class ShowForm extends React.Component {
 
             <Tab eventKey={2} title="Cast">
               <br/>
-              <FormCast
+              <ShowFormCast
                 show_person_roles={this.props.show.show_person_roles}
                 getShowPersonRolesOptions={this.props.getShowPersonRolesOptions}
                 ref='formCast'

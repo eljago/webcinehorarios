@@ -51,7 +51,7 @@ export default class ShowFormBasic extends React.Component {
               />
               <FormFieldImage
                 onChange={this._handleImageChange}
-                initialValue={show.image.small.url}
+                initialValue={`http://cinehorarios.cl${show.image.small.url}`}
                 ref='image'
               />
             </Col>
@@ -158,7 +158,7 @@ export default class ShowFormBasic extends React.Component {
             </Col>
             <Col xs={9} md={12}>
               <FormFieldCheckboxGroup
-                submitKey='genres'
+                submitKey='genre_ids'
                 label='Géneros'
                 ref='genres'
                 options={this.props.genres.map((genre) => {

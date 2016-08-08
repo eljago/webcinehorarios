@@ -68,7 +68,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
   getResult() {
     if (!_.isEqual(this.state.currentValue, this.props.initialValue)) {
       const newValue = this.state.currentValue.length > 0 ? this.state.currentValue : [' ']
-      return result[this.props.submitKey] = newValue;
+      return {[this.props.submitKey]: newValue};
     }
     return null;
   }

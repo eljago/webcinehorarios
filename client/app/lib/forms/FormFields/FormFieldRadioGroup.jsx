@@ -59,7 +59,7 @@ export default class FormFieldRadioGroup extends React.Component {
 
   getResult() {
     if (this.state.currentValue !== this.props.initialValue) {
-      return result[this.props.submitKey] = this.state.currentValue;
+      return {[this.props.submitKey]: this.state.currentValue};
     }
     return null;
   }
