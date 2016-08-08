@@ -71,6 +71,7 @@ class Admin::ShowsController < ApplicationController
         "name" => video.name,
         "code" => video.code,
         "video_type" => video.video_type,
+        "image" => video.image,
         "outstanding" => video.outstanding
       }
     end

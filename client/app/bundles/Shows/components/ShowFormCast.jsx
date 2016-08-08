@@ -20,7 +20,7 @@ export default class FormCast extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: this.props.show_person_roles.map((spr) => {
+      images: props.show_person_roles.map((spr) => {
         return spr.image.smallest.url;
       })
     }
@@ -48,7 +48,8 @@ export default class FormCast extends React.Component {
                   src={`http://cinehorarios.cl${imageSource}`}
                   responsive
                 />
-              </Col>,
+              </Col>
+              ,
               <Col md={4}>
                 <FormFieldSelect
                   submitKey='person_id'
@@ -63,7 +64,8 @@ export default class FormCast extends React.Component {
                     this._onChangeSelect(newValue, index);
                   }}
                 />
-              </Col>,
+              </Col>
+              ,
               <Col md={4}>
                 <FormFieldText
                   submitKey='character'
@@ -71,7 +73,8 @@ export default class FormCast extends React.Component {
                   ref={`character${index}`}
                   initialValue={spr.character}
                 />
-              </Col>,
+              </Col>
+              ,
               <Col md={1}>
                 <FormFieldCheckbox
                   submitKey='actor'
@@ -79,7 +82,8 @@ export default class FormCast extends React.Component {
                   ref={`actor${index}`}
                   initialValue={spr.actor}
                 />
-              </Col>,
+              </Col>
+              ,
               <Col md={1}>
                 <FormFieldCheckbox
                   submitKey='director'
@@ -87,7 +91,7 @@ export default class FormCast extends React.Component {
                   ref={`director${index}`}
                   initialValue={spr.director}
                 />
-              </Col>,
+              </Col>
             ]
           );
         }}

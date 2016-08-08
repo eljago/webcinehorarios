@@ -102,7 +102,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
         if video_attributes[:code].present? && video_attributes[:video_type].present?
           if video_attributes[:video_type] === 'youtube'
             video_attributes[:remote_image_url] = "http://img.youtube.com/vi/#{video_attributes[:code]}/0.jpg"
-            puts video_attributes[:remote_image_url]
           elsif video_attributes[:video_type] == "vimeo"
             api_url = "http://vimeo.com/api/v2/video/#{video_attributes[:code]}.json"
             s = open(URI.escape(api_url)).read

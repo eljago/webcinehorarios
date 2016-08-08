@@ -18,6 +18,9 @@ export default class FormFieldNested extends React.Component {
     onDataArrayChanged: PropTypes.func,
     getRowCols: PropTypes.func,
     dataKeys: PropTypes.array,
+    xs: PropTypes.number,
+    md: PropTypes.number,
+    lg: PropTypes.number,
   };
 
   constructor(props) {
@@ -37,7 +40,9 @@ export default class FormFieldNested extends React.Component {
     return(
       <div>
         <FormGroup controlId={this.props.submitKey}>
-          {this._getRows()}
+          <Row>
+            {this._getRows()}
+          </Row>
         </FormGroup>
         <br />
         <Button onClick={this._onAddRow} bsStyle="success">
@@ -63,9 +68,15 @@ export default class FormFieldNested extends React.Component {
           </Col>
         );
         return(
-          <Row>
-            {rowCols}
-          </Row>
+          <Col
+            xs={this.props.xs ? this.props.xs : 12} 
+            md={this.props.md ? this.props.md : 12}
+            lg={this.props.lg ? this.props.lg : 12}
+          >
+            <Row>
+              {rowCols}
+            </Row>
+          </Col>
         );
       }
     });
@@ -98,7 +109,7 @@ export default class FormFieldNested extends React.Component {
 
     this.state.dataArray.forEach((dataItem, index) => {
       if (dataItem._destroy) {
-        submitArray.push(dataItem);
+        submitArray.push(dataItem); //{id: dataItem.id, _destroy: true}
       }
       else {
         let submitItem = {};
@@ -112,7 +123,9 @@ export default class FormFieldNested extends React.Component {
         });
 
         if (Object.keys(submitItem).length > 0) {
-          _.merge(submitItem, dataItem);
+          if (dataItem.id) {
+            _.merge(submitItem, {id: dataItem.id})
+          }
           submitArray.push(submitItem);
         }
       }
