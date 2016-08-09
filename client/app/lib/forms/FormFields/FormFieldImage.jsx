@@ -51,11 +51,7 @@ export default class FormFieldImage extends React.Component {
 
   _handleChangeRemote(value) {
     if (validator.isURL(value)) {
-      $.get(value).done(() => {
-        this._setStateAndOnChange(value, '');
-      }).fail(() => {
-        this._setStateAndOnChange('', '');
-      })
+      this._setStateAndOnChange(value, '');
     }
     else {
       this._setStateAndOnChange('', '');

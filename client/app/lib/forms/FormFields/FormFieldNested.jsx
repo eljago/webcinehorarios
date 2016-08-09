@@ -59,7 +59,7 @@ export default class FormFieldNested extends React.Component {
         rowCols.push(
           <Col md={1}>
             <Button
-              style={{marginTop: 24}}
+              style={{marginTop: 24, marginBottom: 24}}
               bsStyle="danger"
               onClick={() => this._handleDelete(index)}
             >
