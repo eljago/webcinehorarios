@@ -24,7 +24,7 @@ export default class ShowFormImages extends React.Component {
 
     this.state = {
       images: props.images.map((img) => {
-        return img.image;
+        return img.image.small.url;
       }),
       lgShow: false,
       modalIndex: 0,
@@ -48,7 +48,7 @@ export default class ShowFormImages extends React.Component {
           lg={6}
           getRowCols={(img, index) => {
 
-            const imageSource = this.state.images[index] ? this.state.images[index].smaller.url :
+            const imageSource = this.state.images[index] ? this.state.images[index] :
               '/uploads/default_images/default.png';
 
             return([
@@ -62,7 +62,7 @@ export default class ShowFormImages extends React.Component {
                   }}>
                     <Image
                       style={{width: 100, height: 100, "objectFit": 'cover'}}
-                      src={`http://cinehorarios.cl${imageSource}`}
+                      src={imageSource}
                       responsive
                     />
                   </Button>
@@ -71,7 +71,7 @@ export default class ShowFormImages extends React.Component {
                 <Col md={6}>
                   <FormFieldImage
                     onChange={this._handleImageChange}
-                    initialValue={`http://cinehorarios.cl${img.image.smaller.url}`}
+                    initialValue={img}
                     ref={`image${index}`}
                   />
                 </Col>
@@ -83,7 +83,7 @@ export default class ShowFormImages extends React.Component {
           <Modal.Body>
             <Carousel
               initialIndex={this.state.modalIndex}
-              images={this.state.images.map((image) => {return image.small.url})}
+              images={this.state.images}
             />
           </Modal.Body>
         </Modal>
@@ -100,8 +100,8 @@ export default class ShowFormImages extends React.Component {
   _onDataArrayChanged(dataArray) {
     this.setState({
       images: dataArray.map((dataItem) => {
-        if (dataItem.image) {
-          return dataItem.image.smaller.url;
+        if (dataItem && dataItem.image) {
+          return dataItem.image.small.url;
         }
         return null;
       })

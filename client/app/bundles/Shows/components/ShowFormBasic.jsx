@@ -51,7 +51,7 @@ export default class ShowFormBasic extends React.Component {
               />
               <FormFieldImage
                 onChange={this._handleImageChange}
-                initialValue={`http://cinehorarios.cl${show.image.small.url}`}
+                initialValue={show.image.small.url}
                 ref='image'
               />
             </Col>

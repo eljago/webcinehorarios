@@ -47,7 +47,7 @@ export default class Car extends React.Component {
             height: this.size.height,
             "objectFit": 'contain'
           }}
-          src={`http://cinehorarios.cl${image}`} />
+          src={image} />
         </Carousel.Item>
       );
     })

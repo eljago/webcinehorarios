@@ -45,7 +45,7 @@ export default class FormCast extends React.Component {
               <Col md={1}>
                 <Image
                   style={{width: 80, height: 100, "objectFit": 'cover'}}
-                  src={`http://cinehorarios.cl${imageSource}`}
+                  src={imageSource}
                   responsive
                 />
               </Col>
