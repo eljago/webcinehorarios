@@ -36,6 +36,12 @@ class ImageUploader < CarrierWave::Uploader::Base
   def extension_white_list
     %w(jpg jpeg gif png)
   end
+  def content_type_whitelist
+    /image\//
+  end
+  def content_type_blacklist
+    ['application/text', 'application/json']
+  end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.

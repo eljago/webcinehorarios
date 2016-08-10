@@ -9,6 +9,12 @@ class ShowCover < CarrierWave::Uploader::Base
   def extension_white_list
     %w(jpg jpeg gif png)
   end
+  def content_type_whitelist
+    /image\//
+  end
+  def content_type_blacklist
+    ['application/text', 'application/json']
+  end
 
   def store_dir
     "uploads/covers/#{model.class.to_s.underscore}/#{model.id}"
