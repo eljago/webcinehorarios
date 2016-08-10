@@ -87,29 +87,35 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def set_videos_image_url
     videos_attrs = params[:shows][:videos_attributes]
+
     if videos_attrs.present?
       videos_attrs.each do |index|
         video_attributes = videos_attrs[index]
-        # IF ITS UPDATING AN EXISTING VIDEO ...
+
+        video_type = nil
+        code = nil
+
         if video_attributes[:id].present?
           db_video = Video.find(video_attributes[:id])
-          if db_video && db_video.code == video_attributes[:code] &&
-            db_video.video_type == video_attributes[:video_type]
-            return
-          end
+          video_type = video_attributes[:video_type].present? ? video_attributes[:video_type] : db_video.video_type
+          code = video_attributes[:code].present? ? video_attributes[:code] : db_video.code
+        else
+          video_type = video_attributes[:video_type]
+          code = video_attributes[:code]
         end
-        # continue if the video is new or the code or video_type is different
-        if video_attributes[:code].present? && video_attributes[:video_type].present?
-          if video_attributes[:video_type] === 'youtube'
-            video_attributes[:remote_image_url] = "http://img.youtube.com/vi/#{video_attributes[:code]}/0.jpg"
-          elsif video_attributes[:video_type] == "vimeo"
-            api_url = "http://vimeo.com/api/v2/video/#{video_attributes[:code]}.json"
+
+        if video_type.present? && code.present?
+          if video_type === 'youtube'
+            video_attributes[:remote_image_url] = "http://img.youtube.com/vi/#{code}/0.jpg"
+          elsif video_type === 'vimeo'
+            api_url = "http://vimeo.com/api/v2/video/#{code}.json"
             s = open(URI.escape(api_url)).read
             video_json = JSON.parse(s)
             video_attributes[:remote_image_url] = video_json.first["thumbnail_large"]
           end
         end
       end
+
     end
   end
 
