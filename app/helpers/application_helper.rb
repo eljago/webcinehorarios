@@ -119,34 +119,9 @@ module ApplicationHelper
                   ]
                 },
                 {
-                  type: 'dropdown',
-                  id: 'dropdown-shows',
-                  title: 'Shows',
-                  items: [
-                    {
-                      type: 'menu_item',
-                      href: admin_shows_path,
-                      title: 'Todos'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: billboard_admin_shows_path,
-                      title: 'Cartelera'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: comingsoon_admin_shows_path,
-                      title: 'Próximamente'
-                    },
-                    {
-                      type: 'divider'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: new_admin_show_path,
-                      title: 'Nuevo'
-                    }
-                  ]
+                  type: 'nav_item',
+                  href: admin_shows_path,
+                  title: 'Shows'
                 },
                 {
                   type: 'dropdown',
