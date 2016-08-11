@@ -100,8 +100,8 @@ class Api::V1::ShowsController < Api::V1::ApiController
           video_type = video_attributes[:video_type].present? ? video_attributes[:video_type] : db_video.video_type
           code = video_attributes[:code].present? ? video_attributes[:code] : db_video.code
         else
-          video_type = video_attributes[:video_type]
-          code = video_attributes[:code]
+          video_type = video_attributes[:video_type].present? ? video_attributes[:video_type] : 'youtube'
+          code = video_attributes[:code].present?
         end
 
         if video_type.present? && code.present?
@@ -117,6 +117,8 @@ class Api::V1::ShowsController < Api::V1::ApiController
       end
 
     end
+    puts "PARAMS"
+    puts params.as_json
   end
 
 end
