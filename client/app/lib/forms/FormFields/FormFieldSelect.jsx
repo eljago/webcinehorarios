@@ -13,13 +13,16 @@ export default class FormFieldSelect extends React.Component {
   static propTypes = {
     submitKey: PropTypes.string,
     label: PropTypes.string,
-    getOptions: PropTypes.array,
+    getOptions: PropTypes.func,
+    options: PropTypes.array,
     initialValue: PropTypes.object,
     onChange: PropTypes.func,
+    async: PropTypes.boolean
   };
   static defaultProps = {
     label: '',
-    initialValue: ''
+    initialValue: '',
+    async: true
   };
 
   constructor(props) {
@@ -31,14 +34,16 @@ export default class FormFieldSelect extends React.Component {
   }
 
   render() {
+    const SelectComponent = this.props.async ? Select.Async : Select;
     return(
       <FormGroup controlId={this.props.submitKey}>
         <ControlLabel>{this.props.label}</ControlLabel>
-        <Select.Async
+        <SelectComponent
           name={this.props.submitKey}
           value={this.state.currentValue}
           onChange={this._handleChange}
           loadOptions={this.props.getOptions}
+          options={this.props.options}
           clearable={false}
         />
       </FormGroup>

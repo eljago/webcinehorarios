@@ -113,6 +113,8 @@ export default class FormFieldNested extends React.Component {
       }
       else {
         let submitItem = {};
+
+        // Loop form keys to find each form element by their ref
         this.props.dataKeys.forEach((dataKey) => {
           const ref = `${dataKey}${index}`;
           const formElement = this.refs[ref];
@@ -122,6 +124,7 @@ export default class FormFieldNested extends React.Component {
           }
         });
 
+        // if it's an existing record, add the id to the submit data:
         if (Object.keys(submitItem).length > 0) {
           if (dataItem.id) {
             _.merge(submitItem, {id: dataItem.id})

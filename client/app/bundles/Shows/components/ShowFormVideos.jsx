@@ -6,6 +6,7 @@ import _ from 'lodash'
 import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
 import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
 import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
+import FormFieldSelect from '../../../lib/forms/FormFields/FormFieldSelect'
 
 import Row from 'react-bootstrap/lib/Col';
 import Col from 'react-bootstrap/lib/Col';
@@ -65,6 +66,17 @@ export default class ShowFormVideos extends React.Component {
                   label='Código'
                   ref={`code${index}`}
                   initialValue={video.code}
+                />
+                <FormFieldSelect
+                  submitKey='video_type'
+                  label='Video Type'
+                  ref={`video_type${index}`}
+                  initialValue={{
+                    value: video.video_type,
+                    label: video.video_type
+                  }}
+                  options={[{value: 'youtube', label: 'youtube'},{value: 'vimeo', label: 'vimeo'}]}
+                  async={false}
                 />
               </Col>
             ]

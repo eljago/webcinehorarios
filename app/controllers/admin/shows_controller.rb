@@ -56,7 +56,8 @@ class Admin::ShowsController < ApplicationController
         'image' => spr.person.present? ? spr.person.image.as_json[:image] : '',
         "actor" => spr.actor,
         "director" => spr.director,
-        "character" => spr.character
+        "character" => spr.character,
+        "position" => spr.position
       }
     end
     hash_show["images"] = show.images.order('images.updated_at DESC').map do |img|
