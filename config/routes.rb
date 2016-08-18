@@ -27,9 +27,10 @@ Rails.application.routes.draw do
           get 'select_people'
         end
       end
-      resources :videos, only: [] do
+      resources :videos, only: []
+      resources :parsed_shows, only: [:index, :update, :destroy] do
         collection do
-          get 'select_video_types'
+          get 'orphan'
         end
       end
     end
@@ -136,18 +137,12 @@ Rails.application.routes.draw do
         end
       end
     end
-    resources :shows do
-      get 'simple_show' # used by select2 ajax
-      collection do
-        get 'billboard'
-        get 'comingsoon'
-        get 'select_shows'
-      end
-    end
+    resources :shows, only: [:index, :edit]
+    resources :parsed_shows, only: [:index]
+
     # For Sorting Actors
     post 'show_person_roles/sort' => 'show_person_roles#sort', as: 'show_person_roles_sort'
 
-    get 'orphan_parsed_shows' => 'functions#orphan_parsed_shows'
     post 'destroy_all_parsed_shows' => 'functions#destroy_all_parsed_shows'
     post 'create_parsed_shows' => 'functions#create_parsed_shows'
 

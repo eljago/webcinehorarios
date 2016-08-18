@@ -150,7 +150,7 @@ module ApplicationHelper
                 },
                 {
                   type: 'nav_item',
-                  href: admin_orphan_parsed_shows_path,
+                  href: admin_parsed_shows_path,
                   title: 'Parsed Shows'
                 }
               ]

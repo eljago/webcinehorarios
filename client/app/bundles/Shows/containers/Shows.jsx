@@ -18,7 +18,7 @@ export default class Shows extends React.Component {
       showsPerPage: 15,
       shows: Immutable.List(),
       hrefs: Immutable.List(),
-      showsCount: null,
+      pagesCount: null,
 
     };
     _.bindAll(this, [
@@ -37,10 +37,10 @@ export default class Shows extends React.Component {
     return (
       <ShowsMain
         page={this.state.page}
-        showsPerPage={SHOWS_PER_PAGE}
+        itemsPerPage={SHOWS_PER_PAGE}
         shows={this.state.shows}
         hrefs={this.state.hrefs}
-        showsCount={this.state.showsCount}
+        pagesCount={this.state.pagesCount}
         handleDelete={this._handleDelete}
         onChangePage={this._onChangePage}
         onSearchShow={this._onSearchShow}
@@ -61,7 +61,7 @@ export default class Shows extends React.Component {
         page: newPage,
         shows: Immutable.fromJS(response.shows),
         hrefs: Immutable.fromJS(showsHrefs),
-        showsCount: response.count
+        pagesCount: response.count
       });
     });
   }

@@ -17,11 +17,10 @@ import InputGroup from 'react-bootstrap/lib/InputGroup';
 export default class ShowsMain extends React.Component {
   static propTypes = {
     page: PropTypes.number.isRequired,
-    showsPerPage: PropTypes.number.isRequired,
+    itemsPerPage: PropTypes.number.isRequired,
     shows: PropTypes.object.isRequired,
     hrefs: PropTypes.array.isRequired,
-    showsCount: PropTypes.number.isRequired,
-    handleEdit: PropTypes.func.isRequired,
+    pagesCount: PropTypes.number.isRequired,
     onChangePage: PropTypes.func,
     onSearchShow: PropTypes.func,
   };
@@ -29,7 +28,6 @@ export default class ShowsMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...this._getNewPaginatorState(props.showsCount, props.showsPerPage),
       searchValue: '',
     };
     _.bindAll(this, [
@@ -39,20 +37,8 @@ export default class ShowsMain extends React.Component {
     ]);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      ...this._getNewPaginatorState(nextProps.showsCount, nextProps.showsPerPage),
-    });
-  }
-
-  _getNewPaginatorState(showsCount, showsPerPage) {
-    const newItems = Math.ceil(showsCount / showsPerPage);
-    return {
-      items: newItems
-    };
-  }
-
   render() {
+    const items = Math.ceil(this.props.pagesCount / this.props.itemsPerPage)
     const {shows, hrefs} = this.props;
     const tableRows = shows.map((show, i) => {
       const href = hrefs.get(i);
@@ -105,7 +91,7 @@ export default class ShowsMain extends React.Component {
           </Row>
         </form>
         <Pagination prev next first last ellipsis maxButtons={6}
-          items={this.state.items}
+          items={items}
           activePage={this.props.page}
           onSelect={this.props.onChangePage}
         />

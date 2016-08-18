@@ -8,15 +8,8 @@ ReactOnRails.setOptions({
   traceTurbolinks: TRACE_TURBOLINKS,
 });
 
-const ShowsApp = (props) => (
-  <Shows {...props} />
-)
-
-const ShowEditApp = (props) => (
-  <ShowEdit {...props} />
-)
-
 // This is how react_on_rails can see the HelloWorldApp in the browser.
-ReactOnRails.register({ ShowsApp });
-
-ReactOnRails.register({ ShowEditApp });
+ReactOnRails.register({
+  ShowsApp: (props) => (<Shows {...props} />),
+  ShowEditApp: (props) => (<ShowEdit {...props} />),
+});

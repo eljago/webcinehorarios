@@ -77,10 +77,11 @@ class Admin::ShowsController < ApplicationController
       }
     end
     genres = Genre.order(:name).all
+    video_types = Video.video_types.keys.map { |vt| {value: vt, label: vt} }
 
     @title = 'Shows'
     @app_name = 'ShowEditApp'
-    @props = {show: hash_show, genres: genres}
+    @props = {show: hash_show, genres: genres, videoTypes: video_types}
     @prerender = true
     render file: 'react/render'
   end

@@ -14,7 +14,7 @@ class Person < ApplicationRecord
 
   include PgSearch
   pg_search_scope :search, against: [:name, :imdb_code],
-    using: {tsearch: {dictionary: "spanish"}}
+    using: {tsearch: {dictionary: "spanish", :prefix => true}}
 
   def self.text_search(query)
     if query.present?

@@ -18,10 +18,11 @@ export default class ShowForm extends React.Component {
   static propTypes = {
     show: PropTypes.object,
     genres: PropTypes.array,
+    videoTypes: PropTypes.array,
     onSubmit: PropTypes.func.isRequired,
     submitting: PropTypes.boolean,
     errors: PropTypes.object,
-    getShowPersonRolesOptions: PropTypes.func
+    getShowPersonRolesOptions: PropTypes.func,
   };
 
   constructor(props) {
@@ -67,6 +68,7 @@ export default class ShowForm extends React.Component {
               <br/>
               <ShowFormVideos
                 videos={this.props.show.videos}
+                videoTypes={this.props.videoTypes}
                 ref='formVideos'
               />
             </Tab>

@@ -15,7 +15,8 @@ import Image from 'react-bootstrap/lib/Image';
 
 export default class ShowFormVideos extends React.Component {
   static propTypes = {
-    videos: PropTypes.array.isRequired
+    videos: PropTypes.array.isRequired,
+    videoTypes: PropTypes.array.isRequired,
   };
 
   constructor(props) {
@@ -46,15 +47,15 @@ export default class ShowFormVideos extends React.Component {
             '/uploads/default_images/default.png';
 
           return([
-              <Col md={2}>
+              <Col md={3}>
                 <Image
-                  style={{width: 80, height: 100, "objectFit": 'cover'}}
+                  style={{height: 100, "objectFit": 'cover'}}
                   src={imageSource}
                   responsive
                 />
               </Col>
               ,
-              <Col md={8}>
+              <Col md={7}>
                 <FormFieldText
                   submitKey='name'
                   label='Nombre'
@@ -75,7 +76,7 @@ export default class ShowFormVideos extends React.Component {
                     value: video.video_type,
                     label: video.video_type
                   }}
-                  options={[{value: 'youtube', label: 'youtube'},{value: 'vimeo', label: 'vimeo'}]}
+                  options={this.props.videoTypes}
                   async={false}
                 />
               </Col>

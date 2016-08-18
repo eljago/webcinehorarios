@@ -8,6 +8,7 @@ export default class ShowEdit extends React.Component {
   static propTypes = {
     show: PropTypes.object,
     genres: PropTypes.array,
+    videoTypes: PropTypes.array,
   };
 
   constructor(props) {
@@ -16,13 +17,15 @@ export default class ShowEdit extends React.Component {
       submitting: false,
       errors: {}
     };
-    _.bindAll(this, '_handleSubmit');  }
+    _.bindAll(this, '_handleSubmit');
+  }
 
   render() {
     return (
       <ShowForm
         show={this.props.show}
         genres={this.props.genres}
+        videoTypes={this.props.videoTypes}
         onSubmit={this._handleSubmit}
         submitting={this.state.submitting}
         errors={this.state.errors}
@@ -77,22 +80,12 @@ export default class ShowEdit extends React.Component {
     if (_.trim(input).length > 2) {
       $.getJSON(`/api/people/select_people?input=${input}`, (response) => {
         callback(null, {
-            options: response.people,
-            complete: response.people.length >= 10
+          options: response.people
         });
       });
     }
     else {
-      callback(null, {options: [], complete: false});
+      callback(null, {options: []});
     }
-  }
-
-  _getVideoTypesOptions(input, callback) {
-    $.getJSON('/api/videos/select_video_types', (response) => {
-      callback(null, {
-          options: response.video_types,
-          complete: true
-      });
-    });
   }
 }
