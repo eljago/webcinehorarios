@@ -17,7 +17,7 @@ Rails.application.routes.draw do
 
     ##### V1 #####
     scope module: :v1 do
-      resources :shows, only: [:index, :destroy, :update] do
+      resources :shows, only: [:index, :destroy, :update, :create] do
         collection do
           get 'select_shows'
         end
@@ -137,7 +137,7 @@ Rails.application.routes.draw do
         end
       end
     end
-    resources :shows, only: [:index, :edit]
+    resources :shows, only: [:index, :edit, :new]
     resources :parsed_shows, only: [:index]
 
     # For Sorting Actors

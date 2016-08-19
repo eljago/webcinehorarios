@@ -127,26 +127,20 @@ export default class ParsedShows extends React.Component {
         callback();
       },
       error: (error) => {
-        callback();
-        // Rails validations failed
-        if (error.status == 422) {
-          this.setState({
-            errors: !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
-            submitting: false
-          });
+        let errors = {};
+        if (error.status == 422) { // Rails validations failed
+          errors = !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
           window.scrollTo(0, 0);
         }
         else if (error.status == 500) {
-          this.setState({
-            errors: {
-              Error: [
-                'ERROR 500'
-              ]
-            },
-            submitting: false
-          });
+          errors = {Error: 'ERROR 500'}
           window.scrollTo(0, 0);
         }
+        this.setState({
+          ...errors,
+          submitting: false
+        });
+        callback();
       }
     });
   }

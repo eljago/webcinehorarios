@@ -8,6 +8,7 @@ import DateTimeField from 'react-bootstrap-datetimepicker'
 import FormControl from 'react-bootstrap/lib/FormControl';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
+import Checkbox from 'react-bootstrap/lib/Checkbox';
 
 export default class FormFieldDate extends React.Component {
   static propTypes = {
@@ -23,7 +24,10 @@ export default class FormFieldDate extends React.Component {
     super(props)
     const momentDate = props.initialValue ? moment(props.initialValue) : moment();
     this.initialValue = momentDate.format("YYYY-MM-DD");
-    this.state = {currentValue: this.initialValue};
+    this.state = {
+      currentValue: this.initialValue,
+      useTodayDate: false,
+    };
     _.bindAll(this, '_handleChange');
   }
 
@@ -32,15 +36,28 @@ export default class FormFieldDate extends React.Component {
     return(
       <FormGroup controlId={submitKey}>
         <ControlLabel>{label}</ControlLabel>
-        <DateTimeField
-          dateTime={this.state.currentValue}
-          onChange={this._handleChange}
-          format='YYYY-MM-DD'
-          viewMode="date"
-          inputFormat="DD-MM-YYYY"
-        />
+        {this._getDateField()}
+        <Checkbox
+          checked={this.state.useTodayDate}
+          onChange={() => {
+            this.setState({useTodayDate: !this.state.useTodayDate})
+          }}
+        >
+          Today
+        </Checkbox>
       </FormGroup>
     );
+  }
+
+  _getDateField() {
+    return this.state.useTodayDate ? null : 
+      <DateTimeField
+        dateTime={this.state.currentValue}
+        onChange={this._handleChange}
+        format='YYYY-MM-DD'
+        viewMode="date"
+        inputFormat="DD-MM-YYYY"
+      />;
   }
 
   _handleChange(date) {
@@ -48,6 +65,9 @@ export default class FormFieldDate extends React.Component {
   }
 
   getResult() {
+    if (this.state.useTodayDate) {
+      return {[this.props.submitKey]: moment().format("YYYY-MM-DD")};
+    }
     if (!_.isEqual(this.state.currentValue, this.initialValue)) {
       return {[this.props.submitKey]: this.state.currentValue};
     }

@@ -29,6 +29,11 @@ export default class ShowFormBasic extends React.Component {
 
   render() {
     const show = this.props.show;
+    const coverImage = show.image ? show.image.small.url : '';
+    const showGenres = show.genres ? show.genres.map((value) => {
+      return value.id;
+    }) : [];
+
     return (
       <Row>
         <Col md={8}>
@@ -51,7 +56,7 @@ export default class ShowFormBasic extends React.Component {
               />
               <FormFieldImage
                 onChange={this._handleImageChange}
-                initialValue={show.image.small.url}
+                initialValue={coverImage}
                 ref='image'
               />
             </Col>
@@ -164,9 +169,7 @@ export default class ShowFormBasic extends React.Component {
                 options={this.props.genres.map((genre) => {
                   return {value: genre.id, label: genre.name};
                 })}
-                initialValue={show.genres.map((value) => {
-                  return value.id;
-                })}
+                initialValue={showGenres}
               />
             </Col>
           </Row>

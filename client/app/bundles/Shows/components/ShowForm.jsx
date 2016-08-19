@@ -32,61 +32,63 @@ export default class ShowForm extends React.Component {
 
   render() {
     const submitting = this.props.submitting;
+    const showPersonRoles = this.props.show.show_person_roles ? this.props.show.show_person_roles : [];
+    const showVideos = this.props.show.videos ? this.props.show.videos : [];
+    const showImages = this.props.show.images ? this.props.show.images : [];
+
     return (
       <div className="container">
         <ErrorMessages errors={this.props.errors} />
-        <form>
-          <Tabs defaultActiveKey={1} animation={false}>
 
-            <Tab eventKey={1} title="Basic Info">
-              <br/>
-              <ShowFormBasic
-                show={this.props.show}
-                genres={this.props.genres}
-                ref='formBasic'
-              />
-            </Tab>
+        <Tabs bsStyle="pills" defaultActiveKey={1} animation={false}>
 
-            <Tab eventKey={2} title="Cast">
-              <br/>
-              <ShowFormCast
-                show_person_roles={this.props.show.show_person_roles}
-                getShowPersonRolesOptions={this.props.getShowPersonRolesOptions}
-                ref='formCast'
-              />
-            </Tab>
+          <Tab eventKey={1} title="Basic Info">
+            <br/>
+            <ShowFormBasic
+              show={this.props.show}
+              genres={this.props.genres}
+              ref='formBasic'
+            />
+          </Tab>
 
-            <Tab eventKey={3} title="Images">
-              <br/>
-              <ShowFormImages
-                images={this.props.show.images}
-                ref='formImages'
-              />
-            </Tab>
+          <Tab eventKey={2} title="Cast">
+            <br/>
+            <ShowFormCast
+              show_person_roles={showPersonRoles}
+              getShowPersonRolesOptions={this.props.getShowPersonRolesOptions}
+              ref='formCast'
+            />
+          </Tab>
 
-            <Tab eventKey={4} title="Videos">
-              <br/>
-              <ShowFormVideos
-                videos={this.props.show.videos}
-                videoTypes={this.props.videoTypes}
-                ref='formVideos'
-              />
-            </Tab>
+          <Tab eventKey={3} title="Images">
+            <br/>
+            <ShowFormImages
+              images={showImages}
+              ref='formImages'
+            />
+          </Tab>
 
-          </Tabs>
+          <Tab eventKey={4} title="Videos">
+            <br/>
+            <ShowFormVideos
+              videos={showVideos}
+              videoTypes={this.props.videoTypes}
+              ref='formVideos'
+            />
+          </Tab>
 
-          <br/>
+        </Tabs>
 
-          <Button
-            type="submit"
-            bsStyle="primary"
-            disabled={submitting}
-            onClick={!submitting ? this._handleSubmit : null}
-          >
-            {submitting ? 'Submitting...' : 'Submit'}
-          </Button>
+        <br/>
 
-        </form>
+        <Button
+          bsStyle="primary"
+          disabled={submitting}
+          onClick={!submitting ? this._handleSubmit : null}
+        >
+          {submitting ? 'Submitting...' : 'Submit'}
+        </Button>
+
       </div>
     );
   }

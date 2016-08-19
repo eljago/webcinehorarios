@@ -35,19 +35,41 @@ export default class ShowEdit extends React.Component {
   }
 
   _handleSubmit(showToSubmit) {
+    console.log(showToSubmit);
+    if (_.isEmpty(showToSubmit)) {
+      this.setState({
+        errors: {Error: ['Show Vacío']}
+      });
+      window.scrollTo(0, 0);
+      return;
+    }
+
     this.setState({submitting: true});
-    
-    $.ajax({
-      url: `/api/shows/${this.props.show.id}`,
-      type: 'PUT',
-      data: {
-        shows: {
-          id: this.props.show.id,
-          ...showToSubmit
+    const submitData = this.props.show.id ? 
+      {
+        url: `/api/shows/${this.props.show.id}`,
+        type: 'PUT',
+        data: {
+          shows: {
+            id: this.props.show.id,
+            ...showToSubmit
+          }
         }
-      },
+      } :
+      {
+        url: '/api/shows',
+        type: 'POST',
+        data: {
+          shows: {
+            ...showToSubmit
+          }
+        }
+      };
+
+    $.ajax({
+      ...submitData,
       success: (response) => {
-        // window.location.replace('/admin/shows');
+        window.location.replace('/admin/shows');
 
       },
       error: (error) => {

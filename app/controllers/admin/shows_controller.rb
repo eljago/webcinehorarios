@@ -37,7 +37,14 @@ class Admin::ShowsController < ApplicationController
   end
 
   def new
-    @show = Show.new
+    genres = Genre.order(:name).all
+    video_types = Video.video_types.keys.map { |vt| {value: vt, label: vt} }
+    
+    @title = 'Nuevo Show'
+    @app_name = 'ShowEditApp'
+    @props = {show: {}, genres: genres, videoTypes: video_types}
+    @prerender = true
+    render file: 'react/render'
   end
 
   def edit
@@ -79,7 +86,7 @@ class Admin::ShowsController < ApplicationController
     genres = Genre.order(:name).all
     video_types = Video.video_types.keys.map { |vt| {value: vt, label: vt} }
 
-    @title = 'Shows'
+    @title = show.name
     @app_name = 'ShowEditApp'
     @props = {show: hash_show, genres: genres, videoTypes: video_types}
     @prerender = true

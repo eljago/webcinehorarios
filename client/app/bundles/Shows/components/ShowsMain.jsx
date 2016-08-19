@@ -33,7 +33,7 @@ export default class ShowsMain extends React.Component {
     _.bindAll(this, [
       '_onSearch',
       '_handleSearchInputChange',
-      '_onResetSearchText'
+      '_onResetSearchText',
     ]);
   }
 
@@ -59,7 +59,17 @@ export default class ShowsMain extends React.Component {
         <PageHeader>Shows <small>Main</small></PageHeader>
         <form>
           <Row>
-            <Col xs={10} md={4}>
+            <Col xs={12} md={2}>
+              <Button
+                style={{marginBottom: 10}}
+                bsStyle="primary"
+                href='/admin/shows/new'
+                block
+              >
+                Nuevo
+              </Button>
+            </Col>
+            <Col xs={12} md={4}>
               <FormGroup>
                 <InputGroup>
                   <FormControl
@@ -80,10 +90,11 @@ export default class ShowsMain extends React.Component {
                 </InputGroup>
               </FormGroup>
             </Col>
-            <Col xs={2}>
+            <Col xs={12} md={2}>
               <Button
                 type="submit"
                 onClick={this._onSearch}
+                block
               >
                 Buscar
               </Button>
