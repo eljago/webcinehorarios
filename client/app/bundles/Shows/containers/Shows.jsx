@@ -1,13 +1,9 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
-import ReactDOM from 'react-dom'
-import Immutable from 'immutable'
 import _ from 'lodash'
 import ShowsMain from '../components/ShowsMain'
 import ShowForm from '../components/ShowForm'
-
-const SHOWS_PER_PAGE = 15;
 
 export default class Shows extends React.Component {
 
@@ -16,87 +12,68 @@ export default class Shows extends React.Component {
     this.state = {
       page: 1,
       showsPerPage: 15,
-      shows: Immutable.List(),
+      shows: [],
       pagesCount: null,
 
     };
     _.bindAll(this, [
-      '_updateShowsTable',
-      '_handleDelete',
+      '_updateData',
       '_onChangePage',
-      '_onSearchShow',
-      '_onDeleteShow',
+      '_onSearch',
+      '_onDelete',
     ]);
   }
 
   componentDidMount() {
-    this._updateShowsTable();
+    this._updateData();
   }
 
   render() {
     return (
       <ShowsMain
         page={this.state.page}
-        itemsPerPage={SHOWS_PER_PAGE}
+        itemsPerPage={this.state.showsPerPage}
         shows={this.state.shows}
         pagesCount={this.state.pagesCount}
-        handleDelete={this._handleDelete}
         onChangePage={this._onChangePage}
-        onSearchShow={this._onSearchShow}
-        onDeleteShow={this._onDeleteShow}
+        onSearchShow={this._onSearch}
+        onDeleteShow={this._onDelete}
       />
     );
   }
 
-  _updateShowsTable(newPage = this.state.page, searchValue = '') {
+  _updateData(newPage = this.state.page, searchValue = '') {
     const queryString = 
-      `/api/shows.json?page=${newPage}&perPage=${SHOWS_PER_PAGE}&query=${searchValue}`;
+      `/api/shows.json?page=${newPage}&perPage=${this.state.showsPerPage}&query=${searchValue}`;
     $.getJSON(queryString, (response) => {
       this.setState({
         page: newPage,
-        shows: Immutable.fromJS(response.shows),
+        shows: response.shows,
         pagesCount: response.count
       });
     });
   }
 
-  _handleDelete(id) {
-    $.ajax({
-      url: `/api/shows/${id}`,
-      type: 'DELETE',
-      success: (response) => {
-        this._updateShowsTable();
-      }
-    });
-  }
-
   _onChangePage(newPage) {
-    this._updateShowsTable(newPage);
+    this._updateData(newPage);
   }
 
-  _onSearchShow(searchValue) {
-    this._updateShowsTable(1, searchValue);
+  _onSearch(searchValue) {
+    this._updateData(1, searchValue);
   }
 
-  _onDeleteShow(showID) {
-    console.log(showID)
+  _onDelete(showID) {
     $.ajax({
       url: `/api/shows/${showID}`,
       type: 'DELETE',
       success: (response) => {
-        this._updateShowsTable();
+        this._updateData();
       },
       error: (error) => {
-        let errors = {};
-        if (error.status == 422) { // Rails validations failed
-          errors = !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
+        if (error.status == 500) {
+          this.setState({errors: {Error: ['ERROR 500']}});
           window.scrollTo(0, 0);
         }
-        else if (error.status == 500) {
-          errors = {Error: ['ERROR 500']}
-          window.scrollTo(0, 0);
-        }
-        this.setState({errors});
       }
     });
   }
