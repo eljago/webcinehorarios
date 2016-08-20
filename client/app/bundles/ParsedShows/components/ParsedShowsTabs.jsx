@@ -9,6 +9,8 @@ import ParsedShowsOrphan from './ParsedShowsOrphan';
 import Nav from 'react-bootstrap/lib/Nav';
 import NavItem from 'react-bootstrap/lib/NavItem';
 
+import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
+
 export default class ParsedShowsTabs extends React.Component {
   static propTypes = {
     currentPage: PropTypes.number,
@@ -20,6 +22,7 @@ export default class ParsedShowsTabs extends React.Component {
     updateRow: PropTypes.func,
     deleteRow: PropTypes.func,
     onChangePage: PropTypes.func,
+    errors: PropTypes.object,
   };
 
   constructor(props) {
@@ -37,6 +40,7 @@ export default class ParsedShowsTabs extends React.Component {
   render() {
     return (
       <div className="container">
+        <ErrorMessages errors={this.props.errors} />
         <Nav bsStyle="pills" activeKey={this.state.selectedNavItem} onSelect={this._handleSelect}>
           <NavItem eventKey="1">Parsed Shows</NavItem>
           <NavItem eventKey="2">Orphan Parsed Shows</NavItem>

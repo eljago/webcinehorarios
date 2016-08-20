@@ -17,7 +17,6 @@ export default class Shows extends React.Component {
       page: 1,
       showsPerPage: 15,
       shows: Immutable.List(),
-      hrefs: Immutable.List(),
       pagesCount: null,
 
     };
@@ -25,7 +24,8 @@ export default class Shows extends React.Component {
       '_updateShowsTable',
       '_handleDelete',
       '_onChangePage',
-      '_onSearchShow'
+      '_onSearchShow',
+      '_onDeleteShow',
     ]);
   }
 
@@ -39,11 +39,11 @@ export default class Shows extends React.Component {
         page={this.state.page}
         itemsPerPage={SHOWS_PER_PAGE}
         shows={this.state.shows}
-        hrefs={this.state.hrefs}
         pagesCount={this.state.pagesCount}
         handleDelete={this._handleDelete}
         onChangePage={this._onChangePage}
         onSearchShow={this._onSearchShow}
+        onDeleteShow={this._onDeleteShow}
       />
     );
   }
@@ -52,15 +52,9 @@ export default class Shows extends React.Component {
     const queryString = 
       `/api/shows.json?page=${newPage}&perPage=${SHOWS_PER_PAGE}&query=${searchValue}`;
     $.getJSON(queryString, (response) => {
-      const showsHrefs = response.shows.map((show) => {
-        return({
-          edit: `/admin/shows/${show.slug}/edit`,
-        });
-      });
       this.setState({
         page: newPage,
         shows: Immutable.fromJS(response.shows),
-        hrefs: Immutable.fromJS(showsHrefs),
         pagesCount: response.count
       });
     });
@@ -82,5 +76,28 @@ export default class Shows extends React.Component {
 
   _onSearchShow(searchValue) {
     this._updateShowsTable(1, searchValue);
+  }
+
+  _onDeleteShow(showID) {
+    console.log(showID)
+    $.ajax({
+      url: `/api/shows/${showID}`,
+      type: 'DELETE',
+      success: (response) => {
+        this._updateShowsTable();
+      },
+      error: (error) => {
+        let errors = {};
+        if (error.status == 422) { // Rails validations failed
+          errors = !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
+          window.scrollTo(0, 0);
+        }
+        else if (error.status == 500) {
+          errors = {Error: ['ERROR 500']}
+          window.scrollTo(0, 0);
+        }
+        this.setState({errors});
+      }
+    });
   }
 }

@@ -85,11 +85,7 @@ export default class ShowEdit extends React.Component {
         else if (error.status == 500) {
           console.log(error.statusText);
           this.setState({
-            errors: {
-              Error: [
-                'ERROR 500'
-              ]
-            },
+            errors: {Error: ['ERROR 500']},
             submitting: false
           });
           window.scrollTo(0, 0);

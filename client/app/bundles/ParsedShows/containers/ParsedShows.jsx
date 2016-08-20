@@ -16,6 +16,7 @@ export default class ParsedShows extends React.Component {
       currentPage: 1,
       itemsPerPage: 15,
       pagesCount: null,
+      errors: {}
     };
     _.bindAll(this, ['_updateRow', '_deleteRow', '_onChangePage']);
   }
@@ -37,6 +38,7 @@ export default class ParsedShows extends React.Component {
         updateRow={this._updateRow}
         deleteRow={this._deleteRow}
         onChangePage={this._onChangePage}
+        errors={this.state.errors}
       />
     );
   }
@@ -103,11 +105,7 @@ export default class ParsedShows extends React.Component {
         }
         else if (error.status == 500) {
           this.setState({
-            errors: {
-              Error: [
-                'ERROR 500'
-              ]
-            },
+            errors: {Error: ['ERROR 500']},
             submitting: false
           });
           window.scrollTo(0, 0);
@@ -133,11 +131,11 @@ export default class ParsedShows extends React.Component {
           window.scrollTo(0, 0);
         }
         else if (error.status == 500) {
-          errors = {Error: 'ERROR 500'}
+          errors = {Error: ['ERROR 500']}
           window.scrollTo(0, 0);
         }
         this.setState({
-          ...errors,
+          errors: errors,
           submitting: false
         });
         callback();

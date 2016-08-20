@@ -19,10 +19,10 @@ export default class ShowsMain extends React.Component {
     page: PropTypes.number.isRequired,
     itemsPerPage: PropTypes.number.isRequired,
     shows: PropTypes.object.isRequired,
-    hrefs: PropTypes.array.isRequired,
     pagesCount: PropTypes.number.isRequired,
     onChangePage: PropTypes.func,
     onSearchShow: PropTypes.func,
+    onDeleteShow: PropTypes.func,
   };
 
   constructor(props) {
@@ -39,16 +39,28 @@ export default class ShowsMain extends React.Component {
 
   render() {
     const items = Math.ceil(this.props.pagesCount / this.props.itemsPerPage)
-    const {shows, hrefs} = this.props;
-    const tableRows = shows.map((show, i) => {
-      const href = hrefs.get(i);
+    const tableRows = this.props.shows.map((show, i) => {
       return(
         <Row key={show.get('id')}>
           <Col xs={1} md={1} lg={1}>{show.get('id')}</Col>
           <Col xs={3} md={2} lg={2}><Image src={`http://cinehorarios.cl${show.getIn(['image', 'smallest', 'url'])}`} /></Col>
-          <Col xs={6} md={7} lg={7} fluid={true}>{show.get('name')}</Col>
-          <Col xs={2} md={2} lg={2}>
-            <Button href={href.get('edit')}>Editar</Button>
+          <Col xs={6} md={5} lg={5} fluid={true}>{show.get('name')}</Col>
+          <Col xs={12} md={2} lg={2}>
+            <Button
+              style={{marginTop: 10, marginBottom: 10}}
+              href={`/admin/shows/${show.get('id')}/edit`}
+              block>Editar</Button>
+          </Col>
+          <Col xs={12} md={2} lg={2}>
+            <Button
+              style={{marginTop: 10, marginBottom: 10}}
+              bsStyle="danger"
+              onClick={() => {
+                if (confirm(`¿Eliminar Show ${show.get('name')}?`)) {
+                  this.props.onDeleteShow(show.get('id'));
+                }
+              }}
+              block>Eliminar</Button>
           </Col>
         </Row>
       );

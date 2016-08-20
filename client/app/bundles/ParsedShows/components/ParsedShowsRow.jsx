@@ -104,10 +104,11 @@ export default class ParsedShowsRow extends React.Component {
   }
 
   _onDeleteRow() {
-    this.setState({submitting: true});
-    // SUBMIT / UPDATE
-    this.props.deleteRow(this.state.parsedShow.id, () => { // Callback
-      this.setState({submitting: false});
-    });
+    if (confirm(`¿Borrar Parsed Show ${this.state.parsedShow.name}?`)) {
+      this.setState({submitting: true});
+      this.props.deleteRow(this.state.parsedShow.id, () => { // Callback
+        this.setState({submitting: false});
+      });
+    }
   }
 }
