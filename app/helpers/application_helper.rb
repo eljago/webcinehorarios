@@ -124,24 +124,9 @@ module ApplicationHelper
                   title: 'Shows'
                 },
                 {
-                  type: 'dropdown',
-                  id: 'dropdown-people',
-                  title: 'Personas',
-                  items: [
-                    {
-                      type: 'menu_item',
-                      href: admin_people_path,
-                      title: 'Todos'
-                    },
-                    {
-                      type: 'divider'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: new_admin_person_path,
-                      title: 'Nuevo'
-                    }
-                  ]
+                  type: 'nav_item',
+                  href: admin_people_path,
+                  title: 'Personas'
                 },
                 {
                   type: 'nav_item',

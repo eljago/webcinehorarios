@@ -11,10 +11,10 @@ export default class Shows extends React.Component {
     super(props);
     this.state = {
       page: 1,
-      showsPerPage: 15,
+      itemsPerPage: 15,
       shows: [],
       pagesCount: null,
-
+      currentSearch: '',
     };
     _.bindAll(this, [
       '_updateData',
@@ -32,7 +32,7 @@ export default class Shows extends React.Component {
     return (
       <ShowsMain
         page={this.state.page}
-        itemsPerPage={this.state.showsPerPage}
+        itemsPerPage={this.state.itemsPerPage}
         shows={this.state.shows}
         pagesCount={this.state.pagesCount}
         onChangePage={this._onChangePage}
@@ -42,14 +42,15 @@ export default class Shows extends React.Component {
     );
   }
 
-  _updateData(newPage = this.state.page, searchValue = '') {
+  _updateData(newPage = this.state.page, searchValue = this.state.currentSearch) {
     const queryString = 
-      `/api/shows.json?page=${newPage}&perPage=${this.state.showsPerPage}&query=${searchValue}`;
+      `/api/shows.json?page=${newPage}&perPage=${this.state.itemsPerPage}&query=${searchValue}`;
     $.getJSON(queryString, (response) => {
       this.setState({
         page: newPage,
         shows: response.shows,
-        pagesCount: response.count
+        pagesCount: response.count,
+        currentSearch: searchValue,
       });
     });
   }

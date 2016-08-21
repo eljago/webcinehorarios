@@ -5,7 +5,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
   def index
     per_page = params[:perPage].present? ? params[:perPage] : 15
     shows_count = Show.text_search(params[:query]).count
-    shows = Show.text_search(params[:query]).order('created_at DESC')
+    shows = Show.order('created_at DESC').text_search(params[:query])
       .paginate(page: params[:page], per_page: per_page).all
     response = {count: shows_count, shows: shows}
     respond_with response

@@ -11,6 +11,7 @@ config = {
     'babel-polyfill',
     './app/bundles/NavBar/startup/NavBarApp',
     './app/bundles/Shows/startup/ShowsApp',
+    './app/bundles/People/startup/PeopleApp',
     './app/bundles/ParsedShows/startup/ParsedShowsApp',
   ],
 

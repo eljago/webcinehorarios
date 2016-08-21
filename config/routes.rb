@@ -22,7 +22,7 @@ Rails.application.routes.draw do
           get 'select_shows'
         end
       end
-      resources :people, only: [] do
+      resources :people, only: [:index, :destroy, :update, :create] do
         collection do
           get 'select_people'
         end
