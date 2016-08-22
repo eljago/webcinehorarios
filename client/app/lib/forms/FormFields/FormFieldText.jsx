@@ -39,7 +39,7 @@ export default class FormFieldText extends React.Component {
 
     return(
       <FormGroup controlId={submitKey}>
-        <ControlLabel>{label}</ControlLabel>
+        {this._getControlLabel()}
         <FormControl
           {...typeProps}
           value={this.state.currentValue}
@@ -50,6 +50,13 @@ export default class FormFieldText extends React.Component {
         />
       </FormGroup>
     )
+  }
+
+  _getControlLabel() {
+    if (this.props.label && !_.isEmpty(this.props.label)) {
+      return <ControlLabel>{this.props.label}</ControlLabel>
+    }
+    return null;
   }
 
   _handleChange(value) {
