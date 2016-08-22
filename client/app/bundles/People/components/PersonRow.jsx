@@ -44,7 +44,7 @@ export default class PersonRow extends React.Component {
             </Media.Body>
           </Media>
         </Col>
-        <Col xs={12} md={2} lg={2}>
+        <Col xs={6} md={2} lg={2}>
           <Button
             style={{marginTop: 10, marginBottom: 10}}
             disabled={this.state.submitting}
@@ -57,7 +57,7 @@ export default class PersonRow extends React.Component {
             {this._getEditButtonTitle()}
           </Button>
         </Col>
-        <Col xs={12} md={2} lg={2}>
+        <Col xs={6} md={2} lg={2}>
           <Button
             style={{marginTop: 10, marginBottom: 10}}
             bsStyle={this.state.editing ? "warning" : "danger"}
@@ -80,13 +80,11 @@ export default class PersonRow extends React.Component {
         <div>
           <FormFieldText
             submitKey='name'
-            label='Nombre'
             ref='name'
             initialValue={this.props.person.name}
           />
           <FormFieldText
             submitKey='imdb_code'
-            label='Imdb Code'
             ref='imdbCode'
             initialValue={this.props.person.imdb_code}
           />
