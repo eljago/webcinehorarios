@@ -68,6 +68,7 @@ export default class PeopleMain extends React.Component {
     return this.props.people.map((person, i) => {
       return(
         <PersonRow
+          key={person.id}
           person={person}
           onSubmitPerson={this.props.onSubmitPerson}
           onDeletePerson={this.props.onDeletePerson}

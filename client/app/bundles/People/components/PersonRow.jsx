@@ -29,7 +29,7 @@ export default class PersonRow extends React.Component {
   render() {
     const person = this.props.person;
     return (
-      <Row key={person.id}>
+      <Row>
         <Col xs={12} md={8} lg={8}>
           <Media>
            <Media.Left>
