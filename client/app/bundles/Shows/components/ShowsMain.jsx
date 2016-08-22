@@ -77,7 +77,7 @@ export default class ShowsMain extends React.Component {
             />
           </Col>
         </Row>
-        <Pagination prev next first last ellipsis maxButtons={6}
+        <Pagination prev next first last ellipsis maxButtons={5}
           items={items}
           activePage={this.props.page}
           onSelect={this.props.onChangePage}
