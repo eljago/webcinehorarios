@@ -8,9 +8,12 @@ class Person < ApplicationRecord
   has_many :nominations, through: :nomination_person_roles
 
   validates :name, :presence => true
+  validates :imdb_code, format: { with: /\Anm\d{7}\z/,
+    message: "%{value} no es un formato válido" }, allow_blank: true
   validates :imdb_code, uniqueness: { case_sensitive: true }, allow_blank: true
 
   mount_uploader :image, PersonCover
+  mount_base64_uploader :image, PersonCover
 
   include PgSearch
   pg_search_scope :search, against: [:name, :imdb_code],
