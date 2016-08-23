@@ -9,7 +9,7 @@ class Admin::CinemasController < ApplicationController
   end
   
   def edit
-    @cinema = Cinema.select('id, name, information, slug').find(params[:id])
+    @cinema = Cinema.select('id, name, information, slug').friendly.find(params[:id])
   end
   
   def create
@@ -23,7 +23,7 @@ class Admin::CinemasController < ApplicationController
   end
   
   def update
-    @cinema = Cinema.find(params[:id])
+    @cinema = Cinema.friendly.find(params[:id])
 
     if @cinema.update_attributes(cinema_params)
       redirect_to [:admin, :cinemas], notice: 'Cinema was successfully updated.'
@@ -33,7 +33,7 @@ class Admin::CinemasController < ApplicationController
   end
   
   def destroy
-    @cinema = Cinema.find(params[:id])
+    @cinema = Cinema.friendly.find(params[:id])
     @cinema.destroy
 
     redirect_to admin_cinemas_url

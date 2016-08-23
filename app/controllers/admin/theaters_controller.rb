@@ -48,15 +48,15 @@ class Admin::TheatersController < ApplicationController
   private
 
   def get_theater
-    @theater = Theater.find(params[:id])
+    @theater = Theater.friendly.find(params[:id])
   end
 
   def get_theaterable
     @theaterable ||=
       if params[:city_id]
-        City.friendly.find(params[:city_id])
+        City.friendly.friendly.find(params[:city_id])
       elsif params[:cinema_id]
-        Cinema.friendly.find(params[:cinema_id])
+        Cinema.friendly.friendly.find(params[:cinema_id])
       end
   end
 

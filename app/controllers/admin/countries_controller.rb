@@ -46,7 +46,7 @@ class Admin::CountriesController < ApplicationController
   private
   
   def get_country
-    @country = Country.find(params[:id])
+    @country = Country.friendly.find(params[:id])
   end
   
   def country_params
