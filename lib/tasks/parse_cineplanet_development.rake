@@ -1,5 +1,8 @@
 require 'net/http'
 require 'nokogiri'
+# require 'clipboard'
+include ActiveSupport::Inflector # transliterate
+include ActionView::Helpers::TranslationHelper # l
 
 namespace :parse do
   desc "Parse Cineplanet Development"
@@ -66,7 +69,7 @@ namespace :parse do
                 dia = date_array[1].to_i # 18
                 indx = parse_days.map(&:day).index(dia)
                 
-                if indx && mes == I18n.l(parse_days[indx], format: '%A').to_s.downcase
+                if indx && mes == l(parse_days[indx], format: '%A').to_s.downcase
                   horarios = spans[1].text.superclean.gsub(/\s+/, ', ')
                   function = { showtimes: horarios, dia: dia }
                   movieFunction[:theaters][valid_theater_slug].last[:functions] << function if function[:showtimes].length > 0

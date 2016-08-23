@@ -1,5 +1,8 @@
 require 'net/http'
 require 'nokogiri'
+# require 'clipboard'
+include ActiveSupport::Inflector # transliterate
+include ActionView::Helpers::TranslationHelper # l
 
 def hash_get_movieFunction hash, titulo
   hash["movieFunctions"].each do |movieFunction|
@@ -61,7 +64,7 @@ namespace :parse do
             mes = date_array.last.downcase
             indx = parse_days.map(&:day).index(dia)
 
-            if indx && mes == I18n.l(parse_days[indx], format: '%B').to_s.downcase
+            if indx && mes == l(parse_days[indx], format: '%B').to_s.downcase
               fecha["Peliculas"].each do |pelicula|
                 titulo = pelicula['Titulo'].gsub("SANFIC:", "").titleize
                 movieFunction = hash_get_movieFunction(hash, titulo)
