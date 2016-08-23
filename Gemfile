@@ -139,7 +139,7 @@ gem 'graphql'
 gem "graphql-relay"
 # gem 'graphql-batch'
 
-gem 'rabl'
+gem 'rabl', github: "nesquena/rabl"
 gem 'oj'
 
 gem 'json'

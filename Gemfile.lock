@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/nesquena/rabl.git
+  revision: c4a69f883629887d24544c8caf3519bf92b16064
+  specs:
+    rabl (0.13.0)
+      activesupport (>= 2.3.14)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -233,8 +240,6 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    rabl (0.12.0)
-      activesupport (>= 2.3.14)
     rack (2.0.1)
     rack-mini-profiler (0.10.1)
       rack (>= 1.2.0)
@@ -441,7 +446,7 @@ DEPENDENCIES
   oj
   pg
   pg_search
-  rabl
+  rabl!
   rack-mini-profiler
   railroady
   rails (~> 5.0.0)
