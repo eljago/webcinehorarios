@@ -1,6 +1,6 @@
 class City < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: [:slugged, :finders]
+  friendly_id :name, use: :slugged
   
   belongs_to :country
   has_many :theaters

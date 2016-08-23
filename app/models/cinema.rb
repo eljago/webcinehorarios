@@ -1,6 +1,6 @@
 class Cinema < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: [:slugged, :finders]
+  friendly_id :name, use: :slugged
   
   has_many :theaters
   has_many :parse_detector_types

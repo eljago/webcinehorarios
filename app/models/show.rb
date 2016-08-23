@@ -1,6 +1,6 @@
 class Show < ApplicationRecord
   extend FriendlyId
-  friendly_id :name, use: [:slugged, :finders]
+  friendly_id :name, use: :slugged
 
   has_many :images, as: :imageable, dependent: :destroy
   has_and_belongs_to_many :genres

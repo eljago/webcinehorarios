@@ -1,6 +1,6 @@
 class Person < ApplicationRecord
   extend FriendlyId
-  friendly_id :slug_candidates, use: [:slugged, :finders]
+  friendly_id :slug_candidates, use: :slugged
 
   has_many :show_person_roles, :dependent => :destroy
   has_many :shows, through: :show_person_roles
