@@ -5,5 +5,5 @@ glue :portrait_image do
 	attributes :image_url => :portrait_image
 end
 node :debut do |s|
-	s.debut.blank? ? nil : I18n.l(s.debut, format: :longi).capitalize
+	s.debut.blank? ? nil : I18n.l(s.debut, format: :normal).capitalize
 end
