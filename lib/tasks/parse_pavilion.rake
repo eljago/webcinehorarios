@@ -2,7 +2,6 @@ require 'net/http'
 require 'nokogiri'
 
 include ActiveSupport::Inflector # transliterate
-include ActionView::Helpers::TranslationHelper # l
     
 def get_times node
   if node.next_sibling['href'].present?

@@ -1,9 +1,6 @@
 require 'net/http'
 require 'nokogiri'
 
-include ActiveSupport::Inflector # transliterate
-include ActionView::Helpers::TranslationHelper # l
-
 namespace :parse do
   desc "Parse Antay"
   task :antay => :environment do

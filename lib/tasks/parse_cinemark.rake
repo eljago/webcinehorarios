@@ -1,9 +1,6 @@
 require 'net/http'
 require 'nokogiri'
 
-include ActiveSupport::Inflector # transliterate
-include ActionView::Helpers::TranslationHelper # l
-
 namespace :parse do
   desc "Parse Cinemark"
   task :cinemark => :environment do
@@ -54,7 +51,7 @@ namespace :parse do
                 mes = date_array.last.downcase.gsub(':','') # oct
                 indx = parse_days.map(&:day).index(dia)
 
-                if indx && mes == l(parse_days[indx], format: '%b').to_s.downcase
+                if indx && mes == I18n.l(parse_days[indx], format: '%b').to_s.downcase
                   function = {"showtimes" => "", "dia" => dia}
                   li_showtime.css('span.showtime-hour').each_with_index do |span, index|
                     if index == 0
