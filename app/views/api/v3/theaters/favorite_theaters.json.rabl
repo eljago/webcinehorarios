@@ -1,7 +1,5 @@
 collection @favorite_theaters
 
-cache ['v3', @show.id, @cache_date, Digest::MD5.hexdigest(@favorite_theaters.map(&:id).join(','))], expires_in: 30.minutes
-
 attributes :id, :name, :cinema_id
 
 node :date do

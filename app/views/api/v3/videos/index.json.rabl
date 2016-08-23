@@ -1,5 +1,5 @@
 collection @videos => :videos
-cache ['v3', @videos], expires_in: 30.minutes
+
 attributes :id, :name, :code, :image_url, :video_type
 child :show do
 	attributes :id, :name, :image_url

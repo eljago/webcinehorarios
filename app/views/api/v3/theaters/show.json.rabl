@@ -1,5 +1,5 @@
 object @theater
-cache ['v3', @cache_date, [Digest::MD5.hexdigest(@functions.map(&:id).join(','))]], expires_in: 30.minutes
+
 attributes :id, :name
 node :date do
 	@date
