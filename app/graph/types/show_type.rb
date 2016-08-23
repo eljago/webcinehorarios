@@ -33,7 +33,7 @@ ShowType = GraphQL::ObjectType.define do
 
   field :debut, types.String do
     resolve -> (show, args, ctx) {
-      show.debut.blank? ? nil : I18n.l(show.debut, format: :longi).capitalize
+      show.debut.blank? ? nil : I18n.l(show.debut, format: :normal).capitalize
     }
   end
 
