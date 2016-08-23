@@ -29,8 +29,8 @@ module Webcinehorarios
       g.helper_specs false
     end
 
-    # config.autoload_paths << Rails.root.join('app', 'graph', 'types')
-    # config.autoload_paths << Rails.root.join('app', 'graph', 'fields')
+    config.autoload_paths << Rails.root.join('app', 'graph', 'types')
+    # config.autoload_paths << Rails.root.join('app', 'graph', 'fields')
 
   end
 end
