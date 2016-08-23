@@ -1,0 +1,8 @@
+---
+es-CL:
+  date:
+    formats:
+      normal: "%A %d de %B"
+  time:
+    formats:
+      normal_time: "%H:%M"
