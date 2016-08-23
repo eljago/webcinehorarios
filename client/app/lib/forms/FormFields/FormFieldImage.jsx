@@ -63,13 +63,15 @@ export default class FormFieldImage extends React.Component {
       currentRemote: remoteImageUrl,
       currentLocal: localImage
     });
-    this.props.onChange(!_.isEmpty(remoteImageUrl) ? remoteImageUrl :
-      (!_.isEmpty(localImage) ? localImage :
-        (!_.isEmpty(this.props.initialValue) ? this.props.initialValue :
-          '/uploads/default_images/default.png'
+    if (this.props.onChange) {
+      this.props.onChange(!_.isEmpty(remoteImageUrl) ? remoteImageUrl :
+        (!_.isEmpty(localImage) ? localImage :
+          (!_.isEmpty(this.props.initialValue) ? this.props.initialValue :
+            '/uploads/default_images/default.png'
+          )
         )
-      )
-    );
+      );
+    }
   }
 
   _handleChangeLocal(e) {

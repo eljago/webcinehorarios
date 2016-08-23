@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
+import update from 'react/lib/update';
 import _ from 'lodash'
 
 import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
@@ -26,7 +27,7 @@ export default class ShowFormVideos extends React.Component {
         return video.image.image.smaller.url;
       })
     }
-    _.bindAll(this, ['_onDataArrayChanged'])
+    _.bindAll(this, ['_onAddItem', '_onDeleteItem'])
   }
 
   render() {
@@ -36,21 +37,19 @@ export default class ShowFormVideos extends React.Component {
         submitKey='videos_attributes'
         label='Videos'
         initialDataArray={this.props.videos}
-        onDataArrayChanged={this._onDataArrayChanged}
+        onAddItem={this._onAddItem}
+        onDeleteItem={this._onDeleteItem}
         dataKeys={['name', 'code', 'video_type', 'outstanding']}
         xs={12}
         md={6}
         lg={6}
         getRowCols={(video, index) => {
 
-          const imageSource = this.state.images[index] ? this.state.images[index] :
-            '/uploads/default_images/default.png';
-
           return([
               <Col md={3}>
                 <Image
                   style={{height: 100, "objectFit": 'cover'}}
-                  src={imageSource}
+                  src={this.state.images[index]}
                   responsive
                 />
               </Col>
@@ -87,15 +86,16 @@ export default class ShowFormVideos extends React.Component {
     );
   }
 
-  _onDataArrayChanged(dataArray) {
+  _onAddItem(newItem) {
     this.setState({
-      images: dataArray.map((dataItem) => {
-        if (dataItem.image) {
-          return dataItem.image.image.smaller.url;
-        }
-        return null;
-      })
-    })
+      images: update(this.state.images, {$push: ['/uploads/default_images/default.png']})
+    });
+  }
+
+  _onDeleteItem(index) {
+    this.setState({
+      images: update(this.state.images, {$splice: [[index, 1]]})
+    });
   }
 
   getResult() {

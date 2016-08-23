@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
+import update from 'react/lib/update';
 import _ from 'lodash'
 
 import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
@@ -29,7 +30,7 @@ export default class ShowFormImages extends React.Component {
       lgShow: false,
       modalIndex: 0,
     }
-    _.bindAll(this, ['_onDataArrayChanged', '_handleImageChange'])
+    _.bindAll(this, ['_onAddItem', '_onDeleteItem'])
   }
 
   render() {
@@ -41,15 +42,15 @@ export default class ShowFormImages extends React.Component {
           submitKey='images_attributes'
           label='Imágenes'
           initialDataArray={this.props.images}
-          onDataArrayChanged={this._onDataArrayChanged}
+          onAddItem={this._onAddItem}
+          onDeleteItem={this._onDeleteItem}
           dataKeys={['image']}
           xs={12}
           md={6}
           lg={6}
           getRowCols={(img, index) => {
 
-            const imageSource = this.state.images[index] ? this.state.images[index] :
-              '/uploads/default_images/default.png';
+            const initValue = img.image ? img.image.small.url : '/uploads/default_images/default.png';
 
             return([
                 <Col md={4}>
@@ -62,7 +63,7 @@ export default class ShowFormImages extends React.Component {
                   }}>
                     <Image
                       style={{width: 100, height: 100, "objectFit": 'cover'}}
-                      src={imageSource}
+                      src={this.state.images[index]}
                       responsive
                     />
                   </Button>
@@ -70,8 +71,8 @@ export default class ShowFormImages extends React.Component {
                 ,
                 <Col md={6}>
                   <FormFieldImage
-                    onChange={this._handleImageChange}
-                    initialValue={img}
+                    onChange={(newImage) => this._handleImageChange(newImage, index)}
+                    initialValue={initValue}
                     ref={`image${index}`}
                   />
                 </Col>
@@ -92,20 +93,21 @@ export default class ShowFormImages extends React.Component {
   }
 
   _handleImageChange(newImage, index) {
-    let images = this.state.images;
-    images[index] = newImage;
-    this.setState({images});
+    this.setState({
+      images: update(this.state.images, {[index]: {$set: newImage}})
+    });
   }
 
-  _onDataArrayChanged(dataArray) {
+  _onAddItem(newItem) {
     this.setState({
-      images: dataArray.map((dataItem) => {
-        if (dataItem && dataItem.image) {
-          return dataItem.image.small.url;
-        }
-        return null;
-      })
-    })
+      images: update(this.state.images, {$push: ['/uploads/default_images/default.png']})
+    });
+  }
+
+  _onDeleteItem(index) {
+    this.setState({
+      images: update(this.state.images, {$splice: [[index, 1]]})
+    });
   }
 
   getResult() {

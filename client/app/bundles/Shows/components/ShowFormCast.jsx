@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
+import update from 'react/lib/update';
 import _ from 'lodash'
 
 import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
@@ -25,7 +26,7 @@ export default class FormCast extends React.Component {
         return spr.image.smallest.url;
       })
     }
-    _.bindAll(this, '_onDataArrayChanged')
+    _.bindAll(this, ['_onAddItem', '_onDeleteItem'])
   }
 
   render() {
@@ -35,18 +36,16 @@ export default class FormCast extends React.Component {
         submitKey='show_person_roles_attributes'
         label='Elenco'
         initialDataArray={this.props.show_person_roles}
-        onDataArrayChanged={this._onDataArrayChanged}
+        onAddItem={this._onAddItem}
+        onDeleteItem={this._onDeleteItem}
         dataKeys={['person_id', 'character', 'director', 'actor']}
         getRowCols={(spr, index) => {
-          const imageSource = this.state.images[index] ?
-            this.state.images[index] :
-            '/uploads/default_images/default.png';
 
           return([
               <Col md={1}>
                 <Image
                   style={{width: 80, height: 100, "objectFit": 'cover'}}
-                  src={imageSource}
+                  src={this.state.images[index]}
                   responsive
                 />
               </Col>
@@ -101,20 +100,21 @@ export default class FormCast extends React.Component {
   }
 
   _onChangeSelect(value, index) {
-    let images = this.state.images;
-    images[index] = value.image_url;
-    this.setState({images});
+    this.setState({
+      images: update(this.state.images, {[index]: {$set: value.image_url}})
+    });
   }
 
-  _onDataArrayChanged(dataArray) {
+  _onAddItem(newItem) {
     this.setState({
-      images: dataArray.map((dataItem) => {
-        if (dataItem.image) {
-          return dataItem.image.smallest.url;
-        }
-        return null;
-      })
-    })
+      images: update(this.state.images, {$push: ['/uploads/default_images/default.png']})
+    });
+  }
+
+  _onDeleteItem(index) {
+    this.setState({
+      images: update(this.state.images, {$splice: [[index, 1]]})
+    });
   }
 
   getResult() {

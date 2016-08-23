@@ -1,6 +1,7 @@
 'use strict'
 
 import React, { PropTypes } from 'react'
+import update from 'react/lib/update';
 import _ from 'lodash'
 
 import FormGroup from 'react-bootstrap/lib/FormGroup'
@@ -15,7 +16,8 @@ export default class FormFieldNested extends React.Component {
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialDataArray: PropTypes.array,
-    onDataArrayChanged: PropTypes.func,
+    onAddItem: PropTypes.func,
+    onDeleteItem: PropTypes.func,
     getRowCols: PropTypes.func,
     dataKeys: PropTypes.array,
     xs: PropTypes.number,
@@ -83,10 +85,11 @@ export default class FormFieldNested extends React.Component {
   }
 
   _onAddRow() {
-    let dataArray = this.state.dataArray;
-    dataArray.push({_destroy: false});
-    this.setState({dataArray});
-    this.props.onDataArrayChanged(dataArray);
+    const dataArray = update(this.state.dataArray, {$push: [{_destroy: false}]});
+    this.setState({dataArray})
+    if (this.props.onAddItem) {
+      this.props.onAddItem(dataArray);
+    }
   }
 
   _handleDelete(index) {
@@ -101,7 +104,9 @@ export default class FormFieldNested extends React.Component {
        _.pullAt(dataArray, [index]);
     }
     this.setState({dataArray});
-    this.props.onDataArrayChanged(dataArray);
+    if (this.props.onDeleteItem) {
+      this.props.onDeleteItem(index);
+    }
   }
 
   getResult() {
