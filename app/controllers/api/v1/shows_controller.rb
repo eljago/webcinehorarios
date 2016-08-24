@@ -103,10 +103,12 @@ class Api::V1::ShowsController < Api::V1::ApiController
             code = video_attributes[:code].present? ? video_attributes[:code] : db_video.code
           else
             video_type = video_attributes[:video_type].present? ? video_attributes[:video_type] : 'youtube'
-            code = video_attributes[:code].present?
+            code = video_attributes[:code].present? ? video_attributes[:code] : nil
           end
 
           if video_type.present? && code.present?
+            puts video_type
+            puts code
             if video_type === 'youtube'
               video_attributes[:remote_image_url] = "http://img.youtube.com/vi/#{code}/0.jpg"
             elsif video_type === 'vimeo'
@@ -115,6 +117,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
               video_json = JSON.parse(s)
               video_attributes[:remote_image_url] = video_json.first["thumbnail_large"]
             end
+            puts video_attributes[:remote_image_url] 
           end
         end
 
