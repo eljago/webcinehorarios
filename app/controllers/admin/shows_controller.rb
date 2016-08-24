@@ -54,8 +54,7 @@ class Admin::ShowsController < ApplicationController
     hash_show["genres"] = show.genres.map do |genre|
       {"id" => genre.id, "name" => genre.name}
     end
-    hash_show["show_person_roles"] = show.show_person_roles.includes(:person)
-      .order(:position).map do |spr|
+    hash_show["show_person_roles"] = show.show_person_roles.includes(:person).order(:position).map do |spr|
       {
         "id" => spr.id,
         "person_id" => spr.person_id,
@@ -67,13 +66,14 @@ class Admin::ShowsController < ApplicationController
         "position" => spr.position
       }
     end
-    hash_show["images"] = show.images.order('images.updated_at DESC').map do |img|
+    hash_show["images"] = show.images.order('images.created_at').map do |img|
       {
         "id" => img.id,
-        "image" => img.image.as_json[:image]
+        "image" => img.image.as_json[:image],
+        "show_portrait_id" => img.show_portrait_id
       }
     end
-    hash_show["videos"] = show.videos.order('videos.created_at DESC').map do |video|
+    hash_show["videos"] = show.videos.order('videos.created_at').map do |video|
       {
         "id" => video.id,
         "name" => video.name,
