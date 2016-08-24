@@ -81,7 +81,7 @@ export default class ShowFormImages extends React.Component {
                       <FormFieldCheckbox
                         submitKey='show_portrait_id'
                         ref={`show_portrait_id${index}`}
-                        initialValue={img.show_portrait_id == this.props.showId}
+                        initialValue={this.props.showId ? img.show_portrait_id == this.props.showId : false}
                         getResultForValue={(value) => {
                           return value ? this.props.showId : null;
                         }}
