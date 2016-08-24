@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
       if params[:controller].split('/').first == "api"
         render :text => "404 Not Found", :status => 404
       else
-        redirect_to admin_path, alert: 'No está Autorizado'
+        redirect_to root_path, alert: 'No está Autorizado'
       end
     end
   end
