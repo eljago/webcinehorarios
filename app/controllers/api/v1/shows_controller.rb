@@ -45,6 +45,9 @@ class Api::V1::ShowsController < Api::V1::ApiController
   def show_params
     params.require(:shows).permit(
       :name,
+      :name_original,
+      :year,
+      :duration,
       :active,
       :remote_image_url,
       :image,
