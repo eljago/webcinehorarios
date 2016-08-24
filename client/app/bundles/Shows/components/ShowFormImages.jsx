@@ -6,6 +6,7 @@ import _ from 'lodash'
 
 import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
 import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
+import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
 import Carousel from '../../../lib/ReusableComponents/Carousel'
 
 import Row from 'react-bootstrap/lib/Row';
@@ -18,18 +19,24 @@ import Button from 'react-bootstrap/lib/Button';
 
 export default class ShowFormImages extends React.Component {
   static propTypes = {
+    showId: PropTypes.number,
     images: PropTypes.array.isRequired
   };
 
   constructor(props) {
     super(props);
-
+    let portraitIndex = -1;
+    const images = props.images.map((img, index) => {
+      if (img.show_portrait_id == props.showId) {
+        portraitIndex = index;
+      }
+      return img.image.small.url;
+    })
     this.state = {
-      images: props.images.map((img) => {
-        return img.image.small.url;
-      }),
+      images: images,
       lgShow: false,
       modalIndex: 0,
+      portraitIndex: portraitIndex,
     }
     _.bindAll(this, ['_onAddItem', '_onDeleteItem'])
   }
@@ -45,35 +52,56 @@ export default class ShowFormImages extends React.Component {
           initialDataArray={this.props.images}
           onAddItem={this._onAddItem}
           onDeleteItem={this._onDeleteItem}
-          dataKeys={['image']}
+          dataKeys={['image', 'show_portrait_id']}
           xs={12}
           md={6}
           lg={6}
           getContentRow={(img, index) => {
 
-            const initValue = img.image ? img.image.small.url : '/uploads/default_images/default.png';
-
             return(
               <Row>
-                <Col md={4}>
-                  <Button style={{padding: 3}} onClick={()=> {
-                    this.setState({
-                      lgShow: true,
-                      modalIndex: index,
-                      padding: 0,
-                    })
-                  }}>
-                    <Image
-                      style={{width: 100, height: 100, "objectFit": 'cover'}}
-                      src={this.state.images[index]}
-                      responsive
-                    />
-                  </Button>
+                <Col xs={12} md={6} lg={5}>
+                  <Row>
+                    <Col xs={10}>
+                      <Button style={{padding: 3}} onClick={()=> {
+                        this.setState({
+                          lgShow: true,
+                          modalIndex: index,
+                          padding: 0,
+                        })
+                      }}>
+                        <Image
+                          style={{width: 100, height: 100, "objectFit": 'cover'}}
+                          src={this.state.images[index]}
+                          responsive
+                        />
+                      </Button>
+                    </Col>
+                    <Col xs={2}>
+                      <FormFieldCheckbox
+                        submitKey='show_portrait_id'
+                        ref={`show_portrait_id${index}`}
+                        initialValue={img.show_portrait_id == this.props.showId}
+                        getResultForValue={(value) => {
+                          return value ? this.props.showId : null;
+                        }}
+                        onChange={(newValue) => {
+                          this.refs.images_attributes.
+                            refs[`show_portrait_id${this.state.portraitIndex}`].setValue(false);
+                          this.refs.images_attributes.
+                            refs[`show_portrait_id${index}`].setValue(true);
+                          this.setState({
+                            portraitIndex: newValue ? index : -1
+                          });
+                        }}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
-                <Col md={8}>
+                <Col xs={12} md={6} lg={7}>
                   <FormFieldImage
                     onChange={(newImage) => this._handleImageChange(newImage, index)}
-                    initialValue={initValue}
+                    initialValue={img.image ? img.image.small.url : '/uploads/default_images/default.png'}
                     ref={`image${index}`}
                   />
                 </Col>

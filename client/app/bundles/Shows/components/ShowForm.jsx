@@ -64,6 +64,7 @@ export default class ShowForm extends React.Component {
           <Tab eventKey={3} title="Images">
             <br/>
             <ShowFormImages
+              showId={this.props.show.id}
               images={showImages}
               ref='formImages'
             />
