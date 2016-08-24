@@ -8,6 +8,7 @@ import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
 import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
 import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
 import FormFieldSelect from '../../../lib/forms/FormFields/FormFieldSelect'
+import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
 
 import Row from 'react-bootstrap/lib/Col';
 import Col from 'react-bootstrap/lib/Col';
@@ -47,14 +48,20 @@ export default class ShowFormVideos extends React.Component {
 
           return(
             <Row>
-              <Col xs={12} md={3}>
+              <Col xs={12} md={4} lg={3}>
                 <Image
                   style={{height: 100, "objectFit": 'cover'}}
                   src={this.state.images[index]}
                   responsive
                 />
+                <FormFieldCheckbox
+                  submitKey='outstanding'
+                  label="Destacado"
+                  ref={`outstanding${index}`}
+                  initialValue={video.id ? video.outstanding : true}
+                />
               </Col>
-              <Col xs={12} md={9}>
+              <Col xs={12} md={8} lg={9}>
                 <FormFieldText
                   submitKey='name'
                   label='Nombre'
