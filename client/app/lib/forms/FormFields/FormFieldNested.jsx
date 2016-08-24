@@ -18,7 +18,7 @@ export default class FormFieldNested extends React.Component {
     initialDataArray: PropTypes.array,
     onAddItem: PropTypes.func,
     onDeleteItem: PropTypes.func,
-    getRowCols: PropTypes.func,
+    getContentRow: PropTypes.func,
     dataKeys: PropTypes.array,
     xs: PropTypes.number,
     md: PropTypes.number,
@@ -57,18 +57,6 @@ export default class FormFieldNested extends React.Component {
   _getRows() {
     return this.state.dataArray.map((dataItem, index) => {
       if (!dataItem._destroy) {
-        let rowCols = this.props.getRowCols(dataItem, index);
-        rowCols.push(
-          <Col md={1}>
-            <Button
-              style={{marginTop: 24, marginBottom: 24}}
-              bsStyle="danger"
-              onClick={() => this._handleDelete(index)}
-            >
-              Borrar
-            </Button>
-          </Col>
-        );
         return(
           <Col
             xs={this.props.xs ? this.props.xs : 12} 
@@ -76,7 +64,19 @@ export default class FormFieldNested extends React.Component {
             lg={this.props.lg ? this.props.lg : 12}
           >
             <Row>
-              {rowCols}
+              <Col xs={12} md={9} lg={10}>
+                {this.props.getContentRow(dataItem, index)}
+              </Col>
+              <Col xs={12} md={3} lg={2}>
+                <Button
+                  style={{marginTop: 24, marginBottom: 24}}
+                  bsStyle="danger"
+                  onClick={() => this._handleDelete(index)}
+                  block
+                >
+                  Borrar
+                </Button>
+              </Col>
             </Row>
           </Col>
         );

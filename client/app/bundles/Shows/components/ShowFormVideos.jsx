@@ -43,18 +43,18 @@ export default class ShowFormVideos extends React.Component {
         xs={12}
         md={6}
         lg={6}
-        getRowCols={(video, index) => {
+        getContentRow={(video, index) => {
 
-          return([
-              <Col md={3}>
+          return(
+            <Row>
+              <Col xs={12} md={3}>
                 <Image
                   style={{height: 100, "objectFit": 'cover'}}
                   src={this.state.images[index]}
                   responsive
                 />
               </Col>
-              ,
-              <Col md={7}>
+              <Col xs={12} md={9}>
                 <FormFieldText
                   submitKey='name'
                   label='Nombre'
@@ -79,7 +79,7 @@ export default class ShowFormVideos extends React.Component {
                   async={false}
                 />
               </Col>
-            ]
+            </Row>
           );
         }}
       />

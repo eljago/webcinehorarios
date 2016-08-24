@@ -8,6 +8,7 @@ import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
 import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
 import Carousel from '../../../lib/ReusableComponents/Carousel'
 
+import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
 import Tooltip from 'react-bootstrap/lib/Tooltip';
@@ -48,11 +49,12 @@ export default class ShowFormImages extends React.Component {
           xs={12}
           md={6}
           lg={6}
-          getRowCols={(img, index) => {
+          getContentRow={(img, index) => {
 
             const initValue = img.image ? img.image.small.url : '/uploads/default_images/default.png';
 
-            return([
+            return(
+              <Row>
                 <Col md={4}>
                   <Button style={{padding: 3}} onClick={()=> {
                     this.setState({
@@ -68,15 +70,14 @@ export default class ShowFormImages extends React.Component {
                     />
                   </Button>
                 </Col>
-                ,
-                <Col md={6}>
+                <Col md={8}>
                   <FormFieldImage
                     onChange={(newImage) => this._handleImageChange(newImage, index)}
                     initialValue={initValue}
                     ref={`image${index}`}
                   />
                 </Col>
-              ]
+              </Row>
             );
           }}
         />

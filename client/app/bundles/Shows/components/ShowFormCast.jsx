@@ -39,18 +39,18 @@ export default class FormCast extends React.Component {
         onAddItem={this._onAddItem}
         onDeleteItem={this._onDeleteItem}
         dataKeys={['person_id', 'character', 'director', 'actor']}
-        getRowCols={(spr, index) => {
+        getContentRow={(spr, index) => {
 
-          return([
-              <Col md={1}>
+          return(
+            <Row>
+              <Col xs={12} md={1}>
                 <Image
                   style={{width: 80, height: 100, "objectFit": 'cover'}}
                   src={this.state.images[index]}
                   responsive
                 />
               </Col>
-              ,
-              <Col md={4}>
+              <Col xs={12} md={4}>
                 <FormFieldSelect
                   submitKey='person_id'
                   label='Elenco'
@@ -65,8 +65,7 @@ export default class FormCast extends React.Component {
                   }}
                 />
               </Col>
-              ,
-              <Col md={4}>
+              <Col xs={12} md={4}>
                 <FormFieldText
                   submitKey='character'
                   label='Personaje'
@@ -74,8 +73,7 @@ export default class FormCast extends React.Component {
                   initialValue={spr.character}
                 />
               </Col>
-              ,
-              <Col md={1}>
+              <Col xs={6} md={1}>
                 <FormFieldCheckbox
                   submitKey='actor'
                   label='Actor'
@@ -83,8 +81,7 @@ export default class FormCast extends React.Component {
                   initialValue={spr.actor}
                 />
               </Col>
-              ,
-              <Col md={1}>
+              <Col xs={6} md={1}>
                 <FormFieldCheckbox
                   submitKey='director'
                   label='Director'
@@ -92,7 +89,7 @@ export default class FormCast extends React.Component {
                   initialValue={spr.director}
                 />
               </Col>
-            ]
+            </Row>
           );
         }}
       />
