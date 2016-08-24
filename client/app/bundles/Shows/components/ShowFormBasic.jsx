@@ -55,6 +55,20 @@ export default class ShowFormBasic extends React.Component {
                 ref='name_original'
                 initialValue={show.name_original}
               />
+              <FormFieldText
+                type='number'
+                submitKey='year'
+                label='Año'
+                ref='year'
+                initialValue={show.year}
+              />
+              <FormFieldText
+                type='number'
+                submitKey='duration'
+                label='Duración'
+                ref='duration'
+                initialValue={show.duration}
+              />
               <FormFieldImage
                 onChange={this._handleImageChange}
                 initialValue={coverImage}
