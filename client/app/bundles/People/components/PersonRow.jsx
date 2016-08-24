@@ -125,7 +125,7 @@ export default class PersonRow extends React.Component {
     else if (this.state.editing) { // SUBMIT PERSON
       const submitName = this.refs.name.getResult();
       const submitImdbCode = this.refs.imdbCode.getResult();
-      if (submitName && submitImdbCode) {
+      if (submitName || submitImdbCode) {
         const person = {
           id: this.props.person.id,
           ...submitName,
