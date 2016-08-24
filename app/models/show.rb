@@ -27,10 +27,12 @@ class Show < ApplicationRecord
     message: "%{value} no es un formato válido" }, allow_blank: true
   # validates :imdb_code, :metacritic_url, :rotten_tomatoes_url,
   #   uniqueness: { case_sensitive: true }
-  validates :imdb_score, :metacritic_score, :rotten_tomatoes_score,
-    length: { in: 1..2 }, allow_blank: true
-  validates :imdb_score, :metacritic_score, :rotten_tomatoes_score,
-    numericality: { only_integer: true }, allow_blank: true
+  validates :imdb_score, :metacritic_score, :rotten_tomatoes_score, 
+    numericality: {
+      only_integer: true,
+      allow_nil: true, greater_than_or_equal_to: 0,
+      less_than_or_equal_to: 100
+    }, allow_blank: true
 
   accepts_nested_attributes_for :images, :videos, :show_person_roles, allow_destroy: true
 
