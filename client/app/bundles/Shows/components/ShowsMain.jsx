@@ -57,7 +57,7 @@ export default class ShowsMain extends React.Component {
               placeholder='Buscar Show'
               disabled={this.state.searchDisabled}
               onSearch={(searchValue) => {
-                this.props.updateData(this.state.contentType, this.props.page, searchValue)
+                this._updateData(this.state.contentType, this.state.page, searchValue);
               }}
               onChange={(newSearchValue) => {
                 this.setState({searchValue: newSearchValue});
@@ -71,7 +71,7 @@ export default class ShowsMain extends React.Component {
               block
               bsStyle={this.state.contentType === 'all' ? "primary" : 'default'}
               onClick={() => {
-                this._updateData('all', 1)
+                this._updateData('all')
                 this.setState({searchDisabled: false})
               }}
             >Todos</Button>
@@ -81,7 +81,7 @@ export default class ShowsMain extends React.Component {
               block
               bsStyle={this.state.contentType === 'billboard' ? "primary" : 'default'}
               onClick={() => {
-                this._updateData('billboard', 1)
+                this._updateData('billboard')
                 this.setState({searchDisabled: true})
               }}
             >Cartelera</Button>
@@ -91,7 +91,7 @@ export default class ShowsMain extends React.Component {
               block
               bsStyle={this.state.contentType === 'comingsoon' ? "primary" : 'default'}
               onClick={() => {
-                this._updateData('comingsoon', 1)
+                this._updateData('comingsoon')
                 this.setState({searchDisabled: true})
               }}
             >Próximamente</Button>
@@ -103,7 +103,7 @@ export default class ShowsMain extends React.Component {
     )
   }
 
-  _updateData(newContentType, newPage, newSearchValue = this.state.searchValue) {
+  _updateData(newContentType, newPage = this.state.page, newSearchValue = this.state.searchValue) {
     this.props.updateData(newContentType, newPage, newSearchValue);
     this.setState({
       contentType: newContentType,
@@ -118,7 +118,7 @@ export default class ShowsMain extends React.Component {
         items={Math.ceil(this.props.pagesCount / this.props.itemsPerPage)}
         activePage={this.state.page}
         onSelect={(newPage) => {
-          this._updateData('all', newPage, this.state.searchValue)
+          this._updateData('all', newPage)
         }}
       />
     }
