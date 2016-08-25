@@ -14,6 +14,7 @@
  *= require ./my_bootstrap
  *= require ./react_bootstrap_datetimepicker
  *= require ./react_select
+ *= require ./admin
  */
 
 .turbolinks-progress-bar {

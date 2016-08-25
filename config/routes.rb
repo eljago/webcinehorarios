@@ -91,7 +91,7 @@ Rails.application.routes.draw do
   # ADMIN
   namespace :admin do
 
-    get '' => 'home#index', as: '/'
+    get '' => 'dashboard#index', as: '/'
 
     resources :videos
     resources :awards do

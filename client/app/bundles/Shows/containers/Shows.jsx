@@ -9,23 +9,26 @@ export default class Shows extends React.Component {
 
   constructor(props) {
     super(props);
+
+
     this.state = {
-      page: 1,
       itemsPerPage: 15,
       shows: [],
       pagesCount: null,
-      currentSearch: '',
+      loadingContent: false,
     };
     _.bindAll(this, [
       '_updateData',
-      '_onChangePage',
-      '_onSearch',
       '_onDelete',
     ]);
   }
 
   componentDidMount() {
-    this._updateData();
+    let contentType = 'all'
+    const stripped_url = document.location.toString().split("#");
+    if (stripped_url.length > 1)
+      contentType = stripped_url[1];
+    this._updateData(contentType);
   }
 
   render() {
@@ -35,32 +38,27 @@ export default class Shows extends React.Component {
         itemsPerPage={this.state.itemsPerPage}
         shows={this.state.shows}
         pagesCount={this.state.pagesCount}
-        onChangePage={this._onChangePage}
-        onSearchShow={this._onSearch}
+        updateData={this._updateData}
         onDeleteShow={this._onDelete}
+        loadingContent={this.state.loadingContent}
       />
     );
   }
 
-  _updateData(newPage = this.state.page, searchValue = this.state.currentSearch) {
-    const queryString = 
-      `/api/shows.json?page=${newPage}&perPage=${this.state.itemsPerPage}&query=${searchValue}`;
+  _updateData(contentType, page = 1, searchValue = '') {
+    this.setState({
+      loadingContent: true
+    });
+    const queryString = `/api/shows.json?contentType=${contentType}&page=${page}&perPage=${this.state.itemsPerPage}&query=${searchValue}`;
+    console.log(queryString);
+
     $.getJSON(queryString, (response) => {
       this.setState({
-        page: newPage,
         shows: response.shows,
         pagesCount: response.count,
-        currentSearch: searchValue,
+        loadingContent: false
       });
     });
-  }
-
-  _onChangePage(newPage) {
-    this._updateData(newPage);
-  }
-
-  _onSearch(searchValue) {
-    this._updateData(1, searchValue);
   }
 
   _onDelete(showID) {
@@ -68,7 +66,7 @@ export default class Shows extends React.Component {
       url: `/api/shows/${showID}`,
       type: 'DELETE',
       success: (response) => {
-        this._updateData();
+        this._updateData(this.state.contentType, this.state.page);
       },
       error: (error) => {
         if (error.status == 500) {
