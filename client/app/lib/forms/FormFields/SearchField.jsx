@@ -13,6 +13,8 @@ export default class SearchField extends React.Component {
   static propTypes = {
     placeholder: PropTypes.string,
     onSearch: PropTypes.func,
+    onChange: PropTypes.func,
+    disabled: PropTypes.boolean,
   };
 
   constructor(props) {
@@ -39,11 +41,13 @@ export default class SearchField extends React.Component {
                   value={this.state.searchValue}
                   placeholder={this.props.placeholder}
                   onChange={this._handleSearchInputChange}
+                  disabled={this.props.disabled}
                 />
                 <InputGroup.Button>
                   <Button
                     bsStyle="danger"
                     onClick={this._onResetSearchText}
+                    disabled={this.props.disabled}
                   >
                     Reset
                   </Button>
@@ -52,7 +56,12 @@ export default class SearchField extends React.Component {
             </FormGroup>
           </Col>
           <Col xs={12} md={4}>
-            <Button type="submit" onClick={this._onSearch} block>
+            <Button
+              type="submit"
+              onClick={this._onSearch}
+              disabled={this.props.disabled}
+              block
+            >
               Buscar
             </Button>
           </Col>
@@ -63,10 +72,12 @@ export default class SearchField extends React.Component {
 
   _handleSearchInputChange(e) {
     this.setState({searchValue: e.target.value});
+    this.props.onChange(e.target.value);
   }
 
   _onResetSearchText() {
     this.setState({searchValue: ''});
+    this.props.onChange('');
     this.props.onSearch('');
   }
 

@@ -49,7 +49,7 @@ class Show < ApplicationRecord
     if query.present?
       search(query)
     else
-      order('created_at desc')
+      order('shows.created_at desc')
     end
   end
 

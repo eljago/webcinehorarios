@@ -3,10 +3,22 @@ class Api::V1::ShowsController < Api::V1::ApiController
   before_action :set_videos_image_url, only: [:create, :update]
 
   def index
-    per_page = params[:perPage].present? ? params[:perPage] : 15
-    shows_count = Show.text_search(params[:query]).count
-    shows = Show.order('created_at DESC').text_search(params[:query])
-      .paginate(page: params[:page], per_page: per_page).all
+    content_type = params[:contentType].present? ? params[:contentType] : 'all'
+    shows = [];
+    shows_count = 1;
+    if content_type === 'all'
+      per_page = params[:perPage].present? ? params[:perPage] : 15
+      shows = Show.order('created_at DESC').text_search(params[:query]).paginate(page: params[:page], per_page: per_page).all
+      shows_count = Show.text_search(params[:query]).count
+    elsif content_type === 'billboard'
+      shows = Show.joins(:functions).where(active: true, functions: {date: Date.current})
+        .select('shows.id, shows.active, shows.name, shows.image, shows.debut, shows.created_at, functions.date')
+        .order("shows.debut DESC").uniq
+    elsif content_type === 'comingsoon'
+      shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', Date.current, nil, true)
+        .select('shows.id, shows.active, shows.name, shows.image, shows.debut, shows.created_at')
+        .order("debut ASC").all
+    end
     response = {count: shows_count, shows: shows}
     respond_with response
   end

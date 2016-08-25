@@ -23,7 +23,7 @@ class Person < ApplicationRecord
     if query.present?
       search(query)
     else
-      order('created_at desc')
+      order('people.created_at desc')
     end
   end
 
