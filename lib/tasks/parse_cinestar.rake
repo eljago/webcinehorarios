@@ -31,7 +31,7 @@ namespace :parse do
     theaters_array.each do |theater_hash|
       
       functions = []
-      theater = Theater.find(theater_hash[:slug])
+      theater = Theater.friendly.find(theater_hash[:slug])
       parse_detector_types = theater.cinema.parse_detector_types.order('LENGTH(name) DESC')
       
       parse_days.each do |date|
