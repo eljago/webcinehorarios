@@ -1,5 +1,4 @@
-<%= simple_form_for [:admin, @theater, @function], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
-  <%= f.error_notification %>
+<%= form_for [:admin, @theater, @function], :html => { class: 'form-horizontal', role: 'form' } do |f| %>
 	
   <% date = params[:date].to_date %>
   <div class="form-inputs">
