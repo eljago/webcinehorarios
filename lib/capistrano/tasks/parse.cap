@@ -30,13 +30,23 @@ namespace :cap_parse do
 	  end
 	end
 
-	task :cinestar do
-	  on roles(:app) do
-	    within "#{current_path}" do
+  task :cinestar do
+    on roles(:app) do
+      within "#{current_path}" do
         with rails_env: :production do
           execute :rake, "parse:cinestar"
         end
       end
-	  end
-	end
+    end
+  end
+
+  task :pavilion do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "parse:pavilion"
+        end
+      end
+    end
+  end
 end
