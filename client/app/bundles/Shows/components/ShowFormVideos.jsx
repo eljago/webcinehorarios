@@ -59,6 +59,7 @@ export default class ShowFormVideos extends React.Component {
                   label="Destacado"
                   ref={`outstanding${index}`}
                   initialValue={video.id ? video.outstanding : true}
+                  forceSubmit={!video.id}
                 />
               </Col>
               <Col xs={12} md={8} lg={9}>
@@ -79,9 +80,10 @@ export default class ShowFormVideos extends React.Component {
                   label='Video Type'
                   ref={`video_type${index}`}
                   initialValue={{
-                    value: video.video_type,
-                    label: video.video_type
+                    value: video.id ? video.video_type : this.props.videoTypes[0].value,
+                    label: video.id ? video.video_type : this.props.videoTypes[0].label
                   }}
+                  forceSubmit={!video.id}
                   options={this.props.videoTypes}
                   async={false}
                 />

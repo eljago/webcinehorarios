@@ -79,6 +79,7 @@ export default class FormCast extends React.Component {
                   label='Actor'
                   ref={`actor${index}`}
                   initialValue={spr.id ? spr.actor : true}
+                  forceSubmit={!spr.id}
                 />
               </Col>
               <Col xs={6} md={1}>

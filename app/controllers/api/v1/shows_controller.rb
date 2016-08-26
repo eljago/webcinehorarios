@@ -77,7 +77,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
         :id,
         :person_id,
         :character,
-        :show_id,
         :actor,
         :director,
         :_destroy
