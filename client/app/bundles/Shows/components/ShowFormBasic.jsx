@@ -9,7 +9,6 @@ import Image from 'react-bootstrap/lib/Image';
 import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
 import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
 import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
-import FormFieldDate from '../../../lib/forms/FormFields/FormFieldDate'
 import FormFieldCheckboxGroup from '../../../lib/forms/FormFields/FormFieldCheckboxGroup'
 import FormFieldRadioGroup from '../../../lib/forms/FormFields/FormFieldRadioGroup'
 
@@ -160,7 +159,7 @@ export default class ShowFormBasic extends React.Component {
             ref='active'
             initialValue={show.active}
           />
-          <FormFieldDate
+          <FormFieldText
             submitKey='debut'
             label='Estreno'
             ref='debut'

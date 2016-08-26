@@ -14,7 +14,7 @@ export default class FormFieldCheckbox extends React.Component {
     initialValue: PropTypes.boolean,
     getResultForValue: PropTypes.func,
     onChange: PropTypes.func,
-    forceSubmit: PropTypes.boolean
+    newRecord: PropTypes.boolean
   };
   static defaultProps = {
     label: '',
@@ -55,7 +55,7 @@ export default class FormFieldCheckbox extends React.Component {
   }
 
   getResult() {
-    if (this.props.forceSubmit || this.state.currentValue != this.props.initialValue) {
+    if ((this.props.newRecord && this.props.initialValue) || (this.state.currentValue != this.props.initialValue)) {
       if (this.props.getResultForValue) {
         return {[this.props.submitKey]: this.props.getResultForValue(this.state.currentValue)};
       }
