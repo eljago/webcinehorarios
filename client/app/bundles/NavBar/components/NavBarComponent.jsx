@@ -26,7 +26,9 @@ export default class NavBarComponent extends React.Component {
     }
 
     return(
-      <Navbar>
+      <Navbar
+        fixedTop
+      >
         {navItems}
       </Navbar>
     )

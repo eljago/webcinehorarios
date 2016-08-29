@@ -11,7 +11,8 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 export default class FormFieldImage extends React.Component {
   static propTypes = {
     onChange: PropTypes.func,
-    initialValue: PropTypes.string
+    initialValue: PropTypes.string,
+    disabled: PropTypes.boolean,
   };
 
   constructor(props) {
@@ -34,6 +35,7 @@ export default class FormFieldImage extends React.Component {
         <FormControl
           value={this.props.currentRemote}
           placeholder='Remote Image'
+          disabled={this.props.disabled}
           onChange={(e) => {
             this._handleChangeRemote(_.replace(e.target.value,'  ', ' '))
           }}
@@ -44,6 +46,7 @@ export default class FormFieldImage extends React.Component {
           type="file"
           onChange={this._handleChangeLocal}
           multiple={false}
+          disabled={this.props.disabled}
         />
       </FormGroup>
     );

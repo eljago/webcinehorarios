@@ -6,6 +6,8 @@ import _ from 'lodash'
 import Button from 'react-bootstrap/lib/Button';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 import ShowFormCast from './ShowFormCast'
 import ShowFormBasic from './ShowFormBasic'
@@ -21,6 +23,7 @@ export default class ShowForm extends React.Component {
     genres: PropTypes.array,
     videoTypes: PropTypes.array,
     onSubmit: PropTypes.func.isRequired,
+    onDeleteShow: PropTypes.func.isRequired,
     submitting: PropTypes.boolean,
     errors: PropTypes.object,
     getShowPersonRolesOptions: PropTypes.func,
@@ -38,7 +41,7 @@ export default class ShowForm extends React.Component {
     const showImages = this.props.show.images ? this.props.show.images : [];
 
     return (
-      <div className="container">
+      <div>
         <ErrorMessages errors={this.props.errors} />
 
         <Tabs bsStyle="pills" defaultActiveKey={1} animation={false}>
@@ -83,16 +86,52 @@ export default class ShowForm extends React.Component {
 
         <br/>
 
-        <Button
-          bsStyle="primary"
-          disabled={submitting}
-          onClick={!submitting ? this._handleSubmit : null}
-        >
-          {submitting ? 'Submitting...' : 'Submit'}
-        </Button>
+        <Row>
+          <Col xs={12} sm={2}>
+            <Button
+              bsStyle="primary"
+              disabled={submitting}
+              onClick={!submitting ? this._handleSubmit : null}
+              block
+            >
+              {submitting ? 'Submitting...' : 'Submit'}
+            </Button>
+          </Col>
+          {this._getDeleteButton()}
+        </Row>
 
       </div>
     );
+  }
+
+  _getDeleteButton() {
+    if (this.props.show.id) {
+      return(
+        [
+          <Col xs={12} smHidden mdHidden lgHidden>
+            <br/>
+            <br/>
+            <br/>
+          </Col>
+          ,
+          <Col xs={12} xsOffset={24} sm={2} smOffset={8}>
+            <Button
+              bsStyle="danger"
+              disabled={this.props.submitting}
+              onClick={() => {
+                if (confirm(`¿Eliminar Show: ${this.props.show.name}?`)) {
+                  this.props.onDeleteShow(this.props.show.id);
+                }
+              }}
+              block
+            >
+              Eliminar
+            </Button>
+          </Col>
+        ]
+      );
+    }
+    return null;
   }
 
   _handleSubmit() {

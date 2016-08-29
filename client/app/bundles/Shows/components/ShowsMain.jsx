@@ -22,7 +22,6 @@ export default class ShowsMain extends React.Component {
     shows: PropTypes.object.isRequired,
     pagesCount: PropTypes.number.isRequired,
     updateData: PropTypes.func,
-    onDeleteShow: PropTypes.func,
     loadingContent: PropTypes.boolean,
   };
 
@@ -38,10 +37,9 @@ export default class ShowsMain extends React.Component {
 
   render() {
     return (
-      <div className="container">
-        <PageHeader>Shows <small>Main</small></PageHeader>
+      <div>
         <Row>
-          <Col xs={12} md={2}>
+          <Col xs={12} sm={2}>
             <Button
               style={{marginBottom: 10}}
               bsStyle="primary"
@@ -51,7 +49,7 @@ export default class ShowsMain extends React.Component {
               Nuevo
             </Button>
           </Col>
-          <Col xs={12} md={8}>
+          <Col xs={12} sm={8}>
             <SearchField
               ref='searchField'
               placeholder='Buscar Show'
@@ -65,6 +63,7 @@ export default class ShowsMain extends React.Component {
             />
           </Col>
         </Row>
+        <Row><Col xs={12} smHidden mdHidden lgHidden><br/></Col></Row>  
         <Row>
           <Col xs={4}>
             <Button
@@ -99,6 +98,7 @@ export default class ShowsMain extends React.Component {
         </Row>
         {this._getPagination()}
         {this._getContent()}
+        {this._getPagination()}
       </div>
     )
   }
@@ -133,25 +133,14 @@ export default class ShowsMain extends React.Component {
       const tableRows = this.props.shows.map((show, i) => {
         return(
           <Row key={show.id}>
-            <Col xs={1} md={1} lg={1}>{show.id}</Col>
-            <Col xs={3} md={2} lg={2}><Image src={`http://cinehorarios.cl${_.get(show, 'image.smallest.url')}`} /></Col>
-            <Col xs={6} md={5} lg={5} fluid={true}>{show.name}</Col>
-            <Col xs={12} md={2} lg={2}>
+            <Col xs={1} sm={1}>{show.id}</Col>
+            <Col xs={3} sm={2}><Image src={_.get(show, 'image.smallest.url')} /></Col>
+            <Col xs={6} sm={7} fluid={true}>{show.name}</Col>
+            <Col xs={12} sm={2}>
               <Button
                 style={{marginTop: 10, marginBottom: 10}}
                 href={`/admin/shows/${show.id}/edit`}
                 block>Editar</Button>
-            </Col>
-            <Col xs={12} md={2} lg={2}>
-              <Button
-                style={{marginTop: 10, marginBottom: 10}}
-                bsStyle="danger"
-                onClick={() => {
-                  if (confirm(`¿Eliminar Show: ${show.name}?`)) {
-                    this.props.onDeleteShow(show.id);
-                  }
-                }}
-                block>Eliminar</Button>
             </Col>
           </Row>
         );

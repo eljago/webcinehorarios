@@ -13,6 +13,7 @@ export default class FormFieldText extends React.Component {
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.string,
+    disabled: PropTypes.boolean,
   };
   static defaultProps = {
     type: 'text',
@@ -47,6 +48,7 @@ export default class FormFieldText extends React.Component {
           onChange={(e) => {
             this._handleChange(e.target.value)
           }}
+          disabled={this.props.disabled}
         />
       </FormGroup>
     )

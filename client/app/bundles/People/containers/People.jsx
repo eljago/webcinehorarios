@@ -51,7 +51,14 @@ export default class People extends React.Component {
     $.getJSON(queryString, (response) => {
       this.setState({
         page: newPage,
-        people: response.people,
+        people: response.people.map((person) => {
+          return {
+            id: person.id,
+            name: person.name,
+            imdb_code: person.imdb_code,
+            image: person.image
+          }
+        }),
         pagesCount: response.count,
         currentSearch: searchValue
       });
@@ -68,14 +75,27 @@ export default class People extends React.Component {
 
 
   _onSubmit(personData, callback = null) {
-    $.ajax({
-      url: `/api/people/${personData.id}`,
-      type: 'PUT',
-      data: {
-        people: {
-          ...personData
+    const submitData = personData.id ? 
+      {
+        url: `/api/people/${personData.id}`,
+        type: 'PUT',
+        data: {
+          people: {
+            ...personData
+          }
         }
-      },
+      } :
+      {
+        url: '/api/people',
+        type: 'POST',
+        data: {
+          people: {
+            ...personData
+          }
+        }
+      };
+    $.ajax({
+      ...submitData,
       success: (response) => {
         this._updateData();
         callback(true);

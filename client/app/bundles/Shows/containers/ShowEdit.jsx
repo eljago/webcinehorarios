@@ -17,7 +17,7 @@ export default class ShowEdit extends React.Component {
       submitting: false,
       errors: {}
     };
-    _.bindAll(this, '_handleSubmit');
+    _.bindAll(this, ['_handleSubmit', '_onDelete']);
   }
 
   render() {
@@ -27,6 +27,7 @@ export default class ShowEdit extends React.Component {
         genres={this.props.genres}
         videoTypes={this.props.videoTypes}
         onSubmit={this._handleSubmit}
+        onDeleteShow={this._onDelete}
         submitting={this.state.submitting}
         errors={this.state.errors}
         getShowPersonRolesOptions={this._getShowPersonRolesOptions}
@@ -105,5 +106,21 @@ export default class ShowEdit extends React.Component {
     else {
       callback(null, {options: []});
     }
+  }
+
+  _onDelete(showID) {
+    this.setState({
+      loadingContent: true
+    });
+    $.ajax({
+      url: `/api/shows/${showID}`,
+      type: 'DELETE',
+      success: (response) => {
+        window.location.replace('/admin/shows');
+        this.setState({
+          loadingContent: false
+        });
+      }
+    });
   }
 }

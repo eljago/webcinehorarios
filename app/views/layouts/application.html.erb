@@ -15,7 +15,13 @@
 			<%= render_navbar %>
 		<% end %>
 
-		<%= yield %>
+    <div id='container' class='container'>
+  		<%= yield %>
+    </div>
+
+    <% if current_member && current_member.admin? %>
+      <%= render 'shared/sticky_footer' %>
+    <% end %>
 
 	</body>
 </html>

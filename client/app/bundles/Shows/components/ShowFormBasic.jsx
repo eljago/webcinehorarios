@@ -24,7 +24,6 @@ export default class ShowFormBasic extends React.Component {
     this.state = {
       thumbSource: ''
     }
-    _.bindAll(this, '_handleImageChange');
   }
 
   render() {
@@ -75,7 +74,7 @@ export default class ShowFormBasic extends React.Component {
                 </Col>
               </Row>
               <FormFieldImage
-                onChange={this._handleImageChange}
+                onChange={(thumbSource) => this.setState({thumbSource})}
                 initialValue={coverImage}
                 ref='image'
               />
@@ -197,10 +196,6 @@ export default class ShowFormBasic extends React.Component {
         </Col>
       </Row>
     );
-  }
-
-  _handleImageChange(thumbSource) {
-    this.setState({thumbSource: thumbSource})
   }
 
   getResult() {
