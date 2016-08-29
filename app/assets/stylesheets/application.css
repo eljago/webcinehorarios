@@ -15,13 +15,11 @@
  *= require ./react_bootstrap_datetimepicker
  *= require ./react_select
  *= require ./sticky_footer
+ *= require ./admin
+ *= require ./webpage
  */
 
 .turbolinks-progress-bar {
   height: 8px;
   background-color: #007100;
-}
-
-#container {
-  margin-top: 70px;
 }
