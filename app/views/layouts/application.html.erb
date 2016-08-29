@@ -10,7 +10,7 @@
 		<%= favicon_link_tag 'favicon.ico' %>
 	</head>
 
-	<body>
+	<body id="admin">
 		<% if current_member && current_member.admin? %>
 			<%= render_navbar %>
 		<% end %>
