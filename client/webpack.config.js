@@ -13,6 +13,7 @@ config = {
     './app/bundles/Shows/startup/ShowsApp',
     './app/bundles/People/startup/PeopleApp',
     './app/bundles/ParsedShows/startup/ParsedShowsApp',
+    './app/bundles/Dashboard/startup/DashboardApp',
   ],
 
   output: {
