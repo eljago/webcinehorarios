@@ -18,7 +18,7 @@ export default class DashboardMain extends React.Component {
     super(props);
     moment.locale('es-CL');
     let today = moment();
-    const format = 'MMM DD';
+    const format = 'ddd DD';
     this.dates = [today.format(format)];
     for (let index = 0; index < DAYS-1; index++) {
       this.dates.push(today.add(1, 'days').format(format));
@@ -52,7 +52,7 @@ export default class DashboardMain extends React.Component {
 
   _getTableHeaders() {
     const ths = [<th style={{width: 200}}>{'Complejo'}</th>].concat(this.dates.map((date) => {
-      return(<th>{date}</th>);
+      return(<th style={{textAlign: 'center'}}>{date}</th>);
     }));
     return(<tr>{ths}</tr>);
   }
