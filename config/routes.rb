@@ -20,6 +20,8 @@ Rails.application.routes.draw do
       resources :shows, only: [:index, :destroy, :update, :create] do
         collection do
           get 'select_shows'
+          get 'billboard'
+          get 'comingsoon'
         end
       end
       resources :people, only: [:index, :destroy, :update, :create] do

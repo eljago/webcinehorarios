@@ -16,10 +16,10 @@ export default class Shows extends React.Component {
       shows: [],
       pagesCount: null,
       loadingContent: false,
+      contentType: 'all'
     };
     _.bindAll(this, [
       '_updateData',
-      '_onDelete',
     ]);
   }
 
@@ -28,6 +28,7 @@ export default class Shows extends React.Component {
     const stripped_url = document.location.toString().split("#");
     if (stripped_url.length > 1)
       contentType = stripped_url[1];
+    this.setState({contentType});
     this._updateData(contentType);
   }
 
@@ -39,7 +40,6 @@ export default class Shows extends React.Component {
         shows={this.state.shows}
         pagesCount={this.state.pagesCount}
         updateData={this._updateData}
-        onDeleteShow={this._onDelete}
         loadingContent={this.state.loadingContent}
       />
     );
@@ -47,33 +47,43 @@ export default class Shows extends React.Component {
 
   _updateData(contentType, page = 1, searchValue = '') {
     this.setState({
-      loadingContent: true
+      contentType: contentType
     });
-    const queryString = `/api/shows.json?contentType=${contentType}&page=${page}&perPage=${this.state.itemsPerPage}&query=${searchValue}`;
-    console.log(queryString);
-
-    $.getJSON(queryString, (response) => {
+    if (contentType === 'all') {
       this.setState({
-        shows: response.shows,
-        pagesCount: response.count,
-        loadingContent: false
+        loadingContent: true
       });
-    });
-  }
-
-  _onDelete(showID) {
-    $.ajax({
-      url: `/api/shows/${showID}`,
-      type: 'DELETE',
-      success: (response) => {
-        this._updateData(this.state.contentType, this.state.page);
-      },
-      error: (error) => {
-        if (error.status == 500) {
-          this.setState({errors: {Error: ['ERROR 500']}});
-          window.scrollTo(0, 0);
-        }
-      }
-    });
+      $.getJSON(`/api/shows.json?page=${page}&perPage=${this.state.itemsPerPage}&query=${searchValue}`, (response) => {
+        this.setState({
+          shows: response.shows,
+          pagesCount: response.count,
+          loadingContent: false
+        });
+      });
+    }
+    else if (contentType === 'billboard') {
+      this.setState({
+        loadingContent: true
+      });
+      $.getJSON('/api/shows/billboard.json', (response) => {
+        console.log(response);
+        this.setState({
+          shows: response.shows,
+          loadingContent: false
+        });
+      });
+    }
+    else if (contentType === 'comingsoon') {
+      this.setState({
+        loadingContent: true
+      });
+      $.getJSON('/api/shows/comingsoon.json', (response) => {
+        console.log(response);
+        this.setState({
+          shows: response.shows,
+          loadingContent: false
+        });
+      });
+    }
   }
 }

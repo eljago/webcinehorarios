@@ -9,7 +9,6 @@ import Image from 'react-bootstrap/lib/Image';
 import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
 import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
 import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
-import FormFieldDate from '../../../lib/forms/FormFields/FormFieldDate'
 import FormFieldCheckboxGroup from '../../../lib/forms/FormFields/FormFieldCheckboxGroup'
 import FormFieldRadioGroup from '../../../lib/forms/FormFields/FormFieldRadioGroup'
 
@@ -25,7 +24,6 @@ export default class ShowFormBasic extends React.Component {
     this.state = {
       thumbSource: ''
     }
-    _.bindAll(this, '_handleImageChange');
   }
 
   render() {
@@ -55,22 +53,28 @@ export default class ShowFormBasic extends React.Component {
                 ref='name_original'
                 initialValue={show.name_original}
               />
-              <FormFieldText
-                type='number'
-                submitKey='year'
-                label='Año'
-                ref='year'
-                initialValue={show.year}
-              />
-              <FormFieldText
-                type='number'
-                submitKey='duration'
-                label='Duración'
-                ref='duration'
-                initialValue={show.duration}
-              />
+              <Row>
+                <Col xs={12} md={6}>
+                  <FormFieldText
+                    type='number'
+                    submitKey='year'
+                    label='Año'
+                    ref='year'
+                    initialValue={show.year}
+                  />
+                </Col>
+                <Col xs={12} md={6}>
+                  <FormFieldText
+                    type='number'
+                    submitKey='duration'
+                    label='Duración'
+                    ref='duration'
+                    initialValue={show.duration}
+                  />
+                </Col>
+              </Row>
               <FormFieldImage
-                onChange={this._handleImageChange}
+                onChange={(thumbSource) => this.setState({thumbSource})}
                 initialValue={coverImage}
                 ref='image'
               />
@@ -154,7 +158,7 @@ export default class ShowFormBasic extends React.Component {
             ref='active'
             initialValue={show.active}
           />
-          <FormFieldDate
+          <FormFieldText
             submitKey='debut'
             label='Estreno'
             ref='debut'
@@ -192,10 +196,6 @@ export default class ShowFormBasic extends React.Component {
         </Col>
       </Row>
     );
-  }
-
-  _handleImageChange(thumbSource) {
-    this.setState({thumbSource: thumbSource})
   }
 
   getResult() {

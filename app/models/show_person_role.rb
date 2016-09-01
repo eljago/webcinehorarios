@@ -5,5 +5,4 @@ class ShowPersonRole < ApplicationRecord
   belongs_to :person
 
   validates :person, :presence => :true
-  validates :show, :presence => :true
 end

@@ -25,18 +25,12 @@ export default class ShowFormImages extends React.Component {
 
   constructor(props) {
     super(props);
-    let portraitIndex = -1;
-    const images = props.images.map((img, index) => {
-      if (img.show_portrait_id == props.showId) {
-        portraitIndex = index;
-      }
-      return img.image.small.url;
-    })
     this.state = {
-      images: images,
+      images: props.images.map((img, index) => {
+        return img.image.small.url;
+      }),
       lgShow: false,
       modalIndex: 0,
-      portraitIndex: portraitIndex,
     }
     _.bindAll(this, ['_onAddItem', '_onDeleteItem'])
   }
@@ -84,15 +78,6 @@ export default class ShowFormImages extends React.Component {
                         initialValue={this.props.showId ? img.show_portrait_id == this.props.showId : false}
                         getResultForValue={(value) => {
                           return value ? this.props.showId : null;
-                        }}
-                        onChange={(newValue) => {
-                          this.refs.images_attributes.
-                            refs[`show_portrait_id${this.state.portraitIndex}`].setValue(false);
-                          this.refs.images_attributes.
-                            refs[`show_portrait_id${index}`].setValue(true);
-                          this.setState({
-                            portraitIndex: newValue ? index : -1
-                          });
                         }}
                       />
                     </Col>

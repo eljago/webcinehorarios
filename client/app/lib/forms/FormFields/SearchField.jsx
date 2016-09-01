@@ -33,7 +33,7 @@ export default class SearchField extends React.Component {
     return (
       <form>
         <Row>
-          <Col xs={12} md={8}>
+          <Col xs={12} sm={8}>
             <FormGroup>
               <InputGroup>
                 <FormControl
@@ -55,7 +55,7 @@ export default class SearchField extends React.Component {
               </InputGroup>
             </FormGroup>
           </Col>
-          <Col xs={12} md={4}>
+          <Col xs={12} sm={4}>
             <Button
               type="submit"
               onClick={this._onSearch}
@@ -72,12 +72,16 @@ export default class SearchField extends React.Component {
 
   _handleSearchInputChange(e) {
     this.setState({searchValue: e.target.value});
-    this.props.onChange(e.target.value);
+    if (this.props.onChange) {
+      this.props.onChange(e.target.value);
+    }
   }
 
   _onResetSearchText() {
     this.setState({searchValue: ''});
-    this.props.onChange('');
+    if (this.props.onChange) {
+      this.props.onChange('');
+    }
     this.props.onSearch('');
   }
 

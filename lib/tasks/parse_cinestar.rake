@@ -24,7 +24,8 @@ namespace :parse do
     
     theaters_array = [{code: 'theater20100', slug: 'curico'},
                       {code: 'theater20099', slug: 'los-andes'},
-                      {code: 'theater20101', slug: 'san-fernando'}]
+                      {code: 'theater20101', slug: 'san-fernando'},
+                      {code: 'theater191641', slug: 'illapel'}]
 
     user_agent = {'User-Agent' => 'Firefox 28/Android: Mozilla/5.0 (Android; Mobile; rv:28.0) Gecko/24.0 Firefox/28.0'}
 
