@@ -88,7 +88,7 @@ export default class ParsedShows extends React.Component {
         }
       },
       success: (response) => {
-        // window.location.replace('/admin/shows');
+        // window.location.assign('/admin/shows');
         this._updateOrphanParsedShows();
         this._updateParsedShows();
         callback();
@@ -119,7 +119,7 @@ export default class ParsedShows extends React.Component {
       url: `/api/parsed_shows/${parsed_show_id}`,
       type: 'DELETE',
       success: (response) => {
-        // window.location.replace('/admin/shows');
+        // window.location.assign('/admin/shows');
         this._updateOrphanParsedShows();
         this._updateParsedShows();
         callback();

@@ -70,7 +70,7 @@ export default class DashboardMain extends React.Component {
               textAlign: 'center',
             }}
             onClick={() => {
-              window.location.replace(url);
+              window.location.assign(url);
             }}
           >
             {functions_count}

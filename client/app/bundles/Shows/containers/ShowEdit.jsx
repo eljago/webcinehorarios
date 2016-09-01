@@ -70,7 +70,7 @@ export default class ShowEdit extends React.Component {
     $.ajax({
       ...submitData,
       success: (response) => {
-        window.location.replace('/admin/shows');
+        window.location.assign('/admin/shows');
 
       },
       error: (error) => {
@@ -116,7 +116,7 @@ export default class ShowEdit extends React.Component {
       url: `/api/shows/${showID}`,
       type: 'DELETE',
       success: (response) => {
-        window.location.replace('/admin/shows');
+        window.location.assign('/admin/shows');
         this.setState({
           loadingContent: false
         });
