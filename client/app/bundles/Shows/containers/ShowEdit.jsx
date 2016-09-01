@@ -38,10 +38,7 @@ export default class ShowEdit extends React.Component {
   _handleSubmit(showToSubmit) {
     console.log(showToSubmit);
     if (_.isEmpty(showToSubmit)) {
-      this.setState({
-        errors: {Error: ['Show Vacío']}
-      });
-      window.scrollTo(0, 0);
+      window.location.assign('/admin/shows');
       return;
     }
 
