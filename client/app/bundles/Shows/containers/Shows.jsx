@@ -47,18 +47,43 @@ export default class Shows extends React.Component {
 
   _updateData(contentType, page = 1, searchValue = '') {
     this.setState({
-      loadingContent: true,
       contentType: contentType
     });
-    const queryString = `/api/shows.json?contentType=${contentType}&page=${page}&perPage=${this.state.itemsPerPage}&query=${searchValue}`;
-    console.log(queryString);
-
-    $.getJSON(queryString, (response) => {
+    if (contentType === 'all') {
       this.setState({
-        shows: response.shows,
-        pagesCount: response.count,
-        loadingContent: false
+        loadingContent: true
       });
-    });
+      $.getJSON(`/api/shows.json?page=${page}&perPage=${this.state.itemsPerPage}&query=${searchValue}`, (response) => {
+        this.setState({
+          shows: response.shows,
+          pagesCount: response.count,
+          loadingContent: false
+        });
+      });
+    }
+    else if (contentType === 'billboard') {
+      this.setState({
+        loadingContent: true
+      });
+      $.getJSON('/api/shows/billboard.json', (response) => {
+        console.log(response);
+        this.setState({
+          shows: response.shows,
+          loadingContent: false
+        });
+      });
+    }
+    else if (contentType === 'comingsoon') {
+      this.setState({
+        loadingContent: true
+      });
+      $.getJSON('/api/shows/comingsoon.json', (response) => {
+        console.log(response);
+        this.setState({
+          shows: response.shows,
+          loadingContent: false
+        });
+      });
+    }
   }
 }
