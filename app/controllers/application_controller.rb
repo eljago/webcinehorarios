@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 
   def raise_route_not_found!
     respond_to do |format|
-      format.all { render :status => 404, :nothing => true }
+      format.all { render :status => 404, body: nil }
     end
   end
 
