@@ -69,9 +69,7 @@ export default class DashboardMain extends React.Component {
               backgroundColor: `hsla(${functions_count / 10 * 120}, 67%, 80%, 1)`,
               textAlign: 'center',
             }}
-            onClick={() => {
-              window.location.assign(url);
-            }}
+            onClick={() => window.open(url, '_blank')}
           >
             {functions_count}
           </td>
