@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
 
     ##### V1 #####
-    scope module: :v1 do
+    scope module: :v1, constraints: ApiConstraints.new(version: 1) do
       resources :shows, only: [:index, :destroy, :update, :create] do
         collection do
           get 'select_shows'
