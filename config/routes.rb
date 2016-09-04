@@ -49,7 +49,7 @@ Rails.application.routes.draw do
           get ':show_id/show_functions' => 'functions#show_functions'
         end
       end
-
+      
       resources :awards, only: :index
 
       resources :videos, only: :index

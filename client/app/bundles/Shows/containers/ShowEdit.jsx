@@ -4,6 +4,8 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import ShowForm from '../components/ShowForm'
 
+import {ShowsQueries} from '../../../lib/api/queries'
+
 export default class ShowEdit extends React.Component {
   static propTypes = {
     show: PropTypes.object,
@@ -42,59 +44,48 @@ export default class ShowEdit extends React.Component {
       return;
     }
 
-    this.setState({submitting: true});
-    const submitData = this.props.show.id ? 
-      {
-        url: `/api/shows/${this.props.show.id}`,
-        type: 'PUT',
-        data: {
-          shows: {
-            id: this.props.show.id,
-            ...showToSubmit
-          }
-        }
-      } :
-      {
-        url: '/api/shows',
-        type: 'POST',
-        data: {
-          shows: {
-            ...showToSubmit
-          }
-        }
-      };
-
-    $.ajax({
-      ...submitData,
-      success: (response) => {
-        window.location.assign('/admin/shows');
-
-      },
-      error: (error) => {
-        // Rails validations failed
-        if (error.status == 422) {
-          console.log(error.responseJSON.errors);
-          this.setState({
-            errors: !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
-            submitting: false
-          });
-          window.scrollTo(0, 0);
-        }
-        else if (error.status == 500) {
-          console.log(error.statusText);
-          this.setState({
-            errors: {Error: ['ERROR 500']},
-            submitting: false
-          });
-          window.scrollTo(0, 0);
-        }
+    const success = (response) => {
+      window.location.assign('/admin/shows');
+    };
+    const error = (error) => {
+      // Rails validations failed
+      if (error.status == 422) {
+        console.log(error.responseJSON.errors);
+        this.setState({
+          errors: !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
+          submitting: false
+        });
+        window.scrollTo(0, 0);
       }
-    });
+      else if (error.status == 500) {
+        console.log(error.statusText);
+        this.setState({
+          errors: {Error: ['ERROR 500']},
+          submitting: false
+        });
+        window.scrollTo(0, 0);
+      }
+    }
+
+    this.setState({submitting: true});
+    if (this.props.show.id) {
+      ShowsQueries.submitEditShow({
+        show: {
+          id: this.props.show.id,
+          ...showToSubmit
+        }
+      }, success, error);
+    }
+    else {
+      ShowsQueries.submitNewShow({
+        show: showToSubmit
+      }, success, error);
+    }
   }
 
   _getShowPersonRolesOptions(input, callback) {
     if (_.trim(input).length > 2) {
-      $.getJSON(`/api/people/select_people?input=${input}`, (response) => {
+      SelectQueries.getPeople(input, (response) => {
         callback(null, {
           options: response.people
         });
@@ -105,19 +96,19 @@ export default class ShowEdit extends React.Component {
     }
   }
 
-  _onDelete(showID) {
+  _onDelete(showId) {
     this.setState({
       loadingContent: true
     });
-    $.ajax({
-      url: `/api/shows/${showID}`,
-      type: 'DELETE',
-      success: (response) => {
-        window.location.assign('/admin/shows');
-        this.setState({
-          loadingContent: false
-        });
-      }
-    });
+    ShowsQueries.submitDeleteShow({
+      showId: showId
+    }, (response) => {
+      window.location.assign('/admin/shows');
+      this.setState({
+        loadingContent: false
+      });
+    }, (error) => {
+      console.log(error);
+    })
   }
 }

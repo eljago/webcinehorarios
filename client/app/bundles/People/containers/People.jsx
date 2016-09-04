@@ -5,6 +5,8 @@ import _ from 'lodash'
 
 import PeopleMain from '../components/PeopleMain'
 
+import {PeopleQueries, SelectQueries} from '../../../lib/api/queries'
+
 export default class People extends React.Component {
 
   constructor(props) {
@@ -46,9 +48,11 @@ export default class People extends React.Component {
   }
 
   _updateData(newPage = this.state.page, searchValue = this.state.currentSearch) {
-    const queryString = 
-      `/api/people.json?page=${newPage}&perPage=${this.state.itemsPerPage}&query=${searchValue}`;
-    $.getJSON(queryString, (response) => {
+    PeopleQueries.getPeople({
+      page: newPage,
+      perPage: this.state.itemsPerPage,
+      searchValue: searchValue
+    }, (response) => {
       this.setState({
         page: newPage,
         people: response.people.map((person) => {
@@ -75,61 +79,49 @@ export default class People extends React.Component {
 
 
   _onSubmit(personData, callback = null) {
-    const submitData = personData.id ? 
-      {
-        url: `/api/people/${personData.id}`,
-        type: 'PUT',
-        data: {
-          people: {
-            ...personData
-          }
-        }
-      } :
-      {
-        url: '/api/people',
-        type: 'POST',
-        data: {
-          people: {
-            ...personData
-          }
-        }
-      };
-    $.ajax({
-      ...submitData,
-      success: (response) => {
-        this._updateData();
-        callback(true);
-      },
-      error: (error) => {
-        if (error.status == 422) {
-          callback(false, error.responseJSON.errors);
-        }
-        else if (error.status == 500) {
-          callback(false, {Error: ['ERROR 500']});
-        }
-        else {
-          callback(false);
-        }
+    const success = (response) => {
+      this._updateData();
+      callback(true);
+    };
+    const error = (error) => {
+      if (error.status == 422) {
+        callback(false, error.responseJSON.errors);
       }
-    });
+      else if (error.status == 500) {
+        callback(false, {Error: ['ERROR 500']});
+      }
+      else {
+        callback(false);
+      }
+    };
+    if (personData.id) {
+      PeopleQueries.submitEditPerson({
+        person: personData
+      }, success, error);
+    }
+    else {
+      PeopleQueries.submitNewPerson({
+        person: personData
+      }, success, error);
+    }
   }
 
-  _onDelete(personID, callback = null) {
-    $.ajax({
-      url: `/api/people/${personID}`,
-      type: 'DELETE',
-      success: (response) => {
-        this._updateData();
-        callback(true);
-      },
-      error: (error) => {
-        if (error.status == 500) {
-          callback(false, {Error: ['ERROR 500']});
-        }
-        else{
-          callback(false);
-        }
+  _onDelete(personId, callback = null) {
+    PeopleQueries.submitDeletePerson({
+      personId: personId
+    }, (response) => {
+      this._updateData();
+      callback(true);
+    }, (error) => {
+      if (error.status == 422) {
+        callback(false, error.responseJSON.errors);
       }
-    });
+      else if (error.status == 500) {
+        callback(false, {Error: ['ERROR 500']});
+      }
+      else {
+        callback(false);
+      }
+    })
   }
 }
