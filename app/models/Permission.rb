@@ -26,11 +26,8 @@ class Permission
     # allow 'devise/registrations', [:cancel, :create, :new, :edit, :update, :destroy]
     # allow 'api/v3/sessions', [:create, :destroy]
     # allow 'api/v3/registrations', [:create]
-
-    allow 'admin/dashboard', [:index]
     
     if member
-      
       allow_all if member.admin?
     end
   end
