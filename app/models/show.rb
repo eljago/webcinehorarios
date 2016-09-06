@@ -38,6 +38,9 @@ class Show < ApplicationRecord
 
   after_commit :flush_cache
 
+  mount_uploader :image, ShowCover
+  mount_base64_uploader :image, ShowCover
+
   include PgSearch
   pg_search_scope :search, against: [:name, :name_original, :imdb_code],
     using: {tsearch: {dictionary: "spanish", :prefix => true}}
