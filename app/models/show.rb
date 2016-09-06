@@ -15,7 +15,7 @@ class Show < ApplicationRecord
   has_many :award_specific_nominations, through: :nominations
   has_many :show_debuts, dependent: :destroy
   
-  validates_associated :images, :videos, :show_person_roles, :people
+  validates_associated :images, :videos, :show_person_roles
 
   validates :name, presence: true
   validates :imdb_code, format: { with: /\At{2}\d{7}\z/,
