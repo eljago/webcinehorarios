@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
     puts params[:action]
     if !current_permission.allow?(params[:controller], params[:action])
       if params[:controller].split('/').first == "api"
-        render :plain => "404 Not Found", :status => 404
+        render :status => 404, body: nil
       else
         redirect_to root_path, alert: 'No está Autorizado'
       end

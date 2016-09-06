@@ -6,6 +6,7 @@ import _ from 'lodash'
 import Button from 'react-bootstrap/lib/Button';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
+import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
@@ -86,19 +87,21 @@ export default class ShowForm extends React.Component {
 
         <br/>
 
-        <Row>
-          <Col xs={12} sm={2}>
-            <Button
-              bsStyle="primary"
-              disabled={submitting}
-              onClick={!submitting ? this._handleSubmit : null}
-              block
-            >
-              {submitting ? 'Submitting...' : 'Submit'}
-            </Button>
-          </Col>
-          {this._getDeleteButton()}
-        </Row>
+        <Grid>
+          <Row>
+            <Col xs={12} sm={2}>
+              <Button
+                bsStyle="primary"
+                disabled={submitting}
+                onClick={!submitting ? this._handleSubmit : null}
+                block
+              >
+                {submitting ? 'Submitting...' : 'Submit'}
+              </Button>
+            </Col>
+            {this._getDeleteButton()}
+          </Row>
+        </Grid>
 
       </div>
     );

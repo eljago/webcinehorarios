@@ -14,7 +14,7 @@ class Show < ApplicationRecord
   has_many :nominations
   has_many :award_specific_nominations, through: :nominations
   has_many :show_debuts, dependent: :destroy
-
+  
   validates_associated :images, :videos, :show_person_roles, :people
 
   validates :name, presence: true
@@ -37,9 +37,6 @@ class Show < ApplicationRecord
   accepts_nested_attributes_for :images, :videos, :show_person_roles, allow_destroy: true
 
   after_commit :flush_cache
-
-  mount_uploader :image, ShowCover
-  mount_base64_uploader :image, ShowCover
 
   include PgSearch
   pg_search_scope :search, against: [:name, :name_original, :imdb_code],

@@ -35,14 +35,14 @@
         <%= (index+1) %>
       </td>
       <td>
-        <%= image_tag function.show.image.smallest if function.show && function.show.image.smallest %>
+        <%= image_tag(function.show && function.show.images.where(poster: true).length > 0 ? function.show.images.where(poster: true).first.image.smaller : "/uploads/default_images/default.png") %>
       </td>
-	  <td>
-	  	<%= function.parsed_show.present? ? function.parsed_show.name : "NO PS" %>
-	  </td>
-	  <td>
-	  	<%= function.parsed_show && function.parsed_show.show ? function.parsed_show.show.name : "NO PSS" %>
-	  </td>
+  	  <td>
+  	  	<%= function.parsed_show.present? ? function.parsed_show.name : "NO PS" %>
+  	  </td>
+  	  <td>
+  	  	<%= function.parsed_show && function.parsed_show.show ? function.parsed_show.show.name : "NO PSS" %>
+  	  </td>
       <td width="100">
         <%= function.show.name if function.show %>
       </td>

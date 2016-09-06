@@ -21,7 +21,6 @@
 <table class="table">
   <tr>
     <th>Nombre</th>
-    <th>Imagen</th>
     <th>Duración</th>
     <th>Estreno</th>
     <th>Rating</th>
@@ -31,7 +30,6 @@
 <% @shows.each do |show| %>
   <tr>
     <td><%= show.name %></td>
-    <td><%= link_to image_tag(show.image.smallest, size: '50x50'), show.image.to_s if show.image %></td>
     <td><%= show.duration %></td>
     <td><%= show.debut %></td>
     <td><%= show.rating %></td>

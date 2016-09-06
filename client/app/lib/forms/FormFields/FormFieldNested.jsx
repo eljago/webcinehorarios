@@ -8,6 +8,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup'
 import ControlLabel from 'react-bootstrap/lib/ControlLabel'
 import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Button from 'react-bootstrap/lib/Button'
+import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
@@ -42,9 +43,11 @@ export default class FormFieldNested extends React.Component {
     return(
       <div>
         <FormGroup controlId={this.props.submitKey}>
-          <Row>
-            {this._getRows()}
-          </Row>
+          <Grid>
+            <Row>
+              {this._getRows()}
+            </Row>
+          </Grid>
         </FormGroup>
         <br />
         <Button onClick={this._onAddRow} bsStyle="success">

@@ -12,7 +12,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def billboard
     shows = Show.joins(:functions).where(active: true, functions: {date: Date.current})
-      .select('shows.id, shows.active, shows.name, shows.image, shows.debut, shows.created_at, functions.date')
+      .select('shows.id, shows.active, shows.name, shows.debut, shows.created_at, functions.date')
       .order("shows.debut DESC").uniq
     response = {shows: shows}
     respond_with response
@@ -20,7 +20,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def comingsoon
     shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', Date.current, nil, true)
-      .select('shows.id, shows.active, shows.name, shows.image, shows.debut, shows.created_at')
+      .select('shows.id, shows.active, shows.name, shows.debut, shows.created_at')
       .order("debut ASC").all
     response = {shows: shows}
     respond_with response
@@ -42,13 +42,13 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def select_shows
     q = params[:input].split.map(&:capitalize).join(" ")
-    searchResult = Show.select([:id, :name, :image]).text_search(q).order(:name)
+    searchResult = Show.select([:id, :name]).text_search(q).order(:name)
 
     respond_to do |format|
       format.json do
         render json: {
           shows: searchResult.map do |e|
-            {value: e.id, label: "#{e.name}", image_url: e.image.smallest.url}
+            {value: e.id, label: "#{e.name}"}
           end
         }
       end
@@ -64,8 +64,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
       :year,
       :duration,
       :active,
-      :remote_image_url,
-      :image,
       :information,
       :imdb_code,
       :imdb_score,
@@ -134,7 +132,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
               video_json = JSON.parse(s)
               video_attributes[:remote_image_url] = video_json.first["thumbnail_large"]
             end
-            puts video_attributes[:remote_image_url] 
           end
         end
 
