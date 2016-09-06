@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
 
     ##### V1 #####
-    scope module: :v1 do
+    scope module: :v1, constraints: ApiConstraints.new(version: 1) do
       resources :shows, only: [:index, :destroy, :update, :create] do
         collection do
           get 'select_shows'
@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     end
 
     ##### V3 #####
-    scope module: :v3, constraints: ApiConstraints.new(version: 3) do
+    scope module: :v3, constraints: ApiConstraints.new(version: 3, default: true) do
 
       resources :shows, only: :show do
         collection do
@@ -49,7 +49,7 @@ Rails.application.routes.draw do
           get ':show_id/show_functions' => 'functions#show_functions'
         end
       end
-
+      
       resources :awards, only: :index
 
       resources :videos, only: :index
@@ -67,7 +67,7 @@ Rails.application.routes.draw do
     end
 
     ##### V4 #####
-    scope module: :v4, constraints: ApiConstraints.new(version: 4, default: true) do
+    scope module: :v4, constraints: ApiConstraints.new(version: 4) do
 
       resources :theaters, only: :index do
         collection do

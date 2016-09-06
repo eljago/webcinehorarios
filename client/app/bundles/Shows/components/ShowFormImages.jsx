@@ -46,12 +46,11 @@ export default class ShowFormImages extends React.Component {
           initialDataArray={this.props.images}
           onAddItem={this._onAddItem}
           onDeleteItem={this._onDeleteItem}
-          dataKeys={['image', 'show_portrait_id']}
+          dataKeys={['image', 'show_portrait_id', 'poster']}
           xs={12}
           md={6}
           lg={6}
           getContentRow={(img, index) => {
-
             return(
               <Row>
                 <Col xs={12} md={6} lg={5}>
@@ -79,6 +78,11 @@ export default class ShowFormImages extends React.Component {
                         getResultForValue={(value) => {
                           return value ? this.props.showId : null;
                         }}
+                      />
+                      <FormFieldCheckbox
+                        submitKey='poster'
+                        ref={`poster${index}`}
+                        initialValue={img.poster}
                       />
                     </Col>
                   </Row>

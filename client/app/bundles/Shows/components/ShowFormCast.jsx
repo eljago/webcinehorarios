@@ -43,7 +43,7 @@ export default class FormCast extends React.Component {
 
           return(
             <Row>
-              <Col xs={12} md={1}>
+              <Col xs={12} md={2}>
                 <Image
                   style={{width: 80, height: 100, "objectFit": 'cover'}}
                   src={this.state.images[index]}

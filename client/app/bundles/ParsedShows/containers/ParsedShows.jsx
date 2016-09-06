@@ -4,6 +4,8 @@ import React, {PropTypes} from 'react'
 import _ from 'lodash'
 import ParsedShowsTabs from '../components/ParsedShowsTabs'
 
+import {ParsedShowsQueries, SelectQueries} from '../../../lib/api/queries'
+
 const SHOWS_PER_PAGE = 15;
 
 export default class ParsedShows extends React.Component {
@@ -45,7 +47,7 @@ export default class ParsedShows extends React.Component {
 
   _getShowsOptions(input, callback) {
     if (_.trim(input).length > 2) {
-      $.getJSON(`/api/shows/select_shows?input=${input}`, (response) => {
+      SelectQueries.getShows(input, (response) => {
         callback(null, {
           options: response.shows,
         });
@@ -57,7 +59,10 @@ export default class ParsedShows extends React.Component {
   }
 
   _updateParsedShows(page = this.state.currentPage) {
-    $.getJSON(`/api/parsed_shows.json?page=${page}&perPage=${SHOWS_PER_PAGE}`, (response) => {
+    ParsedShowsQueries.getParsedShows({
+      page: page,
+      perPage: SHOWS_PER_PAGE
+    }, (response) => {
       this.setState({
         currentPage: page,
         parsedShows: response.parsed_shows,
@@ -71,7 +76,7 @@ export default class ParsedShows extends React.Component {
   }
 
   _updateOrphanParsedShows() {
-    $.getJSON('/api/parsed_shows/orphan.json', (response) => {
+    ParsedShowsQueries.getOrphanParsedShows((response) => {
       this.setState({
         orphanParsedShows: response.parsed_shows
       });
@@ -79,67 +84,57 @@ export default class ParsedShows extends React.Component {
   }
 
   _updateRow(parsed_show, callback) {
-    $.ajax({
-      url: `/api/parsed_shows/${parsed_show.id}`,
-      type: 'PUT',
-      data: {
-        parsed_shows: {
-          ...parsed_show
-        }
-      },
-      success: (response) => {
-        // window.location.assign('/admin/shows');
-        this._updateOrphanParsedShows();
-        this._updateParsedShows();
-        callback();
-      },
-      error: (error) => {
-        callback();
-        // Rails validations failed
-        if (error.status == 422) {
-          this.setState({
-            errors: !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
-            submitting: false
-          });
-          window.scrollTo(0, 0);
-        }
-        else if (error.status == 500) {
-          this.setState({
-            errors: {Error: ['ERROR 500']},
-            submitting: false
-          });
-          window.scrollTo(0, 0);
-        }
+    ParsedShowsQueries.submitEditParsedShow({
+      parsedShowId: parsed_show.id,
+      parsedShow: parsed_show
+    }, (response) => {
+      // window.location.assign('/admin/shows');
+      this._updateOrphanParsedShows();
+      this._updateParsedShows();
+      callback();
+    }, (error) => {
+      callback();
+      // Rails validations failed
+      if (error.status == 422) {
+        this.setState({
+          errors: !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
+          submitting: false
+        });
+        window.scrollTo(0, 0);
+      }
+      else if (error.status == 500) {
+        this.setState({
+          errors: {Error: ['ERROR 500']},
+          submitting: false
+        });
+        window.scrollTo(0, 0);
       }
     });
   }
 
   _deleteRow(parsed_show_id, callback) {
-    $.ajax({
-      url: `/api/parsed_shows/${parsed_show_id}`,
-      type: 'DELETE',
-      success: (response) => {
-        // window.location.assign('/admin/shows');
-        this._updateOrphanParsedShows();
-        this._updateParsedShows();
-        callback();
-      },
-      error: (error) => {
-        let errors = {};
-        if (error.status == 422) { // Rails validations failed
-          errors = !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
-          window.scrollTo(0, 0);
-        }
-        else if (error.status == 500) {
-          errors = {Error: ['ERROR 500']}
-          window.scrollTo(0, 0);
-        }
-        this.setState({
-          errors: errors,
-          submitting: false
-        });
-        callback();
+    ParsedShowsQueries.submitDeleteParsedShow({
+      parsedShowId: parsed_show_id
+    }, (response) => {
+      // window.location.assign('/admin/shows');
+      this._updateOrphanParsedShows();
+      this._updateParsedShows();
+      callback();
+    }, (error) => {
+      let errors = {};
+      if (error.status == 422) { // Rails validations failed
+        errors = !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
+        window.scrollTo(0, 0);
       }
+      else if (error.status == 500) {
+        errors = {Error: ['ERROR 500']}
+        window.scrollTo(0, 0);
+      }
+      this.setState({
+        errors: errors,
+        submitting: false
+      });
+      callback();
     });
   }
 }

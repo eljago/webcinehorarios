@@ -5,6 +5,8 @@ import _ from 'lodash'
 import ShowsMain from '../components/ShowsMain'
 import ShowForm from '../components/ShowForm'
 
+import {ShowsQueries} from '../../../lib/api/queries'
+
 export default class Shows extends React.Component {
 
   constructor(props) {
@@ -46,6 +48,7 @@ export default class Shows extends React.Component {
   }
 
   _updateData(contentType, page = 1, searchValue = '') {
+
     this.setState({
       contentType: contentType
     });
@@ -53,10 +56,19 @@ export default class Shows extends React.Component {
       this.setState({
         loadingContent: true
       });
-      $.getJSON(`/api/shows.json?page=${page}&perPage=${this.state.itemsPerPage}&query=${searchValue}`, (response) => {
+
+      ShowsQueries.getShows({
+        page: page,
+        perPage: this.state.itemsPerPage,
+        searchValue: searchValue
+      }, (response) => {
         this.setState({
           shows: response.shows,
           pagesCount: response.count,
+          loadingContent: false
+        });
+      }, (error) => {
+        this.setState({
           loadingContent: false
         });
       });
@@ -65,10 +77,14 @@ export default class Shows extends React.Component {
       this.setState({
         loadingContent: true
       });
-      $.getJSON('/api/shows/billboard.json', (response) => {
-        console.log(response);
+
+      ShowsQueries.getBillboard((response) => {
         this.setState({
           shows: response.shows,
+          loadingContent: false
+        });
+      }, (error) => {
+        this.setState({
           loadingContent: false
         });
       });
@@ -77,13 +93,16 @@ export default class Shows extends React.Component {
       this.setState({
         loadingContent: true
       });
-      $.getJSON('/api/shows/comingsoon.json', (response) => {
-        console.log(response);
+      ShowsQueries.getComingSoon((response) => {
         this.setState({
           shows: response.shows,
           loadingContent: false
         });
-      });
+      }, (error) => {
+        this.setState({
+          loadingContent: false
+        });
+      })
     }
   }
 }
