@@ -70,6 +70,7 @@ class Admin::ShowsController < ApplicationController
       {
         "id" => img.id,
         "image" => img.image.as_json[:image],
+        "poster" => img.poster,
         "show_portrait_id" => img.show_portrait_id
       }
     end
