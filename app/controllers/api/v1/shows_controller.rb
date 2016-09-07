@@ -4,7 +4,11 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def index
     per_page = params[:perPage].present? ? params[:perPage] : 15
-    shows = Show.order('created_at DESC').text_search(params[:query]).paginate(page: params[:page], per_page: per_page).all
+    shows = Show.order('created_at DESC').text_search(params[:query])
+      .paginate(page: params[:page], per_page: per_page).as_json
+    shows.each do |show|
+      show["image_url"] = Show.find(show["id"]).image_url
+    end
     shows_count = Show.text_search(params[:query]).count
     response = {count: shows_count, shows: shows}
     respond_with response
@@ -12,16 +16,22 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def billboard
     shows = Show.joins(:functions).where(active: true, functions: {date: Date.current})
-      .select('shows.id, shows.active, shows.name, shows.debut, shows.created_at, functions.date')
-      .order("shows.debut DESC").uniq
+      .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at, functions.date')
+      .order("shows.debut DESC").uniq.as_json
+    shows.each do |show|
+      show["image_url"] = Show.find(show["id"]).image_url
+    end
     response = {shows: shows}
     respond_with response
   end
 
   def comingsoon
     shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', Date.current, nil, true)
-      .select('shows.id, shows.active, shows.name, shows.debut, shows.created_at')
-      .order("debut ASC").all
+      .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at')
+      .order("debut ASC").as_json
+    shows.each do |show|
+      show["image_url"] = Show.find(show["id"]).image_url
+    end
     response = {shows: shows}
     respond_with response
   end
