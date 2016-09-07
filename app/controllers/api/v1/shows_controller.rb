@@ -7,7 +7,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
     shows = Show.order('created_at DESC').text_search(params[:query])
       .paginate(page: params[:page], per_page: per_page).as_json
     shows.each do |show|
-      show["image_url"] = Show.find(show["id"]).image_url
+      show["image_url"] = Show.find(show["id"]).image_url :smaller
     end
     shows_count = Show.text_search(params[:query]).count
     response = {count: shows_count, shows: shows}
@@ -19,7 +19,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
       .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at, functions.date')
       .order("shows.debut DESC").uniq.as_json
     shows.each do |show|
-      show["image_url"] = Show.find(show["id"]).image_url
+      show["image_url"] = Show.find(show["id"]).image_url :smaller
     end
     response = {shows: shows}
     respond_with response
@@ -30,7 +30,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
       .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at')
       .order("debut ASC").as_json
     shows.each do |show|
-      show["image_url"] = Show.find(show["id"]).image_url
+      show["image_url"] = Show.find(show["id"]).image_url :smaller
     end
     response = {shows: shows}
     respond_with response

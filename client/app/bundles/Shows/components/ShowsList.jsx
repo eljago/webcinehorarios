@@ -32,7 +32,7 @@ export default class ShowsList extends React.Component {
         return(
           <Row key={show.id}>
             <Col xs={1} sm={1}>{show.id}</Col>
-            <Col xs={3} sm={2}><Image src={show.image_url} /></Col>
+            <Col xs={3} sm={2}><Image style={{width: 80, height: 120, objectFit: 'contain'}} src={show.image_url} /></Col>
             <Col xs={6} sm={7} fluid={true}>
               <p>{show.name}</p>
               <p>{show.duration ? show.duration : ''}</p>

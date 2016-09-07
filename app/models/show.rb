@@ -49,8 +49,15 @@ class Show < ApplicationRecord
     end
   end
 
-  def image_url
-    images.where(poster: true).length > 0 ? images.where(poster: true).first.image_url : '/uploads/default_images/default.png'
+  def image_url version = nil
+    if images.where(poster: true).length > 0
+      if version
+        return images.where(poster: true).first.image.send(version).url
+      end
+      images.where(poster: true).first.image_url
+    else
+      '/uploads/default_images/default.png'
+    end
   end
   def portrait_image
     images.where(backdrop: true).length > 0 ? images.where(backdrop: true).first.image_url : '/uploads/default_images/default.png'
