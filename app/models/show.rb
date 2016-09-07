@@ -10,7 +10,6 @@ class Show < ApplicationRecord
   has_many :people, through: :show_person_roles
   has_many :comments, dependent: :destroy
   has_many :parsed_shows, dependent: :destroy
-  has_one :portrait_image, class_name: 'Image', foreign_key: :show_portrait_id
   has_many :nominations
   has_many :award_specific_nominations, through: :nominations
   has_many :show_debuts, dependent: :destroy
@@ -138,7 +137,7 @@ class Show < ApplicationRecord
   # SHOW
   def self.cached_api_show id
     Rails.cache.fetch([name, id]) do
-      where(id: id).includes(:portrait_image, :genres, :images, :videos, :show_person_roles => :person)
+      where(id: id).includes(:backdrop, :genres, :images, :videos, :show_person_roles => :person)
       .where('videos.video_type = ?', 0)
       .order('genres.name, videos.created_at DESC, images.created_at DESC, show_person_roles.position').first
     end

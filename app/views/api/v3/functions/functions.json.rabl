@@ -1,8 +1,12 @@
 collection @functions
 glue :show do
 	attributes :id, :name
-	glue :portrait_image do
-		attributes :image_url => :portrait_image
+	node :portrait_image do |s|
+	  if s.images.where(backdrop: true).length > 0
+	    s.images.where(backdrop: true).first.image_url
+	  else
+	    "/uploads/default_images/default.png"
+	  end
 	end
 	node :image_url do |s|
 	  if s.images.where(poster: true).length > 0

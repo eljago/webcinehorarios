@@ -4,8 +4,12 @@ cache ['v4', Digest::MD5.hexdigest(@shows.map(&:id).join(','))], expires_in: 30.
 
 attributes :id, :name, :image_url, :name_original
 
-glue :portrait_image do
-	attributes :image_url => :portrait_image
+node :portrait_image do |s|
+  if s.images.where(backdrop: true).length > 0
+    s.images.where(backdrop: true).first.image_url
+  else
+    "/uploads/default_images/default.png"
+  end
 end
 
 node :debut do |s|

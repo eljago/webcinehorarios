@@ -86,7 +86,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
         :id,
         :remote_image_url,
         :image,
-        :show_portrait_id,
+        :backdrop,
         :poster,
         :_destroy
       ],

@@ -46,48 +46,42 @@ export default class ShowFormImages extends React.Component {
           initialDataArray={this.props.images}
           onAddItem={this._onAddItem}
           onDeleteItem={this._onDeleteItem}
-          dataKeys={['image', 'show_portrait_id', 'poster']}
-          xs={12}
-          md={6}
-          lg={6}
+          dataKeys={['image', 'backdrop', 'poster']}
           getContentRow={(img, index) => {
             return(
               <Row>
-                <Col xs={12} md={6} lg={5}>
-                  <Row>
-                    <Col xs={10}>
-                      <Button style={{padding: 3}} onClick={()=> {
-                        this.setState({
-                          lgShow: true,
-                          modalIndex: index,
-                          padding: 0,
-                        })
-                      }}>
-                        <Image
-                          style={{width: 100, height: 100, "objectFit": 'cover'}}
-                          src={this.state.images[index]}
-                          responsive
-                        />
-                      </Button>
-                    </Col>
-                    <Col xs={2}>
-                      <FormFieldCheckbox
-                        submitKey='show_portrait_id'
-                        ref={`show_portrait_id${index}`}
-                        initialValue={this.props.showId ? img.show_portrait_id == this.props.showId : false}
-                        getResultForValue={(value) => {
-                          return value ? this.props.showId : null;
-                        }}
-                      />
-                      <FormFieldCheckbox
-                        submitKey='poster'
-                        ref={`poster${index}`}
-                        initialValue={img.poster}
-                      />
-                    </Col>
-                  </Row>
+                <Col xs={12} sm={2}>
+                  <Button style={{padding: 3}} onClick={()=> {
+                    this.setState({
+                      lgShow: true,
+                      modalIndex: index,
+                      padding: 0,
+                    })
+                  }}>
+                    <Image
+                      style={{width: 100, height: 100, "objectFit": 'cover'}}
+                      src={this.state.images[index]}
+                      responsive
+                    />
+                  </Button>
                 </Col>
-                <Col xs={12} md={6} lg={7}>
+                <Col xs={12} sm={2}>
+                  <FormFieldCheckbox
+                    submitKey='backdrop'
+                    ref={`backdrop${index}`}
+                    label='Backdrop'
+                    initialValue={img.backdrop}
+                  />
+                </Col>
+                <Col xs={12} sm={2}>
+                  <FormFieldCheckbox
+                    submitKey='poster'
+                    ref={`poster${index}`}
+                    label='Poster'
+                    initialValue={img.poster}
+                  />
+                </Col>
+                <Col xs={12} sm={6}>
                   <FormFieldImage
                     onChange={(newImage) => this._handleImageChange(newImage, index)}
                     initialValue={img.image ? img.image.small.url : '/uploads/default_images/default.png'}

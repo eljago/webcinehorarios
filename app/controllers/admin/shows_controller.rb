@@ -71,7 +71,7 @@ class Admin::ShowsController < ApplicationController
         "id" => img.id,
         "image" => img.image.as_json[:image],
         "poster" => img.poster,
-        "show_portrait_id" => img.show_portrait_id
+        "backdrop" => img.backdrop
       }
     end
     hash_show["videos"] = show.videos.order('videos.created_at').map do |video|
@@ -113,15 +113,6 @@ class Admin::ShowsController < ApplicationController
     @show = Show.new(new_show_params)
 
     if @show.save
-      @show.images.each do |image|
-        if image.show_portrait_id == 0
-          image.show_portrait_id = nil
-          image.save
-        else
-          image.show_portrait_id = @show.id
-          image.save
-        end
-      end
       redirect_to session[:previous_url], notice: 'Show was successfully created.'
     else
       render action: "new"
@@ -162,16 +153,6 @@ class Admin::ShowsController < ApplicationController
     end
 
     if @show.update_attributes(instance_show_params)
-      @show.images.each do |image|
-        if image.show_portrait_id == 0
-          image.show_portrait_id = nil
-          image.save
-        else
-          image.show_portrait_id = @show.id
-          image.save
-        end
-      end
-
       redirect_to session[:previous_url], notice: 'Show was successfully updated.'
     else
       @people = Person.select([:id, :name]).order('people.name ASC')
@@ -222,6 +203,6 @@ class Admin::ShowsController < ApplicationController
   end
 
   def show_params
-    params.require(:show).permit :active, :year, :debut, :name, :information, :duration, :name_original, :rating, :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score, images_attributes: [ :_destroy, :id, :name, :image, :remote_image_url, :width, :height, :show_portrait_id ], videos_attributes: [ :_destroy, :id, :name, :code, :image, :remote_image_url, :outstanding, :video_type ], show_person_roles_attributes: [ :_destroy, :id, :actor, :writer, :creator, :producer, :director, :person_id, :show_id, :character ], genre_ids: []
+    params.require(:show).permit :active, :year, :debut, :name, :information, :duration, :name_original, :rating, :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score, images_attributes: [ :_destroy, :id, :name, :image, :remote_image_url, :width, :height, :backdrop ], videos_attributes: [ :_destroy, :id, :name, :code, :image, :remote_image_url, :outstanding, :video_type ], show_person_roles_attributes: [ :_destroy, :id, :actor, :writer, :creator, :producer, :director, :person_id, :show_id, :character ], genre_ids: []
   end
 end

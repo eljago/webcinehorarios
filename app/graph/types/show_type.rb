@@ -52,6 +52,5 @@ ShowType = GraphQL::ObjectType.define do
   end
 
   field :videos, types[VideoType]
-  field :portrait_image, ImageType
   field :images, types[ImageType]
 end

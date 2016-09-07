@@ -4,6 +4,10 @@ attributes :id, :name, :duration, :image_url, :duration, :name_original, :rating
 child :genres do
 	attributes :name
 end
-glue :portrait_image do
-	attributes :image_url => :portrait_image
+node :portrait_image do |s|
+  if s.images.where(backdrop: true).length > 0
+    s.images.where(backdrop: true).first.image_url
+  else
+    "/uploads/default_images/default.png"
+  end
 end
