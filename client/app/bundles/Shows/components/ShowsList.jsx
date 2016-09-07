@@ -32,8 +32,13 @@ export default class ShowsList extends React.Component {
         return(
           <Row key={show.id}>
             <Col xs={1} sm={1}>{show.id}</Col>
-            <Col xs={3} sm={2}><Image src={_.get(show, 'image.smallest.url')} /></Col>
-            <Col xs={6} sm={7} fluid={true}>{show.name}</Col>
+            <Col xs={3} sm={2}><Image src={show.image_url} /></Col>
+            <Col xs={6} sm={7} fluid={true}>
+              <p>{show.name}</p>
+              <p>{show.duration ? show.duration : ''}</p>
+              <p>{show.debut ? show.debut.split('-').reverse().join('-') : ''}</p>
+              <p>{show.year ? show.year : ''}</p>
+            </Col>
             <Col xs={12} sm={2}>
               <Button
                 style={{marginTop: 10, marginBottom: 10}}
