@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import ShowForm from '../components/ShowForm'
 
-import {ShowsQueries} from '../../../lib/api/queries'
+import {ShowsQueries, SelectQueries} from '../../../lib/api/queries'
 
 export default class ShowEdit extends React.Component {
   static propTypes = {
