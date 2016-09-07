@@ -66,28 +66,6 @@ Rails.application.routes.draw do
       end
     end
 
-    ##### V4 #####
-    scope module: :v4, constraints: ApiConstraints.new(version: 4) do
-
-      resources :theaters, only: :index do
-        collection do
-          get 'favorites'
-        end
-        resources :functions, only: :index
-      end
-
-      resources :videos, only: :index
-
-      resources :shows, only: :show do
-        collection do
-          get 'billboard'
-          get 'coming_soon'
-        end
-        get 'theaters'
-      end
-
-    end
-
   end
 
   # ADMIN
