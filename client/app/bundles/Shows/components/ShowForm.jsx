@@ -20,6 +20,9 @@ import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
 
 export default class ShowForm extends React.Component {
   static propTypes = {
+    defaultShowPersonRole: PropTypes.object,
+    defaultVideo: PropTypes.object,
+    defaultImage: PropTypes.object,
     show: PropTypes.object,
     genres: PropTypes.array,
     videoTypes: PropTypes.array,
@@ -59,7 +62,8 @@ export default class ShowForm extends React.Component {
           <Tab eventKey={2} title="Cast">
             <br/>
             <ShowFormCast
-              show_person_roles={showPersonRoles}
+              defaultShowPersonRole={this.props.defaultShowPersonRole}
+              showPersonRoles={showPersonRoles}
               getShowPersonRolesOptions={this.props.getShowPersonRolesOptions}
               ref='formCast'
             />
@@ -68,7 +72,7 @@ export default class ShowForm extends React.Component {
           <Tab eventKey={3} title="Images">
             <br/>
             <ShowFormImages
-              showId={this.props.show.id}
+              defaultImage={this.props.defaultImage}
               images={showImages}
               ref='formImages'
             />
@@ -77,6 +81,7 @@ export default class ShowForm extends React.Component {
           <Tab eventKey={4} title="Videos">
             <br/>
             <ShowFormVideos
+              defaultVideo={this.props.defaultVideo}
               videos={showVideos}
               videoTypes={this.props.videoTypes}
               ref='formVideos'
@@ -151,6 +156,11 @@ export default class ShowForm extends React.Component {
 
     const dataShowVideos = this.refs.formVideos.getResult();
     showToSubmit = _.merge(showToSubmit, dataShowVideos);
+
+
+    if (!_.isEmpty(showToSubmit)) {
+      _.merge(showToSubmit, {id: this.props.show.id});
+    }
 
     console.log(showToSubmit);
     this.props.onSubmit(showToSubmit);

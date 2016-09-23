@@ -42,7 +42,14 @@ class Admin::ShowsController < ApplicationController
     
     @title = 'Nuevo Show'
     @app_name = 'ShowEditApp'
-    @props = {show: {}, genres: genres, videoTypes: video_types}
+    @props = {
+      show: Show.new,
+      defaultShowPersonRole: ShowPersonRole.new,
+      defaultVideo: Video.new,
+      defaultImage: Image.new,
+      genres: genres,
+      videoTypes: video_types
+    }
     @prerender = true
     render file: 'react/render'
   end
@@ -89,7 +96,14 @@ class Admin::ShowsController < ApplicationController
 
     @title = show.name
     @app_name = 'ShowEditApp'
-    @props = {show: hash_show, genres: genres, videoTypes: video_types}
+    @props = {
+      show: hash_show,
+      defaultShowPersonRole: ShowPersonRole.new,
+      defaultVideo: Video.new,
+      defaultImage: Image.new,
+      genres: genres,
+      videoTypes: video_types
+    }
     @prerender = true
     render file: 'react/render'
   end

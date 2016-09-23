@@ -74,49 +74,9 @@ module ApplicationHelper
                   ]
                 },
                 {
-                  type: 'dropdown',
-                  id: 'dropdown-shows',
-                  title: 'Cinemas',
-                  items: [
-                    {
-                      type: 'menu_item',
-                      href: admin_cinemas_path,
-                      title: 'Todos'
-                    },
-                    {
-                      type: 'divider'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: admin_cinema_theaters_path('cinemark'),
-                      title: 'Cinemark'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: admin_cinema_theaters_path('cine-hoyts'),
-                      title: 'Hoyts Santiago'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: admin_cinema_theaters_path('cineplanet'),
-                      title: 'Cineplanet'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: admin_cinema_theaters_path('cinemundo'),
-                      title: 'Hoyts Regiones'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: admin_cinema_theaters_path('cine-pavilion'),
-                      title: 'Pavilion'
-                    },
-                    {
-                      type: 'menu_item',
-                      href: admin_cinema_theaters_path('cinestar'),
-                      title: 'Cinestar'
-                    }
-                  ]
+                  type: 'nav_item',
+                  href: admin_cinemas_path,
+                  title: 'Cinemas'
                 },
                 {
                   type: 'nav_item',

@@ -36,7 +36,9 @@ export default class FormFieldText extends React.Component {
     } = this.props;
 
     const typeProps = type === 'textarea' ?
-      {componentClass: type, rows: 7} : {type: type};
+      {componentClass: type, rows: 7} : 
+        (type === 'number' ? {type: type, step: this.props.step ? this.props.step : 1} : 
+          {type: type});
 
     return(
       <FormGroup controlId={submitKey}>

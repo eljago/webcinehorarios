@@ -74,12 +74,10 @@ export default class PersonForm extends React.Component {
       ...this.refs.imdbCode.getResult(),
       ...this.refs.image.getResult()
     });
-    console.log(personResult);
 
     this.setState({submitting: true});
     this.props.onSubmit(personResult, (result, errors = null) => {
       this.setState({submitting: false});
-      console.log(result);
       if (result) {
         this.props.onClose();
       }

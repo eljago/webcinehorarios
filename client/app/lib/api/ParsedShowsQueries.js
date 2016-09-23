@@ -1,62 +1,43 @@
 'use strict'
 
-import SetHeaders from './SetHeaders';
+import GetQueryContent from './GetQueryContent';
 
 export default {
-  getParsedShows: (options, success, error = null) => {
-    $.ajax({
+  getParsedShows: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/parsed_shows.json?page=${options.page}&perPage=${options.perPage}`,
       type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
+      ...options
+    }));
   },
-  getOrphanParsedShows: (success, error = null) => {
-    $.ajax({
+  getOrphanParsedShows: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/parsed_shows/orphan.json`,
       type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
+      ...options
+    }));
   },
-  submitNewParsedShow: (options, success, error = null) => {
-    $.ajax({
-      url: `/api/parsed_shows`,
+  submitNewParsedShow: (options) => {
+    $.ajax(GetQueryContent({
+      url: '/api/parsed_shows',
       type: 'POST',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-      data: {
-        parsed_shows: options.parsed_show
-      }
-    });
+      data: { parsed_shows: options.parsed_show },
+      ...options
+    }));
   },
-  submitEditParsedShow: (options, success, error = null) => {
-    $.ajax({
+  submitEditParsedShow: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/parsed_shows/${options.parsedShowId}`,
       type: 'PUT',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-      data: {
-        parsed_shows: options.parsedShow
-      }
-    });
+      data: { parsed_shows: options.parsedShow },
+      ...options
+    }));
   },
-  submitDeleteParsedShow: (options, success, error = null) => {
-    $.ajax({
+  submitDeleteParsedShow: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/parsed_shows/${options.parsedShowId}`,
       type: 'DELETE',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders
-    });
+      ...options
+    }));
   },
 }

@@ -19,7 +19,7 @@ import Button from 'react-bootstrap/lib/Button';
 
 export default class ShowFormImages extends React.Component {
   static propTypes = {
-    showId: PropTypes.number,
+    defaultImage: PropTypes.object,
     images: PropTypes.array.isRequired
   };
 
@@ -33,6 +33,7 @@ export default class ShowFormImages extends React.Component {
       modalIndex: 0,
     }
     _.bindAll(this, ['_onAddItem', '_onDeleteItem'])
+    console.log(props.defaultImage);
   }
 
   render() {
@@ -47,6 +48,7 @@ export default class ShowFormImages extends React.Component {
           onAddItem={this._onAddItem}
           onDeleteItem={this._onDeleteItem}
           dataKeys={['image', 'backdrop', 'poster']}
+          defaultObject={this.props.defaultImage}
           getContentRow={(img, index) => {
             return(
               <Row>
@@ -84,7 +86,7 @@ export default class ShowFormImages extends React.Component {
                 <Col xs={12} sm={6}>
                   <FormFieldImage
                     onChange={(newImage) => this._handleImageChange(newImage, index)}
-                    initialValue={img.image ? img.image.small.url : '/uploads/default_images/default.png'}
+                    initialValue={img.image.small.url}
                     ref={`image${index}`}
                   />
                 </Col>

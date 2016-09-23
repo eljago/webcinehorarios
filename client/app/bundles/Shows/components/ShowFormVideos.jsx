@@ -17,6 +17,7 @@ import Image from 'react-bootstrap/lib/Image';
 
 export default class ShowFormVideos extends React.Component {
   static propTypes = {
+    defaultVideo: PropTypes.object,
     videos: PropTypes.array.isRequired,
     videoTypes: PropTypes.array.isRequired,
   };
@@ -41,6 +42,7 @@ export default class ShowFormVideos extends React.Component {
         onAddItem={this._onAddItem}
         onDeleteItem={this._onDeleteItem}
         dataKeys={['name', 'code', 'video_type', 'outstanding']}
+        defaultObject={this.props.defaultVideo}
         xs={12}
         md={6}
         lg={6}
@@ -58,8 +60,7 @@ export default class ShowFormVideos extends React.Component {
                   submitKey='outstanding'
                   label="Destacado"
                   ref={`outstanding${index}`}
-                  initialValue={video.id ? video.outstanding : true}
-                  forceSubmit={!video.id}
+                  initialValue={video.outstanding}
                 />
               </Col>
               <Col xs={12} md={8} lg={9}>
@@ -80,10 +81,9 @@ export default class ShowFormVideos extends React.Component {
                   label='Video Type'
                   ref={`video_type${index}`}
                   initialValue={{
-                    value: video.id ? video.video_type : this.props.videoTypes[0].value,
-                    label: video.id ? video.video_type : this.props.videoTypes[0].label
+                    value: video.video_type,
+                    label: video.video_type
                   }}
-                  forceSubmit={!video.id}
                   options={this.props.videoTypes}
                   async={false}
                 />

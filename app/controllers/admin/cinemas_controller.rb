@@ -1,7 +1,13 @@
 class Admin::CinemasController < ApplicationController
 
   def index
-    @cinemas = Cinema.order('id').select('id, name, information, image, slug')
+    cinemas = Cinema.order('id').select('id, name, information, image, slug')
+
+    @title = 'Cinemas'
+    @app_name = 'CinemasApp'
+    @props = {cinemas: cinemas}
+    @prerender = true
+    render file: 'react/render'
   end
   
   def new

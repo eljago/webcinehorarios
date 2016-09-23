@@ -3,6 +3,8 @@ class Permission
   
   def initialize(member)
 
+    allow_all if Rails.env.development?
+
     # API V3
     allow 'api/v3/shows', [:billboard, :show, :comingsoon]
     allow 'api/v3/theaters', [:index, :show_theaters, :favorite_theaters, :theater_coordinates, :show]
@@ -10,12 +12,6 @@ class Permission
     allow 'api/v3/videos', [:index]
     allow 'api/v3/cinemas', [:show]
     allow 'api/v3/awards', [:index]
-    
-    # API V4
-    allow 'api/v4/theaters', [:index, :favorites]
-    allow 'api/v4/functions', [:index]
-    allow 'api/v4/shows', [:billboard, :coming_soon, :show, :theaters]
-    allow 'api/v4/videos', [:index]
     
     allow :home, [:index]
     allow 'admin/contact_tickets', [:create]

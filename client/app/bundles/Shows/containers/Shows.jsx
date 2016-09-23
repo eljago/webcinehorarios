@@ -56,21 +56,22 @@ export default class Shows extends React.Component {
       this.setState({
         loadingContent: true
       });
-
       ShowsQueries.getShows({
         page: page,
         perPage: this.state.itemsPerPage,
-        searchValue: searchValue
-      }, (response) => {
-        this.setState({
-          shows: response.shows,
-          pagesCount: response.count,
-          loadingContent: false
-        });
-      }, (error) => {
-        this.setState({
-          loadingContent: false
-        });
+        searchValue: searchValue,
+        success: (response) => {
+          this.setState({
+            shows: response.shows,
+            pagesCount: response.count,
+            loadingContent: false
+          });
+        },
+        error: (errors) => {
+          this.setState({
+            loadingContent: false
+          });
+        }
       });
     }
     else if (contentType === 'billboard') {
@@ -78,31 +79,37 @@ export default class Shows extends React.Component {
         loadingContent: true
       });
 
-      ShowsQueries.getBillboard((response) => {
-        this.setState({
-          shows: response.shows,
-          loadingContent: false
-        });
-      }, (error) => {
-        this.setState({
-          loadingContent: false
-        });
+      ShowsQueries.getBillboard({
+        success: (response) => {
+          this.setState({
+            shows: response.shows,
+            loadingContent: false
+          });
+        },
+        error: (errors) => {
+          this.setState({
+            loadingContent: false
+          });
+        }
       });
     }
     else if (contentType === 'comingsoon') {
       this.setState({
         loadingContent: true
       });
-      ShowsQueries.getComingSoon((response) => {
-        this.setState({
-          shows: response.shows,
-          loadingContent: false
-        });
-      }, (error) => {
-        this.setState({
-          loadingContent: false
-        });
-      })
+      ShowsQueries.getComingSoon({
+        success: (response) => {
+          this.setState({
+            shows: response.shows,
+            loadingContent: false
+          });
+        },
+        error: (errors) => {
+          this.setState({
+            loadingContent: false
+          });
+        }
+      });
     }
   }
 }

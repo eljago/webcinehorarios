@@ -21,6 +21,7 @@ export default class FormFieldNested extends React.Component {
     onDeleteItem: PropTypes.func,
     getContentRow: PropTypes.func,
     dataKeys: PropTypes.array,
+    defaultObject: PropTypes.object,
     xs: PropTypes.number,
     md: PropTypes.number,
     lg: PropTypes.number,
@@ -87,8 +88,18 @@ export default class FormFieldNested extends React.Component {
     });
   }
 
+  _getNewObject() {
+    let newObject = {"_destroy": false};
+    if (_.isObject(this.props.defaultObject)) {
+      for (const dataKey of this.props.dataKeys) {
+        newObject[dataKey] = this.props.defaultObject[dataKey];
+      }
+    }
+    return newObject;
+  }
+
   _onAddRow() {
-    const dataArray = update(this.state.dataArray, {$push: [{_destroy: false}]});
+    const dataArray = update(this.state.dataArray, {$push: [this._getNewObject()]});
     this.setState({dataArray})
     if (this.props.onAddItem) {
       this.props.onAddItem(dataArray);

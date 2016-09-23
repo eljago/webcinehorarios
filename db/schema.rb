@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160907020227) do
+ActiveRecord::Schema.define(version: 20160923075435) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -271,13 +271,13 @@ ActiveRecord::Schema.define(version: 20160907020227) do
   create_table "show_person_roles", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "show_id"
-    t.boolean  "actor"
+    t.boolean  "actor",                  default: true
     t.boolean  "writer"
     t.boolean  "creator"
     t.boolean  "producer"
     t.boolean  "director"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.string   "character",  limit: 255
     t.integer  "position"
     t.index ["person_id", "show_id"], name: "index_show_person_roles_on_person_id_and_show_id", using: :btree
@@ -346,11 +346,11 @@ ActiveRecord::Schema.define(version: 20160907020227) do
     t.string   "code",           limit: 255
     t.integer  "videoable_id"
     t.string   "videoable_type", limit: 255
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
     t.string   "image",          limit: 255
     t.string   "image_tmp",      limit: 255
-    t.boolean  "outstanding"
+    t.boolean  "outstanding",                default: true
     t.integer  "video_type",                 default: 0
     t.index ["videoable_id", "videoable_type"], name: "index_videos_on_videoable_id_and_videoable_type", using: :btree
   end

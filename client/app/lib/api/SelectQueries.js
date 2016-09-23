@@ -1,26 +1,20 @@
 'use strict'
 
-import SetHeaders from './SetHeaders';
+import GetQueryContent from './GetQueryContent';
 
 export default {
-  getShows: (input, success, error = null) => {
-    $.ajax({
-      url: `/api/shows/select_shows?input=${input}`,
+  getShows: (options) => {
+    $.ajax(GetQueryContent({
+      url: `/api/shows/select_shows?input=${options.input}`,
       type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
+      ...options
+    }));
   },
-  getPeople: (input, success, error = null) => {
-    $.ajax({
-      url: `/api/people/select_people?input=${input}`,
+  getPeople: (options) => {
+    $.ajax(GetQueryContent({
+      url: `/api/people/select_people?input=${options.input}`,
       type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
+      ...options
+    }));
   },
 }

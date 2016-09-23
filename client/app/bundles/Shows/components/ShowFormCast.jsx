@@ -15,14 +15,15 @@ import Image from 'react-bootstrap/lib/Image';
 
 export default class FormCast extends React.Component {
   static propTypes = {
-    show_person_roles: PropTypes.array,
+    defaultShowPersonRole: PropTypes.object,
+    showPersonRoles: PropTypes.array,
     getShowPersonRolesOptions: PropTypes.func,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      images: props.show_person_roles.map((spr) => {
+      images: props.showPersonRoles.map((spr) => {
         return spr.image.smallest.url;
       })
     }
@@ -35,10 +36,11 @@ export default class FormCast extends React.Component {
         ref='show_person_roles_attributes'
         submitKey='show_person_roles_attributes'
         label='Elenco'
-        initialDataArray={this.props.show_person_roles}
+        initialDataArray={this.props.showPersonRoles}
         onAddItem={this._onAddItem}
         onDeleteItem={this._onDeleteItem}
         dataKeys={['person_id', 'character', 'director', 'actor']}
+        defaultObject={this.props.defaultShowPersonRole}
         getContentRow={(spr, index) => {
 
           return(
@@ -78,8 +80,7 @@ export default class FormCast extends React.Component {
                   submitKey='actor'
                   label='Actor'
                   ref={`actor${index}`}
-                  initialValue={spr.id ? spr.actor : true}
-                  forceSubmit={!spr.id}
+                  initialValue={spr.actor}
                 />
               </Col>
               <Col xs={6} md={1}>

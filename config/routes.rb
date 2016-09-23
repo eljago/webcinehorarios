@@ -17,6 +17,10 @@ Rails.application.routes.draw do
 
     ##### V1 #####
     scope module: :v1, constraints: ApiConstraints.new(version: 1) do
+      resources :theaters, only: [:create, :update, :destroy]
+      resources :cinemas, only: [] do
+        resources :theaters, only: :index
+      end
       resources :shows, only: [:index, :destroy, :update, :create] do
         collection do
           get 'select_shows'

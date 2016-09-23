@@ -53,7 +53,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # OTHER GEMS
 
 gem "react_on_rails", "~> 6"
-gem 'therubyracer', platforms: :ruby
+gem 'mini_racer'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'font-awesome-rails'
@@ -136,7 +136,6 @@ gem 'carrierwave-base64'
 gem 'mini_magick'
 
 gem 'graphql'
-gem "graphql-relay"
 # gem 'graphql-batch'
 
 gem 'rabl', github: "nesquena/rabl"

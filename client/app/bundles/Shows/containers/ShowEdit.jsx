@@ -8,6 +8,9 @@ import {ShowsQueries, SelectQueries} from '../../../lib/api/queries'
 
 export default class ShowEdit extends React.Component {
   static propTypes = {
+    defaultShowPersonRole: PropTypes.object,
+    defaultVideo: PropTypes.object,
+    defaultImage: PropTypes.object,
     show: PropTypes.object,
     genres: PropTypes.array,
     videoTypes: PropTypes.array,
@@ -25,6 +28,9 @@ export default class ShowEdit extends React.Component {
   render() {
     return (
       <ShowForm
+        defaultShowPersonRole={this.props.defaultShowPersonRole}
+        defaultVideo={this.props.defaultVideo}
+        defaultImage={this.props.defaultImage}
         show={this.props.show}
         genres={this.props.genres}
         videoTypes={this.props.videoTypes}
@@ -38,57 +44,38 @@ export default class ShowEdit extends React.Component {
   }
 
   _handleSubmit(showToSubmit) {
-    console.log(showToSubmit);
-    if (_.isEmpty(showToSubmit)) {
-      window.location.assign('/admin/shows');
-      return;
-    }
 
-    const success = (response) => {
-      window.location.assign('/admin/shows');
+    const submitOptions = {
+      show: showToSubmit,
+      success: (response) => {
+        window.location.assign('/admin/shows');
+      },
+      error: (errors) => {
+        this.setState({
+          errors: errors,
+          submitting: false
+        });
+      }
     };
-    const error = (error) => {
-      // Rails validations failed
-      if (error.status == 422) {
-        console.log(error.responseJSON.errors);
-        this.setState({
-          errors: !_.isEmpty(error.responseJSON.errors) ? error.responseJSON.errors : {},
-          submitting: false
-        });
-        window.scrollTo(0, 0);
-      }
-      else if (error.status == 500) {
-        console.log(error.statusText);
-        this.setState({
-          errors: {Error: ['ERROR 500']},
-          submitting: false
-        });
-        window.scrollTo(0, 0);
-      }
-    }
 
     this.setState({submitting: true});
     if (this.props.show.id) {
-      ShowsQueries.submitEditShow({
-        show: {
-          id: this.props.show.id,
-          ...showToSubmit
-        }
-      }, success, error);
+      ShowsQueries.submitEditShow(submitOptions);
     }
     else {
-      ShowsQueries.submitNewShow({
-        show: showToSubmit
-      }, success, error);
+      ShowsQueries.submitNewShow(submitOptions);
     }
   }
 
   _getShowPersonRolesOptions(input, callback) {
     if (_.trim(input).length > 2) {
-      SelectQueries.getPeople(input, (response) => {
-        callback(null, {
-          options: response.people
-        });
+      SelectQueries.getPeople({
+        input: input,
+        success: (response) => {
+          callback(null, {
+            options: response.people
+          });
+        }
       });
     }
     else {
@@ -101,14 +88,16 @@ export default class ShowEdit extends React.Component {
       loadingContent: true
     });
     ShowsQueries.submitDeleteShow({
-      showId: showId
-    }, (response) => {
-      window.location.assign('/admin/shows');
-      this.setState({
-        loadingContent: false
-      });
-    }, (error) => {
-      console.log(error);
-    })
+      showId: showId,
+      success: (response) => {
+        window.location.assign('/admin/shows');
+        this.setState({
+          loadingContent: false
+        });
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    });
   }
 }

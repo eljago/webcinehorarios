@@ -1,72 +1,50 @@
 'use strict'
 
-import SetHeaders from './SetHeaders';
+import GetQueryContent from './GetQueryContent';
 
 export default {
-  getShows: (options, success, error = null) => {
-    $.ajax({
+  getShows: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/shows.json?page=${options.page}&perPage=${options.perPage}&query=${options.searchValue}`,
       type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
+      ...options
+    }));
   },
-  getBillboard: (success, error = null) => {
-    $.ajax({
+  getBillboard: (options) => {
+    $.ajax(GetQueryContent({
       url: '/api/shows/billboard.json',
       type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
+      ...options
+    }));
   },
-  getComingSoon: (success, error = null) => {
-    $.ajax({
+  getComingSoon: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/shows/comingsoon.json`,
       type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
+      ...options
+    }));
   },
-  submitNewShow: (options, success, error = null) => {
-    $.ajax({
+  submitNewShow: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/shows`,
       type: 'POST',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-      data: {
-        shows: options.show
-      }
-    });
+      data: { shows: options.show },
+      ...options
+    }));
   },
-  submitEditShow: (options, success, error = null) => {
-    $.ajax({
+  submitEditShow: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/shows/${options.show.id}`,
       type: 'PUT',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-      data: {
-        shows: options.show
-      }
-    });
+      data: { shows: options.show },
+      ...options
+    }));
   },
-  submitDeleteShow: (options, success, error = null) => {
+  submitDeleteShow: (options) => {
     $.ajax({
       url: `/api/shows/${options.showId}`,
       type: 'DELETE',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders
+      ...options
     });
   },
 }

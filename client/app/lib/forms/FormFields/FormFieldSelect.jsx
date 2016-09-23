@@ -18,7 +18,6 @@ export default class FormFieldSelect extends React.Component {
     initialValue: PropTypes.object,
     onChange: PropTypes.func,
     async: PropTypes.boolean,
-    newRecord: PropTypes.boolean,
   };
   static defaultProps = {
     label: '',
@@ -60,7 +59,7 @@ export default class FormFieldSelect extends React.Component {
   }
 
   getResult() {
-    if ((this.props.newRecord && this.props.initialValue) || (this.state.currentValue.value != this.props.initialValue.value)) {
+    if (this.state.currentValue.value != this.props.initialValue.value) {
       return {[this.props.submitKey]: this.state.currentValue.value};
     }
     return null;
