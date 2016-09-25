@@ -9,6 +9,10 @@ import {PeopleQueries, SelectQueries} from '../../../lib/api/queries'
 
 export default class People extends React.Component {
 
+  static propTypes = {
+    defaultPerson: PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -34,6 +38,7 @@ export default class People extends React.Component {
   render() {
     return (
       <PeopleMain
+        defaultPerson={this.props.defaultPerson}
         page={this.state.page}
         itemsPerPage={this.state.itemsPerPage}
         people={this.state.people}
@@ -51,21 +56,22 @@ export default class People extends React.Component {
     PeopleQueries.getPeople({
       page: newPage,
       perPage: this.state.itemsPerPage,
-      searchValue: searchValue
-    }, (response) => {
-      this.setState({
-        page: newPage,
-        people: response.people.map((person) => {
-          return {
-            id: person.id,
-            name: person.name,
-            imdb_code: person.imdb_code,
-            image: person.image
-          }
-        }),
-        pagesCount: response.count,
-        currentSearch: searchValue
-      });
+      searchValue: searchValue,
+      success: (response) => {
+        this.setState({
+          page: newPage,
+          people: response.people.map((person) => {
+            return {
+              id: person.id,
+              name: person.name,
+              imdb_code: person.imdb_code,
+              image: person.image
+            }
+          }),
+          pagesCount: response.count,
+          currentSearch: searchValue
+        });
+      }
     });
   }
 
@@ -96,32 +102,27 @@ export default class People extends React.Component {
     };
     if (personData.id) {
       PeopleQueries.submitEditPerson({
-        person: personData
-      }, success, error);
+        person: personData,
+        success: success,
+        error: error
+      });
     }
     else {
       PeopleQueries.submitNewPerson({
-        person: personData
-      }, success, error);
+        person: personData,
+        success: success,
+        error: error
+      });
     }
   }
 
   _onDelete(personId, callback = null) {
     PeopleQueries.submitDeletePerson({
-      personId: personId
-    }, (response) => {
-      this._updateData();
-      callback(true);
-    }, (error) => {
-      if (error.status == 422) {
-        callback(false, error.responseJSON.errors);
+      personId: personId,
+      success: (response) => {
+        this._updateData();
+        callback(true);
       }
-      else if (error.status == 500) {
-        callback(false, {Error: ['ERROR 500']});
-      }
-      else {
-        callback(false);
-      }
-    })
+    });
   }
 }

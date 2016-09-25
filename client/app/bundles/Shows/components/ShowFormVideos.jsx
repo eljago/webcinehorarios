@@ -4,16 +4,9 @@ import React, { PropTypes } from 'react'
 import update from 'react/lib/update';
 import _ from 'lodash'
 
-import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
-import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
-import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
-import FormFieldSelect from '../../../lib/forms/FormFields/FormFieldSelect'
-import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
-
 import Row from 'react-bootstrap/lib/Col';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
-
 
 export default class ShowFormVideos extends React.Component {
   static propTypes = {
@@ -38,7 +31,7 @@ export default class ShowFormVideos extends React.Component {
         ref='videos_attributes'
         submitKey='videos_attributes'
         label='Videos'
-        initialDataArray={this.props.videos}
+        initialValue={this.props.videos}
         onAddItem={this._onAddItem}
         onDeleteItem={this._onDeleteItem}
         dataKeys={['name', 'code', 'video_type', 'outstanding']}

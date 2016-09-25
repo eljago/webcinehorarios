@@ -6,7 +6,7 @@ class Admin::CinemasController < ApplicationController
     @title = 'Cinemas'
     @app_name = 'CinemasApp'
     @props = {cinemas: cinemas}
-    @prerender = true
+    @prerender = false
     render file: 'react/render'
   end
   

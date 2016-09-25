@@ -22,7 +22,7 @@ class Admin::DashboardController < ApplicationController
     @title = 'Dashboard'
     @app_name = 'DashboardApp'
     @props = {cinemas: cinemas}
-    @prerender = true
+    @prerender = false
     render file: 'react/render'
   end
 

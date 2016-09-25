@@ -4,6 +4,7 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 
 import ParsedShowsRow from './ParsedShowsRow';
+import {SelectQueries} from '../../../lib/api/queries'
 
 import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Pagination from 'react-bootstrap/lib/Pagination';
@@ -15,7 +16,6 @@ export default class ParsedShowsMain extends React.Component {
     pagesCount: PropTypes.number,
     itemsPerPage: PropTypes.number,
     parsedShows: PropTypes.array,
-    getShowsOptions: PropTypes.func,
     updateRow: PropTypes.func,
     deleteRow: PropTypes.func,
     onChangePage: PropTypes.func,
@@ -44,7 +44,7 @@ export default class ParsedShowsMain extends React.Component {
         <ParsedShowsRow
           key={parsedShow.id}
           parsedShow={parsedShow}
-          getShowsOptions={this.props.getShowsOptions}
+          getShowsOptions={SelectQueries.getShowsOptions}
           updateRow={this.props.updateRow}
           deleteRow={this.props.deleteRow}
         />

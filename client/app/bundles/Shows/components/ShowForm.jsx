@@ -3,7 +3,6 @@
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 
-import Button from 'react-bootstrap/lib/Button';
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
 import Grid from 'react-bootstrap/lib/Grid';
@@ -17,33 +16,17 @@ import ShowFormVideos from './ShowFormVideos'
 
 import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
 
+import FormBuilder from '../../../lib/forms/FormBuilder';
 
 export default class ShowForm extends React.Component {
   static propTypes = {
-    defaultShowPersonRole: PropTypes.object,
-    defaultVideo: PropTypes.object,
-    defaultImage: PropTypes.object,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
     show: PropTypes.object,
-    genres: PropTypes.array,
-    videoTypes: PropTypes.array,
-    onSubmit: PropTypes.func.isRequired,
-    onDeleteShow: PropTypes.func.isRequired,
-    submitting: PropTypes.boolean,
     errors: PropTypes.object,
-    getShowPersonRolesOptions: PropTypes.func,
+    submitting: PropTypes.boolean,
   };
 
-  constructor(props) {
-    super(props)
-    _.bindAll(this, '_handleSubmit');
-  }
-
   render() {
-    const submitting = this.props.submitting;
-    const showPersonRoles = this.props.show.show_person_roles ? this.props.show.show_person_roles : [];
-    const showVideos = this.props.show.videos ? this.props.show.videos : [];
-    const showImages = this.props.show.images ? this.props.show.images : [];
-
     return (
       <div>
         <ErrorMessages errors={this.props.errors} />
@@ -53,8 +36,7 @@ export default class ShowForm extends React.Component {
           <Tab eventKey={1} title="Basic Info">
             <br/>
             <ShowFormBasic
-              show={this.props.show}
-              genres={this.props.genres}
+              formBuilder={this.props.formBuilder}
               ref='formBasic'
             />
           </Tab>
@@ -62,30 +44,28 @@ export default class ShowForm extends React.Component {
           <Tab eventKey={2} title="Cast">
             <br/>
             <ShowFormCast
-              defaultShowPersonRole={this.props.defaultShowPersonRole}
-              showPersonRoles={showPersonRoles}
-              getShowPersonRolesOptions={this.props.getShowPersonRolesOptions}
+              formBuilder={this.props.formBuilder}
               ref='formCast'
+              images={this.props.show.show_person_roles.map((spr) => {
+                return spr.image.smallest.url;
+              })}
             />
           </Tab>
 
           <Tab eventKey={3} title="Images">
             <br/>
             <ShowFormImages
-              defaultImage={this.props.defaultImage}
-              images={showImages}
+              formBuilder={this.props.formBuilder}
               ref='formImages'
+              images={this.props.show.images.map((img) => {
+                return img.image.smaller.url;
+              })}
             />
           </Tab>
 
           <Tab eventKey={4} title="Videos">
             <br/>
-            <ShowFormVideos
-              defaultVideo={this.props.defaultVideo}
-              videos={showVideos}
-              videoTypes={this.props.videoTypes}
-              ref='formVideos'
-            />
+       
           </Tab>
 
         </Tabs>
@@ -95,14 +75,7 @@ export default class ShowForm extends React.Component {
         <Grid>
           <Row>
             <Col xs={12} sm={2}>
-              <Button
-                bsStyle="primary"
-                disabled={submitting}
-                onClick={!submitting ? this._handleSubmit : null}
-                block
-              >
-                {submitting ? 'Submitting...' : 'Submit'}
-              </Button>
+              {this.props.formBuilder.getSubmitButton(this.props.submitting)}
             </Col>
             {this._getDeleteButton()}
           </Row>
@@ -123,18 +96,7 @@ export default class ShowForm extends React.Component {
           </Col>
           ,
           <Col xs={12} xsOffset={24} sm={2} smOffset={8}>
-            <Button
-              bsStyle="danger"
-              disabled={this.props.submitting}
-              onClick={() => {
-                if (confirm(`¿Eliminar Show: ${this.props.show.name}?`)) {
-                  this.props.onDeleteShow(this.props.show.id);
-                }
-              }}
-              block
-            >
-              Eliminar
-            </Button>
+            {this.props.formBuilder.getDeleteButton(this.props.submitting)}
           </Col>
         ]
       );
@@ -142,7 +104,7 @@ export default class ShowForm extends React.Component {
     return null;
   }
 
-  _handleSubmit() {
+  getResult() {
     let showToSubmit = {}
 
     const dataShowBasic = this.refs.formBasic.getResult();
@@ -163,6 +125,6 @@ export default class ShowForm extends React.Component {
     }
 
     console.log(showToSubmit);
-    this.props.onSubmit(showToSubmit);
+    return showToSubmit;
   }
 }

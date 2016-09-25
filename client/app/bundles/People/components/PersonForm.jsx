@@ -39,18 +39,18 @@ export default class PersonForm extends React.Component {
             <FormFieldText
               submitKey='name'
               ref='name'
-              initialValue={person ? person.name : ''}
+              initialValue={person.name}
               disabled={this.state.submitting}
             />
             <FormFieldText
               submitKey='imdb_code'
               ref='imdbCode'
-              initialValue={person ? person.imdb_code : ''}
+              initialValue={person.imdb_code}
               disabled={this.state.submitting}
             />
             <FormFieldImage
               onChange={(personThumb) => this.setState({personThumb})}
-              initialValue={person && person.image ? person.image.small.url : ''}
+              initialValue={person.image}
               ref='image'
               disabled={this.state.submitting}
             />

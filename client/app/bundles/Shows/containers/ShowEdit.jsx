@@ -4,7 +4,10 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import ShowForm from '../components/ShowForm'
 
-import {ShowsQueries, SelectQueries} from '../../../lib/api/queries'
+import {ShowsQueries} from '../../../lib/api/queries'
+
+import FormBuilder from '../../../lib/forms/FormBuilder';
+import GetFormSchema from '../data/FormSchema'
 
 export default class ShowEdit extends React.Component {
   static propTypes = {
@@ -22,82 +25,82 @@ export default class ShowEdit extends React.Component {
       submitting: false,
       errors: {}
     };
-    _.bindAll(this, ['_handleSubmit', '_onDelete']);
+    _.bindAll(this, '_handleSubmit');
+    this.formBuilder = new FormBuilder(
+      GetFormSchema({
+        defaultShowPersonRole: props.defaultShowPersonRole,
+        defaultImage: props.defaultImage,
+        defaultVideo: props.defaultVideo,
+        genres: props.genres.map((genre) => {
+          return {value: genre.id, label: genre.name};
+        }),
+        videoTypes: props.videoTypes,
+        onDeleteShow: this._onDelete,
+        onSubmitShow: this._handleSubmit
+      }),
+      props.show
+    );
   }
 
   render() {
     return (
       <ShowForm
-        defaultShowPersonRole={this.props.defaultShowPersonRole}
-        defaultVideo={this.props.defaultVideo}
-        defaultImage={this.props.defaultImage}
+        ref='form'
+        formBuilder={this.formBuilder}
         show={this.props.show}
-        genres={this.props.genres}
-        videoTypes={this.props.videoTypes}
-        onSubmit={this._handleSubmit}
-        onDeleteShow={this._onDelete}
-        submitting={this.state.submitting}
         errors={this.state.errors}
-        getShowPersonRolesOptions={this._getShowPersonRolesOptions}
+        submitting={this.state.submitting}
       />
     );
   }
 
-  _handleSubmit(showToSubmit) {
+  _handleSubmit() {
+    if (this.refs.form) {
+      const showToSubmit = this.refs.form.getResult();
 
-    const submitOptions = {
-      show: showToSubmit,
-      success: (response) => {
-        window.location.assign('/admin/shows');
-      },
-      error: (errors) => {
-        this.setState({
-          errors: errors,
-          submitting: false
-        });
+      const submitOptions = {
+        show: showToSubmit,
+        success: (response) => {
+          window.location.assign('/admin/shows');
+        },
+        error: (errors) => {
+          this.setState({
+            errors: errors,
+            submitting: false
+          });
+        }
+      };
+
+      this.setState({submitting: true});
+      if (this.props.show.id) {
+        ShowsQueries.submitEditShow(submitOptions);
       }
-    };
-
-    this.setState({submitting: true});
-    if (this.props.show.id) {
-      ShowsQueries.submitEditShow(submitOptions);
-    }
-    else {
-      ShowsQueries.submitNewShow(submitOptions);
+      else {
+        ShowsQueries.submitNewShow(submitOptions);
+      }
     }
   }
 
-  _getShowPersonRolesOptions(input, callback) {
-    if (_.trim(input).length > 2) {
-      SelectQueries.getPeople({
-        input: input,
+  _onDelete() {
+    if (this.props.show.id) {
+      this.setState({
+        submitting: true
+      });
+      ShowsQueries.submitDeleteShow({
+        showId: this.props.show.id,
         success: (response) => {
-          callback(null, {
-            options: response.people
+          window.location.assign('/admin/shows');
+          this.setState({
+            submitting: false
+          });
+        },
+        error: (error) => {
+          // console.log(error);
+          this.setState({
+            submitting: false
           });
         }
       });
     }
-    else {
-      callback(null, {options: []});
-    }
-  }
-
-  _onDelete(showId) {
-    this.setState({
-      loadingContent: true
-    });
-    ShowsQueries.submitDeleteShow({
-      showId: showId,
-      success: (response) => {
-        window.location.assign('/admin/shows');
-        this.setState({
-          loadingContent: false
-        });
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    });
   }
 }

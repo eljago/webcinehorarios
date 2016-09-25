@@ -20,6 +20,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 
 export default class PeopleMain extends React.Component {
   static propTypes = {
+    defaultPerson: PropTypes.object,
     page: PropTypes.number.isRequired,
     itemsPerPage: PropTypes.number.isRequired,
     people: PropTypes.object.isRequired,
@@ -51,7 +52,7 @@ export default class PeopleMain extends React.Component {
               bsStyle="primary"
               onClick={() => {
                 this.setState({
-                  currentPerson: {},
+                  currentPerson: this.props.defaultPerson,
                   editingPerson: true
                 })
               }}
@@ -103,7 +104,6 @@ export default class PeopleMain extends React.Component {
 
   _closeModal() {
     this.setState({
-      currentPerson: null,
       editingPerson: false,
     });
   }

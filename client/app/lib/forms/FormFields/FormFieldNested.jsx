@@ -16,12 +16,11 @@ export default class FormFieldNested extends React.Component {
   static propTypes = {
     submitKey: PropTypes.string,
     label: PropTypes.string,
-    initialDataArray: PropTypes.array,
+    initialValue: PropTypes.array,
     onAddItem: PropTypes.func,
     onDeleteItem: PropTypes.func,
     getContentRow: PropTypes.func,
     dataKeys: PropTypes.array,
-    defaultObject: PropTypes.object,
     xs: PropTypes.number,
     md: PropTypes.number,
     lg: PropTypes.number,
@@ -30,9 +29,9 @@ export default class FormFieldNested extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataArray: props.initialDataArray.map((value) => {
+      dataArray: props.initialValue.map((value) => {
         return {
-          ...value,
+          id: value.id,
           _destroy: false
         };
       })
@@ -88,18 +87,8 @@ export default class FormFieldNested extends React.Component {
     });
   }
 
-  _getNewObject() {
-    let newObject = {"_destroy": false};
-    if (_.isObject(this.props.defaultObject)) {
-      for (const dataKey of this.props.dataKeys) {
-        newObject[dataKey] = this.props.defaultObject[dataKey];
-      }
-    }
-    return newObject;
-  }
-
   _onAddRow() {
-    const dataArray = update(this.state.dataArray, {$push: [this._getNewObject()]});
+    const dataArray = update(this.state.dataArray, {$push: [{"_destroy": false}]});
     this.setState({dataArray})
     if (this.props.onAddItem) {
       this.props.onAddItem(dataArray);

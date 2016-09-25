@@ -4,7 +4,7 @@ class Admin::ParsedShowsController < ApplicationController
     @title = 'Parsed Shows'
     @app_name = 'ParsedShowsApp'
     @props = {}
-    @prerender = true
+    @prerender = false
     render file: 'react/render'
   end
 

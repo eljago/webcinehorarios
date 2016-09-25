@@ -18,7 +18,7 @@ class Admin::TheatersController < ApplicationController
     @title = 'Edit Theater'
     @app_name = 'TheaterEditApp'
     @props = {theater: nil}
-    @prerender = true
+    @prerender = false
     render file: 'react/render'
   end
 
@@ -27,7 +27,7 @@ class Admin::TheatersController < ApplicationController
     @title = 'Edit Theater'
     @app_name = 'TheaterEditApp'
     @props = {theater: theater}
-    @prerender = true
+    @prerender = false
     render file: 'react/render'
   end
 

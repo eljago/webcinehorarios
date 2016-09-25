@@ -6,16 +6,11 @@ import ShowsList from './ShowsList'
 
 import SearchField from '../../../lib/forms/FormFields/SearchField'
 
-import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Button from 'react-bootstrap/lib/Button';
-import Image from 'react-bootstrap/lib/Image';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Pagination from 'react-bootstrap/lib/Pagination';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import InputGroup from 'react-bootstrap/lib/InputGroup';
 
 
 export default class ShowsMain extends React.Component {

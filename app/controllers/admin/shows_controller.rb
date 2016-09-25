@@ -23,7 +23,7 @@ class Admin::ShowsController < ApplicationController
     @title = 'Shows'
     @app_name = 'ShowsApp'
     @props = {}
-    @prerender = true
+    @prerender = false
     render file: 'react/render'
   end
 
@@ -50,7 +50,7 @@ class Admin::ShowsController < ApplicationController
       genres: genres,
       videoTypes: video_types
     }
-    @prerender = true
+    @prerender = false
     render file: 'react/render'
   end
 
@@ -58,9 +58,7 @@ class Admin::ShowsController < ApplicationController
     show = Show.includes(:show_person_roles)
       .order('show_person_roles.position').find(params[:id])
     hash_show = show.as_json
-    hash_show["genres"] = show.genres.map do |genre|
-      {"id" => genre.id, "name" => genre.name}
-    end
+    hash_show["genres"] = show.genres.map(&:id)
     hash_show["show_person_roles"] = show.show_person_roles.includes(:person).order(:position).map do |spr|
       {
         "id" => spr.id,
@@ -104,7 +102,7 @@ class Admin::ShowsController < ApplicationController
       genres: genres,
       videoTypes: video_types
     }
-    @prerender = true
+    @prerender = false
     render file: 'react/render'
   end
 

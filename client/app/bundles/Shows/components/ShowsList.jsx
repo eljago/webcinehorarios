@@ -8,7 +8,6 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-
 export default class ShowsList extends React.Component {
   static propTypes = {
     shows: PropTypes.object.isRequired,

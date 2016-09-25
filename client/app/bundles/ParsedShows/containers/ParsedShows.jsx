@@ -4,7 +4,7 @@ import React, {PropTypes} from 'react'
 import _ from 'lodash'
 import ParsedShowsTabs from '../components/ParsedShowsTabs'
 
-import {ParsedShowsQueries, SelectQueries} from '../../../lib/api/queries'
+import {ParsedShowsQueries} from '../../../lib/api/queries'
 
 const SHOWS_PER_PAGE = 15;
 
@@ -36,26 +36,12 @@ export default class ParsedShows extends React.Component {
         itemsPerPage={this.state.itemsPerPage}
         parsedShows={this.state.parsedShows}
         orphanParsedShows={this.state.orphanParsedShows}
-        getShowsOptions={this._getShowsOptions}
         updateRow={this._updateRow}
         deleteRow={this._deleteRow}
         onChangePage={this._onChangePage}
         errors={this.state.errors}
       />
     );
-  }
-
-  _getShowsOptions(input, callback) {
-    if (_.trim(input).length > 2) {
-      SelectQueries.getShows(input, (response) => {
-        callback(null, {
-          options: response.shows,
-        });
-      });
-    }
-    else {
-      callback(null, {options: []});
-    }
   }
 
   _updateParsedShows(page = this.state.currentPage) {

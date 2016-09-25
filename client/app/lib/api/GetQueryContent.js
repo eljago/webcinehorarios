@@ -13,7 +13,7 @@ const SetHeaders = (xhr) => {
 
 const MyErrorCallback = (response, errorCallback) => {
   let MyErrors = {};
-  console.log(response);
+  
   if (response.status === 404) {
     _.merge(MyErrors, {"404": ['Not Found']});
   }
