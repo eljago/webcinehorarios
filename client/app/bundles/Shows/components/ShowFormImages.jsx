@@ -51,7 +51,7 @@ export default class ShowFormImages extends React.Component {
     );
   }
 
-  _getContentRow(img, index) {
+  _getContentRow(index) {
     return(
       <Row>
         <Col xs={12} sm={2}>
@@ -70,19 +70,14 @@ export default class ShowFormImages extends React.Component {
           </Button>
         </Col>
         <Col xs={12} sm={2}>
-          {this.props.formBuilder.getNestedField('images', 'backdrop', {
-            index: index
-          })}
+          {this.props.formBuilder.getNestedField('images', 'backdrop', index)}
         </Col>
         <Col xs={12} sm={2}>
-          {this.props.formBuilder.getNestedField('images', 'poster', {
-            index: index
-          })}
+          {this.props.formBuilder.getNestedField('images', 'poster', index)}
         </Col>
         <Col xs={12} sm={6}>
-          {this.props.formBuilder.getNestedField('images', 'image', {
-            index: index,
-            customInitialValue: (obj) => {
+          {this.props.formBuilder.getNestedField('images', 'image', index, {
+            getInitialValue: (obj) => {
               return obj.image.small.url;
             },
             onChange: (newImage) => {this._handleImageChange(newImage, index)}

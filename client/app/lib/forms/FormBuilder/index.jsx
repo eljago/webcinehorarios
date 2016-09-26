@@ -26,17 +26,17 @@ export default class FormBuilder {
     }
   }
 
-  getNestedField(primaryFieldId, secondaryFieldId, options = null) {
+  getNestedField(primaryFieldId, secondaryFieldId, index, options = null) {
     if (primaryFieldId && secondaryFieldId && this.nestedFormBuilder && this.nestedFormBuilder[primaryFieldId]) {
       const fb = this.nestedFormBuilder[primaryFieldId];
-      if (options && !_.isUndefined(options.index)) {
-        const object = options.index < fb.object.length ? fb.object[options.index] : this.schema[primaryFieldId].defaultObject;
-        const initialValue = options.customInitialValue ? options.customInitialValue(object) : object[secondaryFieldId];
-        return fb.getField(secondaryFieldId, {
-          initialValue: initialValue,
-          ref: `${secondaryFieldId}${options.index}`
-        });
-      }
+
+      const object = (index < fb.object.length) ? fb.object[index] : this.schema[primaryFieldId].defaultObject;
+      const initialValue = (options && options.getInitialValue) ? options.getInitialValue(object) : object[secondaryFieldId];
+      return fb.getField(secondaryFieldId, {
+        ...options,
+        initialValue: initialValue,
+        ref: `${secondaryFieldId}${index}`
+      });
     }
     return null;
   }
@@ -120,12 +120,11 @@ export default class FormBuilder {
 
   getSubmitButton(disabled) {
     if (this.schema && this.schema['submit']) {
-      const fieldData = this.schema['submit'];
       return(
         <Button
           bsStyle="primary"
           disabled={disabled}
-          onClick={!disabled ? fieldData.onSubmit() : null}
+          onClick={!disabled ? this.schema['submit'].onSubmit : null}
           block
         >
           {disabled ? '...' : 'Submit'}

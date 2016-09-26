@@ -37,7 +37,7 @@ export default class FormCast extends React.Component {
     );
   }
 
-  _getContentRow(spr, index) {
+  _getContentRow(index) {
     return(
       <Row>
         <Col xs={12} md={2}>
@@ -48,28 +48,21 @@ export default class FormCast extends React.Component {
           />
         </Col>
         <Col xs={12} md={4}>
-          {this.props.formBuilder.getNestedField('show_person_roles', 'person_id', {
-            index: index,
-            customInitialValue: (obj) => {
+          {this.props.formBuilder.getNestedField('show_person_roles', 'person_id', index, {
+            getInitialValue: (obj) => {
               return {value: obj.person_id, label: obj.name};
             },
             onChange: (newValue) => {this._onChangeSelect(newValue, index)}
           })}
         </Col>
         <Col xs={12} md={4}>
-          {this.props.formBuilder.getNestedField('show_person_roles', 'character', {
-            index: index
-          })}
+          {this.props.formBuilder.getNestedField('show_person_roles', 'character', index)}
         </Col>
         <Col xs={6} md={1}>
-          {this.props.formBuilder.getNestedField('show_person_roles', 'actor', {
-            index: index
-          })}
+          {this.props.formBuilder.getNestedField('show_person_roles', 'actor', index)}
         </Col>
         <Col xs={6} md={1}>
-          {this.props.formBuilder.getNestedField('show_person_roles', 'director', {
-            index: index
-          })}
+          {this.props.formBuilder.getNestedField('show_person_roles', 'director', index)}
         </Col>
       </Row>
     );

@@ -68,7 +68,7 @@ export default class FormFieldNested extends React.Component {
           >
             <Row>
               <Col xs={12} md={9} lg={10}>
-                {this.props.getContentRow(dataItem, index)}
+                {this.props.getContentRow(index)}
               </Col>
               <Col xs={12} md={3} lg={2}>
                 <Button
