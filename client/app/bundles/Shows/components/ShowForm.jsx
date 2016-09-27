@@ -21,7 +21,7 @@ import FormBuilder from '../../../lib/forms/FormBuilder';
 export default class ShowForm extends React.Component {
   static propTypes = {
     formBuilder: PropTypes.instanceOf(FormBuilder),
-    show: PropTypes.object,
+    newShow: PropTypes.object,
     errors: PropTypes.object,
     submitting: PropTypes.boolean,
   };
@@ -46,9 +46,6 @@ export default class ShowForm extends React.Component {
             <ShowFormCast
               formBuilder={this.props.formBuilder}
               ref='formCast'
-              images={this.props.show.show_person_roles.map((spr) => {
-                return spr.image.smallest.url;
-              })}
             />
           </Tab>
 
@@ -57,15 +54,15 @@ export default class ShowForm extends React.Component {
             <ShowFormImages
               formBuilder={this.props.formBuilder}
               ref='formImages'
-              images={this.props.show.images.map((img) => {
-                return img.image.smaller.url;
-              })}
             />
           </Tab>
 
           <Tab eventKey={4} title="Videos">
             <br/>
-       
+            <ShowFormVideos
+              formBuilder={this.props.formBuilder}
+              ref='formVideos'
+            />
           </Tab>
 
         </Tabs>
@@ -86,7 +83,7 @@ export default class ShowForm extends React.Component {
   }
 
   _getDeleteButton() {
-    if (this.props.show.id) {
+    if (!this.props.newShow) {
       return(
         [
           <Col xs={12} smHidden mdHidden lgHidden>
@@ -105,7 +102,7 @@ export default class ShowForm extends React.Component {
   }
 
   getResult() {
-    let showToSubmit = {}
+    let showToSubmit = {};
 
     const dataShowBasic = this.refs.formBasic.getResult();
     showToSubmit = _.merge(showToSubmit, dataShowBasic);
@@ -118,11 +115,6 @@ export default class ShowForm extends React.Component {
 
     //const dataShowVideos = this.refs.formVideos.getResult();
     //showToSubmit = _.merge(showToSubmit, dataShowVideos);
-
-
-    if (!_.isEmpty(showToSubmit)) {
-      _.merge(showToSubmit, {id: this.props.show.id});
-    }
 
     console.log(showToSubmit);
     return showToSubmit;

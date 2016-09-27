@@ -19,7 +19,9 @@ export default class FormCast extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: props.images
+      images: props.formBuilder.object.show_person_roles.map((spr) => {
+        return spr.image.smallest.url;
+      })
     }
     _.bindAll(this, ['_onAddItem', '_onDeleteItem', '_getContentRow'])
   }

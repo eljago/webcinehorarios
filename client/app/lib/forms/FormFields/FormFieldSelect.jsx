@@ -21,7 +21,7 @@ export default class FormFieldSelect extends React.Component {
   };
   static defaultProps = {
     label: '',
-    initialValue: '',
+    initialValue: null,
     async: true
   };
 

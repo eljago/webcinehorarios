@@ -26,12 +26,12 @@ export default class FormBuilder {
     }
   }
 
-  getNestedField(primaryFieldId, secondaryFieldId, index, options = null) {
+  getNestedField(primaryFieldId, secondaryFieldId, index, options = {}) {
     if (primaryFieldId && secondaryFieldId && this.nestedFormBuilder && this.nestedFormBuilder[primaryFieldId]) {
       const fb = this.nestedFormBuilder[primaryFieldId];
 
       const object = (index < fb.object.length) ? fb.object[index] : this.schema[primaryFieldId].defaultObject;
-      const initialValue = (options && options.getInitialValue) ? options.getInitialValue(object) : object[secondaryFieldId];
+      const initialValue = options.getInitialValue ? options.getInitialValue(object) : object[secondaryFieldId];
       return fb.getField(secondaryFieldId, {
         ...options,
         initialValue: initialValue,
@@ -41,19 +41,19 @@ export default class FormBuilder {
     return null;
   }
 
-  getField(fieldId, options = null) {
+  getField(fieldId, options = {}) {
     if (this.schema && fieldId && this.schema[fieldId]) {
       const fieldData = this.schema[fieldId];
       let elementData = {
         submitKey: fieldData.submitKey ? fieldData.submitKey : fieldId,
         label: fieldData.label,
-        ref: (options && options.ref) ? options.ref : fieldId,
-        initialValue: (options && options.initialValue) ? options.initialValue : this.object[fieldId],
+        ref: fieldId,
+        initialValue: this.object[fieldId],
+        ...options
       };
       let Component = FormFieldText;
       switch(fieldData.type) {
         case 'image':
-          elementData.onChange = (options ? options.onChange : null);
           Component = FormFieldImage
           break;
         case 'checkbox':
@@ -75,15 +75,12 @@ export default class FormBuilder {
           break;
         case 'nested':
           elementData.dataKeys = Object.keys(fieldData.nestedSchema);
-          elementData.onAddItem = (options ? options.onAddItem : null);
-          elementData.onDeleteItem = (options ? options.onDeleteItem : null);
-          elementData.getContentRow = (options ? options.getContentRow : null);
           Component = FormFieldNested;
           break;
         case 'select':
           elementData.options = fieldData.options;
           elementData.getOptions = fieldData.getOptions;
-          elementData.onChange = (options ? options.onChange : null);
+          elementData.async = fieldData.async;
           Component = FormFieldSelect;
           break;
         default:
@@ -124,7 +121,7 @@ export default class FormBuilder {
         <Button
           bsStyle="primary"
           disabled={disabled}
-          onClick={!disabled ? this.schema['submit'].onSubmit : null}
+          onClick={this.schema['submit'].onSubmit}
           block
         >
           {disabled ? '...' : 'Submit'}

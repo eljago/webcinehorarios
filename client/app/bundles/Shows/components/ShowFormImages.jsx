@@ -23,7 +23,9 @@ export default class ShowFormImages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: props.images,
+      images: props.formBuilder.object.images.map((img) => {
+        return img.image.smaller.url;
+      }),
       lgShow: false,
       modalIndex: 0,
     }

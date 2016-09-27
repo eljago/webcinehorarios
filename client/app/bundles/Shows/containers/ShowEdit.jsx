@@ -2,6 +2,7 @@
 
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
+import update from 'react/lib/update';
 import ShowForm from '../components/ShowForm'
 
 import {ShowsQueries} from '../../../lib/api/queries'
@@ -23,8 +24,9 @@ export default class ShowEdit extends React.Component {
     super(props);
     this.state = {
       submitting: false,
-      errors: {}
+      errors: {},
     };
+    this.newShow = _.isUndefined(this.props.show.id);
     _.bindAll(this, '_handleSubmit');
     this.formBuilder = new FormBuilder(
       GetFormSchema({
@@ -47,7 +49,7 @@ export default class ShowEdit extends React.Component {
       <ShowForm
         ref='form'
         formBuilder={this.formBuilder}
-        show={this.props.show}
+        newShow={this.newShow}
         errors={this.state.errors}
         submitting={this.state.submitting}
       />
@@ -58,7 +60,7 @@ export default class ShowEdit extends React.Component {
     if (this.refs.form) {
       const showToSubmit = this.refs.form.getResult();
 
-      const submitOptions = {
+      let submitOptions = {
         show: showToSubmit,
         success: (response) => {
           window.location.assign('/admin/shows');
@@ -72,35 +74,34 @@ export default class ShowEdit extends React.Component {
       };
 
       this.setState({submitting: true});
-      if (this.props.show.id) {
-        ShowsQueries.submitEditShow(submitOptions);
+      if (this.newShow) {
+        ShowsQueries.submitNewShow(submitOptions);
       }
       else {
-        ShowsQueries.submitNewShow(submitOptions);
+        submitOptions = update(submitOptions, {show: {id: {$set: this.props.show.id}}});
+        ShowsQueries.submitEditShow(submitOptions);
       }
     }
   }
 
   _onDelete() {
-    if (this.props.show.id) {
-      this.setState({
-        submitting: true
-      });
-      ShowsQueries.submitDeleteShow({
-        showId: this.props.show.id,
-        success: (response) => {
-          window.location.assign('/admin/shows');
-          this.setState({
-            submitting: false
-          });
-        },
-        error: (error) => {
-          // console.log(error);
-          this.setState({
-            submitting: false
-          });
-        }
-      });
-    }
+    this.setState({
+      submitting: true
+    });
+    ShowsQueries.submitDeleteShow({
+      showId: this.props.show.id,
+      success: (response) => {
+        window.location.assign('/admin/shows');
+        this.setState({
+          submitting: false
+        });
+      },
+      error: (error) => {
+        // console.log(error);
+        this.setState({
+          submitting: false
+        });
+      }
+    });
   }
 }

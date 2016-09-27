@@ -129,7 +129,8 @@ export default (props) => {
         video_type: {
           type: 'select',
           label: 'Tipo',
-          options: props.videoTypes
+          options: props.videoTypes,
+          async: false
         }
       }
     },
