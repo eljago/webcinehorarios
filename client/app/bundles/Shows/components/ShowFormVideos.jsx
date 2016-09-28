@@ -19,7 +19,7 @@ export default class ShowFormVideos extends React.Component {
     super(props);
     this.state = {
       images: props.formBuilder.object.videos.map((video) => {
-        return video.image.smaller.url;
+        return video.image.image.smaller.url;
       })
     }
     _.bindAll(this, ['_onAddItem', '_onDeleteItem', '_getContentRow'])
@@ -57,7 +57,6 @@ export default class ShowFormVideos extends React.Component {
         <Col xs={12} sm={2}>
           {this.props.formBuilder.getNestedField('videos', 'video_type', index, {
             getInitialValue: (obj) => {
-              console.log(obj);
               return {value: obj.video_type, label: obj.video_type};
             }
           })}

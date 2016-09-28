@@ -1,6 +1,7 @@
 'use strict';
 
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
+import _ from 'lodash';
 
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
