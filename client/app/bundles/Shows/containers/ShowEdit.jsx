@@ -26,7 +26,7 @@ export default class ShowEdit extends React.Component {
       submitting: false,
       errors: {},
     };
-    this.newShow = _.isUndefined(this.props.show.id);
+    this.newShow = _.isNull(this.props.show.id);
     _.bindAll(this, '_handleSubmit');
     this.formBuilder = new FormBuilder(
       GetFormSchema({

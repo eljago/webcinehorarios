@@ -1,6 +1,7 @@
 'use strict'
 
 import React from 'react';
+import _ from 'lodash';
 
 import FormFieldText from '../FormFields/FormFieldText'
 import FormFieldImage from '../FormFields/FormFieldImage'
@@ -21,6 +22,7 @@ export default class FormBuilder {
     for (const fieldKey in this.schema) {
       const fieldData = this.schema[fieldKey];
       if (fieldData.type === 'nested') {
+        this.object[fieldKey] = _.isArray(this.object[fieldKey]) ? this.object[fieldKey] : [];
         this.nestedFormBuilder[fieldKey] = new FormBuilder(fieldData.nestedSchema, this.object[fieldKey]);
       }
     }
