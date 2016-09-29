@@ -6,43 +6,33 @@ import PersonRow from './PersonRow';
 import PersonForm from './PersonForm';
 import SearchField from '../../../lib/forms/FormFields/SearchField'
 
-import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Button from 'react-bootstrap/lib/Button';
-import Image from 'react-bootstrap/lib/Image';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Pagination from 'react-bootstrap/lib/Pagination';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import InputGroup from 'react-bootstrap/lib/InputGroup';
 import Modal from 'react-bootstrap/lib/Modal';
+
+import FormBuilder from '../../../lib/forms/FormBuilder';
 
 export default class PeopleMain extends React.Component {
   static propTypes = {
-    defaultPerson: PropTypes.object,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
+    errors: PropTypes.object,
+    submitting: PropTypes.bool,
+    editing: PropTypes.bool,
     page: PropTypes.number.isRequired,
     itemsPerPage: PropTypes.number.isRequired,
     people: PropTypes.object.isRequired,
     pagesCount: PropTypes.number.isRequired,
     onChangePage: PropTypes.func,
     onSearchPerson: PropTypes.func,
-    onSubmitPerson: PropTypes.func,
-    onDeletePerson: PropTypes.func,
-    onSearchPeople: PropTypes.func,
+    onStartEditing: PropTypes.func,
+    onEndEditing: PropTypes.func,
   };
 
-  constructor(props){
-    super(props);
-    this.state = {
-      editingPerson: false,
-      currentPerson: null,
-    }
-    _.bindAll(this, ['_onStartEditing', '_closeModal'])
-  }
-
   render() {
-    const items = Math.ceil(this.props.pagesCount / this.props.itemsPerPage)
+    const items = Math.ceil(this.props.pagesCount / this.props.itemsPerPage);
     return (
       <div>
         <Row>
@@ -50,12 +40,7 @@ export default class PeopleMain extends React.Component {
             <Button
               style={{marginBottom: 10}}
               bsStyle="primary"
-              onClick={() => {
-                this.setState({
-                  currentPerson: this.props.defaultPerson,
-                  editingPerson: true
-                })
-              }}
+              onClick={this.props.onStartEditing}
               block
             >
               Nuevo
@@ -66,7 +51,7 @@ export default class PeopleMain extends React.Component {
               ref='searchField'
               placeholder='Buscar Persona'
               onSearch={(searchValue) => {
-                this.props.onSearchPeople(searchValue);
+                this.props.onSearchPerson(searchValue);
               }}
             />
           </Col>
@@ -84,35 +69,22 @@ export default class PeopleMain extends React.Component {
           activePage={this.props.page}
           onSelect={this.props.onChangePage}
         />
-        <Modal show={this.state.editingPerson} onHide={this._closeModal}>
+        <Modal show={this.props.editing} onHide={this.props.onEndEditing}>
           <Modal.Header closeButton>
             <Modal.Title>Person</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <PersonForm
-              person={this.state.currentPerson}
-              onSubmit={this.props.onSubmitPerson}
-              onClose={() => {
-                this.setState({editingPerson: false});
-              }}
+              ref='form'
+              formBuilder={this.props.formBuilder}
+              submitting={this.props.submitting}
+              errors={this.props.errors}
+              onClose={this.props.onEndEditing}
             />
           </Modal.Body>
         </Modal>
       </div>
     )
-  }
-
-  _closeModal() {
-    this.setState({
-      editingPerson: false,
-    });
-  }
-
-  _onStartEditing(person) {
-    this.setState({
-      currentPerson: person,
-      editingPerson: true,
-    });
   }
 
   _getRows() {
@@ -121,7 +93,7 @@ export default class PeopleMain extends React.Component {
         <PersonRow
           key={person.id}
           person={person}
-          onEditPerson={this._onStartEditing}
+          onEditPerson={this.props.onStartEditing}
           onDeletePerson={this.props.onDeletePerson}
         />
       );

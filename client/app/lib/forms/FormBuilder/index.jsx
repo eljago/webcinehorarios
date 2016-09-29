@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
-import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
-import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
-import FormFieldCheckboxGroup from '../../../lib/forms/FormFields/FormFieldCheckboxGroup'
-import FormFieldRadioGroup from '../../../lib/forms/FormFields/FormFieldRadioGroup'
-import FormFieldSelect from '../../../lib/forms/FormFields/FormFieldSelect'
-import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
+import FormFieldText from '../FormFields/FormFieldText'
+import FormFieldImage from '../FormFields/FormFieldImage'
+import FormFieldCheckbox from '../FormFields/FormFieldCheckbox'
+import FormFieldCheckboxGroup from '../FormFields/FormFieldCheckboxGroup'
+import FormFieldRadioGroup from '../FormFields/FormFieldRadioGroup'
+import FormFieldSelect from '../FormFields/FormFieldSelect'
+import FormFieldNested from '../FormFields/FormFieldNested'
 
 import Button from 'react-bootstrap/lib/Button';
 
@@ -31,10 +31,9 @@ export default class FormBuilder {
       const fb = this.nestedFormBuilder[primaryFieldId];
 
       const object = (index < fb.object.length) ? fb.object[index] : this.schema[primaryFieldId].defaultObject;
-      const initialValue = options.getInitialValue ? options.getInitialValue(object) : object[secondaryFieldId];
       return fb.getField(secondaryFieldId, {
         ...options,
-        initialValue: initialValue,
+        initialValue: options.getInitialValue ? options.getInitialValue(object) : object[secondaryFieldId],
         ref: `${secondaryFieldId}${index}`
       });
     }
@@ -48,7 +47,7 @@ export default class FormBuilder {
         submitKey: fieldData.submitKey ? fieldData.submitKey : fieldId,
         label: fieldData.label,
         ref: fieldId,
-        initialValue: this.object[fieldId],
+        initialValue: options.getInitialValue ? options.getInitialValue(this.object) : this.object[fieldId],
         ...options
       };
       let Component = FormFieldText;
@@ -101,10 +100,11 @@ export default class FormBuilder {
         <Button
           bsStyle="danger"
           disabled={disabled}
-          onClick={() => {
+          onClick={(e) => {
             if (confirm(fieldData.alertMessage)) {
               fieldData.onDelete();
             }
+            e.preventDefault();
           }}
           block
         >
@@ -121,7 +121,10 @@ export default class FormBuilder {
         <Button
           bsStyle="primary"
           disabled={disabled}
-          onClick={this.schema['submit'].onSubmit}
+          onClick={(e) => {
+            this.schema['submit'].onSubmit();
+            e.preventDefault();
+          }}
           block
         >
           {disabled ? '...' : 'Submit'}

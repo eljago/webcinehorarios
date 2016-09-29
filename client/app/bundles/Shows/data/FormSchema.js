@@ -135,11 +135,11 @@ export default (props) => {
       }
     },
     'delete': {
-      alertMessage: "Eliminar Show?",
-      onDelete: props.onDeleteShow
+      alertMessage: "¿Eliminar Show?",
+      onDelete: props.onDelete
     },
     'submit': {
-      onSubmit: props.onSubmitShow
+      onSubmit: props.onSubmit
     }
   }
 }

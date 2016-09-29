@@ -37,8 +37,8 @@ export default class ShowEdit extends React.Component {
           return {value: genre.id, label: genre.name};
         }),
         videoTypes: props.videoTypes,
-        onDeleteShow: this._onDelete,
-        onSubmitShow: this._handleSubmit
+        onDelete: this._onDelete,
+        onSubmit: this._handleSubmit
       }),
       props.show
     );

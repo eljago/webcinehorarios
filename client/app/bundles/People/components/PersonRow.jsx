@@ -14,21 +14,13 @@ export default class PersonRow extends React.Component {
   static propTypes = {
     person: PropTypes.object,
     onEditPerson: PropTypes.func,
-    onDeletePerson: PropTypes.func,
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      submitting: false
-    }
-  }
 
   render() {
     const person = this.props.person;
     return (
       <Row>
-        <Col xs={12} md={8} lg={8}>
+        <Col xs={12} md={10} lg={10}>
           <Media>
            <Media.Left>
               <img
@@ -44,10 +36,9 @@ export default class PersonRow extends React.Component {
             </Media.Body>
           </Media>
         </Col>
-        <Col xs={6} md={2} lg={2}>
+        <Col xs={12} md={2} lg={2}>
           <Button
             style={{marginTop: 10, marginBottom: 10}}
-            disabled={this.state.submitting}
             bsStyle={"default"}
             onClick={() => {
               this.props.onEditPerson(this.props.person);
@@ -57,35 +48,7 @@ export default class PersonRow extends React.Component {
             Editar
           </Button>
         </Col>
-        <Col xs={6} md={2} lg={2}>
-          <Button
-            style={{marginTop: 10, marginBottom: 10}}
-            bsStyle={"danger"}
-            disabled={this.state.submitting}
-            onClick={() => {
-              this._onDelete()
-            }}
-            block
-          >
-            {this._getDeleteButtonTitle()}
-          </Button>
-        </Col>
       </Row>
     );
-  }
-
-  _getDeleteButtonTitle() {
-    if (this.state.submitting) {
-      return 'Submitting';
-    }
-    return 'Eliminar';
-  }
-
-  _onDelete() {
-    this.props.onDeletePerson(this.props.person.id, (result, errors = null) => {
-      this.setState({
-        submitting: false
-      });
-    });
   }
 }
