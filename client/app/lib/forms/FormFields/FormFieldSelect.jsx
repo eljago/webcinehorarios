@@ -45,7 +45,7 @@ export default class FormFieldSelect extends React.Component {
           loadOptions={this.props.getOptions}
           options={this.props.options}
           clearable={false}
-          cache={true}
+          cache={false}
         />
       </FormGroup>
     )

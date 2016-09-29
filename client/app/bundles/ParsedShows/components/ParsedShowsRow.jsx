@@ -51,8 +51,8 @@ export default class ParsedShowsRow extends React.Component {
             label='Show'
             ref={'show_id'}
             initialValue={{
-              value: parsedShow.show_id ? parsedShow.show_id : '',
-              label: parsedShow.show_name ? parsedShow.show_name : ''
+              value: parsedShow.show_id,
+              label: parsedShow.show_name
             }}
             getOptions={this.props.getShowsOptions}
             onChange={(newValue) => {this._onChangeSelect(newValue)}}
