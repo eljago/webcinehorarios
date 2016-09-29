@@ -22,10 +22,13 @@ export default {
   },
   getShowsOptions: (input, callback) => {
     if (_.trim(input).length > 2) {
-      getShows(input, (response) => {
-        callback(null, {
-          options: response.shows,
-        });
+      getShows({
+        input: input,
+        success: (response) => {
+          callback(null, {
+            options: response.shows,
+          });
+        }
       });
     }
     else {
