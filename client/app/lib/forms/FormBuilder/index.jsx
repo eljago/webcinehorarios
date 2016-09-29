@@ -47,7 +47,7 @@ export default class FormBuilder {
         submitKey: fieldData.submitKey ? fieldData.submitKey : fieldId,
         label: fieldData.label,
         ref: fieldId,
-        initialValue: options.getInitialValue ? options.getInitialValue(this.object) : this.object[fieldId],
+        initialValue: this.object[fieldId],
         ...options
       };
       let Component = FormFieldText;

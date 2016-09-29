@@ -33,16 +33,14 @@ export default class PersonForm extends React.Component {
         <ErrorMessages errors={this.props.errors} />
         <Row>
           <Col xs={12} sm={4}>
-            <Image src={`http://cinehorarios.cl${this.state.personThumb}`} responsive/>
+            <Image src={this.state.personThumb} responsive/>
           </Col>
           <Col xs={12} sm={8}>
             <form>
               {formBuilder.getField('name', {disabled: this.props.submitting})}
               {formBuilder.getField('imdb_code', {disabled: this.props.submitting})}
               {formBuilder.getField('image', {
-                getInitialValue: (obj) => {
-                  return obj.id ? obj.image.small.url : '';
-                },
+                initialValue: formBuilder.object.image.small.url,
                 disabled: this.props.submitting,
                 onChange: (personThumb) => {this.setState({personThumb})}
               })}
