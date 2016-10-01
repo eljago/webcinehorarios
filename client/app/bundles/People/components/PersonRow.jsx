@@ -3,11 +3,6 @@
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
-import Button from 'react-bootstrap/lib/Button';
-import Media from 'react-bootstrap/lib/Media';
-
 import FormFieldText from '../../../lib/forms/FormFields/FormFieldText';
 
 export default class PersonRow extends React.Component {
@@ -19,36 +14,44 @@ export default class PersonRow extends React.Component {
   render() {
     const person = this.props.person;
     return (
-      <Row>
-        <Col xs={12} md={10} lg={10}>
-          <Media>
-           <Media.Left>
-              <img
-                style={{width: 80, height: 120, contentFit: 'contain'}}
-                src={_.get(person, 'image.smallest.url')}
-                alt="Image"
-              />
-            </Media.Left>
-            <Media.Body>
-              <Media.Heading>{person.name}</Media.Heading>
-              <p>{person.id}</p>
-              <p>{person.imdb_code}</p>
-            </Media.Body>
-          </Media>
-        </Col>
-        <Col xs={12} md={2} lg={2}>
-          <Button
-            style={{marginTop: 10, marginBottom: 10}}
-            bsStyle={"default"}
-            onClick={() => {
-              this.props.onEditPerson(this.props.person);
-            }}
-            block
-          >
-            Editar
-          </Button>
-        </Col>
-      </Row>
+      <a
+        style={{
+          ...styles.container,
+          backgroundImage: `url(http://cinehorarios.cl${person.image.smallest.url})`,
+          backgroundSize: 'cover'
+        }}
+        onClick={this.props.onEditPerson}
+      >
+        <div style={styles.content}>
+          <span style={styles.span}>{person.name}</span>
+          <span style={styles.span}>{person.id}</span>
+          <span style={styles.span}>{person.imdb_code}</span>
+        </div>
+      </a>
     );
   }
+}
+
+const styles = {
+  container: {
+    display: 'flex',
+    flexDirection: 'row',
+    margin: 4,
+    cursor: 'pointer',
+    width: 100,
+    height: 140,
+  },
+  content: {
+    backgroundColor: `rgba(0,0,0,0.6)`,
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  span: {
+    textAlign: 'center',
+    color: 'white',
+  },
 }
