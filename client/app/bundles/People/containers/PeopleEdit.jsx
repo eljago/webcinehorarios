@@ -20,16 +20,16 @@ export default class PeopleEdit extends React.Component {
     this.state = {
       people: [this._createNewPerson()]
     };
-    _.bindAll(this, ['_onSuccess', '_createNewPerson']);
+    _.bindAll(this, ['_onSuccess', '_createNewPerson', '_addNewPerson']);
   }
 
   render() {
     return (
       <div>
         <Button
-          style={{marginBottom: 10}}
+          style={{marginBottom: 98}}
           bsStyle="success"
-          onClick={this._createNewPerson}
+          onClick={this._addNewPerson}
           block
         >
           Nuevo
@@ -49,10 +49,16 @@ export default class PeopleEdit extends React.Component {
     );
   }
 
+  _addNewPerson() {
+    this.setState({
+      people: update(this.state.people, {$push: [this._createNewPerson()]})
+    });
+  }
+
   _createNewPerson(person = null) {
     return {
       ...(person ? person : this.props.defaultPerson),
-      key: (new Date().getTime())
+      key: (new Date()).getTime()
     };
   }
 
