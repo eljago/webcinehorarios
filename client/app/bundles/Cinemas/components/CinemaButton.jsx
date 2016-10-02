@@ -19,7 +19,7 @@ export default class CinemaButton extends React.Component {
           margin: 10,
           width: 90,
           height: 90,
-          backgroundImage: `url(http://cinehorarios.cl${this.props.imageUrl})`,
+          backgroundImage: `url(${this.props.imageUrl})`,
           backgroundSize: '100%',
           textAlign: 'center',
           textDecoration: 'none',

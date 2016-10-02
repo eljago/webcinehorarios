@@ -27,7 +27,7 @@ export default class ShowsList extends React.Component {
             key={show.id}
             style={{
               ...styles.a,
-              backgroundImage: `url(http://cinehorarios.cl${show.image_url})`,
+              backgroundImage: `url(${show.image_url})`,
               backgroundSize: 'cover'
             }}
             href={`/admin/shows/${show.id}/edit`}

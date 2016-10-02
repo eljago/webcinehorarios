@@ -17,7 +17,7 @@ export default class PersonRow extends React.Component {
       <a
         style={{
           ...styles.container,
-          backgroundImage: `url(http://cinehorarios.cl${person.image.smallest.url})`,
+          backgroundImage: `url(${person.image.smallest.url})`,
           backgroundSize: 'cover'
         }}
         onClick={this.props.onEditPerson}

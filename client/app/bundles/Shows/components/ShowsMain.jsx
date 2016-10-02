@@ -12,7 +12,6 @@ import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Pagination from 'react-bootstrap/lib/Pagination';
 
-
 export default class ShowsMain extends React.Component {
   static propTypes = {
     itemsPerPage: PropTypes.number.isRequired,
@@ -73,14 +72,14 @@ export default class ShowsMain extends React.Component {
             {this._getPagination()}
           </Col>
           <Col xs={4}>
-            <h1>Cartelera</h1>
+            <h3 style={{marginBottom: 32}}>Cartelera</h3>
             <ShowsList
               shows={this.props.billboard}
               loadingContent={this.props.loadingBillboard}
             />
           </Col>
           <Col xs={4}>
-            <h1>Próximamente</h1>
+            <h3 style={{marginBottom: 32}}>Próximamente</h3>
             <ShowsList
               shows={this.props.comingSoon}
               loadingContent={this.props.loadingComingSoon}
