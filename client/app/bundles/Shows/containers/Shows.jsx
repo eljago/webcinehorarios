@@ -12,13 +12,15 @@ export default class Shows extends React.Component {
   constructor(props) {
     super(props);
 
-
     this.state = {
       itemsPerPage: 15,
-      shows: [],
       pagesCount: null,
+      shows: [],
       loadingContent: false,
-      contentType: 'all'
+      billboard: [],
+      loadingBillboard: false,
+      comingSoon: [],
+      loadingComingSoon: false,
     };
     _.bindAll(this, [
       '_updateData',
@@ -26,12 +28,9 @@ export default class Shows extends React.Component {
   }
 
   componentDidMount() {
-    let contentType = 'all'
-    const stripped_url = document.location.toString().split("#");
-    if (stripped_url.length > 1)
-      contentType = stripped_url[1];
-    this.setState({contentType});
-    this._updateData(contentType);
+    this._updateData();
+    this._updateBillboard();
+    this._updateComingSoon();
   }
 
   render() {
@@ -39,77 +38,76 @@ export default class Shows extends React.Component {
       <ShowsMain
         page={this.state.page}
         itemsPerPage={this.state.itemsPerPage}
-        shows={this.state.shows}
         pagesCount={this.state.pagesCount}
         updateData={this._updateData}
+        shows={this.state.shows}
         loadingContent={this.state.loadingContent}
+        billboard={this.state.billboard}
+        loadingBillboard={this.state.loadingBillboard}
+        comingSoon={this.state.comingSoon}
+        loadingComingSoon={this.state.loadingComingSoon}
       />
     );
   }
 
-  _updateData(contentType, page = 1, searchValue = '') {
-
+  _updateData(page = 1, searchValue = '') {
     this.setState({
-      contentType: contentType
+      loadingContent: true
     });
-    if (contentType === 'all') {
-      this.setState({
-        loadingContent: true
-      });
-      ShowsQueries.getShows({
-        page: page,
-        perPage: this.state.itemsPerPage,
-        searchValue: searchValue,
-        success: (response) => {
-          this.setState({
-            shows: response.shows,
-            pagesCount: response.count,
-            loadingContent: false
-          });
-        },
-        error: (errors) => {
-          this.setState({
-            loadingContent: false
-          });
-        }
-      });
-    }
-    else if (contentType === 'billboard') {
-      this.setState({
-        loadingContent: true
-      });
+    ShowsQueries.getShows({
+      page: page,
+      perPage: this.state.itemsPerPage,
+      searchValue: searchValue,
+      success: (response) => {
+        this.setState({
+          shows: response.shows,
+          pagesCount: response.count,
+          loadingContent: false
+        });
+      },
+      error: (errors) => {
+        this.setState({
+          loadingContent: false
+        });
+      }
+    });
+  }
 
-      ShowsQueries.getBillboard({
-        success: (response) => {
-          this.setState({
-            shows: response.shows,
-            loadingContent: false
-          });
-        },
-        error: (errors) => {
-          this.setState({
-            loadingContent: false
-          });
-        }
-      });
-    }
-    else if (contentType === 'comingsoon') {
-      this.setState({
-        loadingContent: true
-      });
-      ShowsQueries.getComingSoon({
-        success: (response) => {
-          this.setState({
-            shows: response.shows,
-            loadingContent: false
-          });
-        },
-        error: (errors) => {
-          this.setState({
-            loadingContent: false
-          });
-        }
-      });
-    }
+  _updateBillboard() {
+    this.setState({
+      loadingBillboard: true
+    });
+    ShowsQueries.getBillboard({
+      success: (response) => {
+        this.setState({
+          billboard: response.shows,
+          loadingBillboard: false
+        });
+      },
+      error: (errors) => {
+        this.setState({
+          loadingBillboard: false
+        });
+      }
+    });
+  }
+
+  _updateComingSoon() {
+    this.setState({
+      loadingComingSoon: true
+    });
+    ShowsQueries.getComingSoon({
+      success: (response) => {
+        this.setState({
+          comingSoon: response.shows,
+          loadingComingSoon: false
+        });
+      },
+      error: (errors) => {
+        this.setState({
+          loadingComingSoon: false
+        });
+      }
+    });
   }
 }
