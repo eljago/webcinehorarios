@@ -38,12 +38,13 @@ export default class Cinemas extends React.Component {
 
   _updateTheaters(cinemaId) {
     TheatersQueries.getTheaters({
-      cinemaId: cinemaId
-    }, (response) => {
-      this.setState({
-        selectedCinemaId: cinemaId,
-        theaters: response.theaters
-      });
+      cinemaId: cinemaId,
+      success: (response) => {
+        this.setState({
+          selectedCinemaId: cinemaId,
+          theaters: response.theaters
+        });
+      }
     });
   }
 
