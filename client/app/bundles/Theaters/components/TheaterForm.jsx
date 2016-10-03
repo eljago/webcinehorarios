@@ -10,117 +10,61 @@ import FormFieldRadioGroup from '../../../lib/forms/FormFields/FormFieldRadioGro
 
 import Button from 'react-bootstrap/lib/Button';
 
+import FormBuilder from '../../../lib/forms/FormBuilder';
+
 export default class TheaterForm extends React.Component {
 
   static propTypes = {
+    formBuilder: PropTypes.instanceOf(FormBuilder),
     errors: PropTypes.array,
-    theater: PropTypes.object,
-    onSubmit: PropTypes.func,
+    submitting: PropTypes.boolean,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      submitting: false
-    }
-    _.bindAll(this, '_onSubmit');
-  }
-
   render() {
-    const theater = this.props.theater;
-    const submitting = this.state.submitting;
+    const {formBuilder, submitting, errors} = this.props;
 
     return (
       <form>
-        <ErrorMessages errors={this.props.errors} />
+        <ErrorMessages errors={errors} />
 
-        <FormFieldText
-          submitKey='name'
-          label='Nombre'
-          ref='name'
-          initialValue={theater ? theater.name : ''}
-        />
-        <FormFieldCheckbox
-          submitKey='active'
-          label='Activo?'
-          ref='active'
-          initialValue={theater ? theater.active : false}
-        />
-        <FormFieldText
-          submitKey='address'
-          label='Dirección'
-          ref='address'
-          initialValue={theater ? theater.address : ''}
-        />
-        <FormFieldText
-          submitKey='web_url'
-          label='Web URL'
-          ref='web_url'
-          initialValue={theater ? theater.web_url : ''}
-        />
-        <FormFieldText
-          submitKey='parse_helper'
-          label='Parse Helper'
-          ref='parse_helper'
-          initialValue={theater ? theater.parse_helper : ''}
-        />
-        <FormFieldText
-          type='textarea'
-          submitKey='information'
-          label='Información'
-          ref='information'
-          initialValue={theater ? theater.information : ''}
-        />
-        <FormFieldText
-          type='number'
-          step='0.0000001'
-          submitKey='latitude'
-          label='Latitud'
-          ref='latitude'
-          initialValue={theater ? theater.latitude : ''}
-        />
-        <FormFieldText
-          type='number'
-          step='0.0000001'
-          submitKey='longitude'
-          label='Longitud'
-          ref='longitude'
-          initialValue={theater ? theater.longitude : ''}
-        />
-        <Button
-          bsStyle="primary"
-          type="submit"
-          disabled={submitting}
-          onClick={this._onSubmit}
-        >
-          {submitting ? 'Submitting...' : 'Submit'}
-        </Button>
+        {formBuilder.getField('name', {disabled: submitting})}
+        {formBuilder.getField('active', {disabled: submitting})}
+        {formBuilder.getField('address', {disabled: submitting})}
+        {formBuilder.getField('web_url', {disabled: submitting})}
+        {formBuilder.getField('parse_helper', {disabled: submitting})}
+        {formBuilder.getField('information', {disabled: submitting})}
+        {formBuilder.getField('latitude', {
+          disabled: submitting,
+          step: '0.0000001'
+        })}
+        {formBuilder.getField('longitude', {
+          disabled: submitting,
+          step: '0.0000001'
+        })}
+        {formBuilder.getSubmitButton({
+          disabled: submitting
+        })}
+        {this._getDeleteButton()}
       </form>
     );
   }
 
-  _onSubmit(e) {
-    this.setState({submitting: true});
-    const theaterToSubmit = this._getResult();
-    this.props.onSubmit(theaterToSubmit, (success) => {
-      if (success) {
-        console.log("SUCCESS");
-      }
-      else {
-        console.log("ERROR");
-      }
-      this.setState({submitting: false});
-    });
-    e.preventDefault();
+  _getDeleteButton() {
+    if (this.props.formBuilder.object.id) {
+      return this.props.formBuilder.getDeleteButton({
+        disabled: this.props.submitting
+      });
+    }
+    return null;
   }
 
-  _getResult() {
-    let theaterResult = this.props.theater ? {id: this.props.theater.id} : {};
+  getResult() {
+    let showResult = {};
     _.forIn(this.refs, (formElement) => {
       if (_.isFunction(formElement.getResult)) {
-        _.merge(theaterResult, formElement.getResult());
+        _.merge(showResult, formElement.getResult());
       }
     });
-    return theaterResult;
+    return showResult;
   }
 }

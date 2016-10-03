@@ -15,9 +15,11 @@ class Admin::TheatersController < ApplicationController
   end
 
   def new
+    theater = Theater.new
+    theater.cinema_id = params[:cinema_id]
     @title = 'Edit Theater'
     @app_name = 'TheaterEditApp'
-    @props = {theater: nil}
+    @props = {theater: Theater.new}
     @prerender = false
     render file: 'react/render'
   end

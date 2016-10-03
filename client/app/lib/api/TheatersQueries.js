@@ -20,9 +20,16 @@ export default {
   },
   submitEditTheater: (options) => {
     $.ajax(GetQueryContent({
-      url: `/api/theaters/${theater.id}`,
+      url: `/api/theaters/${options.theater.id}`,
       type: 'PUT',
       data: { theaters: options.theater },
+      ...options
+    }));
+  },
+  submitDeleteTheater: (options) => {
+    $.ajax(GetQueryContent({
+      url: `/api/theaters/${options.theaterId}`,
+      type: 'DELETE',
       ...options
     }));
   }

@@ -11,6 +11,8 @@ export default class CinemasMain extends React.Component {
     theaters: PropTypes.array,
     selectedCinemaId: PropTypes.number,
     onClickCinema: PropTypes.func,
+    loadingTheaters: PropTypes.boolean,
+    errors: PropTypes.object,
   };
 
   constructor(props) {
@@ -29,11 +31,9 @@ export default class CinemasMain extends React.Component {
           {this._getButtons()}
         </div>
         <div>
-          <button
-            onClick={() => {
-              window.location.assign(`/admin/theaters/new`)
-            }}
-          >
+          <button onClick={() => {
+            window.location.assign(`/admin/cinemas/${this.props.selectedCinemaId}/theaters/new`)
+          }}>
             Nuevo
           </button>
         </div>
@@ -58,31 +58,34 @@ export default class CinemasMain extends React.Component {
   }
 
   _getTheaters() {
-    return this.props.theaters.map((theater) => {
-      return (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'flex-start',
-            margin: 5,
-          }}
-        >
-          <span style={{
-            flex: 1
-          }}>
-            {theater.name}
-          </span>
-          <button
+    if (this.props.loadingTheaters) {
+      return <h1>Loading...</h1>;
+    }
+    else {
+      return this.props.theaters.map((theater) => {
+        return (
+          <div
             style={{
-              alignSelf: 'flex-end'
+              display: 'flex',
+              justifyContent: 'flex-start',
+              margin: 5,
             }}
-            onClick={() => {
-              window.location.assign(`/admin/theaters/${theater.slug}/edit`)
-            }}>
-            Editar
-          </button>
-        </div>
-      );
-    });
+          >
+            <a style={{flex: 1}} href={`/admin/theaters/${theater.slug}/functions`}>
+              {theater.name}
+            </a>
+            <button
+              style={{
+                alignSelf: 'flex-end'
+              }}
+              onClick={() => {
+                window.location.assign(`/admin/theaters/${theater.slug}/edit`)
+              }}>
+              Editar
+            </button>
+          </div>
+        );
+      });
+    }
   }
 }

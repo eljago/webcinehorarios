@@ -28,7 +28,7 @@ export default class PersonForm extends React.Component {
   }
 
   render() {
-    const formBuilder = this.props.formBuilder;
+    const {formBuilder, submitting, onClose} = this.props;
     return (
       <div>
         <ErrorMessages errors={this.props.errors} />
@@ -38,17 +38,19 @@ export default class PersonForm extends React.Component {
           </Col>
           <Col xs={12} sm={8}>
             <form>
-              {formBuilder.getField('name', {disabled: this.props.submitting})}
-              {formBuilder.getField('imdb_code', {disabled: this.props.submitting})}
+              {formBuilder.getField('name', {disabled: submitting})}
+              {formBuilder.getField('imdb_code', {disabled: submitting})}
               {formBuilder.getField('image', {
                 initialValue: formBuilder.object.image.small.url,
-                disabled: this.props.submitting,
+                disabled: submitting,
                 onChange: (personThumb) => {this.setState({personThumb})}
               })}
-              {formBuilder.getSubmitButton(this.props.submitting)}
+              {formBuilder.getSubmitButton({
+                disabled: submitting
+              })}
               {this._getDeleteButton()}
               <Button
-                onClick={this.props.onClose}
+                onClick={onClose}
                 block
               >
                 Cancelar
@@ -62,7 +64,9 @@ export default class PersonForm extends React.Component {
 
   _getDeleteButton() {
     if (this.props.formBuilder.object.id) {
-      return this.props.formBuilder.getDeleteButton(this.props.submitting);
+      return this.props.formBuilder.getDeleteButton({
+        disabled: this.props.submitting
+      });
     }
     return null;
   }

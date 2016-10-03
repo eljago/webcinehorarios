@@ -9,7 +9,8 @@ import FormFieldRadioGroup from '../../../lib/forms/FormFields/FormFieldRadioGro
 export default class CinemaForm extends React.Component {
 
   static propTypes = {
-    cinema: PropTypes.object
+    cinema: PropTypes.object,
+    errors: PropTypes.object,
   };
 
   render() {

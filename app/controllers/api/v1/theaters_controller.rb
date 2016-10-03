@@ -3,8 +3,7 @@ module Api
     class TheatersController < Api::V1::ApiController
 
       def index
-        theaters = Theater.where(cinema_id: params[:cinema_id], active: true)
-          .order(:name).all
+        theaters = Theater.where(cinema_id: params[:cinema_id]).order(:name).all
         response = {theaters: theaters}
         respond_with response
       end

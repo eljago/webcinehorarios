@@ -7,14 +7,21 @@ import CinemaForm from '../components/CinemaForm'
 
 import {CinemasQueries} from '../../../lib/api/queries'
 
+import FormBuilder from '../../../lib/forms/FormBuilder';
+import GetFormSchema from '../data/FormSchema'
+
 export default class CinemaEdit extends React.Component {
 
   static propTypes = {
-    cinema: PropTypes.object
+    cinema: PropTypes.object,
   };
 
   constructor(props) {
     super(props);
+    this.state = {
+      submitting: false,
+      errors: {},
+    };
   }
 
   render() {

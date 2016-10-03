@@ -27,16 +27,17 @@ export default class ShowForm extends React.Component {
   };
 
   render() {
+    const {formBuilder, submitting, errors} = this.props;
     return (
       <div>
-        <ErrorMessages errors={this.props.errors} />
+        <ErrorMessages errors={errors} />
 
         <Tabs bsStyle="pills" defaultActiveKey={1} animation={false}>
 
           <Tab eventKey={1} title="Basic Info">
             <br/>
             <ShowFormBasic
-              formBuilder={this.props.formBuilder}
+              formBuilder={formBuilder}
               ref='formBasic'
             />
           </Tab>
@@ -44,7 +45,7 @@ export default class ShowForm extends React.Component {
           <Tab eventKey={2} title="Cast">
             <br/>
             <ShowFormCast
-              formBuilder={this.props.formBuilder}
+              formBuilder={formBuilder}
               ref='formCast'
             />
           </Tab>
@@ -52,7 +53,7 @@ export default class ShowForm extends React.Component {
           <Tab eventKey={3} title="Images">
             <br/>
             <ShowFormImages
-              formBuilder={this.props.formBuilder}
+              formBuilder={formBuilder}
               ref='formImages'
             />
           </Tab>
@@ -60,7 +61,7 @@ export default class ShowForm extends React.Component {
           <Tab eventKey={4} title="Videos">
             <br/>
             <ShowFormVideos
-              formBuilder={this.props.formBuilder}
+              formBuilder={formBuilder}
               ref='formVideos'
             />
           </Tab>
@@ -72,7 +73,9 @@ export default class ShowForm extends React.Component {
         <Grid>
           <Row>
             <Col xs={12} sm={2}>
-              {this.props.formBuilder.getSubmitButton(this.props.submitting)}
+              {formBuilder.getSubmitButton({
+                disabled: submitting
+              })}
             </Col>
             {this._getDeleteButton()}
           </Row>
@@ -93,7 +96,9 @@ export default class ShowForm extends React.Component {
           </Col>
           ,
           <Col xs={12} xsOffset={24} sm={2} smOffset={8}>
-            {this.props.formBuilder.getDeleteButton(this.props.submitting)}
+            {this.props.formBuilder.getDeleteButton({
+              disabled: this.props.submitting
+            })}
           </Col>
         ]
       );

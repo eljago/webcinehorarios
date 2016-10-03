@@ -94,42 +94,41 @@ export default class FormBuilder {
     return null
   }
 
-  getDeleteButton(disabled) {
+  getDeleteButton(options) {
     if (this.schema && this.schema['delete']) {
       const fieldData = this.schema['delete'];
       const alertMsg = fieldData.alertMessage ? fieldData.alertMessage : '¿Eliminar?';
       return(
         <Button
           bsStyle="danger"
-          disabled={disabled}
           onClick={(e) => {
             if (confirm(fieldData.alertMessage)) {
               fieldData.onDelete();
             }
             e.preventDefault();
           }}
-          block
+          {...options}
         >
-          {disabled ? '...' : 'Eliminar'}
+          {options.disabled ? '...' : (options.text ? options.text : 'Eliminar')}
         </Button>
       );
     }
     return null;
   }
 
-  getSubmitButton(disabled) {
+  getSubmitButton(options) {
     if (this.schema && this.schema['submit']) {
       return(
         <Button
           bsStyle="primary"
-          disabled={disabled}
+          type="submit"
           onClick={(e) => {
             this.schema['submit'].onSubmit();
             e.preventDefault();
           }}
-          block
+          {...options}
         >
-          {disabled ? '...' : 'Submit'}
+          {options.disabled ? '...' : (options.text ? options.text : 'Submit')}
         </Button>
       );
     }
