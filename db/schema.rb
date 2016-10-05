@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160923075435) do
+ActiveRecord::Schema.define(version: 20161005012421) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 20160923075435) do
     t.datetime "updated_at",     null: false
     t.date     "date"
     t.integer  "parsed_show_id"
+    t.string   "showtimes"
     t.index ["parsed_show_id"], name: "index_functions_on_parsed_show_id", using: :btree
     t.index ["show_id"], name: "index_functions_on_show_id", using: :btree
     t.index ["theater_id"], name: "index_functions_on_theater_id", using: :btree

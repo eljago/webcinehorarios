@@ -6,3 +6,7 @@ es-CL:
   time:
     formats:
       normal_time: "%H:%M"
+
+  errors:
+    messages:
+      existence: "Debe existir como objecto o foreign key"

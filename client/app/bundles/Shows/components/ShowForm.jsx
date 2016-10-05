@@ -73,9 +73,7 @@ export default class ShowForm extends React.Component {
         <Grid>
           <Row>
             <Col xs={12} sm={2}>
-              {formBuilder.getSubmitButton({
-                disabled: submitting
-              })}
+              {formBuilder.getSubmitButton({disabled: submitting})}
             </Col>
             {this._getDeleteButton()}
           </Row>

@@ -16,6 +16,7 @@ config = {
     './app/bundles/Dashboard/startup/DashboardApp',
     './app/bundles/Cinemas/startup/CinemasApp',
     './app/bundles/Theaters/startup/TheatersApp',
+    './app/bundles/Functions/startup/FunctionsApp',
   ],
 
   output: {

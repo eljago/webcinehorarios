@@ -14,6 +14,7 @@ export default class FormFieldText extends React.Component {
     label: PropTypes.string,
     initialValue: PropTypes.string,
     disabled: PropTypes.boolean,
+    placeholder: PropTypes.string,
   };
   static defaultProps = {
     type: 'text',
@@ -32,7 +33,8 @@ export default class FormFieldText extends React.Component {
       submitKey,
       label,
       initialValue,
-      type
+      type,
+      placeholder
     } = this.props;
 
     const typeProps = type === 'textarea' ?
@@ -46,7 +48,7 @@ export default class FormFieldText extends React.Component {
         <FormControl
           {...typeProps}
           value={this.state.currentValue}
-          placeholder={label}
+          placeholder={placeholder ? placeholder : label}
           onChange={(e) => {
             this._handleChange(e.target.value)
           }}

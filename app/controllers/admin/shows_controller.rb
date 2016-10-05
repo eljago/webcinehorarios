@@ -58,7 +58,7 @@ class Admin::ShowsController < ApplicationController
     show = Show.includes(:show_person_roles)
       .order('show_person_roles.position').find(params[:id])
     hash_show = show.as_json
-    hash_show["genres"] = show.genres.map(&:id)
+    hash_show["genres"] = show.genre_ids
     hash_show["show_person_roles"] = show.show_person_roles.includes(:person).order(:position).map do |spr|
       {
         "id" => spr.id,

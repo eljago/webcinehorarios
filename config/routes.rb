@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     ##### V1 #####
     scope module: :v1, constraints: ApiConstraints.new(version: 1) do
       resources :theaters, only: [:create, :update, :destroy]
+      resources :functions, only: [:index, :update, :destroy]
       resources :cinemas, only: [] do
         resources :theaters, only: :index
       end
@@ -126,9 +127,6 @@ Rails.application.routes.draw do
 
     # For Sorting Actors
     post 'show_person_roles/sort' => 'show_person_roles#sort', as: 'show_person_roles_sort'
-
-    post 'destroy_all_parsed_shows' => 'functions#destroy_all_parsed_shows'
-    post 'create_parsed_shows' => 'functions#create_parsed_shows'
 
     resources :settings, only: [:index, :edit, :update]
   end

@@ -34,6 +34,7 @@ class Show < ApplicationRecord
     }, allow_blank: true
 
   accepts_nested_attributes_for :images, :videos, :show_person_roles, allow_destroy: true
+  accepts_nested_attributes_for :functions
 
   after_commit :flush_cache
 
