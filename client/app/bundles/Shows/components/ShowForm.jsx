@@ -119,7 +119,6 @@ export default class ShowForm extends React.Component {
     const dataShowVideos = this.refs.formVideos.getResult();
     showToSubmit = _.merge(showToSubmit, dataShowVideos);
 
-    console.log(showToSubmit);
     return showToSubmit;
   }
 }

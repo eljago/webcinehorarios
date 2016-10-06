@@ -8,6 +8,7 @@ module Api
         functions_hash = functions.map do |f|
           function_hash = f.as_json
           function_hash["show"] = f.show.as_json
+          function_hash["show"]["image"] = f.show.image_url(:smaller)
           function_hash["function_types"] = f.function_types.as_json
           function_hash["parsed_show"] = f.parsed_show.as_json
           function_hash

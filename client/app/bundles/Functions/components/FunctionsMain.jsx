@@ -8,6 +8,7 @@ import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Pager from 'react-bootstrap/lib/Pager';
+import Image from 'react-bootstrap/lib/Image';
 import PageHeader from 'react-bootstrap/lib/PageHeader';
 
 export default class FunctionsMain extends React.Component {
@@ -48,17 +49,25 @@ export default class FunctionsMain extends React.Component {
         return(
           <Grid>
             <Row>
-              <Col sm={3}>
-                {func.parsed_show.name}
+              <Col sm={1}>
+                <Image
+                  style={styles.img}
+                  src={`http://cinehorarios.cl${func.show.image}`}
+                />
               </Col>
               <Col sm={3}>
-                {func.show.name}
+                <span style={styles.span}>{func.parsed_show ? func.parsed_show.name : ''}</span>
+              </Col>
+              <Col sm={3}>
+                <span style={styles.span}>{func.show.name}</span>
               </Col>
               <Col sm={2}>
-                {func.date}
+                <span style={styles.span}>{func.function_types.map((ft) => {
+                  return ft.name;
+                }).join(', ')}</span>
               </Col>
-              <Col sm={4}>
-                {func.showtimes}
+              <Col sm={3}>
+                <span style={styles.span}>{func.showtimes}</span>
               </Col>
             </Row>
           </Grid>
@@ -91,5 +100,16 @@ export default class FunctionsMain extends React.Component {
         }}>Next</Pager.Item>
       </Pager>
     );
+  }
+}
+
+const styles = {
+  img: {
+    width: 40,
+    height: 60,
+    "objectFit": 'cover'
+  },
+  span: {
+    fontSize: 18
   }
 }

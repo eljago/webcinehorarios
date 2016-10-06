@@ -75,9 +75,11 @@ namespace :parse do
                 end
               end
             else
-              function_types_raw = li_functions_days.css('span').first.text
-              function_types_array = function_types_raw.split(';')
-              function_types_array << 'DOB' if !function_types_array.include?('SUB')
+              function_types_array = []
+              function_types_raw = li_functions_days.css('span').each do |span|
+                function_types_array << span.text
+              end
+              function_types_array << 'Doblada' if !function_types_array.include?('Subtitulada')
               
               found_existing_functions_with_same_function_types = false
               movieFunction["theaters"][theater_slug] = [] if movieFunction["theaters"][theater_slug].blank?

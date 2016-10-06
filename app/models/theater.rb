@@ -85,7 +85,7 @@ class Theater < ApplicationRecord
   
   def override_functions new_functions, start_date, parse_days_count
 
-    current_functions = functions.includes(:function_types, :showtimes)
+    current_functions = functions.includes(:function_types)
 
     new_functions_hash = {}
     new_functions.each do |f|
@@ -115,27 +115,16 @@ class Theater < ApplicationRecord
       functions_to_destroy << function unless found_identical
     end
 
-    functions_to_destroy_hash = {}
+    functions_to_destroy_hash = {} # functions_to_destroy grouped by date
     functions_to_destroy.each do |f|
       functions_to_destroy_hash[f.date] = [] if functions_to_destroy_hash[f.date].blank?
       functions_to_destroy_hash[f.date] << f
     end
 
     functions_to_destroy.each do |f|
+      # don't destroy if there are no new functions for that day, so it doesn't end up empty (cinemark)
       if new_functions_hash[f.date].present? && new_functions_hash[f.date].length != 0
         f.destroy
-      else
-        current_showtimes_array = []
-        current_functions_hash[f.date].each do |f2|
-          current_showtimes_array << f2.showtimes.map {|s| s.time.strftime("%H%M").to_i}.sort
-        end
-        destroy_showtimes_array = []
-        functions_to_destroy_hash[f.date].each do |f2|
-          destroy_showtimes_array << f2.showtimes.map {|s| s.time.strftime("%H%M").to_i}.sort
-        end
-        if current_showtimes_array != destroy_showtimes_array
-          f.destroy
-        end
       end
     end
 

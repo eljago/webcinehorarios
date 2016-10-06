@@ -97,7 +97,6 @@ export default class ShowEdit extends React.Component {
         });
       },
       error: (error) => {
-        // console.log(error);
         this.setState({
           submitting: false
         });

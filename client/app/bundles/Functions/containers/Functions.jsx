@@ -53,7 +53,6 @@ export default class Functions extends React.Component {
       date: date,
       theater_id: theater_id,
       success: (response) => {
-        console.log(response);
         this.setState({
           functions: response.functions,
           loadingContent: false,
@@ -61,7 +60,6 @@ export default class Functions extends React.Component {
         });
       },
       error: (errors) => {
-        console.log(errors);
         this.setState({
           loadingContent: false,
           offsetDays: offsetDays
