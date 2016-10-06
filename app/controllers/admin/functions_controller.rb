@@ -43,6 +43,20 @@ class Admin::FunctionsController < ApplicationController
 
   def create
     @function = @theater.functions.new(function_params)
+    @function.showtimes = params[:horarios]
+    date = @function.date
+    7.times do |n|
+      horarios = params["horarios_extra_#{n}"]
+      date = date.next
+      if horarios.size >= 5
+        function = @theater.functions.new
+        function.date = date
+        function.function_types = @function.function_types
+        function.show_id = @function.show_id
+        function.showtimes = horarios
+        function.save
+      end
+    end
     if @function.save
       redirect_to admin_theater_functions_path(date: @function.date), notice: 'Funciones creadas con exito.'
     else

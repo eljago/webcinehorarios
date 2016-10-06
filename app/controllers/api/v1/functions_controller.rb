@@ -23,6 +23,10 @@ module Api
         respond_with function, json: function
       end
 
+      def destroy
+        respond_with Function.destroy(params[:id])
+      end
+
       private
 
       def function_params

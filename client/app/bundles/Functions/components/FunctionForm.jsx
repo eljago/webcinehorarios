@@ -43,10 +43,22 @@ export default class FunctionForm extends React.Component {
           </Row>
         </Grid>
         {formBuilder.getSubmitButton({disabled: submitting})}
+        {this._getDeleteButton()}
       </form>
     );
   }
   
+  _getDeleteButton() {
+    if (this.props.formBuilder.object.id) {
+      return (
+        this.props.formBuilder.getDeleteButton({
+          disabled: this.props.submitting
+        })
+      );
+    }
+    return null;
+  }
+
   getResult() {
     let showResult = {};
     _.forIn(this.refs, (formElement) => {

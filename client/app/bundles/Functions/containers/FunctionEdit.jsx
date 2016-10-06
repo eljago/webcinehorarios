@@ -52,10 +52,9 @@ export default class FunctionEdit extends React.Component {
     if (this.refs.form) {
       let functionToSubmit = this.refs.form.getResult();
       functionToSubmit.id = this.props.function.id;
-
       this.setState({submitting: true});
       FunctionsQueries.submitEditFunction({
-        function: functionToSubmit,
+        func: functionToSubmit,
         success: (response) => {
           window.location.assign(`/admin/theaters/${this.props.function.theater.slug}/functions`);
         },
@@ -76,7 +75,7 @@ export default class FunctionEdit extends React.Component {
     FunctionsQueries.submitDeleteFunction({
       functionId: this.props.function.id,
       success: (response) => {
-        window.location.assign(`/admin/theaters/${this.props.theater.id}/functions`);
+        window.location.assign(`/admin/theaters/${this.props.function.theater.slug}/functions`);
         this.setState({
           submitting: false
         });
