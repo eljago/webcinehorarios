@@ -7,7 +7,8 @@ import moment from 'moment'
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Pager from 'react-bootstrap/lib/Pager';
+import Nav from 'react-bootstrap/lib/Nav';
+import NavItem from 'react-bootstrap/lib/NavItem';
 import Image from 'react-bootstrap/lib/Image';
 import Button from 'react-bootstrap/lib/Button';
 import PageHeader from 'react-bootstrap/lib/PageHeader';
@@ -24,24 +25,35 @@ export default class FunctionsMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentOffest: props.offsetDays
+      currentOffest: props.offsetDays,
+      selectedPillDate: this._getPrettyDateString(moment())
     }
+  }
+
+  _getPrettyDateString(date) {
+    return(_.upperFirst(date.format('dddd D')));
   }
 
   render() {
     const theater = this.props.theater;
     return (
       <div>
-        <PageHeader>
-          {theater.name}
-          <small>  {_.upperFirst(moment().add(this.props.offsetDays, 'days').format('dddd D [de] MMMM, YYYY'))}</small>
-        </PageHeader>
-        <Button
-          bsStyle="success"
-          href={`/admin/theaters/${theater.slug}/functions/new?date=${moment().format('YYYY-MM-DD')}`}
-        >
-          Nuevo
-        </Button>
+        <div style={{display: 'flex', flexDirection: 'row', marginBottom: 10}}>
+          <span style={{flex: 1, fontSize: 26}}>
+            {theater.name}
+          </span>
+          <span style={{flex: 1, color: 'gray', fontSize: 22}}>
+            {_.upperFirst(moment().add(this.props.offsetDays, 'days').format('dddd D [de] MMMM, YYYY'))}
+          </span>
+          <div>
+            <Button
+              bsStyle="success"
+              href={`/admin/theaters/${theater.slug}/functions/new?date=${moment().format('YYYY-MM-DD')}`}
+            >
+              Nuevo
+            </Button>
+          </div>
+        </div>
         {this._getPagination()}
         {this._getFunctions()}
       </div>
@@ -92,26 +104,32 @@ export default class FunctionsMain extends React.Component {
   _getPagination() {
     moment.locale('es-CL');
     let currDay = moment().add(this.state.currentOffest - 4, 'days');
-    let dates = [_.upperFirst(currDay.format('dddd D'))];
+    let dates = [this._getPrettyDateString(currDay)];
     for(let indx = 0; indx < 9; indx++) {
-      dates.push(_.upperFirst(currDay.add(1, 'days').format('dddd D')))
+      dates.push(this._getPrettyDateString(currDay.add(1, 'days')));
     }
+
     return (
-      <Pager>
-        <Pager.Item previous onSelect={() => {
-          this.setState({currentOffest: this.state.currentOffest - 1})
-        }}>Prev</Pager.Item>
+      <Nav justified bsStyle="pills" activeKey={this.state.selectedPillDate}>
+        <NavItem onSelect={() => {
+          this.setState({currentOffest: this.state.currentOffest - 1});
+        }}>Prev</NavItem>
+
         {dates.map((date, index) => {
           return (
-            <Pager.Item onSelect={() => {
+            <NavItem eventKey={date} onSelect={() => {
+              this.setState({selectedPillDate: date});
               this.props.onChangeOffsetDays(this.state.currentOffest - 4 + index);
-            }}>{date}</Pager.Item>
+            }}>
+              {date}
+            </NavItem>
           );
         })}
-        <Pager.Item next onSelect={() => {
-          this.setState({currentOffest: this.state.currentOffest + 1})
-        }}>Next</Pager.Item>
-      </Pager>
+
+        <NavItem onSelect={() =>{
+          this.setState({currentOffest: this.state.currentOffest + 1});
+        }}>Next</NavItem>
+      </Nav>
     );
   }
 }
