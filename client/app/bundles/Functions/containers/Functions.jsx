@@ -47,7 +47,8 @@ export default class Functions extends React.Component {
     const date = moment().add(offsetDays, 'days').format('YYYY-MM-DD');
     const theater_id = this.props.theater.id;
     this.setState({
-      loadingContent: true
+      loadingContent: true,
+      offsetDays: offsetDays
     });
     FunctionsQueries.getFunctions({
       date: date,
@@ -55,14 +56,12 @@ export default class Functions extends React.Component {
       success: (response) => {
         this.setState({
           functions: response.functions,
-          loadingContent: false,
-          offsetDays: offsetDays
+          loadingContent: false
         });
       },
       error: (errors) => {
         this.setState({
-          loadingContent: false,
-          offsetDays: offsetDays
+          loadingContent: false
         });
       }
     });
