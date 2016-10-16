@@ -63,7 +63,7 @@ export default class ShowsMain extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col xs={4}>
+          <Col sm={4}>
             {this._getPagination()}
             <ShowsList
               shows={this.props.shows}
@@ -71,14 +71,14 @@ export default class ShowsMain extends React.Component {
             />
             {this._getPagination()}
           </Col>
-          <Col xs={4}>
+          <Col sm={4}>
             <h3 style={{marginBottom: 32}}>Cartelera</h3>
             <ShowsList
               shows={this.props.billboard}
               loadingContent={this.props.loadingBillboard}
             />
           </Col>
-          <Col xs={4}>
+          <Col sm={4}>
             <h3 style={{marginBottom: 32}}>Próximamente</h3>
             <ShowsList
               shows={this.props.comingSoon}
