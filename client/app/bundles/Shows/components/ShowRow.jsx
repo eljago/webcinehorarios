@@ -18,7 +18,7 @@ export default class ShowRow extends React.Component {
         }} 
         href={`/admin/shows/${show.id}/edit`}
       >
-        <img style={styles.img} src={`http://cinehorarios.cl${show.image_url}`}/>
+        <img style={styles.img} src={show.image_url}/>
         <div style={styles.content}>
           <span style={styles.span}>{show.name}</span>
           <span style={styles.span}>{show.duration}</span>
