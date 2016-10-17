@@ -3,15 +3,12 @@
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
+import update from 'react/lib/update';
 
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
-import Nav from 'react-bootstrap/lib/Nav';
-import NavItem from 'react-bootstrap/lib/NavItem';
-import Image from 'react-bootstrap/lib/Image';
 import Button from 'react-bootstrap/lib/Button';
-import PageHeader from 'react-bootstrap/lib/PageHeader';
 
 export default class FunctionsMain extends React.Component {
   static propTypes = {
@@ -31,7 +28,7 @@ export default class FunctionsMain extends React.Component {
   }
 
   _getPrettyDateString(date) {
-    return(_.upperFirst(date.format('dddd D')));
+    return(_.upperFirst(date.format('ddd D')));
   }
 
   render() {
@@ -70,9 +67,9 @@ export default class FunctionsMain extends React.Component {
           <Grid>
             <Row>
               <Col sm={1}>
-                <Image
+                <img
                   style={styles.img}
-                  src={func.show.image}
+                  src={`http://cinehorarios.cl${func.show.image}`}
                 />
               </Col>
               <Col sm={3}>
@@ -109,35 +106,54 @@ export default class FunctionsMain extends React.Component {
       dates.push(this._getPrettyDateString(currDay.add(1, 'days')));
     }
 
-    return (
-      <Nav justified bsStyle="pills" activeKey={this.state.selectedPillDate}>
-        <NavItem onSelect={() => {
+    let navItems = [
+      <li>
+        <a href="#" aria-label="Previous" onClick={(e) => {
           this.setState({currentOffest: this.state.currentOffest - 1});
-        }}>Prev</NavItem>
-
-        {dates.map((date, index) => {
-          return (
-            <NavItem eventKey={date} onSelect={() => {
-              this.setState({selectedPillDate: date});
-              this.props.onChangeOffsetDays(this.state.currentOffest - 4 + index);
-            }}>
-              {date}
-            </NavItem>
-          );
-        })}
-
-        <NavItem onSelect={() =>{
+          e.preventDefault();
+        }}>
+        <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>,
+      <li>
+        <a href="#" aria-label="Next" onClick={(e) => {
           this.setState({currentOffest: this.state.currentOffest + 1});
-        }}>Next</NavItem>
-      </Nav>
+          e.preventDefault();
+        }}>
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    ];
+    const dateNavItems = dates.map((date, index) => {
+      const active = this.state.selectedPillDate === date ? {className: 'active'} : null;
+      return (
+        <li {...active}>
+          <a href="#" onClick={(e) => {
+            this.setState({selectedPillDate: date});
+            this.props.onChangeOffsetDays(this.state.currentOffest - 4 + index);
+            e.preventDefault();
+          }}>
+            <span>{date}</span>
+          </a>
+        </li>
+      );
+    });
+    navItems = update(navItems, {$splice: [[1, 0, dateNavItems]]})
+
+    return (
+      <nav aria-label="Page navigation">
+        <ul className="pagination pagination-lg">
+          {navItems}
+        </ul>
+      </nav>
     );
   }
 }
 
 const styles = {
   img: {
-    width: 40,
-    height: 60,
+    width: 60,
+    height: 80,
     "objectFit": 'cover'
   },
   span: {
