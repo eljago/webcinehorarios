@@ -19,7 +19,7 @@ namespace :parse do
       end
 
     else
-      puts "file cineplanet.json doesn't exists"
+      puts "file cine_hoyts.json doesn't exists"
     end
 
   end
