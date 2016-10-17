@@ -29,7 +29,6 @@ export default class ShowFormVideos extends React.Component {
     return(
       <div>
         {this.props.formBuilder.getField('videos', {
-          submitKey: 'videos_attributes',
           onAddItem: this._onAddItem,
           onDeleteItem: this._onDeleteItem,
           getContentRow: this._getContentRow

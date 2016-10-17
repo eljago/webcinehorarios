@@ -30,7 +30,6 @@ export default class FormCast extends React.Component {
     return(
       <div>
         {this.props.formBuilder.getField('show_person_roles', {
-          submitKey: 'show_person_roles_attributes',
           onAddItem: this._onAddItem,
           onDeleteItem: this._onDeleteItem,
           getContentRow: this._getContentRow
