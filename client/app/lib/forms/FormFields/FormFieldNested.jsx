@@ -43,11 +43,9 @@ export default class FormFieldNested extends React.Component {
     return(
       <div>
         <FormGroup controlId={this.props.submitKey}>
-          <Grid>
-            <Row>
-              {this._getRows()}
-            </Row>
-          </Grid>
+          <Row>
+            {this._getRows()}
+          </Row>
         </FormGroup>
         <br />
         <Button onClick={this._onAddRow} bsStyle="success">

@@ -8,22 +8,29 @@ import FunctionsMain from '../components/FunctionsMain'
 
 import {FunctionsQueries} from '../../../lib/api/queries'
 
+import FormBuilder from '../../../lib/forms/FormBuilder';
+import GetFormSchema from '../data/FormSchema'
+
 export default class Functions extends React.Component {
 
   static propTypes = {
     theater: PropTypes.object,
+    default_function: PropTypes.object,
+    function_types: PropTypes.array,
   };
 
   constructor(props) {
     super(props);
 
     moment.locale('es-CL');
-    let today = moment();
     this.state = {
-      functions: [],
+      formBuilders: [],
       offsetDays: 0,
       loadingContent: false
     }
+    this.functionTypes = props.function_types.map((ft) => {
+      return {value: ft.id, label: ft.name};
+    });
     _.bindAll(this, '_updateFunctions');
   }
 
@@ -35,7 +42,7 @@ export default class Functions extends React.Component {
     return(
       <FunctionsMain
         theater={this.props.theater}
-        functions={this.state.functions}
+        formBuilders={this.state.formBuilders}
         loadingContent={this.state.loadingContent}
         offsetDays={this.state.offsetDays}
         onChangeOffsetDays={this._updateFunctions}
@@ -55,7 +62,15 @@ export default class Functions extends React.Component {
       theater_id: theater_id,
       success: (response) => {
         this.setState({
-          functions: response.functions,
+          formBuilders: response.shows.map((show) => {
+            return(new FormBuilder(
+              GetFormSchema({
+                function_types: this.functionTypes,
+                defaultFunction: this.props.default_function
+              }),
+              show
+            ));
+          }),
           loadingContent: false
         });
       },

@@ -5,20 +5,12 @@ class Admin::FunctionsController < ApplicationController
   before_action :get_function, only: [:edit, :update, :destroy]
 
   def index
-    # @dates_array = ((Date.current-2)..(Date.current+7))
+    function_types = @theater.cinema.function_types.order(:name).all
+    default_function = Function.new
 
-    # if params[:date].blank? || !@dates_array.include?(params[:date].to_date)
-    #   params[:date] = Date.current
-    # else
-    #   params[:date] = params[:date]
-    # end
-
-    # @functions = @theater.functions.includes(:show, :function_types, :parsed_show => :show)
-    # .where(date: params[:date]).order("functions.show_id DESC")
-    theater = Theater.friendly.find(params[:theater_id])
-    @title = "Funciones #{theater.name}"
+    @title = 'Functions'
     @app_name = 'FunctionsApp'
-    @props = {theater: theater}
+    @props = {function_types: function_types, default_function: default_function, theater: @theater}
     @prerender = false
     render file: 'react/render'
   end
@@ -30,13 +22,19 @@ class Admin::FunctionsController < ApplicationController
 
   def edit
     function_types = @theater.cinema.function_types.order(:name).all
-    function_hash = @function.as_json
-    function_hash["theater"] = @theater.as_json
-    function_hash["show"] = @function.show.as_json
-    function_hash["function_types"] = @function.function_type_ids
-    @title = 'Edit Function'
-    @app_name = 'FunctionEditApp'
-    @props = {function: function_hash, function_types: function_types}
+    default_function = Function.new
+
+    shows = Show.joins(:functions).where('functions.date = ? AND functions.theater_id = ?', params[:date], @theater.id).order('shows.id DESC')
+
+    shows_hash = shows.as_json
+    shows_hash.each do |show_hash|
+      show_hash["functions"] = Function.where(date: params[:date], theater_id: params[:theater_id], show_id: show_hash[:id])
+        .includes(:function_types, :parsed_show).order(:id)
+    end
+
+    @title = 'Edit Functions'
+    @app_name = 'Functions'
+    @props = {shows: shows_hash, function_types: function_types, default_function: default_function}
     @prerender = false
     render file: 'react/render'
   end

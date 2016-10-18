@@ -13,35 +13,36 @@ import GetFormSchema from '../data/FormSchema'
 
 export default class FunctionEdit extends React.Component {
   static propTypes = {
-    function: PropTypes.object,
+    defaultFunction: PropTypes.object,
+    shows: PropTypes.array,
     function_types: PropTypes.array,
   };
 
   constructor(props) {
     super(props);
     this.state = {
+      formBuilders: props.shows.map((show, index) => {
+        return new FormBuilder(
+          GetFormSchema({
+            function_types: props.function_types.map((ft) => {
+              return {value: ft.id, label: ft.name};
+            }),
+            defaultFunction: props.defaultFunction
+          }),
+          show
+        );
+      }),
       submitting: false,
       errors: {},
     };
     _.bindAll(this, ['_handleSubmit', '_onDelete']);
-    this.formBuilder = new FormBuilder(
-      GetFormSchema({
-        function_types: props.function_types.map((ft) => {
-          return {value: ft.id, label: ft.name};
-        }),
-        date: props.function.date,
-        onDelete: this._onDelete,
-        onSubmit: this._handleSubmit
-      }),
-      props.function
-    );
   }
 
   render() {
     return (
       <FunctionForm
         ref='form'
-        formBuilder={this.formBuilder}
+        formBuilders={this.state.formBuilders}
         errors={this.state.errors}
         submitting={this.state.submitting}
       />
