@@ -23,7 +23,7 @@ export default class FormRow extends React.Component {
     const formBuilder = this.props.formBuilder;
     const show = formBuilder.object;
     return(
-      <Row>
+      <Row style={{marginBottom: 15}}>
         <Col xs={12} sm={2}>
           <img src={`http://cinehorarios.cl${show.image_url}`} />
         </Col>
