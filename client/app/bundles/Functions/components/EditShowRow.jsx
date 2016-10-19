@@ -8,7 +8,7 @@ import FormBuilder from '../../../lib/forms/FormBuilder';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-export default class FormRow extends React.Component {
+export default class EditFormRow extends React.Component {
 
   static propTypes = {
     formBuilder: PropTypes.instanceOf(FormBuilder),

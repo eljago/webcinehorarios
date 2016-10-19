@@ -2,13 +2,18 @@
 
 import React, { PropTypes } from 'react'
 
-import FormRow from './FormRow'
+import ShowRow from './ShowRow'
 
 export default class FunctionsMain extends React.Component {
   static propTypes = {
-    formBuilders: PropTypes.array,
+    shows: PropTypes.array,
     loadingContent: PropTypes.boolean,
+    functionTypes: PropTypes.array,
   };
+  static defaultProps = {
+    shows: [],
+    loadingContent: false,
+  }
 
   render() {
     return (
@@ -19,13 +24,14 @@ export default class FunctionsMain extends React.Component {
   }
 
   _getFunctions() {
+    console.log(this.props.functionTypes);
     if (this.props.loadingContent) {
       return(<h1>Loading...</h1>);
     }
     else {
-      return this.props.formBuilders.map((formBuilder) => {
+      return this.props.shows.map((show) => {
         return(
-          <FormRow formBuilder={formBuilder} />
+          <ShowRow show={show} functionTypes={this.props.functionTypes} />
         );
       });
     }

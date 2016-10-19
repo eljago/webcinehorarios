@@ -5,6 +5,7 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import FunctionsMain from '../components/FunctionsMain'
+import EditFunctionsMain from '../components/EditFunctionsMain'
 import DatePagination from '../components/DatePagination'
 import FunctionsHeader from '../components/FunctionsHeader'
 
@@ -28,12 +29,13 @@ export default class Functions extends React.Component {
     this.state = {
       formBuilders: [],
       offsetDays: 0,
-      loadingContent: false
+      loadingContent: false,
+      editing: false,
     }
     this.functionTypes = props.function_types.map((ft) => {
       return {value: ft.id, label: ft.name};
     });
-    _.bindAll(this, '_updateFunctions');
+    _.bindAll(this, ['_updateFunctions', '_onChangeEditing']);
   }
 
   componentDidMount() {
@@ -44,14 +46,40 @@ export default class Functions extends React.Component {
     const dateString = _.upperFirst(moment().add(this.state.offsetDays, 'days').format('dddd D [de] MMMM, YYYY'));
     return(
       <div>
-        <FunctionsHeader title={this.props.theater.name} subtitle={dateString} />
-        <DatePagination onChangeDay={this._updateFunctions} offsetDays={this.state.offsetDays} />
-        <FunctionsMain
-          formBuilders={this.state.formBuilders}
-          loadingContent={this.state.loadingContent}
+        <FunctionsHeader
+          title={this.props.theater.name}
+          subtitle={dateString}
+          editing={this.state.editing}
+          onChangeEditing={this._onChangeEditing}
         />
+        <DatePagination onChangeDay={this._updateFunctions} offsetDays={this.state.offsetDays} />
+        {(() => {
+          if (this.state.editing) {
+            return(
+              <EditFunctionsMain
+                formBuilders={this.state.formBuilders}
+                loadingContent={this.state.loadingContent}
+              />
+            );
+          }
+          else {
+            return(
+              <FunctionsMain
+                shows={this.state.formBuilders.map((fb) => {
+                  return fb.object;
+                })}
+                loadingContent={this.state.loadingContent}
+                functionTypes={this.functionTypes}
+              />
+            );
+          }
+        })()}
       </div>
     );
+  }
+
+  _onChangeEditing() {
+    this.setState({editing: !this.state.editing});
   }
 
   _updateFunctions(offsetDays = this.state.offsetDays) {
