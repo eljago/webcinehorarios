@@ -8,6 +8,7 @@ import update from 'react/lib/update';
 export default class DatePagination extends React.Component {
 
   static propTypes = {
+    offsetDays: PropTypes.number,
     onChangeDay: PropTypes.func,
   };
 
@@ -46,7 +47,7 @@ export default class DatePagination extends React.Component {
       const active = this.state.selectedPillDate === date ? {className: 'active'} : null;
       return (
         <li {...active}>
-          <a href="#" onClick={(e) => this._onClickDate(e, index)}>
+          <a href="#" onClick={(e) => this._onClickDate(e, date, index)}>
             <span>{date}</span>
           </a>
         </li>
@@ -73,10 +74,12 @@ export default class DatePagination extends React.Component {
     e.preventDefault();
   }
 
-  _onClickDate(e, index) {
+  _onClickDate(e, date, index) {
     this.setState({selectedPillDate: date});
     this.props.onChangeDay(this.state.currentOffest - 4 + index);
     e.preventDefault();
+    console.log(date);
+    console.log(this.state.currentOffest);
   }
 
   _getPrettyDateString(date) {

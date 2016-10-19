@@ -5,6 +5,8 @@ import _ from 'lodash'
 import moment from 'moment'
 
 import FunctionsMain from '../components/FunctionsMain'
+import DatePagination from '../components/DatePagination'
+import FunctionsHeader from '../components/FunctionsHeader'
 
 import {FunctionsQueries} from '../../../lib/api/queries'
 
@@ -39,14 +41,16 @@ export default class Functions extends React.Component {
   }
 
   render() {
+    const dateString = _.upperFirst(moment().add(this.state.offsetDays, 'days').format('dddd D [de] MMMM, YYYY'));
     return(
-      <FunctionsMain
-        theater={this.props.theater}
-        formBuilders={this.state.formBuilders}
-        loadingContent={this.state.loadingContent}
-        offsetDays={this.state.offsetDays}
-        onChangeOffsetDays={this._updateFunctions}
-      />
+      <div>
+        <FunctionsHeader title={this.props.theater.name} subtitle={dateString} />
+        <DatePagination onChangeDay={this._updateFunctions} offsetDays={this.state.offsetDays} />
+        <FunctionsMain
+          formBuilders={this.state.formBuilders}
+          loadingContent={this.state.loadingContent}
+        />
+      </div>
     );
   }
 
