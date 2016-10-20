@@ -10,6 +10,7 @@ export default class FormRow extends React.Component {
   static propTypes = {
     show: PropTypes.object,
     functionTypes: PropTypes.array,
+    style: PropTypes.object,
   };
   static defaultProps = {
     show: {}
@@ -18,7 +19,7 @@ export default class FormRow extends React.Component {
   render() {
     const show = this.props.show;
     return(
-      <Row style={{marginBottom: 5}}>
+      <Row style={{marginBottom: 5, ...this.props.style, display: 'flex', alignItems: 'center'}}>
         <Col xs={2}>
           <img style={{width: 60, height: 80}}src={`http://cinehorarios.cl${show.image_url}`} />
         </Col>
@@ -65,6 +66,6 @@ const styles = {
     marginBottom: 5,
   },
   span: {
-    fontSize: 18
+    fontSize: 20,
   }
 }

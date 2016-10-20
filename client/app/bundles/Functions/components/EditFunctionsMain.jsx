@@ -25,9 +25,13 @@ export default class EditFunctionsMain extends React.Component {
     else {
       return this.props.formBuilders.map((formBuilder) => {
         return(
-          <EditShowRow formBuilder={formBuilder} />
+          <EditShowRow key={formBuilder.object.id} formBuilder={formBuilder} />
         );
       });
     }
+  }
+
+  getResult() {
+
   }
 }

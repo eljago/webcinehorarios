@@ -59,6 +59,7 @@ export default class Functions extends React.Component {
               <EditFunctionsMain
                 formBuilders={this.state.formBuilders}
                 loadingContent={this.state.loadingContent}
+                ref='form'
               />
             );
           }
@@ -112,5 +113,27 @@ export default class Functions extends React.Component {
         });
       }
     });
+  }
+
+  _submitShowsUpdate() {
+    if (this.refs.form) {
+      const showsToSubmit = this.refs.form.getResult();
+      this.setState({
+        loadingContent: true,
+      });
+      FunctionsQueries.submitUpdateShows({
+        shows: showsToSubmit,
+        success: (response) => {
+          this.setState({
+            loadingContent: false
+          });
+        },
+        error: (errors) => {
+          this.setState({
+            loadingContent: false
+          });
+        }
+      })
+    }
   }
 }

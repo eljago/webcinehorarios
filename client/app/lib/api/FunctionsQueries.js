@@ -10,6 +10,14 @@ export default {
       ...options
     }));
   },
+  submitUpdateShows: (options) => {
+    $.ajax(GetQueryContent({
+      url: `/api/shows/update`,
+      type: 'PUT',
+      data: { shows: options.shows },
+      ...options
+    }));
+  },
   submitEditFunction: (options) => {
     $.ajax(GetQueryContent({
       url: `/api/functions/${options.func.id}`,

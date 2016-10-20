@@ -29,9 +29,14 @@ export default class FunctionsMain extends React.Component {
       return(<h1>Loading...</h1>);
     }
     else {
-      return this.props.shows.map((show) => {
+      return this.props.shows.map((show, index) => {
         return(
-          <ShowRow show={show} functionTypes={this.props.functionTypes} />
+          <ShowRow
+            key={show.id}
+            style={{backgroundColor: index % 2 == 0 ? 'white' : '#F1F1F1'}}
+            show={show}
+            functionTypes={this.props.functionTypes}
+          />
         );
       });
     }
