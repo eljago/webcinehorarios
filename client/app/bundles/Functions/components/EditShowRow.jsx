@@ -23,29 +23,30 @@ export default class EditFormRow extends React.Component {
     const formBuilder = this.props.formBuilder;
     const show = formBuilder.object;
     return(
-      <Row style={{marginBottom: 15}}>
-        <Col xs={12} sm={2}>
+      <tr>
+        <td>
           <img src={`http://cinehorarios.cl${show.image_url}`} />
-        </Col>
-        <Col xs={12} sm={10}>
+        </td>
+        <td>
           {formBuilder.getField('functions', {
             getContentRow: this._getContentRow
           })}
-        </Col>
-      </Row>
+        </td>
+      </tr>
     );
   }
 
-  _getContentRow(index) {
+  _getContentRow(func, index) {
+    const formBuilder = this.props.formBuilder;
     return(
-      <Row>
+      <Row key={func.id ? func.id : func.key}>
         <Col xs={12} md={5}>
-          {this.props.formBuilder.getNestedField('functions', 'function_types', index, {
-            columns: 5
+          {formBuilder.getNestedField('functions', 'function_types', index, {
+            columns: 3
           })}
         </Col>
         <Col xs={12} md={7}>
-          {this.props.formBuilder.getNestedField('functions', 'showtimes', index)}
+          {formBuilder.getNestedField('functions', 'showtimes', index)}
         </Col>
       </Row>
     );

@@ -38,7 +38,7 @@ export default class FormCast extends React.Component {
     );
   }
 
-  _getContentRow(index) {
+  _getContentRow(person, index) {
     return(
       <Row>
         <Col xs={12} md={2}>

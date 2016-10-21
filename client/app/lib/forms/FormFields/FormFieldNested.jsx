@@ -66,7 +66,7 @@ export default class FormFieldNested extends React.Component {
           >
             <Row>
               <Col xs={12} md={9} lg={10}>
-                {this.props.getContentRow(index)}
+                {this.props.getContentRow(dataItem, index)}
               </Col>
               <Col xs={12} md={3} lg={2}>
                 <Button
@@ -86,11 +86,14 @@ export default class FormFieldNested extends React.Component {
   }
 
   _onAddRow() {
-    const dataArray = update(this.state.dataArray, {$push: [{"_destroy": false}]});
-    this.setState({dataArray})
+    const dataArray = update(this.state.dataArray, {$push: [{
+      "_destroy": false,
+      key: (new Date()).getTime()
+    }]});
     if (this.props.onAddItem) {
       this.props.onAddItem(dataArray);
     }
+    this.setState({dataArray})
   }
 
   _handleDelete(index) {

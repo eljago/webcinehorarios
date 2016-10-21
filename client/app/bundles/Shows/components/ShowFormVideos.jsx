@@ -37,7 +37,7 @@ export default class ShowFormVideos extends React.Component {
     );
   }
 
-  _getContentRow(index) {
+  _getContentRow(video, index) {
     return(
       <Row>
         <Col xs={12} sm={2}>

@@ -11,24 +11,26 @@ export default class EditFunctionsMain extends React.Component {
   };
 
   render() {
-    return (
-      <div>
-        {this._getFunctions()}
-      </div>
-    );
+    if (this.props.loadingContent) {
+      return (<h1>Loading...</h1>);
+    }
+    else {
+      return (
+        <table className="table table-striped">
+          <tbody>
+            {this._getFunctions()}
+          </tbody>
+        </table>
+      );
+    }
   }
 
   _getFunctions() {
-    if (this.props.loadingContent) {
-      return(<h1>Loading...</h1>);
-    }
-    else {
-      return this.props.formBuilders.map((formBuilder) => {
-        return(
-          <EditShowRow key={formBuilder.object.id} formBuilder={formBuilder} />
-        );
-      });
-    }
+    return this.props.formBuilders.map((formBuilder) => {
+      return(
+        <EditShowRow key={formBuilder.object.id} formBuilder={formBuilder} />
+      );
+    });
   }
 
   getResult() {

@@ -53,7 +53,7 @@ export default class ShowFormImages extends React.Component {
     );
   }
 
-  _getContentRow(index) {
+  _getContentRow(image, index) {
     return(
       <Row>
         <Col xs={12} sm={2}>

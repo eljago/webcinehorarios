@@ -30,7 +30,7 @@ export default class FormFieldImage extends React.Component {
 
   render() {
     return(
-      <FormGroup controlId={(new Date()).getTime()}>
+      <FormGroup>
         <ControlLabel>Remote Image URL</ControlLabel>
         <FormControl
           value={this.props.currentRemote}

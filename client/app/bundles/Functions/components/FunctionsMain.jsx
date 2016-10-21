@@ -16,29 +16,30 @@ export default class FunctionsMain extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        {this._getFunctions()}
-      </div>
-    );
+    if (this.props.loadingContent) {
+      return (<h1>Loading...</h1>);
+    }
+    else {
+      return (
+        <table className="table table-striped">
+          <tbody>
+            {this._getFunctions()}
+          </tbody>
+        </table>
+      );
+    }
   }
 
   _getFunctions() {
-    console.log(this.props.functionTypes);
-    if (this.props.loadingContent) {
-      return(<h1>Loading...</h1>);
-    }
-    else {
-      return this.props.shows.map((show, index) => {
-        return(
-          <ShowRow
-            key={show.id}
-            style={{backgroundColor: index % 2 == 0 ? 'white' : '#F1F1F1'}}
-            show={show}
-            functionTypes={this.props.functionTypes}
-          />
-        );
-      });
-    }
+    return this.props.shows.map((show, index) => {
+      return(
+        <ShowRow
+          key={show.id}
+          style={{backgroundColor: index % 2 == 0 ? 'white' : '#F1F1F1'}}
+          show={show}
+          functionTypes={this.props.functionTypes}
+        />
+      );
+    });
   }
 }

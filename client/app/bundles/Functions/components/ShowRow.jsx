@@ -19,14 +19,14 @@ export default class FormRow extends React.Component {
   render() {
     const show = this.props.show;
     return(
-      <Row style={{marginBottom: 5, ...this.props.style, display: 'flex', alignItems: 'center'}}>
-        <Col xs={2}>
-          <img style={{width: 60, height: 80}}src={`http://cinehorarios.cl${show.image_url}`} />
-        </Col>
-        <Col xs={10}>
+      <tr>
+        <td>
+          <img style={{width: 60, height: 80}} src={`http://cinehorarios.cl${show.image_url}`} />
+        </td>
+        <td>
           {this._getFunctions()}
-        </Col>
-      </Row>
+        </td>
+      </tr>
     );
   }
 
@@ -35,11 +35,11 @@ export default class FormRow extends React.Component {
 
     return this.props.show.functions.map((func) => {
       return (
-        <Row style={styles.funcRow}>
-          <Col xs={12} sm={4}>
+        <Row key={func.id} style={styles.funcRow}>
+          <Col xs={12} sm={3}>
             <span style={styles.span}>{this._getFunctionTypes(func)}</span>
           </Col>
-          <Col xs={12} sm={8}>
+          <Col xs={12} sm={9}>
             <span style={styles.span}>{func.showtimes}</span>
           </Col>
         </Row>

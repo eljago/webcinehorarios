@@ -33,7 +33,7 @@ export default class DatePagination extends React.Component {
     let navItems = [
       <li>
         <a href="#" aria-label="Previous" onClick={this._onClickPrev}>
-        <span aria-hidden="true">&laquo;</span>
+          <span aria-hidden="true">&laquo;</span>
         </a>
       </li>,
       <li>
@@ -57,7 +57,7 @@ export default class DatePagination extends React.Component {
 
     return (
       <nav aria-label="Page navigation">
-        <ul className="pagination pagination-lg">
+        <ul className="pagination pagination">
           {navItems}
         </ul>
       </nav>
@@ -78,8 +78,6 @@ export default class DatePagination extends React.Component {
     this.setState({selectedPillDate: date});
     this.props.onChangeDay(this.state.currentOffest - 4 + index);
     e.preventDefault();
-    console.log(date);
-    console.log(this.state.currentOffest);
   }
 
   _getPrettyDateString(date) {
