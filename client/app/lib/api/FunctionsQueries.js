@@ -12,7 +12,7 @@ export default {
   },
   submitUpdateShows: (options) => {
     $.ajax(GetQueryContent({
-      url: `/api/shows/update`,
+      url: `/api/shows/update_shows`,
       type: 'PUT',
       data: { shows: options.shows },
       ...options

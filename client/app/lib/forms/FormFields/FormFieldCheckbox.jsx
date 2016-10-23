@@ -9,6 +9,7 @@ import Checkbox from 'react-bootstrap/lib/Checkbox';
 
 export default class FormFieldCheckbox extends React.Component {
   static propTypes = {
+    identifier: PropTypes.string,
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.boolean,

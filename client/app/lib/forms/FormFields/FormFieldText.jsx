@@ -3,12 +3,9 @@
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 
-import FormControl from 'react-bootstrap/lib/FormControl';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-
 export default class FormFieldText extends React.Component {
   static propTypes = {
+    identifier: PropTypes.string,
     type: PropTypes.string,
     submitKey: PropTypes.string,
     label: PropTypes.string,
@@ -24,8 +21,10 @@ export default class FormFieldText extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {currentValue: props.initialValue};
+    this.state = {
+      value: props.initialValue,
+    }
+    _.bindAll(this, '_handleChange');
   }
 
   render() {
@@ -34,7 +33,8 @@ export default class FormFieldText extends React.Component {
       label,
       initialValue,
       type,
-      placeholder
+      placeholder,
+      identifier,
     } = this.props;
 
     const typeProps = type === 'textarea' ?
@@ -43,36 +43,39 @@ export default class FormFieldText extends React.Component {
           {type: type});
 
     return(
-      <FormGroup controlId={submitKey}>
+      <div className="form-group">
         {this._getControlLabel()}
-        <FormControl
+        <input
           {...typeProps}
-          value={this.state.currentValue}
+          className="form-control"
+          id={identifier}
           placeholder={placeholder ? placeholder : label}
-          onChange={(e) => {
-            this._handleChange(e.target.value)
-          }}
           disabled={this.props.disabled}
+          value={this.state.value}
+          onChange={this._handleChange}
         />
-      </FormGroup>
-    )
+      </div>
+    );
+  }
+
+  _handleChange(event) {
+    this.setState({value: event.target.value});
   }
 
   _getControlLabel() {
     if (this.props.label && !_.isEmpty(this.props.label)) {
-      return <ControlLabel>{this.props.label}</ControlLabel>
+      return (
+        <label className='control-label' for={this.props.identifier}>
+          {this.props.label}
+        </label>
+      );
     }
     return null;
   }
 
-  _handleChange(value) {
-    const currentValue = _.replace(value, '  ', ' ');
-    this.setState({currentValue});
-  }
-
   getResult() {
-    if (this.state.currentValue !== this.props.initialValue) {
-      return {[this.props.submitKey]: _.trim(this.state.currentValue)};
+    if (this.state.value !== this.props.initialValue) {
+      return {[this.props.submitKey]: _.trim(this.state.value)};
     }
     return null;
   }

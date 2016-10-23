@@ -29,7 +29,7 @@ export default class FunctionsHeader extends React.Component {
             this.props.onChangeEditing();
           }}
         >
-          {!this.props.editing ? "Editar" : "Stop Editing"}
+          {!this.props.editing ? "Editar" : "Cancel"}
         </button>
       </div>
     );

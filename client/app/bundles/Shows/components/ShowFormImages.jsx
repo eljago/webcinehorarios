@@ -65,7 +65,7 @@ export default class ShowFormImages extends React.Component {
             })
           }}>
             <Image
-              style={{width: 100, height: 100, "objectFit": 'cover'}}
+              style={{width: 50, height: 50, "objectFit": 'cover'}}
               src={this.state.images[index]}
               responsive
             />
@@ -79,6 +79,7 @@ export default class ShowFormImages extends React.Component {
         </Col>
         <Col xs={12} sm={6}>
           {this.props.formBuilder.getNestedField('images', 'image', index, {
+            horizontal: true,
             getInitialValue: (obj) => {
               return obj.image.small.url;
             },

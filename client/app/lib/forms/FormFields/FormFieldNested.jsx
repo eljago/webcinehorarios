@@ -8,12 +8,12 @@ import FormGroup from 'react-bootstrap/lib/FormGroup'
 import ControlLabel from 'react-bootstrap/lib/ControlLabel'
 import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Button from 'react-bootstrap/lib/Button'
-import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
 export default class FormFieldNested extends React.Component {
   static propTypes = {
+    identifier: PropTypes.string,
     submitKey: PropTypes.string,
     label: PropTypes.string,
     initialValue: PropTypes.array,

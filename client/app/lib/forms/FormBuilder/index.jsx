@@ -36,7 +36,8 @@ export default class FormBuilder {
       return fb.getField(secondaryFieldId, {
         ...options,
         initialValue: options.getInitialValue ? options.getInitialValue(object) : object[secondaryFieldId],
-        ref: `${secondaryFieldId}${index}`
+        ref: `${secondaryFieldId}${index}`,
+        identifier: `${secondaryFieldId}_${index}`,
       });
     }
     return null;
@@ -49,6 +50,7 @@ export default class FormBuilder {
         submitKey: fieldData.submitKey ? fieldData.submitKey : fieldId,
         label: fieldData.label,
         ref: fieldId,
+        identifier: fieldId,
         initialValue: this.object[fieldId],
         ...options
       };

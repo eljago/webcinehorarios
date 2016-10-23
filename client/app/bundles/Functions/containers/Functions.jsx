@@ -31,11 +31,12 @@ export default class Functions extends React.Component {
       offsetDays: 0,
       loadingContent: false,
       editing: false,
+      submittingShows: false,
     }
     this.functionTypes = props.function_types.map((ft) => {
       return {value: ft.id, label: ft.name};
     });
-    _.bindAll(this, ['_updateFunctions', '_onChangeEditing']);
+    _.bindAll(this, ['_updateFunctions', '_onChangeEditing', '_onSubmitShows']);
   }
 
   componentDidMount() {
@@ -59,6 +60,8 @@ export default class Functions extends React.Component {
               <EditFunctionsMain
                 formBuilders={this.state.formBuilders}
                 loadingContent={this.state.loadingContent}
+                submittingShows={this.state.submittingShows}
+                onSubmitShows={this._onSubmitShows}
                 ref='form'
               />
             );
@@ -115,22 +118,25 @@ export default class Functions extends React.Component {
     });
   }
 
-  _submitShowsUpdate() {
+  _onSubmitShows() {
     if (this.refs.form) {
       const showsToSubmit = this.refs.form.getResult();
+
       this.setState({
-        loadingContent: true,
+        submittingShows: true,
       });
       FunctionsQueries.submitUpdateShows({
         shows: showsToSubmit,
         success: (response) => {
           this.setState({
-            loadingContent: false
+            submittingShows: false,
+            editing: false
           });
+          this._updateFunctions();
         },
         error: (errors) => {
           this.setState({
-            loadingContent: false
+            submittingShows: false,
           });
         }
       })

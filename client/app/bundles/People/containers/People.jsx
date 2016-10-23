@@ -8,7 +8,6 @@ import PeopleEdit from './PeopleEdit'
 
 import {PeopleQueries} from '../../../lib/api/queries'
 
-import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
@@ -41,28 +40,26 @@ export default class People extends React.Component {
 
   render() {
     return (
-      <Grid>
-        <Row>
-          <Col sm={7}>
-            <PeopleMain
-              page={this.state.page}
-              itemsPerPage={this.state.itemsPerPage}
-              people={this.state.people}
-              pagesCount={this.state.pagesCount}
-              onChangePage={this._onChangePage}
-              onSearchPerson={this._onSearch}
-              onEditPerson={this._onEditPerson}
-            />
-          </Col>
-          <Col sm={5}>
-            <PeopleEdit
-              ref='peopleEdit'
-              defaultPerson={this.props.defaultPerson}
-              onSuccess={() => this._updateData()}
-            />
-          </Col>
-        </Row>
-      </Grid>
+      <Row>
+        <Col sm={7}>
+          <PeopleMain
+            page={this.state.page}
+            itemsPerPage={this.state.itemsPerPage}
+            people={this.state.people}
+            pagesCount={this.state.pagesCount}
+            onChangePage={this._onChangePage}
+            onSearchPerson={this._onSearch}
+            onEditPerson={this._onEditPerson}
+          />
+        </Col>
+        <Col sm={5}>
+          <PeopleEdit
+            ref='peopleEdit'
+            defaultPerson={this.props.defaultPerson}
+            onSuccess={() => this._updateData()}
+          />
+        </Col>
+      </Row>
     );
   }
 

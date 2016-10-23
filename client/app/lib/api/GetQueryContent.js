@@ -12,6 +12,7 @@ const SetHeaders = (xhr) => {
 };
 
 const MyErrorCallback = (response, errorCallback) => {
+  console.log(response);
   let MyErrors = {};
   if (response.status === 400) {
     _.merge(MyErrors, {"400": ['Bad Request']});

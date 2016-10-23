@@ -16,7 +16,7 @@ module Api
         # response = {functions: functions_hash}
         # respond_with response
 
-        shows = Show.includes(:functions).references(:functions)
+        shows = Show.includes(:functions => :parsed_show).references(:functions)
           .where('functions.date = ? AND functions.theater_id = ?', params[:date], params[:theater_id])
           .order('shows.debut DESC, functions.id ASC')
 

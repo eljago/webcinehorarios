@@ -35,7 +35,7 @@ export default class EditFormRow extends React.Component {
       </tr>
     );
   }
-
+  
   _getContentRow(func, index) {
     const formBuilder = this.props.formBuilder;
     return(

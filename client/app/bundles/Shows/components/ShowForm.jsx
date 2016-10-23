@@ -5,7 +5,6 @@ import _ from 'lodash'
 
 import Tabs from 'react-bootstrap/lib/Tabs';
 import Tab from 'react-bootstrap/lib/Tab';
-import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
@@ -29,7 +28,7 @@ export default class ShowForm extends React.Component {
   render() {
     const {formBuilder, submitting, errors} = this.props;
     return (
-      <div>
+      <form>
         <ErrorMessages errors={errors} />
 
         <Tabs bsStyle="pills" defaultActiveKey={1} animation={false}>
@@ -70,16 +69,14 @@ export default class ShowForm extends React.Component {
 
         <br/>
 
-        <Grid>
-          <Row>
-            <Col xs={12} sm={2}>
-              {formBuilder.getSubmitButton({disabled: submitting})}
-            </Col>
-            {this._getDeleteButton()}
-          </Row>
-        </Grid>
+        <Row>
+          <Col xs={12} sm={2}>
+            {formBuilder.getSubmitButton({disabled: submitting})}
+          </Col>
+          {this._getDeleteButton()}
+        </Row>
 
-      </div>
+      </form>
     );
   }
 

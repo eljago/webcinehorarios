@@ -50,6 +50,12 @@ class Api::V1::ShowsController < Api::V1::ApiController
     respond_with show, json: show
   end
 
+  def update_shows
+    shows_array = params[:shows]
+    shows = Show.update(shows_array.keys, shows_array.values)
+    respond_with shows, json: shows
+  end
+
   def select_shows
     q = params[:input].split.map(&:capitalize).join(" ")
     searchResult = Show.select([:id, :name]).text_search(q).order(:name)
@@ -84,6 +90,11 @@ class Api::V1::ShowsController < Api::V1::ApiController
       :debut,
       :rating,
       genre_ids: [],
+      functions_attributes: [
+        :showtimes,
+        :_destroy,
+        function_type_ids: []
+      ],
       show_person_roles_attributes: [
         :id,
         :person_id,
@@ -133,8 +144,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
           end
 
           if video_type.present? && code.present?
-            puts video_type
-            puts code
             if video_type === 'youtube'
               video_attributes[:remote_image_url] = "http://img.youtube.com/vi/#{code}/0.jpg"
             elsif video_type === 'vimeo'

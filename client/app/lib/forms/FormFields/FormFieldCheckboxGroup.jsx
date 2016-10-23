@@ -9,6 +9,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 
 export default class FormFieldCheckboxGroup extends React.Component {
   static propTypes = {
+    identifier: PropTypes.string,
     submitKey: PropTypes.string,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,

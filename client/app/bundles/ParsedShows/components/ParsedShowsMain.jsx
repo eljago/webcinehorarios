@@ -8,7 +8,6 @@ import {SelectQueries} from '../../../lib/api/queries'
 
 import PageHeader from 'react-bootstrap/lib/PageHeader';
 import Pagination from 'react-bootstrap/lib/Pagination';
-import Grid from 'react-bootstrap/lib/Grid';
 
 export default class ParsedShowsMain extends React.Component {
   static propTypes = {
@@ -31,9 +30,7 @@ export default class ParsedShowsMain extends React.Component {
           activePage={this.props.currentPage}
           onSelect={this.props.onChangePage}
         />
-        <Grid>
-          {this._getParsedShowsRows()}
-        </Grid>
+        {this._getParsedShowsRows()}
       </div>
     );
   }

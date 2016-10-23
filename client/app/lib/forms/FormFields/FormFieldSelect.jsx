@@ -11,6 +11,7 @@ import Select from 'react-select';
 
 export default class FormFieldSelect extends React.Component {
   static propTypes = {
+    identifier: PropTypes.string,
     submitKey: PropTypes.string,
     label: PropTypes.string,
     getOptions: PropTypes.func,
