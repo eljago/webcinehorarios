@@ -82,6 +82,7 @@ export default class FormFieldCheckboxGroup extends React.Component {
     else {
       currentValue.push(value);
     }
+    console.log(currentValue);
     this.setState({currentValue});
   }
 

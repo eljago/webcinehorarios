@@ -12,6 +12,8 @@ export default class EditFormRow extends React.Component {
 
   static propTypes = {
     formBuilder: PropTypes.instanceOf(FormBuilder),
+    dateFormatted: PropTypes.string,
+    theaterId: PropTypes.number,
   };
 
   constructor(props) {
@@ -59,6 +61,12 @@ export default class EditFormRow extends React.Component {
         _.merge(showResult, formElement.getResult());
       }
     });
+    if (showResult.functions_attributes) {
+      for (let func of showResult.functions_attributes) {
+        func.date = this.props.dateFormatted;
+        func.theater_id = this.props.theaterId
+      }
+    }
     return showResult;
   }
 }

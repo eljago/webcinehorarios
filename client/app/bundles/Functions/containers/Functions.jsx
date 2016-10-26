@@ -4,10 +4,14 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
 
+import FunctionEdit from './FunctionEdit';
+
 import FunctionsMain from '../components/FunctionsMain'
 import EditFunctionsMain from '../components/EditFunctionsMain'
 import DatePagination from '../components/DatePagination'
 import FunctionsHeader from '../components/FunctionsHeader'
+
+import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
 
 import {FunctionsQueries} from '../../../lib/api/queries'
 
@@ -27,16 +31,25 @@ export default class Functions extends React.Component {
 
     moment.locale('es-CL');
     this.state = {
+      errors: {},
       formBuilders: [],
       offsetDays: 0,
       loadingContent: false,
       editing: false,
       submittingShows: false,
+      functionBeingEdited: null,
+      editingFunction: false,
     }
     this.functionTypes = props.function_types.map((ft) => {
       return {value: ft.id, label: ft.name};
     });
-    _.bindAll(this, ['_updateFunctions', '_onChangeEditing', '_onSubmitShows']);
+    _.bindAll(this, [
+      '_updateFunctions',
+      '_onChangeEditing',
+      '_onSubmitShows',
+      '_onClickEditFunction',
+      '_onStopEditingFunction',
+    ]);
   }
 
   componentDidMount() {
@@ -47,6 +60,7 @@ export default class Functions extends React.Component {
     const dateString = _.upperFirst(moment().add(this.state.offsetDays, 'days').format('dddd D [de] MMMM, YYYY'));
     return(
       <div>
+        <ErrorMessages errors={this.state.errors} />
         <FunctionsHeader
           title={this.props.theater.name}
           subtitle={dateString}
@@ -62,6 +76,8 @@ export default class Functions extends React.Component {
                 loadingContent={this.state.loadingContent}
                 submittingShows={this.state.submittingShows}
                 onSubmitShows={this._onSubmitShows}
+                dateFormatted={moment().add(this.state.offsetDays, 'days').format('YYYY-MM-DD')}
+                theaterId={this.props.theater.id}
                 ref='form'
               />
             );
@@ -74,12 +90,29 @@ export default class Functions extends React.Component {
                 })}
                 loadingContent={this.state.loadingContent}
                 functionTypes={this.functionTypes}
+                onClickEditFunction={this._onClickEditFunction}
               />
             );
           }
         })()}
+        <FunctionEdit
+          functionBeingEdited={this.state.functionBeingEdited}
+          editingFunction={this.state.editingFunction}
+          onStopEditingFunction={this._onStopEditingFunction}
+        />
       </div>
     );
+  }
+
+  _onClickEditFunction(func) {
+    this.setState({
+      functionBeingEdited: func,
+      editingFunction: true
+    });
+  }
+
+  _onStopEditingFunction() {
+    this.setState({editingFunction: false});
   }
 
   _onChangeEditing() {
@@ -121,7 +154,6 @@ export default class Functions extends React.Component {
   _onSubmitShows() {
     if (this.refs.form) {
       const showsToSubmit = this.refs.form.getResult();
-
       this.setState({
         submittingShows: true,
       });
@@ -136,6 +168,7 @@ export default class Functions extends React.Component {
         },
         error: (errors) => {
           this.setState({
+            errors: errors,
             submittingShows: false,
           });
         }

@@ -9,6 +9,7 @@ export default class FunctionsMain extends React.Component {
     shows: PropTypes.array,
     loadingContent: PropTypes.boolean,
     functionTypes: PropTypes.array,
+    onClickEditFunction: PropTypes.func,
   };
   static defaultProps = {
     shows: [],
@@ -21,11 +22,13 @@ export default class FunctionsMain extends React.Component {
     }
     else {
       return (
-        <table className="table table-striped">
-          <tbody>
-            {this._getFunctions()}
-          </tbody>
-        </table>
+        <div>
+          <table className="table table-striped">
+            <tbody>
+              {this._getFunctions()}
+            </tbody>
+          </table>
+        </div>
       );
     }
   }
@@ -38,6 +41,7 @@ export default class FunctionsMain extends React.Component {
           style={{backgroundColor: index % 2 == 0 ? 'white' : '#F1F1F1'}}
           show={show}
           functionTypes={this.props.functionTypes}
+          onClickEditFunction={this.props.onClickEditFunction}
         />
       );
     });

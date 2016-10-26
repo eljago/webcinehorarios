@@ -11,6 +11,8 @@ export default class EditFunctionsMain extends React.Component {
     loadingContent: PropTypes.boolean,
     submittingShows: PropTypes.boolean,
     onSubmitShows: PropTypes.func,
+    dateFormatted: PropTypes.string,
+    theaterId: PropTypes.number,
   };
 
   constructor(props) {
@@ -55,6 +57,8 @@ export default class EditFunctionsMain extends React.Component {
           key={formBuilder.object.id}
           ref={`show_${formBuilder.object.id}`}
           formBuilder={formBuilder}
+          dateFormatted={this.props.dateFormatted}
+          theaterId={this.props.theaterId}
         />
       );
     });
