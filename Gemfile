@@ -61,24 +61,12 @@ gem 'rails-i18n', '~> 5.0.0'
 
 gem 'whenever', require: false
 
-group :test do
-  gem "capybara", "~> 2.1.0"
-  gem "database_cleaner", "~> 1.0.1"
-  gem "launchy", "~> 2.3.0"
-  gem "selenium-webdriver", "~> 2.35.1"
-end
-
-group :development, :test do
-  gem 'rspec-rails', '2.13.1'
-  gem "factory_girl_rails", "~> 4.2.1"
-  gem 'guard-rspec', require: false
-  gem 'watir', require: false
-  gem 'watir-webdriver', require: false
-end
-
 group :development do
   gem 'nokogiri', require: false
   gem 'http', require: false
+
+  gem 'watir', require: false
+  gem 'watir-webdriver', require: false
 
   gem 'bullet'
   gem 'hirb'
