@@ -2,6 +2,7 @@
 
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
+import moment from 'moment'
 
 import FormBuilder from '../../../lib/forms/FormBuilder';
 
@@ -12,7 +13,7 @@ export default class EditFormRow extends React.Component {
 
   static propTypes = {
     formBuilder: PropTypes.instanceOf(FormBuilder),
-    dateFormatted: PropTypes.string,
+    offsetDays: PropTypes.number,
     theaterId: PropTypes.number,
   };
 
@@ -48,7 +49,33 @@ export default class EditFormRow extends React.Component {
           })}
         </Col>
         <Col xs={12} md={7}>
-          {formBuilder.getNestedField('functions', 'showtimes', index)}
+          {(() => {
+            if (func.id) {
+              return formBuilder.getNestedField('functions', 'showtimes', index);
+            }
+            else {
+              let extraFields = [];
+              for (var i = 0; i < 7; i++) {
+                extraFields.push(formBuilder.getNestedField('functions', 'showtimes', index, {
+                  label: moment().add(this.props.offsetDays + i, 'days').format('dddd D [de] MMMM, YYYY'),
+                  ref: `showtimes_${index}_${i}`,
+                }));
+                extraFields.push(formBuilder.getNestedField('functions', 'date', index, {
+                  getInitialValue: (obj) => {
+                    return moment().add(this.props.offsetDays + i, 'days').format('YYYY-MM-DD');
+                  },
+                  ref: `date_${index}_${i}`,
+                }));
+                extraFields.push(formBuilder.getNestedField('functions', 'theater_id', index, {
+                  getInitialValue: (obj) => {
+                    return this.props.theaterId;
+                  },
+                  ref: `theater_id_${index}_${i}`,
+                }));
+              }
+              return extraFields;
+            }
+          })()}
         </Col>
       </Row>
     );
@@ -61,12 +88,16 @@ export default class EditFormRow extends React.Component {
         _.merge(showResult, formElement.getResult());
       }
     });
+
     if (showResult.functions_attributes) {
-      for (let func of showResult.functions_attributes) {
-        func.date = this.props.dateFormatted;
-        func.theater_id = this.props.theaterId
+      for (let i = showResult.functions_attributes.length - 1; i >= 0; i--) {
+        let func = showResult.functions_attributes[i];
+        if (!func.showtimes) {
+          showResult.functions_attributes.splice(i, 1);
+        }
       }
     }
+    console.log(showResult);
     return showResult;
   }
 }

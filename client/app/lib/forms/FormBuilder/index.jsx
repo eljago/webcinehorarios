@@ -10,6 +10,7 @@ import FormFieldCheckboxGroup from '../FormFields/FormFieldCheckboxGroup'
 import FormFieldRadioGroup from '../FormFields/FormFieldRadioGroup'
 import FormFieldSelect from '../FormFields/FormFieldSelect'
 import FormFieldNested from '../FormFields/FormFieldNested'
+import FormFieldHidden from '../FormFields/FormFieldHidden'
 
 import Button from 'react-bootstrap/lib/Button';
 
@@ -33,11 +34,13 @@ export default class FormBuilder {
       const fb = this.nestedFormBuilder[primaryFieldId];
 
       const object = (index < fb.object.length) ? fb.object[index] : this.schema[primaryFieldId].defaultObject;
+      const secondaryFieldData = this.schema[primaryFieldId].nestedSchema[secondaryFieldId];
       return fb.getField(secondaryFieldId, {
         ...options,
         initialValue: options.getInitialValue ? options.getInitialValue(object) : object[secondaryFieldId],
-        ref: `${secondaryFieldId}${index}`,
+        ref: options.ref ? options.ref : `${secondaryFieldId}_${index}`,
         identifier: `${secondaryFieldId}_${index}`,
+        label: options.label ? options.label : secondaryFieldData.label,
       });
     }
     return null;
@@ -75,6 +78,9 @@ export default class FormBuilder {
           break;
         case 'textarea':
           elementData.type = 'textarea';
+          break;
+        case 'hidden':
+          Component = FormFieldHidden;
           break;
         case 'nested':
           elementData.dataKeys = Object.keys(fieldData.nestedSchema);

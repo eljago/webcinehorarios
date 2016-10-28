@@ -76,7 +76,7 @@ export default class Functions extends React.Component {
                 loadingContent={this.state.loadingContent}
                 submittingShows={this.state.submittingShows}
                 onSubmitShows={this._onSubmitShows}
-                dateFormatted={moment().add(this.state.offsetDays, 'days').format('YYYY-MM-DD')}
+                offsetDays={this.state.offsetDays}
                 theaterId={this.props.theater.id}
                 ref='form'
               />

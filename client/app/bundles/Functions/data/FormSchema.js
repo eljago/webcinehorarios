@@ -18,6 +18,12 @@ export default (props) => {
         },
         showtimes: {
           label: 'Showtimes',
+        },
+        date: {
+          type: 'hidden'
+        },
+        theater_id: {
+          type: 'hidden'
         }
       }
     }
