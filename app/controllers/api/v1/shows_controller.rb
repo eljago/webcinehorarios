@@ -17,7 +17,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
   def billboard
     shows = Show.joins(:functions).where(active: true, functions: {date: Date.current})
       .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at, functions.date')
-      .order("shows.debut DESC").uniq.as_json
+      .order("shows.debut DESC").distinct.as_json
     shows.each do |show|
       show["image_url"] = Show.find(show["id"]).image_url :smaller
     end
@@ -48,12 +48,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
     show = Show.find(params[:id])
     show.update_attributes(show_params)
     respond_with show, json: show
-  end
-
-  def update_shows
-    shows_array = params[:shows]
-    shows = Show.update(shows_array.keys, shows_array.values)
-    respond_with shows, json: shows
   end
 
   def select_shows
@@ -91,6 +85,8 @@ class Api::V1::ShowsController < Api::V1::ApiController
       :rating,
       genre_ids: [],
       functions_attributes: [
+        :id,
+        :date,
         :showtimes,
         :_destroy,
         function_type_ids: []

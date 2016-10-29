@@ -13,7 +13,7 @@ import FunctionsHeader from '../components/FunctionsHeader'
 
 import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
 
-import {FunctionsQueries} from '../../../lib/api/queries'
+import {FunctionsQueries, TheatersQueries} from '../../../lib/api/queries'
 
 import FormBuilder from '../../../lib/forms/FormBuilder';
 import GetFormSchema from '../data/FormSchema'
@@ -153,12 +153,18 @@ export default class Functions extends React.Component {
 
   _onSubmitShows() {
     if (this.refs.form) {
-      const showsToSubmit = this.refs.form.getResult();
+      const functionsAttributes = this.refs.form.getResult();
+      const theaterToSubmit = {
+        id: this.props.theater.id,
+        functions_attributes: functionsAttributes,
+      };
+      console.log(theaterToSubmit);
+
       this.setState({
         submittingShows: true,
       });
-      FunctionsQueries.submitUpdateShows({
-        shows: showsToSubmit,
+      TheatersQueries.submitEditTheater({
+        theater: theaterToSubmit,
         success: (response) => {
           this.setState({
             submittingShows: false,
@@ -172,7 +178,7 @@ export default class Functions extends React.Component {
             submittingShows: false,
           });
         }
-      })
+      });
     }
   }
 }

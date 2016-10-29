@@ -27,7 +27,6 @@ Rails.application.routes.draw do
           get 'select_shows'
           get 'billboard'
           get 'comingsoon'
-          put 'update_shows'
         end
       end
       resources :people, only: [:index, :destroy, :update, :create] do

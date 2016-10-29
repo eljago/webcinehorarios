@@ -65,15 +65,18 @@ export default class EditFunctionsMain extends React.Component {
   }
 
   getResult() {
-    let showsResult = {};
+    let functionsAttributes = [];
     for (const formBuilder of this.props.formBuilders) {
       const show = formBuilder.object;
       const ref = `show_${show.id}`;
       const formElement = this.refs[ref];
       if (formElement && _.isFunction(formElement.getResult)) {
-        showsResult[show.id] = formElement.getResult();
+        const result = formElement.getResult();
+        if (!_.isEmpty(result)) {
+          functionsAttributes = functionsAttributes.concat(result);
+        }
       }
     }
-    return showsResult;
+    return functionsAttributes;
   }
 }

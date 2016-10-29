@@ -46,6 +46,13 @@ module Api
           :active,
           :cinema_id,
           :city_id,
+          functions_attributes: [
+            :id,
+            :date,
+            :showtimes,
+            :_destroy,
+            function_type_ids: []
+          ]
         )
       end
     end

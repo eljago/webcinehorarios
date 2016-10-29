@@ -114,7 +114,6 @@ export default class FormFieldNested extends React.Component {
   }
 
   getResult() {
-          console.log(this.refs)
     let submitArray = []; // functions_attributes
 
     this.state.dataArray.forEach((dataItem, index) => {

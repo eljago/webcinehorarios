@@ -8,7 +8,7 @@ class Theater < ApplicationRecord
 
   validates :name, :presence => :true
 
-  accepts_nested_attributes_for :functions
+  accepts_nested_attributes_for :functions, allow_destroy: true
 
   def self.find_id_by_name name
     theater = where(name: name).first

@@ -92,12 +92,20 @@ export default class EditFormRow extends React.Component {
     if (showResult.functions_attributes) {
       for (let i = showResult.functions_attributes.length - 1; i >= 0; i--) {
         let func = showResult.functions_attributes[i];
-        if (!func.showtimes) {
+        if (!func.showtimes && !func.id) {
           showResult.functions_attributes.splice(i, 1);
         }
       }
     }
-    console.log(showResult);
-    return showResult;
+    if (!_.isEmpty(showResult)) {
+      const functionsAttributes = [];
+      showResult.functions_attributes.forEach((func) => {
+        functionsAttributes.push(func);
+      })
+      return functionsAttributes;
+    }
+    else {
+      return null;
+    }
   }
 }

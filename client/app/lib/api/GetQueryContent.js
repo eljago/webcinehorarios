@@ -12,6 +12,7 @@ const SetHeaders = (xhr) => {
 };
 
 const MyErrorCallback = (response, errorCallback) => {
+  console.log("ERROR CALLBACK");
   console.log(response);
   let MyErrors = {};
   if (response.status === 400) {
@@ -25,6 +26,7 @@ const MyErrorCallback = (response, errorCallback) => {
   }
 
   if (response.responseJSON) {
+    console.log(response.responseJSON.errors);
     _.merge(MyErrors, response.responseJSON.errors);
   }
   errorCallback(MyErrors);
