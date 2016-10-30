@@ -68,12 +68,15 @@ export default class Functions extends React.Component {
           onChangeEditing={this._onChangeEditing}
         />
         <DatePagination onChangeDay={this._updateFunctions} offsetDays={this.state.offsetDays} />
+
         {(() => {
+          if (this.state.loadingContent) {
+            return <h1>Loading</h1>;
+          }
           if (this.state.editing) {
             return(
               <EditFunctionsMain
                 formBuilders={this.state.formBuilders}
-                loadingContent={this.state.loadingContent}
                 submittingShows={this.state.submittingShows}
                 onSubmitShows={this._onSubmitShows}
                 offsetDays={this.state.offsetDays}
@@ -84,22 +87,23 @@ export default class Functions extends React.Component {
           }
           else {
             return(
-              <FunctionsMain
-                shows={this.state.formBuilders.map((fb) => {
-                  return fb.object;
-                })}
-                loadingContent={this.state.loadingContent}
-                functionTypes={this.functionTypes}
-                onClickEditFunction={this._onClickEditFunction}
-              />
+              <div>
+                <FunctionsMain
+                  shows={this.state.formBuilders.map((fb) => {
+                    return fb.object;
+                  })}
+                  functionTypes={this.functionTypes}
+                  onClickEditFunction={this._onClickEditFunction}
+                />
+                <FunctionEdit
+                  functionBeingEdited={this.state.functionBeingEdited}
+                  editingFunction={this.state.editingFunction}
+                  onStopEditingFunction={this._onStopEditingFunction}
+                />
+              </div>
             );
           }
         })()}
-        <FunctionEdit
-          functionBeingEdited={this.state.functionBeingEdited}
-          editingFunction={this.state.editingFunction}
-          onStopEditingFunction={this._onStopEditingFunction}
-        />
       </div>
     );
   }

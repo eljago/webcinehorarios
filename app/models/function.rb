@@ -9,6 +9,7 @@ class Function < ApplicationRecord
   validates :show, existence: true
   validates :date, presence: :true
   
+  validates :showtimes, presence: :true
   validates :showtimes, format: {
       with: /\A(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9], )*([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\z/,
       message: "%{value} no es un formato válido"

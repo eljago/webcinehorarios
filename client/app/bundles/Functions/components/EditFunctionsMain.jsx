@@ -8,7 +8,6 @@ import EditShowRow from './EditShowRow'
 export default class EditFunctionsMain extends React.Component {
   static propTypes = {
     formBuilders: PropTypes.array,
-    loadingContent: PropTypes.boolean,
     submittingShows: PropTypes.boolean,
     onSubmitShows: PropTypes.func,
     offsetDays: PropTypes.number,
@@ -21,28 +20,23 @@ export default class EditFunctionsMain extends React.Component {
   }
 
   render() {
-    if (this.props.loadingContent) {
-      return (<h1>Loading...</h1>);
-    }
-    else {
-      return (
-        <form>
-          <table className="table table-striped">
-            <tbody>
-              {this._getFunctions()}
-            </tbody>
-          </table>
-          <button
-            className={`btn btn-primary`}
-            type='submit'
-            disabled={this.props.submittingShows}
-            onClick={this._onSubmit}
-          >
-            Submit
-          </button>
-        </form>
-      );
-    }
+    return (
+      <form>
+        <table className="table table-striped">
+          <tbody>
+            {this._getFunctions()}
+          </tbody>
+        </table>
+        <button
+          className={`btn btn-primary`}
+          type='submit'
+          disabled={this.props.submittingShows}
+          onClick={this._onSubmit}
+        >
+          Submit
+        </button>
+      </form>
+    );
   }
 
   _onSubmit(e) {

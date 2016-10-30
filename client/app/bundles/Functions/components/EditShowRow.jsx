@@ -26,16 +26,16 @@ export default class EditFormRow extends React.Component {
     const formBuilder = this.props.formBuilder;
     const show = formBuilder.object;
     return(
-      <tr>
-        <td>
+      <Row>
+        <Col xs={12} sm={3} md={2}>
           <img src={`http://cinehorarios.cl${show.image_url}`} />
-        </td>
-        <td>
+        </Col>
+        <Col xs={12} sm={9} md={10}>
           {formBuilder.getField('functions', {
             getContentRow: this._getContentRow
           })}
-        </td>
-      </tr>
+        </Col>
+      </Row>
     );
   }
   
@@ -43,12 +43,12 @@ export default class EditFormRow extends React.Component {
     const formBuilder = this.props.formBuilder;
     return(
       <Row key={func.id ? func.id : func.key}>
-        <Col xs={12} md={5}>
+        <Col xs={12} sm={func.id ? 5 : 2}>
           {formBuilder.getNestedField('functions', 'function_types', index, {
-            columns: 3
+            columns: func.id ? 3 : 1
           })}
         </Col>
-        <Col xs={12} md={7}>
+        <Col xs={12} sm={func.id ? 7 : 10}>
           {(() => {
             if (func.id) {
               return formBuilder.getNestedField('functions', 'showtimes', index);
@@ -57,8 +57,9 @@ export default class EditFormRow extends React.Component {
               let extraFields = [];
               for (var i = 0; i < 7; i++) {
                 extraFields.push(formBuilder.getNestedField('functions', 'showtimes', index, {
-                  label: moment().add(this.props.offsetDays + i, 'days').format('dddd D [de] MMMM, YYYY'),
+                  label: _.upperFirst(moment().add(this.props.offsetDays + i, 'days').format('ddd DD')),
                   ref: `showtimes_${index}_${i}`,
+                  horizontal: true,
                 }));
                 extraFields.push(formBuilder.getNestedField('functions', 'date', index, {
                   getInitialValue: (obj) => {

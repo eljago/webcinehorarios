@@ -12,11 +12,14 @@ export default class FormFieldText extends React.Component {
     initialValue: PropTypes.string,
     disabled: PropTypes.boolean,
     placeholder: PropTypes.string,
+    horizontal: PropTypes.boolean,
   };
   static defaultProps = {
     type: 'text',
     label: '',
     initialValue: '',
+    placeholder: '',
+    horizontal: false,
   };
 
   constructor(props) {
@@ -28,32 +31,13 @@ export default class FormFieldText extends React.Component {
   }
 
   render() {
-    const {
-      submitKey,
-      label,
-      initialValue,
-      type,
-      placeholder,
-      identifier,
-    } = this.props;
-
-    const typeProps = type === 'textarea' ?
-      {componentClass: type, rows: 7} : 
-        (type === 'number' ? {type: type, step: this.props.step ? this.props.step : 1} : 
-          {type: type});
-
+    const className = this.props.horizontal ? {className: "form-horizontal"} : null;
     return(
-      <div className="form-group">
-        {this._getControlLabel()}
-        <input
-          {...typeProps}
-          className="form-control"
-          id={identifier}
-          placeholder={placeholder ? placeholder : label}
-          disabled={this.props.disabled}
-          value={this.state.value}
-          onChange={this._handleChange}
-        />
+      <div {...className}>
+        <div className="form-group">
+          {this._getControlLabel()}
+          {this._getInputContent()}
+        </div>
       </div>
     );
   }
@@ -64,13 +48,52 @@ export default class FormFieldText extends React.Component {
 
   _getControlLabel() {
     if (this.props.label && !_.isEmpty(this.props.label)) {
+      const horizontalClass = this.props.horizontal ? "col-sm-2" : "";
       return (
-        <label className='control-label' for={this.props.identifier}>
+        <label className={`${horizontalClass} control-label`} for={this.props.identifier}>
           {this.props.label}
         </label>
       );
     }
     return null;
+  }
+
+  _getInputContent() {
+    if (this.props.horizontal) {
+      return(
+        <div className="col-sm-10">
+          {this._getInput()}
+        </div>
+      );
+    }
+    else {
+      return this._getInput();
+    }
+  }
+
+  _getInput() {
+    const {
+      label,
+      type,
+      placeholder,
+      identifier,
+    } = this.props;
+
+    const typeProps = type === 'textarea' ?
+      {componentClass: type, rows: 7} : 
+        (type === 'number' ? {type: type, step: this.props.step ? this.props.step : 1} : 
+          {type: type});
+    return (
+      <input
+        {...typeProps}
+        className="form-control"
+        id={identifier}
+        placeholder={placeholder}
+        disabled={this.props.disabled}
+        value={this.state.value}
+        onChange={this._handleChange}
+      />
+    );
   }
 
   getResult() {

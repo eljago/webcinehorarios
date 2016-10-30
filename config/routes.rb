@@ -18,7 +18,13 @@ Rails.application.routes.draw do
     ##### V1 #####
     scope module: :v1, constraints: ApiConstraints.new(version: 1) do
       resources :theaters, only: [:create, :update, :destroy]
-      resources :functions, only: [:index, :update, :destroy]
+      resources :functions, only: [:index, :update, :destroy] do
+        collection do
+          post 'copy_day'
+          post 'delete_day'
+          post 'delete_onward'
+        end
+      end
       resources :cinemas, only: [] do
         resources :theaters, only: :index
       end

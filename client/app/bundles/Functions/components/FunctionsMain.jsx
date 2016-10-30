@@ -7,30 +7,23 @@ import ShowRow from './ShowRow'
 export default class FunctionsMain extends React.Component {
   static propTypes = {
     shows: PropTypes.array,
-    loadingContent: PropTypes.boolean,
     functionTypes: PropTypes.array,
     onClickEditFunction: PropTypes.func,
   };
   static defaultProps = {
     shows: [],
-    loadingContent: false,
   }
 
   render() {
-    if (this.props.loadingContent) {
-      return (<h1>Loading...</h1>);
-    }
-    else {
-      return (
-        <div>
-          <table className="table table-striped">
-            <tbody>
-              {this._getFunctions()}
-            </tbody>
-          </table>
-        </div>
-      );
-    }
+    return (
+      <div>
+        <table className="table table-striped">
+          <tbody>
+            {this._getFunctions()}
+          </tbody>
+        </table>
+      </div>
+    );
   }
 
   _getFunctions() {

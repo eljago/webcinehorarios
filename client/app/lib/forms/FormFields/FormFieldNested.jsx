@@ -41,13 +41,12 @@ export default class FormFieldNested extends React.Component {
 
   render() {
     return(
-      <div>
-        <FormGroup controlId={this.props.submitKey}>
+      <div style={{marginBottom: 15}}>
+        <FormGroup controlId={this.props.submitKey} style={{marginBottom: 5}}>
           <Row>
             {this._getRows()}
           </Row>
         </FormGroup>
-        <br />
         <Button onClick={this._onAddRow} bsStyle="success">
           Nuevo
         </Button>
