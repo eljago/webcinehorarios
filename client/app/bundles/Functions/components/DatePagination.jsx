@@ -10,16 +10,32 @@ export default class DatePagination extends React.Component {
   static propTypes = {
     offsetDays: PropTypes.number,
     onChangeDay: PropTypes.func,
+    disabled: PropTypes.boolean,
   };
+  static defaultProps = {
+    disabled: false,
+  }
 
   constructor(props) {
     super(props);
     moment.locale('es-CL');
-    this.state = {
-      currentOffest: props.offsetDays,
-      selectedPillDate: this._getPrettyDateString(moment()) // "Mier 19"
-    }
+    this.state = this._getDateState(props.offsetDays);
     _.bindAll(this, ['_onClickPrev', '_onClickNext'])
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(this._getDateState(nextProps.offsetDays));
+  }
+
+  _getPrettyDateString(date) {
+    return(_.upperFirst(date.format('ddd D')));
+  }
+
+  _getDateState(offsetDays) {
+    return {
+      currentOffest: offsetDays,
+      selectedPillDate: this._getPrettyDateString(moment().add(offsetDays, 'days'))
+    };
   }
 
   render() {
@@ -30,13 +46,15 @@ export default class DatePagination extends React.Component {
     }
     // dates: ["Lun 17", "Mar 18", "Mier 19", etc...]
 
+    const disabledClass = this.props.disabled ? {className: 'disabled'} : null;
+
     let navItems = [
-      <li>
+      <li {...disabledClass}>
         <a href="#" aria-label="Previous" onClick={this._onClickPrev}>
           <span aria-hidden="true">&laquo;</span>
         </a>
       </li>,
-      <li>
+      <li {...disabledClass}>
         <a href="#" aria-label="Next" onClick={this._onClickNext}>
           <span aria-hidden="true">&raquo;</span>
         </a>
@@ -44,14 +62,24 @@ export default class DatePagination extends React.Component {
     ];
 
     const dateNavItems = dates.map((date, index) => {
-      const active = this.state.selectedPillDate === date ? {className: 'active'} : null;
-      return (
-        <li {...active}>
-          <a href="#" onClick={(e) => this._onClickDate(e, date, index)}>
-            <span>{date}</span>
-          </a>
-        </li>
-      );
+      if (this.state.selectedPillDate === date) {
+        return (
+          <li className='active'>
+            <a href="#" onClick={(e) => e.preventDefault()}>
+              <span>{date}</span>
+            </a>
+          </li>
+        );
+      }
+      else {
+        return (
+          <li {...disabledClass}>
+            <a href="#" onClick={(e) => this._onClickDate(e, date, index)}>
+              <span>{date}</span>
+            </a>
+          </li>
+        );
+      }
     });
     navItems = update(navItems, {$splice: [[1, 0, dateNavItems]]})
 
@@ -78,9 +106,5 @@ export default class DatePagination extends React.Component {
     this.setState({selectedPillDate: date});
     this.props.onChangeDay(this.state.currentOffest - 4 + index);
     e.preventDefault();
-  }
-
-  _getPrettyDateString(date) {
-    return(_.upperFirst(date.format('ddd D')));
   }
 }

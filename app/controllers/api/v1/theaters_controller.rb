@@ -50,6 +50,8 @@ module Api
             :id,
             :date,
             :showtimes,
+            :show_id,
+            :theater_id,
             :_destroy,
             function_type_ids: []
           ]

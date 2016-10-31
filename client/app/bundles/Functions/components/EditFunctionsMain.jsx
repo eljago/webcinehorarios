@@ -11,7 +11,6 @@ export default class EditFunctionsMain extends React.Component {
     submittingShows: PropTypes.boolean,
     onSubmitShows: PropTypes.func,
     offsetDays: PropTypes.number,
-    theaterId: PropTypes.number,
   };
 
   constructor(props) {
@@ -52,7 +51,6 @@ export default class EditFunctionsMain extends React.Component {
           ref={`show_${formBuilder.object.id}`}
           formBuilder={formBuilder}
           offsetDays={this.props.offsetDays}
-          theaterId={this.props.theaterId}
         />
       );
     });

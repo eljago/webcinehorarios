@@ -35,6 +35,7 @@ export default class Functions extends React.Component {
       formBuilders: [],
       offsetDays: 0,
       loadingContent: false,
+      loadingMessage: 'Loading',
       editing: false,
       submittingShows: false,
       functionBeingEdited: null,
@@ -49,6 +50,9 @@ export default class Functions extends React.Component {
       '_onSubmitShows',
       '_onClickEditFunction',
       '_onStopEditingFunction',
+      '_onCopyDay',
+      '_onDeleteDay',
+      '_onDeleteOnward',
     ]);
   }
 
@@ -57,21 +61,28 @@ export default class Functions extends React.Component {
   }
 
   render() {
-    const dateString = _.upperFirst(moment().add(this.state.offsetDays, 'days').format('dddd D [de] MMMM, YYYY'));
     return(
       <div>
         <ErrorMessages errors={this.state.errors} />
         <FunctionsHeader
           title={this.props.theater.name}
-          subtitle={dateString}
+          subtitle={_.upperFirst(moment().add(this.state.offsetDays, 'days').format('dddd D [de] MMMM, YYYY'))}
           editing={this.state.editing}
           onChangeEditing={this._onChangeEditing}
+          onCopyDay={this._onCopyDay}
+          onDeleteDay={this._onDeleteDay}
+          onDeleteOnward={this._onDeleteOnward}
+          disabled={this.state.loadingContent || this.state.submittingShows}
         />
-        <DatePagination onChangeDay={this._updateFunctions} offsetDays={this.state.offsetDays} />
+        <DatePagination
+          onChangeDay={this._updateFunctions}
+          offsetDays={this.state.offsetDays}
+          disabled={this.state.loadingContent || this.state.submittingShows}
+        />
 
         {(() => {
           if (this.state.loadingContent) {
-            return <h1>Loading</h1>;
+            return <h1>{this.state.loadingMessage}</h1>;
           }
           if (this.state.editing) {
             return(
@@ -80,7 +91,6 @@ export default class Functions extends React.Component {
                 submittingShows={this.state.submittingShows}
                 onSubmitShows={this._onSubmitShows}
                 offsetDays={this.state.offsetDays}
-                theaterId={this.props.theater.id}
                 ref='form'
               />
             );
@@ -108,6 +118,10 @@ export default class Functions extends React.Component {
     );
   }
 
+  _getDateString(offsetDays = this.state.offsetDays) {
+    return moment().add(offsetDays, 'days').format('YYYY-MM-DD');
+  }
+
   _onClickEditFunction(func) {
     this.setState({
       functionBeingEdited: func,
@@ -123,32 +137,102 @@ export default class Functions extends React.Component {
     this.setState({editing: !this.state.editing});
   }
 
+  // HEADER ACTIONS
+
+  _onCopyDay() {
+    if (confirm("¿Copiar día?")) {
+      this.setState({
+        loadingContent: true,
+        loadingMessage: 'Copiando Día',
+      });
+      FunctionsQueries.copyDay({
+        theaterId: this.props.theater.id,
+        date: this._getDateString(),
+        success: (response) => {
+          this._updateFunctions(this.state.offsetDays + 1);
+        },
+        error: (errors) => {
+          this.setState({
+            errors: errors,
+            loadingContent: false,
+          });
+        }
+      });
+    }
+  }
+
+  _onDeleteDay() {
+    if (confirm("Borrar día?")) {
+      this.setState({
+        loadingContent: true,
+        loadingMessage: 'Borrando Día',
+      });
+      FunctionsQueries.deleteDay({
+        theaterId: this.props.theater.id,
+        date: this._getDateString(),
+        success: (response) => {
+          this._updateFunctions();
+        },
+        error: (errors) => {
+          this.setState({
+            errors: errors,
+            loadingContent: false,
+          });
+        }
+      });
+    }
+  }
+
+  _onDeleteOnward() {
+    if (confirm("Borrar desde hoy?")) {
+      this.setState({
+        loadingContent: true,
+        loadingMessage: 'Borrando desde hoy',
+      });
+      FunctionsQueries.deleteOnward({
+        theaterId: this.props.theater.id,
+        date: this._getDateString(),
+        success: (response) => {
+          this._updateFunctions();
+        },
+        error: (errors) => {
+          this.setState({
+            errors: errors,
+            loadingContent: false,
+          });
+        }
+      });
+    }
+  }
+
   _updateFunctions(offsetDays = this.state.offsetDays) {
-    const date = moment().add(offsetDays, 'days').format('YYYY-MM-DD');
-    const theater_id = this.props.theater.id;
     this.setState({
       loadingContent: true,
       offsetDays: offsetDays
     });
     FunctionsQueries.getFunctions({
-      date: date,
-      theater_id: theater_id,
+      theaterId: this.props.theater.id,
+      date: this._getDateString(offsetDays),
       success: (response) => {
-        this.setState({
-          formBuilders: response.shows.map((show) => {
-            return(new FormBuilder(
-              GetFormSchema({
-                function_types: this.functionTypes,
-                defaultFunction: this.props.default_function
-              }),
-              show
-            ));
-          }),
-          loadingContent: false
-        });
+        if (offsetDays == this.state.offsetDays) {
+          this.setState({
+            formBuilders: response.shows.map((show) => {
+              return(new FormBuilder(
+                GetFormSchema({
+                  function_types: this.functionTypes,
+                  defaultFunction: this.props.default_function
+                }),
+                show
+              ));
+            }),
+            loadingContent: false,
+            errors: {},
+          });
+        }
       },
       error: (errors) => {
         this.setState({
+          errors: errors,
           loadingContent: false
         });
       }
@@ -157,10 +241,9 @@ export default class Functions extends React.Component {
 
   _onSubmitShows() {
     if (this.refs.form) {
-      const functionsAttributes = this.refs.form.getResult();
       const theaterToSubmit = {
         id: this.props.theater.id,
-        functions_attributes: functionsAttributes,
+        functions_attributes: this.refs.form.getResult(),
       };
       console.log(theaterToSubmit);
 

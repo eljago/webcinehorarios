@@ -3,7 +3,7 @@ module Api
     class FunctionsController < Api::V1::ApiController
 
       def index
-        shows = Show.includes(:functions => :parsed_show).references(:functions)
+        shows = Show.includes(:functions => [:function_types, :parsed_show]).references(:functions)
           .where('functions.date = ? AND functions.theater_id = ?', params[:date], params[:theater_id])
           .order('shows.debut DESC, functions.id ASC')
 
@@ -50,7 +50,8 @@ module Api
       def delete_day
         theater = Theater.find(params[:theater_id])
         functions = theater.functions.where(date: params[:date])
-        respond_with Function.destroy(functions)
+        response = Function.transaction { functions.each(&:destroy) }
+        respond_with response
       end
 
       def delete_onward

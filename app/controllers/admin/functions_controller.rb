@@ -6,7 +6,7 @@ class Admin::FunctionsController < ApplicationController
 
   def index
     function_types = @theater.cinema.function_types.order(:name).all
-    default_function = Function.new
+    default_function = @theater.functions.new
 
     @title = 'Functions'
     @app_name = 'FunctionsApp'

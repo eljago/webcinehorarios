@@ -21,8 +21,8 @@ Rails.application.routes.draw do
       resources :functions, only: [:index, :update, :destroy] do
         collection do
           post 'copy_day'
-          post 'delete_day'
-          post 'delete_onward'
+          delete 'delete_day'
+          delete 'delete_onward'
         end
       end
       resources :cinemas, only: [] do

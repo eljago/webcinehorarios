@@ -24,6 +24,9 @@ export default (props) => {
         },
         theater_id: {
           type: 'hidden'
+        },
+        show_id: {
+          type: 'hidden'
         }
       }
     }

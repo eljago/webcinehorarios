@@ -14,7 +14,6 @@ export default class EditFormRow extends React.Component {
   static propTypes = {
     formBuilder: PropTypes.instanceOf(FormBuilder),
     offsetDays: PropTypes.number,
-    theaterId: PropTypes.number,
   };
 
   constructor(props) {
@@ -41,6 +40,7 @@ export default class EditFormRow extends React.Component {
   
   _getContentRow(func, index) {
     const formBuilder = this.props.formBuilder;
+    const show = formBuilder.object;
     return(
       <Row key={func.id ? func.id : func.key}>
         <Col xs={12} sm={func.id ? 5 : 2}>
@@ -69,9 +69,15 @@ export default class EditFormRow extends React.Component {
                 }));
                 extraFields.push(formBuilder.getNestedField('functions', 'theater_id', index, {
                   getInitialValue: (obj) => {
-                    return this.props.theaterId;
+                    return obj.theater_id;
                   },
                   ref: `theater_id_${index}_${i}`,
+                }));
+                extraFields.push(formBuilder.getNestedField('functions', 'show_id', index, {
+                  getInitialValue: (obj) => {
+                    return show.id;
+                  },
+                  ref: `show_id_${index}_${i}`,
                 }));
               }
               return extraFields;
