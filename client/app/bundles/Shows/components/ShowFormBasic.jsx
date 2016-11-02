@@ -1,187 +1,80 @@
 'use strict';
 
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
+import _ from 'lodash';
 
-import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
 
-import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
-import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
-import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
-import FormFieldCheckboxGroup from '../../../lib/forms/FormFields/FormFieldCheckboxGroup'
-import FormFieldRadioGroup from '../../../lib/forms/FormFields/FormFieldRadioGroup'
-
+import FormBuilder from '../../../lib/forms/FormBuilder';
 
 export default class ShowFormBasic extends React.Component {
   static propTypes = {
-    show: PropTypes.object,
-    genres: PropTypes.array
+    formBuilder: PropTypes.instanceOf(FormBuilder)
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    const show = this.props.show;
-    const showGenres = show.genres ? show.genres.map((value) => {
-      return value.id;
-    }) : [];
+    const formBuilder = this.props.formBuilder;
 
     return (
-      <Grid>
-        <Row>
-          <Col md={8}>
-            <FormFieldText
-              submitKey='name'
-              label='Nombre'
-              ref='name'
-              initialValue={show.name}
-            />
-            <FormFieldText
-              submitKey='name_original'
-              label='Nombre Original'
-              ref='name_original'
-              initialValue={show.name_original}
-            />
-            <Row>
-              <Col xs={12} md={4}>
-                <FormFieldText
-                  type='number'
-                  submitKey='year'
-                  label='Año'
-                  ref='year'
-                  initialValue={show.year}
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <FormFieldText
-                  type='number'
-                  submitKey='duration'
-                  label='Duración'
-                  ref='duration'
-                  initialValue={show.duration}
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <FormFieldText
-                  submitKey='debut'
-                  label='Estreno'
-                  ref='debut'
-                  initialValue={show.debut}
-                />
-              </Col>
-            </Row>
+      <Row>
+        <Col md={8}>
+          {formBuilder.getField('name')}
+          {formBuilder.getField('name_original')}
+          <Row>
+            <Col xs={12} md={4}>
+              {formBuilder.getField('year')}
+            </Col>
+            <Col xs={12} md={4}>
+              {formBuilder.getField('duration')}
+            </Col>
+            <Col xs={12} md={4}>
+              {formBuilder.getField('debut')}
+            </Col>
+          </Row>
+          {formBuilder.getField('information')}
+          <Row>
+            <Col md={8} lg={9}>
+              {formBuilder.getField('imdb_code')}
+            </Col>
+            <Col md={4} lg={3}>
+              {formBuilder.getField('imdb_score')}
+            </Col>
+          </Row>
 
-            <FormFieldText
-              type='textarea'
-              submitKey='information'
-              label='Sinopsis'
-              ref='information'
-              initialValue={show.information}
-            />
+          <Row>
+            <Col md={8} lg={9}>
+              {formBuilder.getField('metacritic_url')}
+            </Col>
+            <Col md={4} lg={3}>
+              {formBuilder.getField('metacritic_score')}
+            </Col>
+          </Row>
 
-            <Row>
-              <Col md={8} lg={9}>
-                <FormFieldText
-                  submitKey='imdb_code'
-                  label='IMDB Code'
-                  ref='imdb_code'
-                  initialValue={show.imdb_code}
-                />
-              </Col>
-              <Col md={4} lg={3}>
-                <FormFieldText
-                  type='number'
-                  submitKey='imdb_score'
-                  label='IMDB Score'
-                  ref='imdb_score'
-                  initialValue={show.imdb_score}
-                />
-              </Col>
-            </Row>
+          <Row>
+            <Col md={8} lg={9}>
+              {formBuilder.getField('rotten_tomatoes_url')}
+            </Col>
+            <Col md={4} lg={3}>
+              {formBuilder.getField('rotten_tomatoes_score')}
+            </Col>
+          </Row>
 
-            <Row>
-              <Col md={8} lg={9}>
-                <FormFieldText
-                  submitKey='metacritic_url'
-                  label='Metacritic URL'
-                  ref='metacritic_url'
-                  initialValue={show.metacritic_url}
-                />
-              </Col>
-              <Col md={4} lg={3}>
-                <FormFieldText
-                  type='number'
-                  submitKey='metacritic_score'
-                  label='Metacritic Score'
-                  ref='metacritic_score'
-                  initialValue={show.metacritic_score}
-                />
-              </Col>
-            </Row>
+        </Col>
 
-            <Row>
-              <Col md={8} lg={9}>
-                <FormFieldText
-                  submitKey='rotten_tomatoes_url'
-                  label='Rotten Tomatoes URL'
-                  ref='rotten_tomatoes_url'
-                  initialValue={show.rotten_tomatoes_url}
-                />
-              </Col>
-              <Col md={4} lg={3}>
-                <FormFieldText
-                  type='number'
-                  submitKey='rotten_tomatoes_score'
-                  label='Rotten Tomatoes Score'
-                  ref='rotten_tomatoes_score'
-                  initialValue={show.rotten_tomatoes_score}
-                />
-              </Col>
-            </Row>
-
-          </Col>
-
-          <Col md={4}>
-            <Row>
-              <Col xs={6} md={6}>
-                <FormFieldCheckboxGroup
-                  submitKey='genre_ids'
-                  label='Géneros'
-                  ref='genres'
-                  options={this.props.genres.map((genre) => {
-                    return {value: genre.id, label: genre.name};
-                  })}
-                  initialValue={showGenres}
-                />
-              </Col>
-              <Col xs={6} md={6}>
-                <FormFieldCheckbox
-                  submitKey='active'
-                  label='Activo'
-                  ref='active'
-                  initialValue={show.active}
-                />
-                <FormFieldRadioGroup
-                  submitKey='rating'
-                  label='Calificación'
-                  ref='rating'
-                  options={[
-                    {value: 'TE', label: 'TE'},
-                    {value: 'TE+7', label: 'TE+7'},
-                    {value: '14+', label: '14+'},
-                    {value: '18+', label: '18+'},
-                  ]}
-                  initialValue={show.rating}
-                />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
-      </Grid>
+        <Col md={4}>
+          <Row>
+            <Col xs={6} md={6}>
+              {formBuilder.getField('genres')}
+            </Col>
+            <Col xs={6} md={6}>
+              {formBuilder.getField('active')}
+              {formBuilder.getField('rating')}
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     );
   }
 

@@ -10,7 +10,6 @@ class Show < ApplicationRecord
   has_many :people, through: :show_person_roles
   has_many :comments, dependent: :destroy
   has_many :parsed_shows, dependent: :destroy
-  has_one :portrait_image, class_name: 'Image', foreign_key: :show_portrait_id
   has_many :nominations
   has_many :award_specific_nominations, through: :nominations
   has_many :show_debuts, dependent: :destroy
@@ -35,6 +34,7 @@ class Show < ApplicationRecord
     }, allow_blank: true
 
   accepts_nested_attributes_for :images, :videos, :show_person_roles, allow_destroy: true
+  accepts_nested_attributes_for :functions
 
   after_commit :flush_cache
 
@@ -48,6 +48,20 @@ class Show < ApplicationRecord
     else
       order('shows.created_at desc')
     end
+  end
+
+  def image_url version = nil
+    if images.where(poster: true).length > 0
+      if version
+        return images.where(poster: true).first.image.send(version).url
+      end
+      images.where(poster: true).first.image_url
+    else
+      '/uploads/default_images/default.png'
+    end
+  end
+  def portrait_image
+    images.where(backdrop: true).length > 0 ? images.where(backdrop: true).first.image_url : '/uploads/default_images/default.png'
   end
 
   def actors
@@ -138,7 +152,7 @@ class Show < ApplicationRecord
   # SHOW
   def self.cached_api_show id
     Rails.cache.fetch([name, id]) do
-      where(id: id).includes(:portrait_image, :genres, :images, :videos, :show_person_roles => :person)
+      where(id: id).includes(:genres, :images, :videos, :show_person_roles => :person)
       .where('videos.video_type = ?', 0)
       .order('genres.name, videos.created_at DESC, images.created_at DESC, show_person_roles.position').first
     end

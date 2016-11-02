@@ -3,73 +3,28 @@ class Function < ApplicationRecord
   belongs_to :theater
   belongs_to :show
   has_and_belongs_to_many :function_types
-  has_many :showtimes, dependent: :destroy
   belongs_to :parsed_show
   
-  validates :theater, presence: :true
+  validates :theater, existence: true
+  validates :show, existence: true
   validates :date, presence: :true
   
-  def self.create_string_from_horarios(string)
-    string.gsub(/\s{3,}|(\s-\s)|(,\s)|(\.\s)|(-+)/, ", ")
-  end
-  def self.create_array_from_horarios_string(string)
-    Function.create_string_from_horarios(string).split(', ')
-  end
-  
-  # SHOWTIMES METHODS
-  def self.create_showtimes(function, horarios)
-    Function.create_array_from_horarios_string(horarios).each do |h|
-      if h.size >= 4
-        h = h.gsub(/(;)/, ":")
-        horaminuto = h.split(":")
-        horaminuto[0] = horaminuto[0].to_i
-        horaminuto[1] = horaminuto[1].to_i
-        begin
-          # CINEMARK HAS CINEMA_ID = 1. CINEMARK SHOWS PAST MIDNIGHT SHOWTIMES TIMES ON NEXT DAY.
-          date = function.theater.cinema_id != 1 && horaminuto[0] < 5 ? function.date+1 : function.date
-          time = DateTime.new.in_time_zone("America/Santiago").change(year: date.year, month: date.month, day: date.day, hour: horaminuto[0], min: horaminuto[1])
-        rescue NoMethodError
-          next
-        end
-        function.showtimes << Showtime.new(time: time)
-      end
-    end
-  end
-  
-  def self.create_extra_showtimes_from_params(func, theater, params)
-    date = func.date
-    7.times do |n|
-      horarios = params["horarios_extra_#{n}"]
-      date = date.next
-      if horarios.size >= 5
-        function = theater.functions.new
-        function.date = date
-        function.function_types = func.function_types
-        function.show_id = func.show_id
-        Function.create_showtimes function, horarios
-        function.save
-      end
-    end
-  end
-  
+  validates :showtimes, presence: :true
+  validates :showtimes, format: {
+      with: /\A(([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9], )*([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]\z/,
+      message: "%{value} no es un formato válido"
+    }, allow_blank: true
+
   def total_identical? function
 
     return false if theater_id != function.theater_id
     return false if date != function.date
     return false if function_types.length != function.function_types.length
-    return false if showtimes.length != function.showtimes.length
+    return false if showtimes != function.showtimes
     
     fts = function.function_types.map(&:id).sort
     lfts = function_types.map(&:id).sort
     return false if fts != lfts
-    
-    sts = function.showtimes.sort.map do |showtime|
-      (showtime.time.hour.to_s + showtime.time.min.to_s + showtime.time.day.to_s).to_i
-    end
-    lsts = showtimes.sort.map do |showtime|
-      (showtime.time.hour.to_s + showtime.time.min.to_s + showtime.time.day.to_s).to_i
-    end
-    return false if sts != lsts
     
     return false if (show_id != function.show_id || parsed_show_id != function.parsed_show_id)
     

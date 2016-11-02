@@ -18,7 +18,6 @@ export default class ParsedShowsTabs extends React.Component {
     itemsPerPage: PropTypes.number,
     parsedShows: PropTypes.array,
     orphanParsedShows: PropTypes.array,
-    getShowsOptions: PropTypes.func,
     updateRow: PropTypes.func,
     deleteRow: PropTypes.func,
     onChangePage: PropTypes.func,
@@ -62,7 +61,6 @@ export default class ParsedShowsTabs extends React.Component {
           pagesCount={this.props.pagesCount}
           itemsPerPage={this.props.itemsPerPage}
           parsedShows={this.props.parsedShows}
-          getShowsOptions={this.props.getShowsOptions}
           updateRow={this.props.updateRow}
           deleteRow={this.props.deleteRow}
           onChangePage={this.props.onChangePage}
@@ -73,7 +71,6 @@ export default class ParsedShowsTabs extends React.Component {
       return (
         <ParsedShowsOrphan
           orphanParsedShows={this.props.orphanParsedShows}
-          getShowsOptions={this.props.getShowsOptions}
           updateRow={this.props.updateRow}
           deleteRow={this.props.deleteRow}
         />

@@ -21,8 +21,6 @@ class ApplicationController < ActionController::Base
 
   def authorize
     # if current member is not allowed:
-    puts params[:controller]
-    puts params[:action]
     if !current_permission.allow?(params[:controller], params[:action])
       if params[:controller].split('/').first == "api"
         render :status => 404, body: nil

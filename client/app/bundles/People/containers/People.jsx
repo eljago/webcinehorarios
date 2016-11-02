@@ -4,16 +4,24 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 
 import PeopleMain from '../components/PeopleMain'
+import PeopleEdit from './PeopleEdit'
 
-import {PeopleQueries, SelectQueries} from '../../../lib/api/queries'
+import {PeopleQueries} from '../../../lib/api/queries'
+
+import Row from 'react-bootstrap/lib/Row';
+import Col from 'react-bootstrap/lib/Col';
 
 export default class People extends React.Component {
+
+  static propTypes = {
+    defaultPerson: PropTypes.object,
+  };
 
   constructor(props) {
     super(props);
     this.state = {
       page: 1,
-      itemsPerPage: 15,
+      itemsPerPage: 30,
       people: [],
       pagesCount: null,
       currentSearch: '',
@@ -22,8 +30,7 @@ export default class People extends React.Component {
       '_updateData',
       '_onChangePage',
       '_onSearch',
-      '_onSubmit',
-      '_onDelete',
+      '_onEditPerson',
     ]);
   }
 
@@ -33,39 +40,53 @@ export default class People extends React.Component {
 
   render() {
     return (
-      <PeopleMain
-        page={this.state.page}
-        itemsPerPage={this.state.itemsPerPage}
-        people={this.state.people}
-        pagesCount={this.state.pagesCount}
-        onChangePage={this._onChangePage}
-        onSearchPerson={this._onSearch}
-        onSubmitPerson={this._onSubmit}
-        onDeletePerson={this._onDelete}
-        onSearchPeople={this._onSearch}
-      />
+      <Row>
+        <Col sm={7}>
+          <PeopleMain
+            page={this.state.page}
+            itemsPerPage={this.state.itemsPerPage}
+            people={this.state.people}
+            pagesCount={this.state.pagesCount}
+            onChangePage={this._onChangePage}
+            onSearchPerson={this._onSearch}
+            onEditPerson={this._onEditPerson}
+          />
+        </Col>
+        <Col sm={5}>
+          <PeopleEdit
+            ref='peopleEdit'
+            defaultPerson={this.props.defaultPerson}
+            onSuccess={() => this._updateData()}
+          />
+        </Col>
+      </Row>
     );
+  }
+
+  _onEditPerson(person) {
+    this.refs.peopleEdit.editPerson(person);
   }
 
   _updateData(newPage = this.state.page, searchValue = this.state.currentSearch) {
     PeopleQueries.getPeople({
       page: newPage,
       perPage: this.state.itemsPerPage,
-      searchValue: searchValue
-    }, (response) => {
-      this.setState({
-        page: newPage,
-        people: response.people.map((person) => {
-          return {
-            id: person.id,
-            name: person.name,
-            imdb_code: person.imdb_code,
-            image: person.image
-          }
-        }),
-        pagesCount: response.count,
-        currentSearch: searchValue
-      });
+      searchValue: searchValue,
+      success: (response) => {
+        this.setState({
+          page: newPage,
+          people: response.people.map((person) => {
+            return {
+              id: person.id,
+              name: person.name,
+              imdb_code: person.imdb_code,
+              image: person.image
+            }
+          }),
+          pagesCount: response.count,
+          currentSearch: searchValue,
+        });
+      }
     });
   }
 
@@ -75,53 +96,5 @@ export default class People extends React.Component {
 
   _onSearch(searchValue) {
     this._updateData(1, searchValue);
-  }
-
-
-  _onSubmit(personData, callback = null) {
-    const success = (response) => {
-      this._updateData();
-      callback(true);
-    };
-    const error = (error) => {
-      if (error.status == 422) {
-        callback(false, error.responseJSON.errors);
-      }
-      else if (error.status == 500) {
-        callback(false, {Error: ['ERROR 500']});
-      }
-      else {
-        callback(false);
-      }
-    };
-    if (personData.id) {
-      PeopleQueries.submitEditPerson({
-        person: personData
-      }, success, error);
-    }
-    else {
-      PeopleQueries.submitNewPerson({
-        person: personData
-      }, success, error);
-    }
-  }
-
-  _onDelete(personId, callback = null) {
-    PeopleQueries.submitDeletePerson({
-      personId: personId
-    }, (response) => {
-      this._updateData();
-      callback(true);
-    }, (error) => {
-      if (error.status == 422) {
-        callback(false, error.responseJSON.errors);
-      }
-      else if (error.status == 500) {
-        callback(false, {Error: ['ERROR 500']});
-      }
-      else {
-        callback(false);
-      }
-    })
   }
 }

@@ -6,18 +6,19 @@ import _ from 'lodash'
 import Checkbox from 'react-bootstrap/lib/Checkbox';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormGroup from 'react-bootstrap/lib/FormGroup';
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
 
 export default class FormFieldCheckboxGroup extends React.Component {
   static propTypes = {
+    identifier: PropTypes.string,
     submitKey: PropTypes.string,
     label: PropTypes.string,
     options: PropTypes.array.isRequired,
     initialValue: PropTypes.array,
+    columns: PropTypes.number,
   };
   static defaultProps = {
     label: '',
+    columns: 1,
   };
 
   constructor(props) {
@@ -32,16 +33,22 @@ export default class FormFieldCheckboxGroup extends React.Component {
     return(
       <FormGroup controlId={submitKey}>
         <ControlLabel>{label}</ControlLabel>
-        <Row>
-          {this._getCheckboxElements()}
-        </Row>
+        {this._getCheckboxElements()}
       </FormGroup>
     );
   }
 
   _getCheckboxElements() {
-    return this.props.options.map((opt, i) => {
-      return (
+    let checkboxes = [];
+    for (let indx = 0; indx < this.props.columns; indx ++) {
+      checkboxes.push([]);
+    } // [[][][]]
+
+    const optionsCount = this.props.options.length;
+    const columnCount = this.props.columns;
+    for (let indx = 0; indx < optionsCount; indx++) {
+      const opt = this.props.options[indx];
+      checkboxes[Math.floor(indx / (optionsCount/columnCount))].push(
         <Checkbox
           checked={this.state.currentValue.includes(opt.value)}
           onChange={(e) => {
@@ -51,7 +58,20 @@ export default class FormFieldCheckboxGroup extends React.Component {
           {opt.label}
         </Checkbox>
       );
-    });
+    }
+    return (
+      <div style={{display: 'flex', flexDirection: 'row'}}>
+        {checkboxes.map((chbxs, indx) => {
+          return (
+            <div style={{display: 'flex', flexDirection: 'column', ...(indx > 0 ? {marginLeft: 6} : null)}}>
+              {chbxs.map((chbx) => {
+                return chbx;
+              })}
+            </div>
+          );
+        })}
+      </div>
+    );
   }
 
   _handleChange(value) {

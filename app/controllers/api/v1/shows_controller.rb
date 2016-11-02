@@ -4,7 +4,11 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def index
     per_page = params[:perPage].present? ? params[:perPage] : 15
-    shows = Show.order('created_at DESC').text_search(params[:query]).paginate(page: params[:page], per_page: per_page).all
+    shows = Show.order('created_at DESC').text_search(params[:query])
+      .paginate(page: params[:page], per_page: per_page).as_json
+    shows.each do |show|
+      show["image_url"] = Show.find(show["id"]).image_url :smaller
+    end
     shows_count = Show.text_search(params[:query]).count
     response = {count: shows_count, shows: shows}
     respond_with response
@@ -12,16 +16,22 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def billboard
     shows = Show.joins(:functions).where(active: true, functions: {date: Date.current})
-      .select('shows.id, shows.active, shows.name, shows.debut, shows.created_at, functions.date')
-      .order("shows.debut DESC").uniq
+      .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at, functions.date')
+      .order("shows.debut DESC").distinct.as_json
+    shows.each do |show|
+      show["image_url"] = Show.find(show["id"]).image_url :smaller
+    end
     response = {shows: shows}
     respond_with response
   end
 
   def comingsoon
     shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', Date.current, nil, true)
-      .select('shows.id, shows.active, shows.name, shows.debut, shows.created_at')
-      .order("debut ASC").all
+      .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at')
+      .order("debut ASC").as_json
+    shows.each do |show|
+      show["image_url"] = Show.find(show["id"]).image_url :smaller
+    end
     response = {shows: shows}
     respond_with response
   end
@@ -48,7 +58,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
       format.json do
         render json: {
           shows: searchResult.map do |e|
-            {value: e.id, label: "#{e.name}"}
+            {value: e.id, label: e.name, image_url: e.image_url(:smaller)}
           end
         }
       end
@@ -74,6 +84,13 @@ class Api::V1::ShowsController < Api::V1::ApiController
       :debut,
       :rating,
       genre_ids: [],
+      functions_attributes: [
+        :id,
+        :date,
+        :showtimes,
+        :_destroy,
+        function_type_ids: []
+      ],
       show_person_roles_attributes: [
         :id,
         :person_id,
@@ -86,7 +103,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
         :id,
         :remote_image_url,
         :image,
-        :show_portrait_id,
+        :backdrop,
         :poster,
         :_destroy
       ],
@@ -123,8 +140,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
           end
 
           if video_type.present? && code.present?
-            puts video_type
-            puts code
             if video_type === 'youtube'
               video_attributes[:remote_image_url] = "http://img.youtube.com/vi/#{code}/0.jpg"
             elsif video_type === 'vimeo'

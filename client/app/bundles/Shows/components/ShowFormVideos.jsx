@@ -4,94 +4,66 @@ import React, { PropTypes } from 'react'
 import update from 'react/lib/update';
 import _ from 'lodash'
 
-import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
-import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
-import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
-import FormFieldSelect from '../../../lib/forms/FormFields/FormFieldSelect'
-import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
-
 import Row from 'react-bootstrap/lib/Col';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
 
+import FormBuilder from '../../../lib/forms/FormBuilder';
 
 export default class ShowFormVideos extends React.Component {
   static propTypes = {
-    videos: PropTypes.array.isRequired,
-    videoTypes: PropTypes.array.isRequired,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      images: props.videos.map((video) => {
+      images: props.formBuilder.object.videos.map((video) => {
         return video.image.image.smaller.url;
       })
     }
-    _.bindAll(this, ['_onAddItem', '_onDeleteItem'])
+    _.bindAll(this, ['_onAddItem', '_onDeleteItem', '_getContentRow'])
   }
 
   render() {
     return(
-      <FormFieldNested
-        ref='videos_attributes'
-        submitKey='videos_attributes'
-        label='Videos'
-        initialDataArray={this.props.videos}
-        onAddItem={this._onAddItem}
-        onDeleteItem={this._onDeleteItem}
-        dataKeys={['name', 'code', 'video_type', 'outstanding']}
-        xs={12}
-        md={6}
-        lg={6}
-        getContentRow={(video, index) => {
+      <div>
+        {this.props.formBuilder.getField('videos', {
+          onAddItem: this._onAddItem,
+          onDeleteItem: this._onDeleteItem,
+          getContentRow: this._getContentRow
+        })}
+      </div>
+    );
+  }
 
-          return(
-            <Row>
-              <Col xs={12} md={4} lg={3}>
-                <Image
-                  style={{height: 100, "objectFit": 'cover'}}
-                  src={this.state.images[index]}
-                  responsive
-                />
-                <FormFieldCheckbox
-                  submitKey='outstanding'
-                  label="Destacado"
-                  ref={`outstanding${index}`}
-                  initialValue={video.id ? video.outstanding : true}
-                  forceSubmit={!video.id}
-                />
-              </Col>
-              <Col xs={12} md={8} lg={9}>
-                <FormFieldText
-                  submitKey='name'
-                  label='Nombre'
-                  ref={`name${index}`}
-                  initialValue={video.name}
-                />
-                <FormFieldText
-                  submitKey='code'
-                  label='Código'
-                  ref={`code${index}`}
-                  initialValue={video.code}
-                />
-                <FormFieldSelect
-                  submitKey='video_type'
-                  label='Video Type'
-                  ref={`video_type${index}`}
-                  initialValue={{
-                    value: video.id ? video.video_type : this.props.videoTypes[0].value,
-                    label: video.id ? video.video_type : this.props.videoTypes[0].label
-                  }}
-                  forceSubmit={!video.id}
-                  options={this.props.videoTypes}
-                  async={false}
-                />
-              </Col>
-            </Row>
-          );
-        }}
-      />
+  _getContentRow(video, index) {
+    return(
+      <Row>
+        <Col xs={12} sm={2}>
+          <Image
+            style={{height: 100, "objectFit": 'cover'}}
+            src={this.state.images[index]}
+            responsive
+          />
+        </Col>
+        <Col xs={12} sm={4}>
+          {this.props.formBuilder.getNestedField('videos', 'name', index)}
+        </Col>
+        <Col xs={12} sm={2}>
+          {this.props.formBuilder.getNestedField('videos', 'code', index)}
+        </Col>
+        <Col xs={12} sm={2}>
+          {this.props.formBuilder.getNestedField('videos', 'video_type', index, {
+            getInitialValue: (obj) => {
+              return {value: obj.video_type, label: obj.video_type};
+            }
+          })}
+        </Col>
+        <Col xs={12} sm={2}>
+          {this.props.formBuilder.getNestedField('videos', 'outstanding', index)}
+        </Col>
+      </Row>
     );
   }
 

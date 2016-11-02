@@ -1,99 +1,71 @@
 'use strict';
 
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
 import update from 'react/lib/update';
-import _ from 'lodash'
+import _ from 'lodash';
 
-import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
-import FormFieldSelect from '../../../lib/forms/FormFields/FormFieldSelect'
-import FormFieldText from '../../../lib/forms/FormFields/FormFieldText'
-import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
 
+import FormBuilder from '../../../lib/forms/FormBuilder';
 
 export default class FormCast extends React.Component {
   static propTypes = {
-    show_person_roles: PropTypes.array,
-    getShowPersonRolesOptions: PropTypes.func,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
+    images: PropTypes.array,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      images: props.show_person_roles.map((spr) => {
+      images: props.formBuilder.object.show_person_roles.map((spr) => {
         return spr.image.smallest.url;
       })
     }
-    _.bindAll(this, ['_onAddItem', '_onDeleteItem'])
+    _.bindAll(this, ['_onAddItem', '_onDeleteItem', '_getContentRow'])
   }
 
   render() {
     return(
-      <FormFieldNested
-        ref='show_person_roles_attributes'
-        submitKey='show_person_roles_attributes'
-        label='Elenco'
-        initialDataArray={this.props.show_person_roles}
-        onAddItem={this._onAddItem}
-        onDeleteItem={this._onDeleteItem}
-        dataKeys={['person_id', 'character', 'director', 'actor']}
-        getContentRow={(spr, index) => {
+      <div>
+        {this.props.formBuilder.getField('show_person_roles', {
+          onAddItem: this._onAddItem,
+          onDeleteItem: this._onDeleteItem,
+          getContentRow: this._getContentRow
+        })}
+      </div>
+    );
+  }
 
-          return(
-            <Row>
-              <Col xs={12} md={2}>
-                <Image
-                  style={{width: 80, height: 100, "objectFit": 'cover'}}
-                  src={this.state.images[index]}
-                  responsive
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <FormFieldSelect
-                  submitKey='person_id'
-                  label='Elenco'
-                  ref={`person_id${index}`}
-                  initialValue={{
-                    value: spr.person_id,
-                    label: spr.name
-                  }}
-                  getOptions={this.props.getShowPersonRolesOptions}
-                  onChange={(newValue) => {
-                    this._onChangeSelect(newValue, index);
-                  }}
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <FormFieldText
-                  submitKey='character'
-                  label='Personaje'
-                  ref={`character${index}`}
-                  initialValue={spr.character}
-                />
-              </Col>
-              <Col xs={6} md={1}>
-                <FormFieldCheckbox
-                  submitKey='actor'
-                  label='Actor'
-                  ref={`actor${index}`}
-                  initialValue={spr.id ? spr.actor : true}
-                  forceSubmit={!spr.id}
-                />
-              </Col>
-              <Col xs={6} md={1}>
-                <FormFieldCheckbox
-                  submitKey='director'
-                  label='Director'
-                  ref={`director${index}`}
-                  initialValue={spr.director}
-                />
-              </Col>
-            </Row>
-          );
-        }}
-      />
+  _getContentRow(person, index) {
+    return(
+      <Row>
+        <Col xs={12} md={2}>
+          <Image
+            style={{width: 80, height: 100, "objectFit": 'cover'}}
+            src={this.state.images[index]}
+            responsive
+          />
+        </Col>
+        <Col xs={12} md={4}>
+          {this.props.formBuilder.getNestedField('show_person_roles', 'person_id', index, {
+            getInitialValue: (obj) => {
+              return {value: obj.person_id, label: obj.name};
+            },
+            onChange: (newValue) => {this._onChangeSelect(newValue, index)}
+          })}
+        </Col>
+        <Col xs={12} md={4}>
+          {this.props.formBuilder.getNestedField('show_person_roles', 'character', index)}
+        </Col>
+        <Col xs={6} md={1}>
+          {this.props.formBuilder.getNestedField('show_person_roles', 'actor', index)}
+        </Col>
+        <Col xs={6} md={1}>
+          {this.props.formBuilder.getNestedField('show_person_roles', 'director', index)}
+        </Col>
+      </Row>
     );
   }
 

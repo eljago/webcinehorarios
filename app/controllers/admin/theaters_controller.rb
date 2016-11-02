@@ -15,10 +15,22 @@ class Admin::TheatersController < ApplicationController
   end
 
   def new
-    @theater = @theaterable.theaters.new
+    theater = Theater.new
+    theater.cinema_id = params[:cinema_id]
+    @title = 'Edit Theater'
+    @app_name = 'TheaterEditApp'
+    @props = {theater: Theater.new}
+    @prerender = false
+    render file: 'react/render'
   end
 
   def edit
+    theater = Theater.friendly.find(params[:id])
+    @title = 'Edit Theater'
+    @app_name = 'TheaterEditApp'
+    @props = {theater: theater}
+    @prerender = false
+    render file: 'react/render'
   end
 
   def create

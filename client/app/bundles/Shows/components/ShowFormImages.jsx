@@ -4,100 +4,43 @@ import React, { PropTypes } from 'react'
 import update from 'react/lib/update';
 import _ from 'lodash'
 
-import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage'
-import FormFieldNested from '../../../lib/forms/FormFields/FormFieldNested'
-import FormFieldCheckbox from '../../../lib/forms/FormFields/FormFieldCheckbox'
 import Carousel from '../../../lib/ReusableComponents/Carousel'
 
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 import Image from 'react-bootstrap/lib/Image';
-import Tooltip from 'react-bootstrap/lib/Tooltip';
 import Modal from 'react-bootstrap/lib/Modal';
 import Button from 'react-bootstrap/lib/Button';
 
+import FormBuilder from '../../../lib/forms/FormBuilder';
 
 export default class ShowFormImages extends React.Component {
   static propTypes = {
-    showId: PropTypes.number,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
     images: PropTypes.array.isRequired
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      images: props.images.map((img, index) => {
-        return img.image.small.url;
+      images: props.formBuilder.object.images.map((img) => {
+        return img.image.smaller.url;
       }),
       lgShow: false,
       modalIndex: 0,
     }
-    _.bindAll(this, ['_onAddItem', '_onDeleteItem'])
+    _.bindAll(this, ['_onAddItem', '_onDeleteItem', '_getContentRow'])
   }
 
   render() {
     let lgClose = () => this.setState({ lgShow: false });
     return(
       <div>
-        <FormFieldNested
-          ref='images_attributes'
-          submitKey='images_attributes'
-          label='Imágenes'
-          initialDataArray={this.props.images}
-          onAddItem={this._onAddItem}
-          onDeleteItem={this._onDeleteItem}
-          dataKeys={['image', 'show_portrait_id', 'poster']}
-          xs={12}
-          md={6}
-          lg={6}
-          getContentRow={(img, index) => {
-            return(
-              <Row>
-                <Col xs={12} md={6} lg={5}>
-                  <Row>
-                    <Col xs={10}>
-                      <Button style={{padding: 3}} onClick={()=> {
-                        this.setState({
-                          lgShow: true,
-                          modalIndex: index,
-                          padding: 0,
-                        })
-                      }}>
-                        <Image
-                          style={{width: 100, height: 100, "objectFit": 'cover'}}
-                          src={this.state.images[index]}
-                          responsive
-                        />
-                      </Button>
-                    </Col>
-                    <Col xs={2}>
-                      <FormFieldCheckbox
-                        submitKey='show_portrait_id'
-                        ref={`show_portrait_id${index}`}
-                        initialValue={this.props.showId ? img.show_portrait_id == this.props.showId : false}
-                        getResultForValue={(value) => {
-                          return value ? this.props.showId : null;
-                        }}
-                      />
-                      <FormFieldCheckbox
-                        submitKey='poster'
-                        ref={`poster${index}`}
-                        initialValue={img.poster}
-                      />
-                    </Col>
-                  </Row>
-                </Col>
-                <Col xs={12} md={6} lg={7}>
-                  <FormFieldImage
-                    onChange={(newImage) => this._handleImageChange(newImage, index)}
-                    initialValue={img.image ? img.image.small.url : '/uploads/default_images/default.png'}
-                    ref={`image${index}`}
-                  />
-                </Col>
-              </Row>
-            );
-          }}
-        />
+        {this.props.formBuilder.getField('images', {
+          onAddItem: this._onAddItem,
+          onDeleteItem: this._onDeleteItem,
+          getContentRow: this._getContentRow
+        })}
         <Modal show={this.state.lgShow} onHide={lgClose} bsSize="large">
           <Modal.Body>
             <Carousel
@@ -107,6 +50,43 @@ export default class ShowFormImages extends React.Component {
           </Modal.Body>
         </Modal>
       </div>
+    );
+  }
+
+  _getContentRow(image, index) {
+    return(
+      <Row>
+        <Col xs={12} sm={2}>
+          <Button style={{padding: 3}} onClick={()=> {
+            this.setState({
+              lgShow: true,
+              modalIndex: index,
+              padding: 0,
+            })
+          }}>
+            <Image
+              style={{width: 50, height: 50, "objectFit": 'cover'}}
+              src={this.state.images[index]}
+              responsive
+            />
+          </Button>
+        </Col>
+        <Col xs={12} sm={2}>
+          {this.props.formBuilder.getNestedField('images', 'backdrop', index)}
+        </Col>
+        <Col xs={12} sm={2}>
+          {this.props.formBuilder.getNestedField('images', 'poster', index)}
+        </Col>
+        <Col xs={12} sm={6}>
+          {this.props.formBuilder.getNestedField('images', 'image', index, {
+            horizontal: true,
+            getInitialValue: (obj) => {
+              return obj.image.small.url;
+            },
+            onChange: (newImage) => {this._handleImageChange(newImage, index)}
+          })}
+        </Col>
+      </Row>
     );
   }
 

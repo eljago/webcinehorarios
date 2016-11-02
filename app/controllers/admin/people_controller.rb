@@ -5,8 +5,8 @@ class Admin::PeopleController < ApplicationController
   def index
     @title = 'Personas'
     @app_name = 'PeopleApp'
-    @props = {}
-    @prerender = true
+    @props = {defaultPerson: Person.new}
+    @prerender = false
     render file: 'react/render'
   end
   

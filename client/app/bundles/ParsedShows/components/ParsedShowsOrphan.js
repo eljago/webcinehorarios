@@ -4,13 +4,13 @@ import React, { PropTypes } from 'react'
 import _ from 'lodash'
 
 import ParsedShowsRow from './ParsedShowsRow';
+import {SelectQueries} from '../../../lib/api/queries'
 
 import PageHeader from 'react-bootstrap/lib/PageHeader';
 
 export default class ParsedShowsOrphan extends React.Component {
   static propTypes = {
     orphanParsedShows: PropTypes.array,
-    getShowsOptions: PropTypes.func,
     updateRow: PropTypes.func,
     deleteRow: PropTypes.func,
   };
@@ -36,7 +36,7 @@ export default class ParsedShowsOrphan extends React.Component {
         <ParsedShowsRow
           key={parsedShow.id}
           parsedShow={parsedShow}
-          getShowsOptions={this.props.getShowsOptions}
+          getShowsOptions={SelectQueries.getShowsOptions}
           updateRow={this.props.updateRow}
           deleteRow={this.props.deleteRow}
         />

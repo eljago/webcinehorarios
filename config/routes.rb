@@ -17,6 +17,17 @@ Rails.application.routes.draw do
 
     ##### V1 #####
     scope module: :v1, constraints: ApiConstraints.new(version: 1) do
+      resources :theaters, only: [:create, :update, :destroy]
+      resources :functions, only: [:index, :update, :destroy] do
+        collection do
+          post 'copy_day'
+          delete 'delete_day'
+          delete 'delete_onward'
+        end
+      end
+      resources :cinemas, only: [] do
+        resources :theaters, only: :index
+      end
       resources :shows, only: [:index, :destroy, :update, :create] do
         collection do
           get 'select_shows'
@@ -64,28 +75,6 @@ Rails.application.routes.draw do
         resources :theaters, only: :index do
         end
       end
-    end
-
-    ##### V4 #####
-    scope module: :v4, constraints: ApiConstraints.new(version: 4) do
-
-      resources :theaters, only: :index do
-        collection do
-          get 'favorites'
-        end
-        resources :functions, only: :index
-      end
-
-      resources :videos, only: :index
-
-      resources :shows, only: :show do
-        collection do
-          get 'billboard'
-          get 'coming_soon'
-        end
-        get 'theaters'
-      end
-
     end
 
   end
@@ -144,9 +133,6 @@ Rails.application.routes.draw do
 
     # For Sorting Actors
     post 'show_person_roles/sort' => 'show_person_roles#sort', as: 'show_person_roles_sort'
-
-    post 'destroy_all_parsed_shows' => 'functions#destroy_all_parsed_shows'
-    post 'create_parsed_shows' => 'functions#create_parsed_shows'
 
     resources :settings, only: [:index, :edit, :update]
   end

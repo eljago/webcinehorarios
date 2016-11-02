@@ -11,6 +11,7 @@ import Select from 'react-select';
 
 export default class FormFieldSelect extends React.Component {
   static propTypes = {
+    identifier: PropTypes.string,
     submitKey: PropTypes.string,
     label: PropTypes.string,
     getOptions: PropTypes.func,
@@ -18,11 +19,10 @@ export default class FormFieldSelect extends React.Component {
     initialValue: PropTypes.object,
     onChange: PropTypes.func,
     async: PropTypes.boolean,
-    newRecord: PropTypes.boolean,
   };
   static defaultProps = {
     label: '',
-    initialValue: '',
+    initialValue: null,
     async: true
   };
 
@@ -46,7 +46,7 @@ export default class FormFieldSelect extends React.Component {
           loadOptions={this.props.getOptions}
           options={this.props.options}
           clearable={false}
-          cache={true}
+          cache={false}
         />
       </FormGroup>
     )
@@ -60,7 +60,7 @@ export default class FormFieldSelect extends React.Component {
   }
 
   getResult() {
-    if ((this.props.newRecord && this.props.initialValue) || (this.state.currentValue.value != this.props.initialValue.value)) {
+    if (this.state.currentValue.value != this.props.initialValue.value) {
       return {[this.props.submitKey]: this.state.currentValue.value};
     }
     return null;

@@ -2,11 +2,7 @@ object @show
 
 attributes :id, :name, :duration, :name_original, :information, :rating, :year, :metacritic_url, :metacritic_score, :imdb_code, :imdb_score, :rotten_tomatoes_url, :rotten_tomatoes_score
 node :image_url do |s|
-	if s.images.where(poster: true).length > 0
-		s.images.where(poster: true).first.image_url
-	else
-		"/uploads/default_images/default.png"
-	end
+	s.image_url
 end
 child :images do
 	attributes :image_url

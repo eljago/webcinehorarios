@@ -4,16 +4,17 @@ import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import validator from 'validator';
 
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-
 export default class FormFieldImage extends React.Component {
   static propTypes = {
+    identifier: PropTypes.string,
     onChange: PropTypes.func,
     initialValue: PropTypes.string,
     disabled: PropTypes.boolean,
+    horizontal: PropTypes.boolean
   };
+  static defaultProps = {
+    horizontal: false,
+  }
 
   constructor(props) {
     super(props);
@@ -29,26 +30,36 @@ export default class FormFieldImage extends React.Component {
   }
 
   render() {
+    const {identifier, currentRemote, disabled, horizontal} = this.props;
+    const colStyle = horizontal ? "col-xs-6" : "col-xs-12";
     return(
-      <FormGroup controlId={(new Date()).getTime()}>
-        <ControlLabel>Remote Image URL</ControlLabel>
-        <FormControl
-          value={this.props.currentRemote}
-          placeholder='Remote Image'
-          disabled={this.props.disabled}
-          onChange={(e) => {
-            this._handleChangeRemote(_.replace(e.target.value,'  ', ' '))
-          }}
-        />
-        <br />
-        <ControlLabel>Local Image</ControlLabel>
-        <FormControl
-          type="file"
-          onChange={this._handleChangeLocal}
-          multiple={false}
-          disabled={this.props.disabled}
-        />
-      </FormGroup>
+      <div className="row">
+        <div className={`${colStyle} form-group`}>
+          <label className='control-label' for={`${identifier}-remote`}>Remote Image URL</label>
+          <input
+            type="text"
+            className="form-control"
+            id={identifier}
+            placeholder="Remote Image URL"
+            value={currentRemote}
+            disabled={disabled}
+            onChange={(e) => {
+              this._handleChangeRemote(_.replace(e.target.value,'  ', ' '))
+            }}
+          />
+        </div>
+        <div className={`${colStyle} form-group`}>
+          <label className='control-label' for={`${identifier}-local`}>Local Image</label>
+          <input
+            type="file"
+            className="form-control"
+            id={`${identifier}-local`}
+            disabled={disabled}
+            multiple={false}
+            onChange={this._handleChangeLocal}
+          />
+        </div>
+      </div>
     );
   }
 

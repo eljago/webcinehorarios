@@ -18,7 +18,7 @@
             <%= I18n.l(date, format: :long) %>
           </div>
           <div class="col-md-8 col-sm-8 col-xs-8">
-            <%= text_field_tag :horarios, @function.showtimes.map{ |showtime| I18n.l(showtime.time, format: :normal_time ) }.join(', '), size: 50 %>
+            <%= text_field_tag :horarios, @function.showtimes, size: 50 %>
           </div>
         </div>
         <br/>

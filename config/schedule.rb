@@ -28,11 +28,11 @@ set :output, "#{path}/log/cron.log"
 every 6.hours do
   rake "parse:metacritic"
   rake "cache:carrierwave_clean"
-  # rake "maintain:functions"
 end
 
 every 1.day, at: '4am' do
 	rake 'cache:clear_all'
+  rake "maintain:functions"
 end
 
 every 1.day, at: '5am' do

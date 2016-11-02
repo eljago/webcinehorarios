@@ -1,52 +1,36 @@
 'use strict'
 
-import SetHeaders from './SetHeaders';
+import GetQueryContent from './GetQueryContent';
 
 export default {
-  getPeople: (options, success, error = null) => {
-    $.ajax({
+  getPeople: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/people.json?page=${options.page}&perPage=${options.perPage}&query=${options.searchValue}`,
       type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
+      ...options
+    }));
   },
-  submitNewPerson: (options, success, error = null) => {
-    $.ajax({
+  submitNewPerson: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/people`,
       type: 'POST',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-      data: {
-        people: options.person
-      }
-    });
+      data: { people: options.person },
+      ...options
+    }));
   },
-  submitEditPerson: (options, success, error = null) => {
-    $.ajax({
+  submitEditPerson: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/people/${options.person.id}`,
       type: 'PUT',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-      data: {
-        people: options.person
-      }
-    });
+      data: { people: options.person },
+      ...options
+    }));
   },
-  submitDeletePerson: (options, success, error = null) => {
-    $.ajax({
+  submitDeletePerson: (options) => {
+    $.ajax(GetQueryContent({
       url: `/api/people/${options.personId}`,
       type: 'DELETE',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders
-    });
+      ...options
+    }));
   },
 }

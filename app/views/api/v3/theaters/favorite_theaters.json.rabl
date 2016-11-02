@@ -15,14 +15,10 @@ child :functions do
 	glue :show do
 		attributes :id, :name
 		node :image_url do |s|
-		  if s.images.where(poster: true).length > 0
-		    s.images.where(poster: true).first.image_url
-		  else
-		    "/uploads/default_images/default.png"
-		  end
+		  s.image_url
 		end
-		glue :portrait_image do
-			attributes :image_url => :portrait_image
+		node :portrait_image do |s|
+		  s.portrait_image
 		end
 	end
 	node :showtimes do |f|

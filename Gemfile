@@ -1,13 +1,12 @@
 source 'https://rubygems.org'
 ruby '2.3.1'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.0'
+gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 # Use sqlite3 as the database for Active Record
-# gem 'sqlite3'
+#gem 'sqlite3'
 # Use Puma as the app server
-# gem 'puma', '~> 3.0'
+#gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -22,7 +21,7 @@ gem 'jquery-rails'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.5'
+#gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -53,7 +52,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 # OTHER GEMS
 
 gem "react_on_rails", "~> 6"
-gem 'therubyracer', platforms: :ruby
+gem 'mini_racer'
 
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'font-awesome-rails'
@@ -62,24 +61,12 @@ gem 'rails-i18n', '~> 5.0.0'
 
 gem 'whenever', require: false
 
-group :test do
-  gem "capybara", "~> 2.1.0"
-  gem "database_cleaner", "~> 1.0.1"
-  gem "launchy", "~> 2.3.0"
-  gem "selenium-webdriver", "~> 2.35.1"
-end
-
-group :development, :test do
-  gem 'rspec-rails', '2.13.1'
-  gem "factory_girl_rails", "~> 4.2.1"
-  gem 'guard-rspec', require: false
-  gem 'watir', require: false
-  gem 'watir-webdriver', require: false
-end
-
 group :development do
   gem 'nokogiri', require: false
   gem 'http', require: false
+
+  gem 'watir', require: false
+  gem 'watir-webdriver', require: false
 
   gem 'bullet'
   gem 'hirb'
@@ -136,7 +123,6 @@ gem 'carrierwave-base64'
 gem 'mini_magick'
 
 gem 'graphql'
-gem "graphql-relay"
 # gem 'graphql-batch'
 
 gem 'rabl', github: "nesquena/rabl"

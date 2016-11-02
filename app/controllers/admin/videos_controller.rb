@@ -39,7 +39,6 @@ class Admin::VideosController < ApplicationController
   end
   
   def update
-        puts video_params["video_type"]
     unless video_params[:code].blank?
       video = Video.find(params[:id].to_i)
       if !video.blank? && video.code != video_params[:code]

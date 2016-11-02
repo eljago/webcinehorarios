@@ -41,13 +41,15 @@ export default class Car extends React.Component {
     return this.props.images.map((image) => {
       return(
         <Carousel.Item>
-          <Image style={{
-            backgroundColor: 'black',
-            width: this.size.width,
-            height: this.size.height,
-            "objectFit": 'contain'
-          }}
-          src={image} />
+          <Image 
+            style={{
+              backgroundColor: 'black',
+              width: this.size.width,
+              height: this.size.height,
+              "objectFit": 'contain'
+            }}
+            src={`http://cinehorarios.cl${image}`}
+          />
         </Carousel.Item>
       );
     })

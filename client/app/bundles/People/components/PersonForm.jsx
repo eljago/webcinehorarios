@@ -1,92 +1,83 @@
 'use strict';
 
 import React, { PropTypes } from 'react'
-import _ from 'lodash'
 
-import Button from 'react-bootstrap/lib/Button';
 import Image from 'react-bootstrap/lib/Image';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
+import Button from 'react-bootstrap/lib/Button';
 
-import FormFieldText from '../../../lib/forms/FormFields/FormFieldText';
-import FormFieldImage from '../../../lib/forms/FormFields/FormFieldImage';
+import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages';
+
+import FormBuilder from '../../../lib/forms/FormBuilder';
 
 export default class PersonForm extends React.Component {
   static propTypes = {
-    person: PropTypes.object,
-    onSubmit: PropTypes.func,
+    formBuilder: PropTypes.instanceOf(FormBuilder),
+    submitting: PropTypes.bool,
+    errors: PropTypes.object,
     onClose: PropTypes.func,
+    submitting: PropTypes.bool,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      submitting: false,
       personThumb: '',
     };
-    _.bindAll(this, '_onSubmit');
   }
 
   render() {
-    const person = this.props.person;
+    const {formBuilder, submitting, onClose} = this.props;
     return (
-      <Row>
-        <Col xs={12} sm={4}>
-          <Image src={this.state.personThumb} responsive/>
-        </Col>
-        <Col xs={12} sm={8}>
-          <form>
-            <FormFieldText
-              submitKey='name'
-              ref='name'
-              initialValue={person ? person.name : ''}
-              disabled={this.state.submitting}
-            />
-            <FormFieldText
-              submitKey='imdb_code'
-              ref='imdbCode'
-              initialValue={person ? person.imdb_code : ''}
-              disabled={this.state.submitting}
-            />
-            <FormFieldImage
-              onChange={(personThumb) => this.setState({personThumb})}
-              initialValue={person && person.image ? person.image.small.url : ''}
-              ref='image'
-              disabled={this.state.submitting}
-            />
-            <Button
-              type="submit"
-              disabled={this.state.submitting}
-              onClick={this._onSubmit}>
-              Submit
-            </Button>
-          </form>
-        </Col>
-      </Row>
+      <div>
+        <ErrorMessages errors={this.props.errors} />
+        <Row>
+          <Col xs={12} sm={4}>
+            <Image src={this.state.personThumb} responsive/>
+          </Col>
+          <Col xs={12} sm={8}>
+            <form>
+              {formBuilder.getField('name', {disabled: submitting})}
+              {formBuilder.getField('imdb_code', {disabled: submitting})}
+              {formBuilder.getField('image', {
+                initialValue: formBuilder.object.image.small.url,
+                disabled: submitting,
+                onChange: (personThumb) => {this.setState({personThumb})}
+              })}
+              {formBuilder.getSubmitButton({
+                disabled: submitting
+              })}
+              {this._getDeleteButton()}
+              <Button
+                onClick={onClose}
+                block
+              >
+                Cancelar
+              </Button>
+            </form>
+          </Col>
+        </Row>
+      </div>
     );
   }
 
-  _onSubmit(e) {
-    const personId = this.props.person.id ? {id: this.props.person.id} : null;
-    const personResult = _.merge(this.props.person, {
-      ...personId,
-      ...this.refs.name.getResult(),
-      ...this.refs.imdbCode.getResult(),
-      ...this.refs.image.getResult()
-    });
-    console.log(personResult);
+  _getDeleteButton() {
+    if (this.props.formBuilder.object.id) {
+      return this.props.formBuilder.getDeleteButton({
+        disabled: this.props.submitting
+      });
+    }
+    return null;
+  }
 
-    this.setState({submitting: true});
-    this.props.onSubmit(personResult, (result, errors = null) => {
-      this.setState({submitting: false});
-      console.log(result);
-      if (result) {
-        this.props.onClose();
-      }
-      else {
-
+  getResult() {
+    let showResult = {};
+    _.forIn(this.refs, (formElement) => {
+      if (_.isFunction(formElement.getResult)) {
+        _.merge(showResult, formElement.getResult());
       }
     });
-    e.preventDefault();
+    return showResult;
   }
 }

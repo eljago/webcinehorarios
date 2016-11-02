@@ -1,26 +1,54 @@
 'use strict'
 
-import SetHeaders from './SetHeaders';
+import _ from 'lodash';
+
+import GetQueryContent from './GetQueryContent';
 
 export default {
-  getShows: (input, success, error = null) => {
-    $.ajax({
-      url: `/api/shows/select_shows?input=${input}`,
-      type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
+  getPeopleOptions: (input, callback) => {
+    if (_.trim(input).length > 2) {
+      getPeople({
+        input: input,
+        success: (response) => {
+          callback(null, {
+            options: response.people
+          });
+        }
+      });
+    }
+    else {
+      callback(null, {options: []});
+    }
   },
-  getPeople: (input, success, error = null) => {
-    $.ajax({
-      url: `/api/people/select_people?input=${input}`,
-      type: 'GET',
-      dataType: 'json',
-      success: success,
-      error: error,
-      beforeSend: SetHeaders,
-    });
-  },
+  getShowsOptions: (input, callback) => {
+    if (_.trim(input).length > 2) {
+      getShows({
+        input: input,
+        success: (response) => {
+          callback(null, {
+            options: response.shows,
+          });
+        }
+      });
+    }
+    else {
+      callback(null, {options: []});
+    }
+  }
 }
+
+const getShows = (options) => {
+  $.ajax(GetQueryContent({
+    url: `/api/shows/select_shows?input=${options.input}`,
+    type: 'GET',
+    ...options
+  }));
+};
+
+const getPeople = (options) => {
+  $.ajax(GetQueryContent({
+    url: `/api/people/select_people?input=${options.input}`,
+    type: 'GET',
+    ...options
+  }));
+};
