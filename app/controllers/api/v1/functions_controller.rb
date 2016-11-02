@@ -49,15 +49,13 @@ module Api
 
       def delete_day
         theater = Theater.find(params[:theater_id])
-        functions = theater.functions.where(date: params[:date])
-        response = Function.transaction { functions.each(&:destroy) }
+        response = theater.functions.where(date: params[:date]).destroy_all
         respond_with response
       end
 
       def delete_onward
         theater = Theater.find(params[:theater_id])
-        functions = theater.functions.where('functions.date >= ?', params[:date])
-        response = Function.transaction { functions.each(&:destroy) }
+        response = theater.functions.where('functions.date >= ?', params[:date]).destroy_all
         respond_with response
       end
 

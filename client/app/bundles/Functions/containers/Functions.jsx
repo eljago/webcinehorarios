@@ -5,8 +5,6 @@ import _ from 'lodash'
 import moment from 'moment'
 import update from 'react/lib/update';
 
-import FunctionEdit from './FunctionEdit';
-
 import FunctionsMain from '../components/FunctionsMain'
 import EditFunctionsMain from '../components/EditFunctionsMain'
 import DatePagination from '../components/DatePagination'
@@ -40,7 +38,6 @@ export default class Functions extends React.Component {
       loadingMessage: 'Loading',
       editing: false,
       submittingShows: false,
-      functionBeingEdited: null,
       editingFunction: false,
     }
     this.functionTypes = props.function_types.map((ft) => {
@@ -50,8 +47,6 @@ export default class Functions extends React.Component {
       '_updateFunctions',
       '_onChangeEditing',
       '_onSubmitShows',
-      '_onClickEditFunction',
-      '_onStopEditingFunction',
       '_onCopyDay',
       '_onDeleteDay',
       '_onDeleteOnward',
@@ -112,12 +107,6 @@ export default class Functions extends React.Component {
                     return fb.object;
                   })}
                   functionTypes={this.functionTypes}
-                  onClickEditFunction={this._onClickEditFunction}
-                />
-                <FunctionEdit
-                  functionBeingEdited={this.state.functionBeingEdited}
-                  editingFunction={this.state.editingFunction}
-                  onStopEditingFunction={this._onStopEditingFunction}
                 />
               </div>
             );
@@ -131,24 +120,12 @@ export default class Functions extends React.Component {
     return moment().add(offsetDays, 'days').format('YYYY-MM-DD');
   }
 
-  _onClickEditFunction(func) {
-    this.setState({
-      functionBeingEdited: func,
-      editingFunction: true
-    });
-  }
-
-  _onStopEditingFunction() {
-    this.setState({editingFunction: false});
-  }
-
   _onChangeEditing() {
     this.setState({editing: !this.state.editing});
   }
 
   _onShowAdded(newShow) {
     if (newShow) {
-      console.log(newShow);
       for (const formBuilder of this.state.formBuilders) {
         const show = formBuilder.object;
         if (newShow.id == newShow.value) {
@@ -281,7 +258,6 @@ export default class Functions extends React.Component {
         id: this.props.theater.id,
         functions_attributes: this.refs.form.getResult(),
       };
-      console.log(theaterToSubmit);
 
       this.setState({
         submittingShows: true,

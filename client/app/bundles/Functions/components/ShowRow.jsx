@@ -11,7 +11,6 @@ export default class FormRow extends React.Component {
     show: PropTypes.object,
     functionTypes: PropTypes.array,
     style: PropTypes.object,
-    onClickEditFunction: PropTypes.func,
   };
   static defaultProps = {
     show: {}
@@ -40,14 +39,8 @@ export default class FormRow extends React.Component {
           <Col xs={12} sm={3}>
             <span style={styles.span}>{this._getFunctionTypes(func)}</span>
           </Col>
-          <Col xs={12} sm={7}>
+          <Col xs={12} sm={9}>
             <span style={styles.span}>{func.showtimes}</span>
-          </Col>
-          <Col xs={12} sm={2}>
-            <button type='button' className='btn btn-primary' onClick={(e) => {
-              this.props.onClickEditFunction(func);
-              e.preventDefault();
-            }}>Editar</button>
           </Col>
         </Row>
       );

@@ -8,7 +8,6 @@ export default class FunctionsMain extends React.Component {
   static propTypes = {
     shows: PropTypes.array,
     functionTypes: PropTypes.array,
-    onClickEditFunction: PropTypes.func,
   };
   static defaultProps = {
     shows: [],
@@ -34,7 +33,6 @@ export default class FunctionsMain extends React.Component {
           style={{backgroundColor: index % 2 == 0 ? 'white' : '#F1F1F1'}}
           show={show}
           functionTypes={this.props.functionTypes}
-          onClickEditFunction={this.props.onClickEditFunction}
         />
       );
     });
