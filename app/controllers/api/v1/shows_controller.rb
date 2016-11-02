@@ -58,7 +58,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
       format.json do
         render json: {
           shows: searchResult.map do |e|
-            {value: e.id, label: "#{e.name}"}
+            {value: e.id, label: e.name, image_url: e.image_url(:smaller)}
           end
         }
       end

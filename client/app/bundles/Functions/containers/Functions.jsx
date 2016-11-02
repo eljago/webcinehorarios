@@ -3,6 +3,7 @@
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 import moment from 'moment'
+import update from 'react/lib/update';
 
 import FunctionEdit from './FunctionEdit';
 
@@ -10,6 +11,7 @@ import FunctionsMain from '../components/FunctionsMain'
 import EditFunctionsMain from '../components/EditFunctionsMain'
 import DatePagination from '../components/DatePagination'
 import FunctionsHeader from '../components/FunctionsHeader'
+import AddShow from '../components/AddShow'
 
 import ErrorMessages from '../../../lib/forms/FormFields/ErrorMessages'
 
@@ -53,6 +55,7 @@ export default class Functions extends React.Component {
       '_onCopyDay',
       '_onDeleteDay',
       '_onDeleteOnward',
+      '_onShowAdded',
     ]);
   }
 
@@ -86,13 +89,19 @@ export default class Functions extends React.Component {
           }
           if (this.state.editing) {
             return(
-              <EditFunctionsMain
-                formBuilders={this.state.formBuilders}
-                submittingShows={this.state.submittingShows}
-                onSubmitShows={this._onSubmitShows}
-                offsetDays={this.state.offsetDays}
-                ref='form'
-              />
+              <div>
+                <AddShow
+                  onShowAdded={this._onShowAdded}
+                  disabled={this.state.loadingContent || this.state.submittingShows}
+                />
+                <EditFunctionsMain
+                  formBuilders={this.state.formBuilders}
+                  submittingShows={this.state.submittingShows}
+                  onSubmitShows={this._onSubmitShows}
+                  offsetDays={this.state.offsetDays}
+                  ref='form'
+                />
+              </div>
             );
           }
           else {
@@ -135,6 +144,33 @@ export default class Functions extends React.Component {
 
   _onChangeEditing() {
     this.setState({editing: !this.state.editing});
+  }
+
+  _onShowAdded(newShow) {
+    if (newShow) {
+      console.log(newShow);
+      for (const formBuilder of this.state.formBuilders) {
+        const show = formBuilder.object;
+        if (newShow.id == newShow.value) {
+          return; // Show already added
+        }
+      }
+      const show = {
+        id: newShow.value,
+        name: newShow.label,
+        image_url: newShow.image_url,
+      }
+      const newFormBuilder = new FormBuilder(
+        GetFormSchema({
+          function_types: this.functionTypes,
+          defaultFunction: this.props.default_function,
+        }),
+        show
+      );
+      this.setState({
+        formBuilders: update(this.state.formBuilders, {$push: [newFormBuilder]})
+      });
+    }
   }
 
   // HEADER ACTIONS

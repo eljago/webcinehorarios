@@ -3,9 +3,6 @@
 import React, { PropTypes } from 'react'
 import _ from 'lodash'
 
-import Row from 'react-bootstrap/lib/Row';
-import Col from 'react-bootstrap/lib/Col';
-
 export default class FunctionsHeader extends React.Component {
   static propTypes = {
     title: PropTypes.string,
