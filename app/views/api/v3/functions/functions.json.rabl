@@ -1,6 +1,9 @@
 collection @functions
+
+attributes :showtimes
+
 glue :show do
-	attributes :id, :name, :showtimes
+	attributes :id, :name
 	node :image_url do |s|
 	  s.image_url
 	end
@@ -8,6 +11,7 @@ glue :show do
 	  s.portrait_image
 	end
 end
+
 node :function_types do |f|
 	f.function_types.order('function_types.name ASC').select(:name).map do |function_type|
 		function_type.name

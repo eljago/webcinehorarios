@@ -1,6 +1,7 @@
 collection @videos => :videos
 
 attributes :id, :name, :code, :image_url, :video_type
+
 child :show do
 	attributes :id, :name
     

@@ -7,12 +7,15 @@ node :date do
 end
 
 child :functions do
+
 	attributes :showtimes
+
 	node :function_types do |f|
 		f.function_types.order('function_types.name ASC').select(:name).map do |ft|
 			ft.name
 		end.join(', ')
 	end
+	
 	glue :show do
 		attributes :id, :name
 		node :image_url do |s|

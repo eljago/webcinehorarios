@@ -24,7 +24,7 @@ module Api
         @show = Show.find(params[:show_id])
         unless params[:favorites].blank?
           favorites = params[:favorites].split(',')
-          @favorite_theaters = Theater.includes(functions: [:function_types, :showtimes])
+          @favorite_theaters = Theater.includes(functions: :function_types)
           .where('theaters.active = ? AND theaters.id IN (?) AND functions.show_id = ? AND functions.date = ?', true, favorites, @show.id, @date)
           .order('theaters.name ASC').references(:functions)
         end
@@ -33,8 +33,8 @@ module Api
       end
       
       def show
-        @functions = Function.includes(:show, :showtimes, :function_types)
-          .order('shows.debut DESC, shows.id, showtimes.time ASC')
+        @functions = Function.includes(:show, :function_types)
+          .order('shows.debut DESC, shows.id')
           .where(functions: { date: @date, theater_id: params[:id] }, show_id: 1..Float::INFINITY )
         
         @cache_date = @date.strftime '%Y%m%d'
