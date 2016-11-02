@@ -76,8 +76,7 @@ namespace :parse do
                 function.function_type_ids = detected_function_types
                 function.date = date
                 function.parsed_show = parsed_show
-                times = get_times(h2.next_sibling)
-                Function.create_showtimes(function, times)
+                function.showtimes = get_times(h2.next_sibling)
                 functions << function
               end
             
