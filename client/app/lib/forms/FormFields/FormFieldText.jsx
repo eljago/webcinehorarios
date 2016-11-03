@@ -79,21 +79,24 @@ export default class FormFieldText extends React.Component {
       identifier,
     } = this.props;
 
-    const typeProps = type === 'textarea' ?
-      {componentClass: type, rows: 7} : 
-        (type === 'number' ? {type: type, step: this.props.step ? this.props.step : 1} : 
-          {type: type});
-    return (
-      <input
-        {...typeProps}
-        className="form-control"
-        id={identifier}
-        placeholder={placeholder}
-        disabled={this.props.disabled}
-        value={this.state.value}
-        onChange={this._handleChange}
-      />
-    );
+    const inputProps = {
+      className: 'form-control',
+      id: identifier,
+      placeholder: placeholder,
+      disabled: this.props.disabled,
+      value: this.state.value,
+      onChange: this._handleChange,
+    }
+
+    if (type === 'textarea') {
+      return <textarea {...inputProps} rows='7' />;
+    }
+    else if (type === 'number') {
+      return <input type={type} {...inputProps} step={this.props.step ? this.props.step : 1} />;
+    }
+    else {
+      return <input type={type} {...inputProps} />
+    }
   }
 
   getResult() {
