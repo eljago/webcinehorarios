@@ -8,9 +8,16 @@ class Admin::FunctionsController < ApplicationController
     function_types = @theater.cinema.function_types.order(:name).all
     default_function = @theater.functions.new
 
+    offsetDays = params[:date].present? ? (params[:date].to_date - Date.current).to_i : 0
+
     @title = 'Functions'
     @app_name = 'FunctionsApp'
-    @props = {function_types: function_types, default_function: default_function, theater: @theater}
+    @props = {
+      function_types: function_types,
+      default_function: default_function,
+      theater: @theater,
+      offsetDays: offsetDays
+    }
     @prerender = false
     render file: 'react/render'
   end

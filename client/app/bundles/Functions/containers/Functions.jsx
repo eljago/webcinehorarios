@@ -24,16 +24,20 @@ export default class Functions extends React.Component {
     theater: PropTypes.object,
     default_function: PropTypes.object,
     function_types: PropTypes.array,
+    offsetDays: PropTypes.number,
   };
 
   constructor(props) {
     super(props);
 
     moment.locale('es-CL');
+
+    console.log(props.offsetDays);
+
     this.state = {
       errors: {},
       formBuilders: [],
-      offsetDays: 0,
+      offsetDays: props.offsetDays,
       loadingContent: false,
       loadingMessage: 'Loading',
       editing: false,
