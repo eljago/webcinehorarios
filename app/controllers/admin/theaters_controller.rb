@@ -73,6 +73,18 @@ class Admin::TheatersController < ApplicationController
   end
 
   def theater_params
-    params.require(:theater).permit(:cinema_id, :city_id, :address, :information, :latitude, :longitude, :name, :web_url, :active, :parse_helper, function_type_ids: [])
+    params.require(:theater).permit(
+      :cinema_id,
+      :city_id,
+      :address,
+      :information,
+      :latitude,
+      :longitude,
+      :name,
+      :web_url,
+      :active,
+      :parse_helper,
+      function_type_ids: []
+    )
   end
 end

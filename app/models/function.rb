@@ -6,7 +6,6 @@ class Function < ApplicationRecord
   belongs_to :parsed_show
   
   validates :theater, existence: true
-  validates :show, existence: true
   validates :date, presence: :true
   
   validates :showtimes, presence: :true
