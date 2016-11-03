@@ -5,41 +5,44 @@ import React, { PropTypes } from 'react'
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
 
-export default class FormRow extends React.Component {
+export default class FunctionsRow extends React.Component {
 
   static propTypes = {
-    show: PropTypes.object,
+    functionsContainer: PropTypes.object,
     functionTypes: PropTypes.array,
     style: PropTypes.object,
   };
   static defaultProps = {
-    show: {}
+    functionsContainer: {}
   }
 
   render() {
-    const show = this.props.show;
+    const functionsContainer = this.props.functionsContainer;
     return(
       <tr>
         <td>
-          <img style={{width: 60, height: 80}} src={`http://cinehorarios.cl${show.image_url}`} />
+          <img style={{width: 60, height: 80}} src={`http://cinehorarios.cl${functionsContainer.image_url}`} />
         </td>
         <td>
-          {this._getFunctions()}
+          {this._getFunctionsRows()}
         </td>
       </tr>
     );
   }
 
-  _getFunctions() {
-    if (!this.props.show.functions) return null;
+  _getFunctionsRows() {
+    if (!this.props.functionsContainer.functions) return null;
 
-    return this.props.show.functions.map((func) => {
+    return this.props.functionsContainer.functions.map((func) => {
       return (
         <Row key={func.id} style={styles.funcRow}>
           <Col xs={12} sm={3}>
+            <span style={styles.span}>{this.props.functionsContainer.name}</span>
+          </Col>
+          <Col xs={12} sm={3}>
             <span style={styles.span}>{this._getFunctionTypes(func)}</span>
           </Col>
-          <Col xs={12} sm={9}>
+          <Col xs={12} sm={6}>
             <span style={styles.span}>{func.showtimes}</span>
           </Col>
         </Row>

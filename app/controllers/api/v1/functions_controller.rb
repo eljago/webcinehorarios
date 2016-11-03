@@ -3,7 +3,7 @@ module Api
     class FunctionsController < Api::V1::ApiController
 
       def index
-        shows = Show.includes(:functions => [:function_types, :parsed_show]).references(:functions)
+        shows = Show.includes(:functions => :function_types).references(:functions)
           .where('functions.date = ? AND functions.theater_id = ?', params[:date], params[:theater_id])
           .order('shows.debut DESC, functions.id ASC')
 
@@ -13,13 +13,28 @@ module Api
           show_hash["functions"] = show.functions.map do |function|
             function_hash = function.as_json
             function_hash["function_types"] = function.function_type_ids
-            function_hash["parsed_show"] = function.parsed_show.as_json
             function_hash
           end
           show_hash["image_url"] = show.image_url :smaller
           show_hash
         end
-        response = {shows: shows_hash}
+
+        parsed_shows = ParsedShow.includes(:functions => :function_types).references(:functions)
+          .where('functions.date = ? AND functions.theater_id = ? AND functions.show_id IS ?', 
+            params[:date], params[:theater_id], nil)
+
+        parsed_shows_hash = []
+        parsed_shows_hash = parsed_shows.map do |parsed_show|
+          parsed_show_hash = parsed_show.as_json
+          parsed_show_hash["functions"] = parsed_show.functions.map do |function|
+            function_hash = function.as_json
+            function_hash["function_types"] = function.function_type_ids
+            function_hash
+          end
+          parsed_show_hash
+        end
+
+        response = {shows: shows_hash, parsed_shows: parsed_shows_hash}
         respond_with response, json: response
       end
 

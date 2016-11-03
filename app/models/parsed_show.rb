@@ -6,8 +6,4 @@ class ParsedShow < ApplicationRecord
   def show_name
     return (show.present? ? show.name : '')
   end
-
-  private
-
-  default_scope { order('created_at DESC') }
 end

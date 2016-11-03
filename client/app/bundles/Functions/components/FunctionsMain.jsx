@@ -2,15 +2,15 @@
 
 import React, { PropTypes } from 'react'
 
-import ShowRow from './ShowRow'
+import FunctionsRow from './FunctionsRow'
 
 export default class FunctionsMain extends React.Component {
   static propTypes = {
-    shows: PropTypes.array,
+    functionsContainers: PropTypes.array,
     functionTypes: PropTypes.array,
   };
   static defaultProps = {
-    shows: [],
+    functionsContainers: [],
   }
 
   render() {
@@ -18,20 +18,20 @@ export default class FunctionsMain extends React.Component {
       <div>
         <table className="table table-striped">
           <tbody>
-            {this._getFunctions()}
+            {this._getFunctionsRows()}
           </tbody>
         </table>
       </div>
     );
   }
 
-  _getFunctions() {
-    return this.props.shows.map((show, index) => {
+  _getFunctionsRows() {
+    return this.props.functionsContainers.map((functionsContainer, index) => {
       return(
-        <ShowRow
-          key={show.id}
+        <FunctionsRow
+          key={functionsContainer.id}
           style={{backgroundColor: index % 2 == 0 ? 'white' : '#F1F1F1'}}
-          show={show}
+          functionsContainer={functionsContainer}
           functionTypes={this.props.functionTypes}
         />
       );

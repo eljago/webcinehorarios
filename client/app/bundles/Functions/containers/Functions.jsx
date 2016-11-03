@@ -32,11 +32,10 @@ export default class Functions extends React.Component {
 
     moment.locale('es-CL');
 
-    console.log(props.offsetDays);
-
     this.state = {
       errors: {},
       formBuilders: [],
+      parsedShows: [],
       offsetDays: props.offsetDays,
       loadingContent: false,
       loadingMessage: 'Loading',
@@ -104,12 +103,13 @@ export default class Functions extends React.Component {
             );
           }
           else {
+            const shows = this.state.formBuilders.map((fb) => {
+              return fb.object;
+            });
             return(
               <div>
                 <FunctionsMain
-                  shows={this.state.formBuilders.map((fb) => {
-                    return fb.object;
-                  })}
+                  functionsContainers={this.state.parsedShows.concat(shows)}
                   functionTypes={this.functionTypes}
                 />
               </div>
@@ -242,9 +242,11 @@ export default class Functions extends React.Component {
                 show
               ));
             }),
+            parsedShows: response.parsed_shows,
             loadingContent: false,
             errors: {},
           });
+          console.log(response.parsed_shows)
         }
       },
       error: (errors) => {
