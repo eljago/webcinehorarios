@@ -87,6 +87,7 @@ group :development do
 end
 
 gem "capistrano-db-tasks", require: false
+
 gem 'rack-mini-profiler'
 
 gem 'pg'
@@ -100,26 +101,14 @@ gem "select2-rails", '3.5.9.3'
 gem "autoprefixer-rails"
 gem 'jquery-minicolors-rails'
 
-gem 'jquery-turbolinks'
-gem 'jquery-ui-rails', '~> 5.0.0'
+# acts_as_list keeps position value of show_person_roles
 gem 'acts_as_list'
 
 gem 'will_paginate', '~> 3.0'
-gem 'will_paginate-bootstrap'
-
-# Show progress of page load.
-gem 'nprogress-rails'
-
-gem 'sucker_punch'
-
-gem 'haml'
 
 # gems used for image uploading
 gem 'carrierwave'
 gem 'carrierwave-base64'
-
-# gem 'fog'
-# gem 'unf'
 gem 'mini_magick'
 
 gem 'graphql'
