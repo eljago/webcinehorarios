@@ -18,7 +18,7 @@ class Function < ApplicationRecord
 
     return false if theater_id != function.theater_id
     return false if date != function.date
-    return false if function_types.length != function.function_types.length
+    return false if function_types.size != function.function_types.size
     return false if showtimes != function.showtimes
     
     fts = function.function_types.map(&:id).sort
