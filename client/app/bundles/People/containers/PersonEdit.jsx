@@ -101,4 +101,8 @@ export default class PersonEdit extends React.Component {
       }
     });
   }
+
+  getResult() {
+    return this.refs.form.getResult();
+  }
 }

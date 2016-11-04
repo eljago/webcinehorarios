@@ -25,26 +25,26 @@ export default class PeopleEdit extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{marginBottom: 15}}>
+        <div style={{display: 'flex', flexDirection: 'row', marginBottom: 10}}>
+          {this.state.people.map((person, index) => {
+            return (
+              <PersonEdit
+                key={person.key}
+                onClose={() => this._onClose(index)}
+                onSuccess={() => this._onSuccess(index)}
+                person={person}
+                ref={person.key}
+              />
+            );
+          })}
+        </div>
         <Button
-          style={{marginBottom: 98}}
           bsStyle="success"
           onClick={this._addNewPerson}
-          block
         >
           Nuevo
         </Button>
-
-        {this.state.people.map((person, index) => {
-          return (
-            <PersonEdit
-              key={person.key}
-              onClose={() => this._onClose(index)}
-              onSuccess={() => this._onSuccess(index)}
-              person={person}
-            />
-          );
-        })}
       </div>
     );
   }
@@ -82,11 +82,22 @@ export default class PeopleEdit extends React.Component {
 
   editPerson(person) {
     if (person && person.id) {
-      const ids = this.state.people.map((p) => p.id);
+      const people = this.state.people;
+      const ids = people.map((p) => p.id);
       if (!ids.includes(person.id)) {
+
+        if (people.length == 1 && !people[0].id) {
+          const result = this.refs[people[0].key].getResult();
+          if (_.isEmpty(result)) {
+            this.setState({
+              people: update(people, {$splice: [[0, 1, person]]})
+            });
+            return;
+          }
+        }
         this.setState({
-          people: update(this.state.people, {$push: [this._createNewPerson(person)]})
-        })
+          people: update(people, {$push: [person]})
+        });
       }
     }
   }

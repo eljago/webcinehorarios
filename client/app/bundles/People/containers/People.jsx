@@ -40,26 +40,22 @@ export default class People extends React.Component {
 
   render() {
     return (
-      <Row>
-        <Col sm={7}>
-          <PeopleMain
-            page={this.state.page}
-            itemsPerPage={this.state.itemsPerPage}
-            people={this.state.people}
-            pagesCount={this.state.pagesCount}
-            onChangePage={this._onChangePage}
-            onSearchPerson={this._onSearch}
-            onEditPerson={this._onEditPerson}
-          />
-        </Col>
-        <Col sm={5}>
-          <PeopleEdit
-            ref='peopleEdit'
-            defaultPerson={this.props.defaultPerson}
-            onSuccess={() => this._updateData()}
-          />
-        </Col>
-      </Row>
+      <div>
+        <PeopleEdit
+          ref='peopleEdit'
+          defaultPerson={this.props.defaultPerson}
+          onSuccess={() => this._updateData()}
+        />
+        <PeopleMain
+          page={this.state.page}
+          itemsPerPage={this.state.itemsPerPage}
+          people={this.state.people}
+          pagesCount={this.state.pagesCount}
+          onChangePage={this._onChangePage}
+          onSearchPerson={this._onSearch}
+          onEditPerson={this._onEditPerson}
+        />
+      </div>
     );
   }
 

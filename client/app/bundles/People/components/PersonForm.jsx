@@ -30,34 +30,33 @@ export default class PersonForm extends React.Component {
   render() {
     const {formBuilder, submitting, onClose} = this.props;
     return (
-      <div>
+      <div style={{width: 300, margin: 5}}>
         <ErrorMessages errors={this.props.errors} />
-        <Row>
-          <Col xs={12} sm={4}>
-            <Image src={this.state.personThumb} responsive/>
-          </Col>
-          <Col xs={12} sm={8}>
-            <form>
-              {formBuilder.getField('name', {disabled: submitting})}
-              {formBuilder.getField('imdb_code', {disabled: submitting})}
-              {formBuilder.getField('image', {
-                initialValue: formBuilder.object.image.small.url,
-                disabled: submitting,
-                onChange: (personThumb) => {this.setState({personThumb})}
-              })}
+        <div style={{textAlign: 'center'}}>
+          <img style={{height: 200}}src={this.state.personThumb}/>
+        </div>
+        <div>
+          <form>
+            {formBuilder.getField('name', {disabled: submitting})}
+            {formBuilder.getField('imdb_code', {disabled: submitting})}
+            {formBuilder.getField('image', {
+              initialValue: formBuilder.object.image.small.url,
+              disabled: submitting,
+              onChange: (personThumb) => {this.setState({personThumb})}
+            })}
+            <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
               {formBuilder.getSubmitButton({
                 disabled: submitting
               })}
               {this._getDeleteButton()}
               <Button
                 onClick={onClose}
-                block
               >
                 Cancelar
               </Button>
-            </form>
-          </Col>
-        </Row>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
