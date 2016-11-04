@@ -1,4 +1,5 @@
 class Theater < ApplicationRecord
+  include Graphqlable
   extend FriendlyId
   friendly_id :name, use: :slugged
 

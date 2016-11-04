@@ -1,19 +1,19 @@
 TheaterType = GraphQL::ObjectType.define do
-  name "Theater"
-  description "A Theater"
-
-  interfaces [NodeIdentification.interface]
+  # Hack to support root queries
+  name 'TheaterType'
 
   # `id` exposes the UUID
   global_id_field :id
-  
-  field :theater_id, types.Int do
-  	resolve -> (theater, args, ctx) {
-  		theater.id
-  	}
+
+  field :name, types.String
+  field :cinema_id, types.Int
+  field :address, types.String
+  field :active, types.Boolean
+  field :functions, types[FunctionType] do
+    argument :date, types.String, default_value: Date.current
+    argument :aditional_days, types.Int, default_value: 0
+    resolve ->(obj, args, ctx) {
+      obj.functions.where(date: args[:date].to_date + args[:aditional_days])
+    }
   end
-  field :cinema_id, types.Int, "Cinema ID"
-  field :active, types.Boolean, "Is the Theater Active?"
-  field :name, types.String, "Name of the Theater"
-  field :address, types.String, "Address of the Theater"
 end

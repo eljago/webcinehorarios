@@ -134,7 +134,7 @@ GEM
       activesupport (>= 4.1.0)
     graphiql-rails (1.2.0)
       rails
-    graphql (0.18.11)
+    graphql (1.1.0)
     hirb (0.7.3)
     http (2.0.2)
       addressable (~> 2.3)

@@ -1,4 +1,5 @@
 class Function < ApplicationRecord
+  include Graphqlable
   
   belongs_to :theater
   belongs_to :show

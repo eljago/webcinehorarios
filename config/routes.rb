@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   namespace :graph, defaults: { format: 'json' }  do
   	scope module: :v1, constraints: ApiConstraints.new(version: 1, default: true)  do
-			resources :queries, via: [:post, :options]
+			resources :graphql, via: [:post, :options]
 	  end
 	end
 
@@ -138,7 +138,7 @@ Rails.application.routes.draw do
   end
 
 	if Rails.env.development?
-    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graph/queries"
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graph/graphql"
     mount RailsDb::Engine => '/rails/db', :as => 'rails_db'
   end
 
