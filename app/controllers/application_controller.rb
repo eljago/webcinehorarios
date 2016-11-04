@@ -1,6 +1,7 @@
 # encoding: utf-8
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session, if: Proc.new { |c| c.request.format.json? }
+  before_action :miniprofiler
   before_action :authorize
 
   delegate :allow?, to: :current_permission
@@ -43,5 +44,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
+  def miniprofiler
+    if current_member && current_member.admin?
+      Rack::MiniProfiler.authorize_request
+    end
+  end
 
 end
