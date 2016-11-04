@@ -5,34 +5,37 @@ class Api::V1::ShowsController < Api::V1::ApiController
   def index
     per_page = params[:perPage].present? ? params[:perPage] : 15
     shows = Show.order('created_at DESC').text_search(params[:query])
-      .paginate(page: params[:page], per_page: per_page).as_json
-    shows.each do |show|
-      show["image_url"] = Show.find(show["id"]).image_url :smaller
+      .paginate(page: params[:page], per_page: per_page)
+    shows_hash = shows.as_json
+    shows_hash.each_with_index do |show_hash, index|
+      show_hash["image_url"] = shows[index].image_url :smaller
     end
     shows_count = Show.text_search(params[:query]).count
-    response = {count: shows_count, shows: shows}
+    response = {count: shows_count, shows: shows_hash}
     respond_with response
   end
 
   def billboard
     shows = Show.joins(:functions).where(active: true, functions: {date: Date.current})
       .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at, functions.date')
-      .order("shows.debut DESC").distinct.as_json
-    shows.each do |show|
-      show["image_url"] = Show.find(show["id"]).image_url :smaller
+      .order("shows.debut DESC").distinct
+    shows_hash = shows.as_json
+    shows_hash.each_with_index do |show_hash, index|
+      show_hash["image_url"] = shows[index].image_url :smaller
     end
-    response = {shows: shows}
+    response = {shows: shows_hash}
     respond_with response
   end
 
   def comingsoon
     shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', Date.current, nil, true)
       .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at')
-      .order("debut ASC").as_json
-    shows.each do |show|
-      show["image_url"] = Show.find(show["id"]).image_url :smaller
+      .order("debut ASC")
+    shows_hash = shows.as_json
+    shows_hash.each_with_index do |show_hash, index|
+      show_hash["image_url"] = shows[index].image_url :smaller
     end
-    response = {shows: shows}
+    response = {shows: shows_hash}
     respond_with response
   end
 
