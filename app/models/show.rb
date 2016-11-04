@@ -51,7 +51,7 @@ class Show < ApplicationRecord
   end
 
   def image_url version = nil
-    if images.where(poster: true).length > 0
+    if images.where(poster: true).size > 0
       if version
         return images.where(poster: true).first.image.send(version).url
       end
@@ -61,7 +61,7 @@ class Show < ApplicationRecord
     end
   end
   def portrait_image
-    images.where(backdrop: true).length > 0 ? images.where(backdrop: true).first.image_url : '/uploads/default_images/default.png'
+    images.where(backdrop: true).size > 0 ? images.where(backdrop: true).first.image_url : '/uploads/default_images/default.png'
   end
 
   def actors

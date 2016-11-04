@@ -73,7 +73,7 @@ class Theater < ApplicationRecord
               function.date = f_date
               function.parsed_show = parsed_show
               function.showtimes = hash_function["showtimes"]
-              functions_to_save << function if function.showtimes.length > 0
+              functions_to_save << function if function.showtimes.size > 0
             end
           end
         end
