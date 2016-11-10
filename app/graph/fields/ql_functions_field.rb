@@ -1,9 +1,9 @@
-FunctionsField = GraphQL::Field.define do
+QlFunctionsField = GraphQL::Field.define do
   name('functions')
   argument :date, types.String, default_value: Date.current
   argument :theater_id, types.Int, default_value: 1
-  
-  type types[FunctionType]
+
+  type types[QlFunctionType]
 
   # Custom resolver
   resolve(FunctionsResolver.new)
