@@ -1,6 +1,6 @@
-FunctionType = GraphQL::ObjectType.define do
+QlFunctionType = GraphQL::ObjectType.define do
   # Hack to support root queries
-  name 'FunctionType'
+  name 'QlFunctionType'
 
   # `id` exposes the UUID
   global_id_field :id
