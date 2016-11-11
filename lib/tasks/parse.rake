@@ -28,23 +28,30 @@ namespace :parse do
     shows = Show.joins('left outer join functions on shows.id = functions.show_id')
     .where('(functions.date >= ? OR (shows.debut > ? OR shows.debut IS ?)) AND shows.active = ?',date, date, nil, true)
     .uniq
-    
+
     shows.each do |show|
       puts show.name
       should_save_show = false
       unless show.metacritic_url.blank?
         begin
-          timeout(10) do
+          Timeout.timeout(10) do
             url = show.metacritic_url
             s = open(url, "User-Agent" => "Mozilla/5.0").read
             s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ')
             page = Nokogiri::HTML(s)
 
             score = page.css(".main_details span[itemprop='ratingValue']").text.to_i
-            unless score == 0
+            if score != 0
               puts "\t\tmeta: #{score}"
               show.update_attribute(:metacritic_score, score)
               should_save_show = true
+            else
+              score = page.css("span[class='metascore_w larger movie positive']").text.to_i
+              if score != 0
+                puts "\t\tmeta: #{score}"
+                show.update_attribute(:metacritic_score, score)
+                should_save_show = true
+              end
             end
           end
         rescue Timeout::Error
@@ -61,7 +68,7 @@ namespace :parse do
 
       unless show.imdb_code.blank?
         begin
-          timeout(10) do
+          Timeout.timeout(10) do
             url = "http://m.imdb.com/title/#{show.imdb_code}/"
             s = open(url, "User-Agent" => "Mozilla/5.0").read
             s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ')
