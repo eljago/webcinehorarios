@@ -4,7 +4,5 @@ QlFunctionsField = GraphQL::Field.define do
   argument :theater_id, types.Int, default_value: 1
 
   type types[QlFunctionType]
-
-  # Custom resolver
-  resolve(FunctionsResolver.new)
+  
 end

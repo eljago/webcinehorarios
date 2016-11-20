@@ -349,7 +349,7 @@ DEPENDENCIES
   font-awesome-rails
   friendly_id
   graphiql-rails
-  graphql
+  graphql (= 1.1.0)
   hirb
   http
   jquery-minicolors-rails

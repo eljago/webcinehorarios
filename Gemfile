@@ -111,7 +111,7 @@ gem 'carrierwave'
 gem 'carrierwave-base64'
 gem 'mini_magick'
 
-gem 'graphql'
+gem 'graphql', '1.1.0'
 # gem 'graphql-batch'
 
 gem 'rabl', github: "nesquena/rabl"

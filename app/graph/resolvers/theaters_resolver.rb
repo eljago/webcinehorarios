@@ -1,5 +1,5 @@
 class TheatersResolver
-  def call(_, args, _)
+  def call(obj, args, ctx)
     if args[:cinema_id]
       Theater.where(cinema_id: args[:cinema_id], active: true).order(:name)
     else
