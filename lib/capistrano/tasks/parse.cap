@@ -49,4 +49,14 @@ namespace :cap_parse do
       end
     end
   end
+
+  task :antay do
+    on roles(:app) do
+      within "#{current_path}" do
+        with rails_env: :production do
+          execute :rake, "parse:antay"
+        end
+      end
+    end
+  end
 end
