@@ -54,7 +54,7 @@ namespace :parse do
               funcion["subtitulada"],
               pelicula[:tipo]
             ];
-            pelicula[:funciones][key] = "" if pelicula[:funciones][key].blank?
+            pelicula[:funciones][key] = [] if pelicula[:funciones][key].blank?
             pelicula[:funciones][key] << funcion["hora"]
           end
 
@@ -85,7 +85,7 @@ namespace :parse do
                 function.function_type_ids = detected_function_types
                 function.date = date
                 function.parsed_show = parsed_show
-                function.showtimes = value
+                function.showtimes = value.join(', ')
                 functions << function
 
               end
