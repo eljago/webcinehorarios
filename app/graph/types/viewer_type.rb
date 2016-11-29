@@ -36,4 +36,11 @@ ViewerType = GraphQL::ObjectType.define do
         .order(:debut).distinct
     }
   end
+
+  field :show, ShowType do
+    argument :show_id, types.Int
+    resolve ->(obj, args, ctx) {
+      Show.find(args[:show_id])
+    }
+  end
 end
