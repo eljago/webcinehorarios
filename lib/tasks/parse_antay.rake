@@ -58,8 +58,6 @@ namespace :parse do
             pelicula[:funciones][key] << funcion["hora"]
           end
 
-          puts peliculas.to_s
-
           peliculas.each do |key, pelicula|
             if pelicula[:funciones].present?
               pelicula[:funciones].each do |key, value|
