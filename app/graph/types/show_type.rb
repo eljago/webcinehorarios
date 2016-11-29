@@ -27,6 +27,7 @@ ShowType = GraphQL::ObjectType.define do
 
   field :images, types[ImageType]
   field :functions, types[QlFunctionType]
+  field :videos, types[VideoType]
   
   field :genres, types.String do
     resolve ->(obj, args, ctx) {
