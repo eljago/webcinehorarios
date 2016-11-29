@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161005012421) do
+ActiveRecord::Schema.define(version: 20161129035450) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,7 +42,7 @@ ActiveRecord::Schema.define(version: 20161005012421) do
 
   create_table "awards", force: :cascade do |t|
     t.string  "name",          limit: 255
-    t.boolean "active"
+    t.boolean "active",                    null: false
     t.date    "date"
     t.string  "image",         limit: 255
     t.string  "image_tmp",     limit: 255
@@ -160,8 +160,8 @@ ActiveRecord::Schema.define(version: 20161005012421) do
     t.integer  "width"
     t.integer  "height"
     t.integer  "show_portrait_id"
-    t.boolean  "poster"
-    t.boolean  "backdrop"
+    t.boolean  "poster",                       null: false
+    t.boolean  "backdrop",                     null: false
     t.index ["imageable_id", "imageable_type"], name: "index_images_on_imageable_id_and_imageable_type", using: :btree
     t.index ["show_portrait_id"], name: "index_images_on_show_portrait_id", using: :btree
   end
@@ -193,7 +193,7 @@ ActiveRecord::Schema.define(version: 20161005012421) do
   end
 
   create_table "nominations", force: :cascade do |t|
-    t.boolean  "winner"
+    t.boolean  "winner",                     null: false
     t.integer  "award_specific_category_id"
     t.integer  "show_id"
     t.datetime "created_at",                 null: false
@@ -272,11 +272,11 @@ ActiveRecord::Schema.define(version: 20161005012421) do
   create_table "show_person_roles", force: :cascade do |t|
     t.integer  "person_id"
     t.integer  "show_id"
-    t.boolean  "actor",                  default: true
-    t.boolean  "writer"
-    t.boolean  "creator"
-    t.boolean  "producer"
-    t.boolean  "director"
+    t.boolean  "actor",                  default: true, null: false
+    t.boolean  "writer",                                null: false
+    t.boolean  "creator",                               null: false
+    t.boolean  "producer",                              null: false
+    t.boolean  "director",                              null: false
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
     t.string   "character",  limit: 255
@@ -294,7 +294,7 @@ ActiveRecord::Schema.define(version: 20161005012421) do
     t.datetime "updated_at",                        null: false
     t.date     "debut"
     t.integer  "year"
-    t.boolean  "active"
+    t.boolean  "active",                            null: false
     t.string   "facebook_id",           limit: 255
     t.string   "metacritic_url",        limit: 255
     t.integer  "metacritic_score"
@@ -322,7 +322,7 @@ ActiveRecord::Schema.define(version: 20161005012421) do
     t.datetime "created_at",                                         null: false
     t.datetime "updated_at",                                         null: false
     t.string   "web_url",      limit: 255
-    t.boolean  "active"
+    t.boolean  "active",                                             null: false
     t.string   "slug",         limit: 255
     t.decimal  "latitude",                 precision: 15, scale: 10
     t.decimal  "longitude",                precision: 15, scale: 10

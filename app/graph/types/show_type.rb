@@ -24,16 +24,26 @@ ShowType = GraphQL::ObjectType.define do
   field :rotten_tomatoes_url, types.String
   field :rotten_tomatoes_score, types.Int
   field :rating, types.String
+
+  field :images, types[ImageType]
+  field :functions, types[QlFunctionType]
+  
   field :genres, types.String do
     resolve ->(obj, args, ctx) {
       obj.genres.map(&:name).join(', ')
     }
   end
+
   field :cover, types.String do
     resolve ->(obj, args, ctx) {
       obj.image_url
     }
   end
 
-  field :functions, types[QlFunctionType]
+  field :cast, types[ShowPersonRoleType] do
+    resolve ->(obj, args, ctx) {
+      obj.show_person_roles.includes(:person)
+    }
+  end
+
 end

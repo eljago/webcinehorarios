@@ -43,4 +43,14 @@ ViewerType = GraphQL::ObjectType.define do
       Show.find(args[:show_id])
     }
   end
+
+  field :videos, types[VideoType] do
+    argument :page, types.Int, default_value: 1
+    resolve ->(obj, args, ctx) {
+      Video.joins(:show)
+        .where('shows.active = ? AND videos.outstanding = ?', true, true)
+        .order('videos.created_at DESC')
+        .paginate(page: args[:page], per_page: 15).uniq
+    }
+  end
 end
