@@ -67,7 +67,8 @@ namespace :parse do
                 indx = parse_days.map(&:day).index(dia)
                 
                 if indx && mes == I18n.l(parse_days[indx], format: '%A').to_s.downcase
-                  horarios = spans[1].text.superclean.gsub(/\s+/, ', ')
+                  horarios = spans[1].text.superclean.gsub(/[^\s:0-9]/i, '').gsub(/\s+/, ', ')
+                  puts horarios
                   function = { showtimes: horarios, dia: dia }
                   movieFunction[:theaters][valid_theater_slug].last[:functions] << function if function[:showtimes].length > 0
                 end
