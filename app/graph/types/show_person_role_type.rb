@@ -11,6 +11,5 @@ ShowPersonRoleType = GraphQL::ObjectType.define do
   field :director, types.Boolean
   field :character, types.String
   field :position, types.Int
-  field :name, types.String
   field :person, PersonType
 end
