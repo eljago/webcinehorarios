@@ -25,7 +25,7 @@ ViewerType = GraphQL::ObjectType.define do
     argument :date, types.String
     resolve ->(obj, args, ctx) {
       date = args[:date].present? ? args[:date] : Date.current
-      Show.joins(:functions).where({active: true, functions: {date: args[:date]}})
+      Show.joins(:functions).where({active: true, functions: {date: date}})
         .order('shows.debut DESC').distinct
     }
   end
@@ -34,7 +34,7 @@ ViewerType = GraphQL::ObjectType.define do
     argument :date, types.String
     resolve ->(obj, args, ctx) {
       date = args[:date].present? ? args[:date] : Date.current
-      Show.where('active = ? AND (debut > ? OR debut IS ?)', true, args[:date], nil)
+      Show.where('active = ? AND (debut > ? OR debut IS ?)', true, date, nil)
         .order(:debut).distinct
     }
   end
