@@ -10,6 +10,7 @@ ViewerType = GraphQL::ObjectType.define do
   field :theaters, TheatersField
 
   field :shows_functions, types[ShowType] do
+    argument :cacheTime, types.String
     argument :date, types.String
     argument :theater_id, types.Int
     resolve ->(obj, args, ctx) {
@@ -22,6 +23,7 @@ ViewerType = GraphQL::ObjectType.define do
   end
 
   field :billboard, types[ShowType] do
+    argument :cacheTime, types.String
     argument :date, types.String
     resolve ->(obj, args, ctx) {
       date = args[:date].present? ? args[:date] : Date.current
@@ -31,6 +33,7 @@ ViewerType = GraphQL::ObjectType.define do
   end
 
   field :coming_soon, types[ShowType] do
+    argument :cacheTime, types.String
     argument :date, types.String
     resolve ->(obj, args, ctx) {
       date = args[:date].present? ? args[:date] : Date.current
@@ -40,6 +43,7 @@ ViewerType = GraphQL::ObjectType.define do
   end
 
   field :show, ShowType do
+    argument :cacheTime, types.String
     argument :show_id, types.Int
     resolve ->(obj, args, ctx) {
       Show.find(args[:show_id])
@@ -47,6 +51,7 @@ ViewerType = GraphQL::ObjectType.define do
   end
 
   field :videos, types[VideoType] do
+    argument :cacheTime, types.String
     argument :page, types.Int, default_value: 1
     resolve ->(obj, args, ctx) {
       Video.joins(:show)
