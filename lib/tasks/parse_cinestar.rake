@@ -40,7 +40,8 @@ namespace :parse do
 
       parse_days.each do |date|
 
-        uri = URI("https://www.cinepapaya.com/cl/cinestar/#{date.strftime('%Y-%m-%d')}")
+        url = date.day == current_date.day ? "https://www.cinepapaya.com/cl/cinestar" : "https://www.cinepapaya.com/cl/cinestar/#{date.strftime('%Y-%m-%d')}"
+        uri = URI(url)
         body = Net::HTTP.get(uri)
         page = Nokogiri::HTML(body)
 
