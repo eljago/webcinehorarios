@@ -44,42 +44,37 @@ namespace :parse do
         body = Net::HTTP.get(uri)
         page = Nokogiri::HTML(body)
 
-        parsed_day = page.css('div.date-tabs div.items a[class="item active"] div.day').text.superclean
+        page.css("div##{theater_hash[:code]} div.theater-showtime-box div.col-info").each do |show_box|
 
-        if parsed_day.to_i == date.day
-          page.css("div##{theater_hash[:code]} div.theater-showtime-box div.col-info").each do |show_box|
+          title_node = show_box.css('h2.title')
+          titulo = title_node.text.superclean
+          parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).downcase # Name of the show read from the webpage then formatted
+          parsed_show_name.gsub!(/[^a-z0-9]/i, '')
+          parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
 
-            title_node = show_box.css('h2.title')
-            titulo = title_node.text.superclean
-            parsed_show_name = transliterate(titulo.gsub(/\s+/, "")).downcase # Name of the show read from the webpage then formatted
-            parsed_show_name.gsub!(/[^a-z0-9]/i, '')
-            parsed_show = ParsedShow.select('id, show_id').find_or_create_by(name: parsed_show_name)
+          h2s = show_box.css('h2')
+          h2s.each_with_index do |h2, index|
+            next if index == 0
 
-            h2s = show_box.css('h2')
-            h2s.each_with_index do |h2, index|
-              next if index == 0
-
-              function_types = h2.text.superclean.split
-              detected_function_types = []
-              function_types.each do |hft|
-                parse_detector_types.each do |pdt|
-                  if !detected_function_types.include?(pdt.function_type_id) && pdt.name.downcase == hft.downcase
-                    detected_function_types << pdt.function_type_id
-                  end
+            function_types = h2.text.superclean.split
+            detected_function_types = []
+            function_types.each do |hft|
+              parse_detector_types.each do |pdt|
+                if !detected_function_types.include?(pdt.function_type_id) && pdt.name.downcase == hft.downcase
+                  detected_function_types << pdt.function_type_id
                 end
               end
-              showtimes = get_times(h2.next_element)
-              if showtimes.present? && showtimes.length > 0
-                function = theater.functions.new
-                function.show_id = parsed_show.show_id
-                function.function_type_ids = detected_function_types
-                function.date = date
-                function.parsed_show = parsed_show
-                function.showtimes = showtimes
-                functions << function
-              end
             end
-
+            showtimes = get_times(h2.next_element)
+            if showtimes.present? && showtimes.length > 0
+              function = theater.functions.new
+              function.show_id = parsed_show.show_id
+              function.function_type_ids = detected_function_types
+              function.date = date
+              function.parsed_show = parsed_show
+              function.showtimes = showtimes
+              functions << function
+            end
           end
         end
 
