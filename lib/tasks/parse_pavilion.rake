@@ -4,10 +4,15 @@ require 'nokogiri'
 include ActiveSupport::Inflector # transliterate
 
 def get_times node
-  if node.next_sibling['href'].present?
-    return Time.strptime(node.text.superclean[-8..-1], "%I:%M %P").strftime("%H:%M") + ', ' + get_times(node.next_sibling)
+  if node.present? && node['class'].present?
+    next_time = get_times(node.next_element)
+    if next_time.present?
+      return node.text.gsub(/[^:0-9]/i, '')[0..4] + ', ' + get_times(node.next_element)
+    else
+      return node.text.gsub(/[^:0-9]/i, '')[0..4]
+    end
   else
-    return Time.strptime(node.text.superclean[-8..-1], "%I:%M %P").strftime("%H:%M")
+    nil
   end
 end
 
@@ -62,14 +67,16 @@ namespace :parse do
                   end
                 end
               end
-
-              function = theater.functions.new
-              function.show_id = parsed_show.show_id
-              function.function_type_ids = detected_function_types
-              function.date = date
-              function.parsed_show = parsed_show
-              function.showtimes = get_times(h2.next_sibling)
-              functions << function
+              showtimes = get_times(h2.next_element)
+              if showtimes.present? && showtimes.length > 0
+                function = theater.functions.new
+                function.show_id = parsed_show.show_id
+                function.function_type_ids = detected_function_types
+                function.date = date
+                function.parsed_show = parsed_show
+                function.showtimes = showtimes
+                functions << function
+              end
             end
 
           end
