@@ -6,10 +6,12 @@ include ActiveSupport::Inflector # transliterate
 def get_times node
   if node.present? && node['class'].present?
     next_time = get_times(node.next_element)
+    correct_time = node.text.gsub(/[^apm:0-9]/, '')[0..6]
+    this_time = Time.strptime(correct_time, "%I:%M%P").strftime("%H:%M")
     if next_time.present?
-      return node.text.gsub(/[^:0-9]/i, '')[0..4] + ', ' + get_times(node.next_element)
+      return this_time + ', ' + next_time
     else
-      return node.text.gsub(/[^:0-9]/i, '')[0..4]
+      return this_time
     end
   else
     nil
