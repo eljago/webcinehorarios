@@ -2,7 +2,7 @@ ShowPersonRoleType = GraphQL::ObjectType.define do
   # Hack to support root queries
   name 'ShowPersonRoleType'
 
-  # `id` exposes the UUID
+  interfaces [GraphQL::Relay::Node.interface]
   global_id_field :id
 
   field :person_id, types.Int

@@ -2,7 +2,7 @@ ShowType = GraphQL::ObjectType.define do
   # Hack to support root queries
   name 'ShowType'
 
-  # `id` exposes the UUID
+  interfaces [GraphQL::Relay::Node.interface]
   global_id_field :id
 
   field :show_id, types.Int do

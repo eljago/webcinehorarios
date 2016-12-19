@@ -2,8 +2,8 @@ QueryType = GraphQL::ObjectType.define do
   name 'Query'
   description 'The query root of this schema. See available queries.'
 
-  # Used by Relay to lookup objects by UUID: /TO BE discussed
-  field :node, GraphQL::Relay::Node.field
+  interfaces [GraphQL::Relay::Node.interface]
+  global_id_field :id
 
   # Hack until relay has lookup for viewer fields
   field :viewer, ViewerType do
