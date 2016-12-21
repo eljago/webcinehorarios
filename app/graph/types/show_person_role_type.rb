@@ -1,6 +1,6 @@
 ShowPersonRoleType = GraphQL::ObjectType.define do
   # Hack to support root queries
-  name 'ShowPersonRoleType'
+  name 'ShowPersonRole'
 
   interfaces [GraphQL::Relay::Node.interface]
   global_id_field :id

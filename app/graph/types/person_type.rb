@@ -1,6 +1,6 @@
 PersonType = GraphQL::ObjectType.define do
   # Hack to support root queries
-  name 'PersonType'
+  name 'Person'
 
   interfaces [GraphQL::Relay::Node.interface]
   global_id_field :id

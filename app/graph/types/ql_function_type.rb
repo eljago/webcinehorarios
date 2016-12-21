@@ -1,6 +1,6 @@
 QlFunctionType = GraphQL::ObjectType.define do
   # Hack to support root queries
-  name 'QlFunctionType'
+  name 'QlFunction'
 
   interfaces [GraphQL::Relay::Node.interface]
   global_id_field :id

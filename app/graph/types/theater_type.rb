@@ -1,6 +1,6 @@
 TheaterType = GraphQL::ObjectType.define do
   # Hack to support root queries
-  name 'TheaterType'
+  name 'Theater'
 
   interfaces [GraphQL::Relay::Node.interface]
   global_id_field :id
