@@ -1,118 +1,71 @@
-def fetch(uri_str, limit = 10)
-  # You should choose a better exception.
-  raise ArgumentError, 'too many HTTP redirects' if limit == 0
+require 'rest-client'
+require 'nokogiri'
 
-  response = Net::HTTP.get_response(URI(uri_str))
-
-  case response
-  when Net::HTTPSuccess then
-    response
-  when Net::HTTPRedirection then
-    location = response['location']
-    warn "redirected to #{location}"
-    fetch(location, limit - 1)
+def fetch_page(url_str)
+  response = RestClient.get(url_str, {
+    "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
+  })
+  if response.code == 200
+    Nokogiri::HTML(response.body)
   else
-    # response.value
-    response
+    puts 'nil response. Bad URL?'
+    nil
   end
 end
 
 namespace :parse do
   desc "Parse Metacritic"
   task :metacritic => :environment do
-    require 'nokogiri'
-    require 'open-uri'
-    require 'timeout'
 
     date = Date.current
-    shows = Show.joins('left outer join functions on shows.id = functions.show_id')
-    .where('(functions.date >= ? OR (shows.debut > ? OR shows.debut IS ?)) AND shows.active = ?',date, date, nil, true)
-    .uniq
+    billboard = Show.joins(:functions).where(active: true, functions: {date: date}).order(:id).distinct
+    coming_soon = Show.where('(debut > ? OR debut IS ?) AND active = ?', date, nil, true).order(:id).distinct
+    shows = billboard|coming_soon
 
     shows.each do |show|
       puts show.name
       should_save_show = false
-      unless show.metacritic_url.blank?
-        begin
-          Timeout.timeout(10) do
-            url = show.metacritic_url
-            s = open(url, "User-Agent" => "Mozilla/5.0").read
-            s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ')
-            page = Nokogiri::HTML(s)
-
-            score = page.css(".main_details span[itemprop='ratingValue']").text.to_i
-            if score != 0
-              puts "\t\tmeta: #{score}"
-              show.update_attribute(:metacritic_score, score)
-              should_save_show = true
-            else
-              score = page.css("span[class='metascore_w larger movie positive']").text.to_i
-              if score != 0
-                puts "\t\tmeta: #{score}"
-                show.update_attribute(:metacritic_score, score)
-                should_save_show = true
-              end
-            end
-          end
-        rescue Timeout::Error
-          puts "Timeout::Error: #{$!}\n"
-        rescue
-          if $!.to_s === '404 Not Found'
-            show.update_attribute(:metacritic_url, nil)
-            show.update_attribute(:metacritic_score, nil)
-            puts "reseted metacritic code and score\n"
-          end
-          puts "Connection failed: #{$!}\n"
-        end
-      end
-
-      unless show.imdb_code.blank?
-        begin
-          Timeout.timeout(10) do
-            url = "http://m.imdb.com/title/#{show.imdb_code}/"
-            s = open(url, "User-Agent" => "Mozilla/5.0").read
-            s.encode('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub!('&nbsp;', ' ')
-            page = Nokogiri::HTML(s)
-            score = page.css("div#ratings-bar .vertically-middle").text[0..2].to_f*10.to_i
-            unless score == 0
-              puts "\t\timdb: #{score}"
-              show.update_attribute(:imdb_score, score)
-              should_save_show = true
-            end
-          end
-        rescue Timeout::Error
-          puts "Timeout::Error: #{$!}\n"
-        rescue
-          if $!.to_s === '404 Not Found'
-            show.update_attribute(:imdb_code, nil)
-            show.update_attribute(:imdb_score, nil)
-            puts "reseted imdb code and score\n"
-          end
-          puts "Connection failed: #{$!}\n"
-        end
-      end
-
-      unless show.rotten_tomatoes_url.blank?
-        response = fetch(show.rotten_tomatoes_url)
-        if response.present?
-          if response.code === '404'
-            show.update_attribute(:rotten_tomatoes_url, nil)
-            show.update_attribute(:rotten_tomatoes_score, nil)
-            puts "reseted imdb code and score\n"
+      if show.metacritic_url.present?
+        page = fetch_page(show.metacritic_url)
+        if page
+          text = page.css(".main_details span[itemprop='ratingValue']").text
+          if text.present? && text.to_i != 0
+            puts "\t\tmeta: #{text.to_i}"
+            show.update_attribute(:metacritic_score, text.to_i)
+            should_save_show = true
           else
-            body = response.body
-            if body.present?
-              page = Nokogiri::HTML(body)
+            text = page.css("div.critics_col.inset_right.fl div.distribution div.metascore_w.larger.movie").text
+            if text.present? && text.to_i != 0
+              puts "\t\tmeta: #{text.to_i}"
+              show.update_attribute(:metacritic_score, text.to_i)
+              should_save_show = true
+            end
+          end
+        end
+      end
 
-              span = page.css("#all-critics-numbers span.meter-value").first
-              if span.present?
-                score = span.text[0..1].to_i
-                if score != 0
-                  puts "\t\troten: #{score}"
-                  show.update_attribute(:rotten_tomatoes_score, score)
-                  should_save_show = true
-                end
-              end
+      if show.imdb_code.present?
+        page = fetch_page("http://m.imdb.com/title/#{show.imdb_code}/")
+        if page
+          score = page.css("div#ratings-bar .vertically-middle").text[0..2].to_f*10.to_i
+          unless score == 0
+            puts "\t\timdb: #{score}"
+            show.update_attribute(:imdb_score, score)
+            should_save_show = true
+          end
+        end
+      end
+
+      if show.rotten_tomatoes_url.present?
+        page = fetch_page(show.rotten_tomatoes_url)
+        if page
+          span = page.css("#all-critics-numbers span.meter-value").first
+          if span.present?
+            score = span.text[0..1].to_i
+            if score != 0
+              puts "\t\troten: #{score}"
+              show.update_attribute(:rotten_tomatoes_score, score)
+              should_save_show = true
             end
           end
         end

@@ -127,3 +127,5 @@ gem 'devise'
 
 gem 'activerecord-session_store'
 
+gem 'rest-client', require: false
+
