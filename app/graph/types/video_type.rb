@@ -1,8 +1,8 @@
 VideoType = GraphQL::ObjectType.define do
   # Hack to support root queries
-  name 'VideoType'
+  name 'Video'
 
-  # `id` exposes the UUID
+  interfaces [GraphQL::Relay::Node.interface]
   global_id_field :id
 
   field :video_id, types.Int do
@@ -20,4 +20,6 @@ VideoType = GraphQL::ObjectType.define do
       obj.image_url
     }
   end
+
+  field :show, ShowType
 end
