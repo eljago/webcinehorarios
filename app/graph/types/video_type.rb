@@ -20,4 +20,6 @@ VideoType = GraphQL::ObjectType.define do
       obj.image_url
     }
   end
+
+  field :show, ShowType
 end
