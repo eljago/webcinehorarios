@@ -10,5 +10,6 @@ ViewerType = GraphQL::ObjectType.define do
   field :theaters, TheatersField
   field :shows, ShowsField
   field :show, ShowField
-  field :videos, VideosField
+
+  field :videos, GraphQL::Relay::ConnectionField.create(VideosField)
 end

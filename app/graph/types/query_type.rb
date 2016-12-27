@@ -2,8 +2,7 @@ QueryType = GraphQL::ObjectType.define do
   name 'Query'
   description 'The query root of this schema. See available queries.'
 
-  interfaces [GraphQL::Relay::Node.interface]
-  global_id_field :id
+  field :node, GraphQL::Relay::Node.field
 
   # Hack until relay has lookup for viewer fields
   field :viewer, ViewerType do

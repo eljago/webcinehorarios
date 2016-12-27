@@ -3,10 +3,10 @@ VideosField = GraphQL::Field.define do
 
   argument :cacheTime, types.String
   argument :filter, types.String, default_value: nil
-  argument :page, types.Int, default_value: 1
+  argument :first, types.Int, default_value: 10
   argument :date, types.String
   
-  type types[VideoType]
+  type VideoType.connection_type
 
   resolve(VideosResolver.new)
 end
