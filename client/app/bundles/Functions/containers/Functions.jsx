@@ -246,7 +246,6 @@ export default class Functions extends React.Component {
             loadingContent: false,
             errors: {},
           });
-          console.log(response.parsed_shows)
         }
       },
       error: (errors) => {

@@ -12,6 +12,7 @@ module Api
           show_hash = show.as_json
           show_hash["functions"] = show.functions.map do |function|
             function_hash = function.as_json
+            function_hash["parsed_show"] = function.parsed_show.as_json
             function_hash["function_types"] = function.function_type_ids
             function_hash
           end
@@ -28,6 +29,7 @@ module Api
           parsed_show_hash = parsed_show.as_json
           parsed_show_hash["functions"] = parsed_show.functions.map do |function|
             function_hash = function.as_json
+            function_hash["parsed_show"] = function.parsed_show.as_json
             function_hash["function_types"] = function.function_type_ids
             function_hash
           end

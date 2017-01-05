@@ -15,9 +15,18 @@ class Api::V1::ParsedShowsController < Api::V1::ApiController
   end
 
   def orphan
-    parsed_shows1 = ParsedShow.where(show_id: nil).select(:id, :name, :show_id)
-    parsed_shows2 = ParsedShow.joins(:functions).where('functions.show_id IS ?', nil).uniq
+    parsed_shows1 = ParsedShow.where(show_id: nil).select(:id, :name, :show_id, :updated_at)
+    parsed_shows2 = ParsedShow.joins(:functions).where('functions.show_id IS ?', nil).distinct
     parsed_shows = parsed_shows1 | parsed_shows2
+    parsed_shows.sort_by! { |ps| ps[:updated_at] }
+
+    response = {parsed_shows: parsed_shows}
+    respond_with response
+  end
+
+  def relevant
+    parsed_shows = ParsedShow.joins(:functions)
+      .where(functions: {date: Date.current..(Date.current+6), show_id: nil}).distinct
 
     response = {parsed_shows: parsed_shows}
     respond_with response

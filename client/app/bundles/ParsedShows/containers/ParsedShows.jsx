@@ -15,6 +15,7 @@ export default class ParsedShows extends React.Component {
     this.state = {
       parsedShows: [],
       orphanParsedShows: [],
+      relevantParsedShows: [],
       currentPage: 1,
       itemsPerPage: 15,
       pagesCount: null,
@@ -24,8 +25,9 @@ export default class ParsedShows extends React.Component {
   }
 
   componentDidMount() {
-    this._updateOrphanParsedShows();
     this._updateParsedShows();
+    this._updateOrphanParsedShows();
+    this._updateRelevantParsedShows();
   }
 
   render() {
@@ -36,6 +38,7 @@ export default class ParsedShows extends React.Component {
         itemsPerPage={this.state.itemsPerPage}
         parsedShows={this.state.parsedShows}
         orphanParsedShows={this.state.orphanParsedShows}
+        relevantParsedShows={this.state.relevantParsedShows}
         updateRow={this._updateRow}
         deleteRow={this._deleteRow}
         onChangePage={this._onChangePage}
@@ -75,14 +78,25 @@ export default class ParsedShows extends React.Component {
     });
   }
 
+  _updateRelevantParsedShows() {
+    ParsedShowsQueries.getRelevantParsedShows({
+      success: (response) => {
+        this.setState({
+          relevantParsedShows: response.parsed_shows
+        });
+      }
+    });
+  }
+
   _updateRow(parsed_show, callback) {
     ParsedShowsQueries.submitEditParsedShow({
       parsedShowId: parsed_show.id,
       parsedShow: parsed_show,
       success: (response) => {
         // window.location.assign('/admin/shows');
-        this._updateOrphanParsedShows();
         this._updateParsedShows();
+        this._updateOrphanParsedShows();
+        this._updateRelevantParsedShows();
         callback();
       },
       error: (error) => {

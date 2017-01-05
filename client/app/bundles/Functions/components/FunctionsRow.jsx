@@ -24,6 +24,9 @@ export default class FunctionsRow extends React.Component {
           <img style={{width: 60, height: 80}} src={`http://cinehorarios.cl${functionsContainer.image_url}`} />
         </td>
         <td>
+          <span style={styles.fontSize}>{functionsContainer.name}</span>
+        </td>
+        <td>
           {this._getFunctionsRows()}
         </td>
       </tr>
@@ -35,15 +38,15 @@ export default class FunctionsRow extends React.Component {
 
     return this.props.functionsContainer.functions.map((func) => {
       return (
-        <Row key={func.id} style={styles.funcRow}>
-          <Col xs={12} sm={3}>
-            <span style={styles.span}>{this.props.functionsContainer.name}</span>
+        <Row key={func.id}>
+          <Col xs={12} sm={4}>
+            <span style={styles.fontSize}>{func.parsed_show ? func.parsed_show.name : null}</span>
           </Col>
           <Col xs={12} sm={3}>
-            <span style={styles.span}>{this._getFunctionTypes(func)}</span>
+            <span style={styles.fontSize}>{this._getFunctionTypes(func)}</span>
           </Col>
-          <Col xs={12} sm={6}>
-            <span style={styles.span}>{func.showtimes}</span>
+          <Col xs={12} sm={5}>
+            <span style={styles.fontSize}>{func.showtimes}</span>
           </Col>
         </Row>
       );
@@ -65,10 +68,7 @@ export default class FunctionsRow extends React.Component {
 }
 
 const styles = {
-  funcRow: {
-    marginBottom: 5,
-  },
-  span: {
-    fontSize: 20,
+  fontSize: {
+    fontSize: 18,
   }
 }

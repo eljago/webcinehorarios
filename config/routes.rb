@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       resources :parsed_shows, only: [:index, :update, :destroy] do
         collection do
           get 'orphan'
+          get 'relevant'
         end
       end
     end

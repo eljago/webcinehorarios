@@ -18,6 +18,7 @@ export default class ParsedShowsTabs extends React.Component {
     itemsPerPage: PropTypes.number,
     parsedShows: PropTypes.array,
     orphanParsedShows: PropTypes.array,
+    relevantParsedShows: PropTypes.array,
     updateRow: PropTypes.func,
     deleteRow: PropTypes.func,
     onChangePage: PropTypes.func,
@@ -27,7 +28,7 @@ export default class ParsedShowsTabs extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedNavItem: 2
+      selectedNavItem: 3
     };
     _.bindAll(this, '_handleSelect');
   }
@@ -43,6 +44,7 @@ export default class ParsedShowsTabs extends React.Component {
         <Nav bsStyle="pills" activeKey={this.state.selectedNavItem} onSelect={this._handleSelect}>
           <NavItem eventKey="1">Parsed Shows</NavItem>
           <NavItem eventKey="2">Orphan Parsed Shows</NavItem>
+          <NavItem eventKey="3">Relevant Parsed Shows</NavItem>
         </Nav>
         {this._getContent()}
       </div>
@@ -71,6 +73,15 @@ export default class ParsedShowsTabs extends React.Component {
       return (
         <ParsedShowsOrphan
           orphanParsedShows={this.props.orphanParsedShows}
+          updateRow={this.props.updateRow}
+          deleteRow={this.props.deleteRow}
+        />
+      );
+    }
+    else if (this.state.selectedNavItem == 3) {
+      return (
+        <ParsedShowsOrphan
+          orphanParsedShows={this.props.relevantParsedShows}
           updateRow={this.props.updateRow}
           deleteRow={this.props.deleteRow}
         />

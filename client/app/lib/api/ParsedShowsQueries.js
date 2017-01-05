@@ -17,6 +17,13 @@ export default {
       ...options
     }));
   },
+  getRelevantParsedShows: (options) => {
+    $.ajax(GetQueryContent({
+      url: `/api/parsed_shows/relevant.json`,
+      type: 'GET',
+      ...options
+    }));
+  },
   submitNewParsedShow: (options) => {
     $.ajax(GetQueryContent({
       url: '/api/parsed_shows',
