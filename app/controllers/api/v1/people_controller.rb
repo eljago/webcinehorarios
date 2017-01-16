@@ -45,7 +45,15 @@ class Api::V1::PeopleController < Api::V1::ApiController
       :name,
       :remote_image_url,
       :image,
-      :imdb_code
+      :imdb_code,
+      images_attributes: [
+        :id,
+        :remote_image_url,
+        :image,
+        :backdrop,
+        :poster,
+        :_destroy
+      ]
     )
   end
 end

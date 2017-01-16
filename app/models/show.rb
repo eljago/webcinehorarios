@@ -13,6 +13,9 @@ class Show < ApplicationRecord
   has_many :nominations
   has_many :award_specific_nominations, through: :nominations
   has_many :show_debuts, dependent: :destroy
+
+  accepts_nested_attributes_for :images, :videos, :show_person_roles, allow_destroy: true
+  accepts_nested_attributes_for :functions
   
   validates_associated :images, :videos, :show_person_roles
 
@@ -32,9 +35,6 @@ class Show < ApplicationRecord
       allow_nil: true, greater_than_or_equal_to: 0,
       less_than_or_equal_to: 100
     }, allow_blank: true
-
-  accepts_nested_attributes_for :images, :videos, :show_person_roles, allow_destroy: true
-  accepts_nested_attributes_for :functions
 
   after_commit :flush_cache
 
