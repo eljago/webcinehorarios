@@ -31,17 +31,6 @@ class Person < ApplicationRecord
     end
   end
 
-  def image_url version = nil
-    if images.where(poster: true).size > 0
-      if version
-        return images.where(poster: true).first.image.send(version).url
-      end
-      images.where(poster: true).first.image_url
-    else
-      '/uploads/default_images/default.png'
-    end
-  end
-
   def slug_candidates
     [ :name, [:name, :imdb_code] ]
   end
