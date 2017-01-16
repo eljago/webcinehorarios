@@ -17,7 +17,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def billboard
     shows = Show.joins(:functions).where(active: true, functions: {date: Date.current})
-      .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at, functions.date')
       .order("shows.debut DESC").distinct
     shows_hash = shows.as_json
     shows_hash.each_with_index do |show_hash, index|
@@ -29,7 +28,6 @@ class Api::V1::ShowsController < Api::V1::ApiController
 
   def comingsoon
     shows = Show.where('(debut > ? OR debut IS ?) AND active = ?', Date.current, nil, true)
-      .select('shows.id, shows.active, shows.name, shows.duration, shows.year, shows.debut, shows.created_at')
       .order("debut ASC")
     shows_hash = shows.as_json
     shows_hash.each_with_index do |show_hash, index|
