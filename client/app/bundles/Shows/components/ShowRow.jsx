@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
+import _ from 'lodash'
 
 export default class ShowRow extends React.Component {
   static propTypes = {
@@ -10,6 +11,7 @@ export default class ShowRow extends React.Component {
 
   render() {
     const {show, index} = this.props;
+    const {name, duration, year, rating, debut} = show
     return(
       <a
         style={{
@@ -18,15 +20,24 @@ export default class ShowRow extends React.Component {
         }} 
         href={`/admin/shows/${show.id}/edit`}
       >
-        <img style={styles.img} src={show.image_url}/>
+        <img style={styles.img} src={`http://cinehorarios.cl${show.image_url}`}/>
         <div style={styles.content}>
-          <span style={styles.span}>{show.name}</span>
-          <span style={styles.span}>{show.duration}</span>
-          <span style={styles.span}>{show.year}</span>
-          <span style={styles.span}>{show.debut ? show.debut.split('-').reverse().join('-') : ''}</span>
+          <span style={getColorStyle(name)}>{name ? name : 'NOMBRE'}</span>
+          <span style={getColorStyle(duration)}>{duration ? duration : 'DURATION'}</span>
+          <span style={getColorStyle(year)}>{year ? year : 'YEAR'}</span>
+          <span style={getColorStyle(rating)}>{rating ? rating : 'RATING'}</span>
+          <span style={getColorStyle(debut)}>
+            {show.debut ? show.debut.split('-').reverse().join('-') : 'DEBUT'}
+          </span>
         </div>
       </a>
     );
+  }
+}
+
+function getColorStyle (text) {
+  return {
+    color: text ? 'black' : 'red'
   }
 }
 
@@ -46,9 +57,5 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     margin: 10,
-  },
-  span: {
-    textDecoration: 'none',
-    color: 'black',
-  },
+  }
 }
