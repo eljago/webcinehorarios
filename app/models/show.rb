@@ -23,9 +23,9 @@ class Show < ApplicationRecord
   validates :imdb_code, format: { with: /\At{2}\d{7}\z/,
     message: "%{value} no es un formato válido" }, allow_blank: true
   validates :imdb_code, uniqueness: { case_sensitive: true }, allow_blank: true
-  validates :metacritic_url, format: { with: /\Ahttp:\/\/www\.metacritic\.com\/movie\/[\w-]+\/?\z/,
+  validates :metacritic_url, format: { with: /\Ahttp:\/\/www\.metacritic\.com\/movie\/[\w\-!]+\/?\z/,
     message: "%{value} no es un formato válido" }, allow_blank: true
-  validates :rotten_tomatoes_url, format: { with: /\Ahttps:\/\/www\.rottentomatoes\.com\/m\/[\w-]+\/?\z/,
+  validates :rotten_tomatoes_url, format: { with: /\Ahttps:\/\/www\.rottentomatoes\.com\/m\/[\w\-!]+\/?\z/,
     message: "%{value} no es un formato válido" }, allow_blank: true
   # validates :imdb_code, :metacritic_url, :rotten_tomatoes_url,
   #   uniqueness: { case_sensitive: true }
