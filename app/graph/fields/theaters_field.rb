@@ -3,6 +3,7 @@ TheatersField = GraphQL::Field.define do
   
   argument :cacheTime, types.String
   argument :cinema_id, types.Int, default_value: nil
+  argument :theater_ids, types.String, default_value: nil
   
   type types[TheaterType]
 
