@@ -33,6 +33,12 @@ export default class TheaterForm extends React.Component {
         {formBuilder.getField('web_url', {disabled: submitting})}
         {formBuilder.getField('parse_helper', {disabled: submitting})}
         {formBuilder.getField('information', {disabled: submitting})}
+        {formBuilder.getField('parent_theater_id', {
+          initialValue: {
+            value: formBuilder.object.parent_theater.id,
+            label: formBuilder.object.parent_theater.name
+          }
+        })}
         {formBuilder.getField('latitude', {
           disabled: submitting,
           step: '0.0000001'
@@ -59,12 +65,13 @@ export default class TheaterForm extends React.Component {
   }
 
   getResult() {
-    let showResult = {};
+    let result = {};
     _.forIn(this.refs, (formElement) => {
       if (_.isFunction(formElement.getResult)) {
-        _.merge(showResult, formElement.getResult());
+        _.merge(result, formElement.getResult());
       }
     });
-    return showResult;
+    console.log(result)
+    return result;
   }
 }

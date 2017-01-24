@@ -18,8 +18,12 @@ class ShowsResolver
 
       date = args[:date].present? ? args[:date].to_date : Date.current
       date_range = date..date+6
-      Show.includes(:functions => :function_types).references(:functions)
-        .where(functions: {date: date_range, theater_id: args[:theater_id]})
+      theater = Theater.find(args[:theater_id])
+      child_theaters_ids = theater.child_theaters.map(&:id)
+      child_theaters_ids << theater.id
+      puts child_theaters_ids
+      Show.includes(:genres, :functions => :function_types).references(:functions)
+        .where(functions: {date: date_range, theater_id: child_theaters_ids})
         .order('shows.debut DESC, function_types.name ASC')
 
     elsif args[:show_id].present?

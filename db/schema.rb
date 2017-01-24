@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161129153914) do
+ActiveRecord::Schema.define(version: 20170123234331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -313,20 +313,21 @@ ActiveRecord::Schema.define(version: 20161129153914) do
   end
 
   create_table "theaters", force: :cascade do |t|
-    t.string   "name",         limit: 255
-    t.string   "image",        limit: 255
-    t.string   "address",      limit: 255
+    t.string   "name",              limit: 255
+    t.string   "image",             limit: 255
+    t.string   "address",           limit: 255
     t.text     "information"
     t.integer  "cinema_id"
     t.integer  "city_id"
-    t.datetime "created_at",                                         null: false
-    t.datetime "updated_at",                                         null: false
-    t.string   "web_url",      limit: 255
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
+    t.string   "web_url",           limit: 255
     t.boolean  "active"
-    t.string   "slug",         limit: 255
-    t.decimal  "latitude",                 precision: 15, scale: 10
-    t.decimal  "longitude",                precision: 15, scale: 10
-    t.string   "parse_helper", limit: 255
+    t.string   "slug",              limit: 255
+    t.decimal  "latitude",                      precision: 15, scale: 10
+    t.decimal  "longitude",                     precision: 15, scale: 10
+    t.string   "parse_helper",      limit: 255
+    t.integer  "parent_theater_id"
     t.index ["city_id", "cinema_id"], name: "index_theaters_on_city_id_and_cinema_id", using: :btree
     t.index ["slug"], name: "index_theaters_on_slug", unique: true, using: :btree
   end

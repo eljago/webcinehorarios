@@ -26,9 +26,11 @@ class Admin::TheatersController < ApplicationController
 
   def edit
     theater = Theater.friendly.find(params[:id])
+    hash_theater = theater.as_json
+    hash_theater["parent_theater"] = theater.parent_theater.present? ? theater.parent_theater.as_json : {}.as_json
     @title = 'Edit Theater'
     @app_name = 'TheaterEditApp'
-    @props = {theater: theater}
+    @props = {theater: hash_theater}
     @prerender = false
     render file: 'react/render'
   end
@@ -81,6 +83,7 @@ class Admin::TheatersController < ApplicationController
       :latitude,
       :longitude,
       :name,
+      :parent_theater_id,
       :web_url,
       :active,
       :parse_helper,

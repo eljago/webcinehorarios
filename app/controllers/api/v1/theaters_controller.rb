@@ -21,6 +21,22 @@ module Api
         theater.update_attributes(theater_params)
         respond_with theater, json: theater
       end
+
+      def select_theaters
+        input = params[:input].present? ? params[:input] : ''
+        q = input.split.map(&:capitalize).join(" ")
+        searchResult = Theater.select([:id, :name]).text_search(q).order(:name)
+
+        respond_to do |format|
+          format.json do
+            render json: {
+              theaters: searchResult.map do |e|
+                {value: e.id, label: "#{e.name}"}
+              end
+            }
+          end
+        end
+      end
       
       def show_theaters_joins
         date = Date.current
@@ -46,6 +62,7 @@ module Api
           :active,
           :cinema_id,
           :city_id,
+          :parent_theater_id,
           functions_attributes: [
             :id,
             :date,

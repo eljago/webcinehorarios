@@ -7,6 +7,9 @@ class Theater < ApplicationRecord
   belongs_to :cinema
   has_many :functions, :dependent => :destroy
 
+  has_many :child_theaters, class_name: "Theater", foreign_key: :parent_theater_id
+  belongs_to :parent_theater, class_name: "Theater", foreign_key: :parent_theater_id
+
   validates :name, :presence => :true
 
   accepts_nested_attributes_for :functions, allow_destroy: true
@@ -17,6 +20,18 @@ class Theater < ApplicationRecord
       theater.id
     else
       0
+    end
+  end
+
+  include PgSearch
+  pg_search_scope :search, against: :name,
+    using: {tsearch: {dictionary: "spanish", :prefix => true}}
+
+  def self.text_search(query)
+    if query.present?
+      search(query)
+    else
+      order('theaters.name')
     end
   end
 

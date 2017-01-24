@@ -34,6 +34,16 @@ export default {
     else {
       callback(null, {options: []});
     }
+  },
+  getTheatersOptions: (input, callback) => {
+    getTheaters({
+      input: input,
+      success: (response) => {
+        callback(null, {
+          options: response.theaters
+        });
+      }
+    });
   }
 }
 
@@ -48,6 +58,14 @@ const getShows = (options) => {
 const getPeople = (options) => {
   $.ajax(GetQueryContent({
     url: `/api/people/select_people?input=${options.input}`,
+    type: 'GET',
+    ...options
+  }));
+};
+
+const getTheaters = (options) => {
+  $.ajax(GetQueryContent({
+    url: `/api/theaters/select_theaters?input=${options.input}`,
     type: 'GET',
     ...options
   }));

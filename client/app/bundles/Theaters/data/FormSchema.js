@@ -24,6 +24,11 @@ export default (props) => {
       type: 'text',
       label: 'Información'
     },
+    parent_theater_id: {
+      type: 'select',
+      label: 'Parent Theater',
+      getOptions: SelectQueries.getTheatersOptions,
+    },
     latitude: {
       type: 'number',
       label: 'Latitud'
