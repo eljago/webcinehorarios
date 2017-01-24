@@ -21,8 +21,7 @@ class ShowsResolver
       theater = Theater.find(args[:theater_id])
       child_theaters_ids = theater.child_theaters.map(&:id)
       child_theaters_ids << theater.id
-      puts child_theaters_ids
-      Show.includes(:genres, :functions => :function_types).references(:functions)
+      Show.includes(:genres, :functions => [:function_types, :theater]).references(:functions)
         .where(functions: {date: date_range, theater_id: child_theaters_ids})
         .order('shows.debut DESC, function_types.name ASC')
 
