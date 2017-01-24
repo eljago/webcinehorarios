@@ -11,6 +11,7 @@ class Theater < ApplicationRecord
   belongs_to :parent_theater, class_name: "Theater", foreign_key: :parent_theater_id
 
   validates :name, :presence => :true
+  validate :parent_theater_not_self
 
   accepts_nested_attributes_for :functions, allow_destroy: true
 
@@ -147,5 +148,11 @@ class Theater < ApplicationRecord
     indexes_to_save.each_with_index do |should_save, index|
       new_functions[index].save if should_save
     end
+  end
+
+  private
+
+  def parent_theater_not_self
+    errors.add(:parent_theater_id, "can't be the same as self id") if id === parent_theater_id
   end
 end

@@ -19,11 +19,13 @@ export default class FormFieldSelect extends React.Component {
     initialValue: PropTypes.object,
     onChange: PropTypes.func,
     async: PropTypes.boolean,
+    clearable: PropTypes.boolean
   };
   static defaultProps = {
     label: '',
     initialValue: null,
-    async: true
+    async: true,
+    clearable: false
   };
 
   constructor(props) {
@@ -45,7 +47,7 @@ export default class FormFieldSelect extends React.Component {
           onChange={this._handleChange}
           loadOptions={this.props.getOptions}
           options={this.props.options}
-          clearable={false}
+          clearable={this.props.clearable}
           cache={false}
         />
       </FormGroup>
@@ -60,8 +62,12 @@ export default class FormFieldSelect extends React.Component {
   }
 
   getResult() {
-    if (this.state.currentValue.value != this.props.initialValue.value) {
-      return {[this.props.submitKey]: this.state.currentValue.value};
+    const {currentValue} = this.state
+    if (currentValue == null) {
+      return {[this.props.submitKey]: ' '};
+    }
+    if (currentValue.value !== this.props.initialValue.value) {
+      return {[this.props.submitKey]: currentValue.value};
     }
     return null;
   }

@@ -37,7 +37,8 @@ export default class TheaterForm extends React.Component {
           initialValue: {
             value: formBuilder.object.parent_theater.id,
             label: formBuilder.object.parent_theater.name
-          }
+          },
+          clearable: true
         })}
         {formBuilder.getField('latitude', {
           disabled: submitting,

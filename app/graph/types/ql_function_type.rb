@@ -14,4 +14,5 @@ QlFunctionType = GraphQL::ObjectType.define do
       obj.function_types.map { |ft| ft.name }.join(', ')
     }
   end
+  field :theater_id, types.Int
 end
