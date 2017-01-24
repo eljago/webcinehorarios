@@ -15,4 +15,5 @@ QlFunctionType = GraphQL::ObjectType.define do
     }
   end
   field :theater_id, types.Int
+  field :theater, TheaterType
 end
