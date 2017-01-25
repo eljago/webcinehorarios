@@ -40,7 +40,7 @@ namespace :parse do
         page2.css('div#main ul.movie-showtime-panel').each do |lu_theater|
 
           theater_slug = lu_theater.attr('class').gsub('movie-showtime-panel', '').strip
-          
+
           current_functions = nil
           function_types_array = nil
           lu_theater.children.each do |li_functions_days|
@@ -76,11 +76,11 @@ namespace :parse do
               end
             else
               function_types_array = []
-              function_types_raw = li_functions_days.css('span').each do |span|
+              li_functions_days.css('span').each do |span|
                 function_types_array << span.text
               end
               function_types_array << 'Doblada' if !function_types_array.include?('Subtitulada')
-              
+
               found_existing_functions_with_same_function_types = false
               movieFunction["theaters"][theater_slug] = [] if movieFunction["theaters"][theater_slug].blank?
               movieFunction["theaters"][theater_slug].each do |functions|
