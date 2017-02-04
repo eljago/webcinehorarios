@@ -111,7 +111,7 @@ gem 'carrierwave'
 gem 'carrierwave-base64'
 gem 'mini_magick'
 
-gem 'graphql', '1.1.0'
+gem 'graphql', '1.4.2'
 # gem 'graphql-batch'
 
 gem 'rabl', github: "nesquena/rabl"
@@ -129,3 +129,4 @@ gem 'activerecord-session_store'
 
 gem 'rest-client', require: false
 
+gem 'activerecord-precount'

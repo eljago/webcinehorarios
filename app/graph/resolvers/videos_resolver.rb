@@ -5,7 +5,7 @@ class VideosResolver
 
       case args[:filter]
       when 'billboard'
-        
+
         date = args[:date].present? ? args[:date] : Date.current
         Video.includes(:show).references(:show).joins(:show => :functions)
           .where('shows.active = ? AND videos.outstanding = ? AND functions.date = ?', true, true, date)
@@ -22,10 +22,9 @@ class VideosResolver
 
     else
 
-      Video.joins(:show)
+      Video.includes(:show).references(:show)
         .where('shows.active = ? AND videos.outstanding = ?', true, true)
         .order('videos.created_at DESC')
-        .distinct
 
     end
   end

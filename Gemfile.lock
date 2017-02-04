@@ -40,6 +40,8 @@ GEM
       activemodel (= 5.0.0.1)
       activesupport (= 5.0.0.1)
       arel (~> 7.0)
+    activerecord-precount (0.6.2)
+      activerecord (>= 4.2)
     activerecord-session_store (1.0.0)
       actionpack (>= 4.0, < 5.1)
       activerecord (>= 4.0, < 5.1)
@@ -134,7 +136,7 @@ GEM
       activesupport (>= 4.1.0)
     graphiql-rails (1.2.0)
       rails
-    graphql (1.1.0)
+    graphql (1.4.2)
     hirb (0.7.3)
     http (2.0.2)
       addressable (~> 2.3)
@@ -334,6 +336,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-precount
   activerecord-session_store
   acts_as_list
   autoprefixer-rails
@@ -354,7 +357,7 @@ DEPENDENCIES
   font-awesome-rails
   friendly_id
   graphiql-rails
-  graphql (= 1.1.0)
+  graphql (= 1.4.2)
   hirb
   http
   jquery-minicolors-rails

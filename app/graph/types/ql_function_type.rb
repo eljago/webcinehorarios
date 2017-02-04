@@ -11,9 +11,10 @@ QlFunctionType = GraphQL::ObjectType.define do
   field :showtimes, types.String
   field :function_types, types.String do
     resolve ->(obj, args, ctx) {
-      obj.function_types.map { |ft| ft.name }.join(', ')
+      obj.function_types.map(&:name).join(', ')
     }
   end
   field :theater_id, types.Int
   field :theater, TheaterType
+  field :show, ShowType
 end

@@ -11,4 +11,5 @@ TheaterType = GraphQL::ObjectType.define do
   field :cinema_id, types.Int
   field :address, types.String
   field :active, types.Boolean
+  field :functions, types[QlFunctionType]
 end

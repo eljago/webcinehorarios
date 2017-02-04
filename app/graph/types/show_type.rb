@@ -25,7 +25,7 @@ ShowType = GraphQL::ObjectType.define do
   field :images, types[ImageType]
   field :functions, types[QlFunctionType]
   field :videos, types[VideoType]
-  
+
   field :genres, types.String do
     resolve ->(obj, args, ctx) {
       obj.genres.map(&:name).join(', ')
@@ -34,7 +34,9 @@ ShowType = GraphQL::ObjectType.define do
 
   field :cover, types.String do
     resolve ->(obj, args, ctx) {
-      obj.image_url
+      Rails.cache.fetch(['Show', obj.id, 'cover'], expires_in: 1.minutes) do
+        obj.image_url
+      end
     }
   end
 
@@ -44,4 +46,13 @@ ShowType = GraphQL::ObjectType.define do
     }
   end
 
+  field :has_functions, types.Boolean do
+    resolve ->(obj, args, ctx) {
+      date = args[:date].present? ? args[:date].to_date : Date.current
+      date_range = date..date+6
+      Rails.cache.fetch(['Show', obj.id, 'has_functions', date_range.to_s], expires_in: 1.minute) do
+        !obj.functions.where(functions: {date: date_range}).count.zero?
+      end
+    }
+  end
 end

@@ -4,7 +4,7 @@ class Show < ApplicationRecord
 
   has_many :images, as: :imageable, dependent: :destroy
   has_and_belongs_to_many :genres
-  has_many :functions, dependent: :destroy
+  has_many :functions, dependent: :destroy, count_loader: true
   has_many :videos, as: :videoable, dependent: :destroy
   has_many :show_person_roles, dependent: :destroy
   has_many :people, through: :show_person_roles
@@ -16,7 +16,7 @@ class Show < ApplicationRecord
 
   accepts_nested_attributes_for :images, :videos, :show_person_roles, allow_destroy: true
   accepts_nested_attributes_for :functions
-  
+
   validates_associated :images, :videos, :show_person_roles
 
   validates :name, presence: true
@@ -29,7 +29,7 @@ class Show < ApplicationRecord
     message: "%{value} no es un formato válido" }, allow_blank: true
   # validates :imdb_code, :metacritic_url, :rotten_tomatoes_url,
   #   uniqueness: { case_sensitive: true }
-  validates :imdb_score, :metacritic_score, :rotten_tomatoes_score, 
+  validates :imdb_score, :metacritic_score, :rotten_tomatoes_score,
     numericality: {
       only_integer: true,
       allow_nil: true, greater_than_or_equal_to: 0,
