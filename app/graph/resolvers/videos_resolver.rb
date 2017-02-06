@@ -1,7 +1,7 @@
 class VideosResolver
   def call(obj, args, ctx)
 
-    if args[:filter].present?
+    if args[:filter]
 
       case args[:filter]
       when 'billboard'

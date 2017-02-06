@@ -1,7 +1,7 @@
 class TheatersResolver
   def call(obj, args, ctx)
-    if args[:cinema_id].present?
-      if args[:show_id].present?
+    if args[:cinema_id]
+      if args[:show_id]
         keys = ctx.irep_node.typed_children[TheaterType].keys
         date = args[:date].present? ? args[:date].to_date : Date.current
         date_range = date..date+6
@@ -21,7 +21,7 @@ class TheatersResolver
       else
         Theater.where(cinema_id: args[:cinema_id], active: true).order(:name)
       end
-    elsif args[:show_id].present? && args[:theater_ids].present?
+    elsif args[:show_id] && args[:theater_ids]
       ids = args[:theater_ids].split(',')
       date = args[:date].present? ? args[:date].to_date : Date.current
       date_range = date..date+6
