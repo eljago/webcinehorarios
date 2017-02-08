@@ -6,8 +6,8 @@ include ActiveSupport::Inflector # transliterate
 def get_times node
   if node.present? && node['class'].present?
     next_time = get_times(node.next_element)
-    correct_time = node.text.gsub(/[^apm:\s0-9]/, '')[0..6]
-    this_time = Time.strptime(correct_time, "%I:%M %P").strftime("%H:%M")
+    correct_time = node.text.gsub(/[^apm:0-9]/, '')[0..6]
+    this_time = Time.strptime(correct_time, "%I:%M%p").strftime("%H:%M")
     if next_time.present?
       return this_time + ', ' + next_time
     else
