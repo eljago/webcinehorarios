@@ -7,7 +7,8 @@ def get_times node
   if node.present? && node['class'].present?
     next_time = get_times(node.next_element)
     correct_time = node.text.gsub(/[^apm:0-9]/, '')[0..6]
-    this_time = Time.strptime(correct_time, "%I:%M%p").strftime("%H:%M")
+    format = correct_time.last == 'm' ? "%I:%M%p" : "%H:%M"
+    this_time = Time.strptime(correct_time, format).strftime("%H:%M")
     if next_time.present?
       return this_time + ', ' + next_time
     else
