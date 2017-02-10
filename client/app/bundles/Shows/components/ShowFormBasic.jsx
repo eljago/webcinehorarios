@@ -19,7 +19,7 @@ export default class ShowFormBasic extends React.Component {
 
     return (
       <Row>
-        <Col md={8}>
+        <Col md={7}>
           {formBuilder.getField('name')}
           {formBuilder.getField('name_original')}
           <Row>
@@ -63,14 +63,16 @@ export default class ShowFormBasic extends React.Component {
 
         </Col>
 
-        <Col md={4}>
+        <Col md={5}>
           <Row>
-            <Col xs={6} md={6}>
-              {formBuilder.getField('genres')}
-            </Col>
-            <Col xs={6} md={6}>
+            <Col xs={4} md={4}>
               {formBuilder.getField('active')}
               {formBuilder.getField('rating')}
+            </Col>
+            <Col xs={4} md={4}>
+              {formBuilder.getField('genres')}
+            </Col>
+            <Col xs={4} md={4}>
               {formBuilder.getField('countries')}
             </Col>
           </Row>
