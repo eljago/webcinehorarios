@@ -85,6 +85,7 @@ class Api::V1::ShowsController < Api::V1::ApiController
       :debut,
       :rating,
       genre_ids: [],
+      country_ids: [],
       functions_attributes: [
         :id,
         :date,

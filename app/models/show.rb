@@ -13,6 +13,7 @@ class Show < ApplicationRecord
   has_many :nominations
   has_many :award_specific_nominations, through: :nominations
   has_many :show_debuts, dependent: :destroy
+  has_and_belongs_to_many :countries
 
   accepts_nested_attributes_for :images, :videos, :show_person_roles, allow_destroy: true
   accepts_nested_attributes_for :functions

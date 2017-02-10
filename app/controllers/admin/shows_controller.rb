@@ -39,7 +39,7 @@ class Admin::ShowsController < ApplicationController
   def new
     genres = Genre.order(:name).all
     video_types = Video.video_types.keys.map { |vt| {value: vt, label: vt} }
-    
+
     @title = 'Nuevo Show'
     @app_name = 'ShowEditApp'
     @props = {
@@ -59,6 +59,7 @@ class Admin::ShowsController < ApplicationController
       .order('show_person_roles.position').find(params[:id])
     hash_show = show.as_json
     hash_show["genres"] = show.genre_ids
+    hash_show["countries"] = show.country_ids
     hash_show["show_person_roles"] = show.show_person_roles.includes(:person).order(:position).map do |spr|
       {
         "id" => spr.id,
@@ -91,6 +92,7 @@ class Admin::ShowsController < ApplicationController
     end
     genres = Genre.order(:name).all
     video_types = Video.video_types.keys.map { |vt| {value: vt, label: vt} }
+    countries = Country.order(:name).all
 
     @title = show.name
     @app_name = 'ShowEditApp'
@@ -100,9 +102,10 @@ class Admin::ShowsController < ApplicationController
       defaultVideo: Video.new,
       defaultImage: Image.new,
       genres: genres,
-      videoTypes: video_types
+      videoTypes: video_types,
+      countries: countries
     }
-    @prerender = false
+    @prerender = true
     render file: 'react/render'
   end
 

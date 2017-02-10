@@ -6,6 +6,7 @@
 	<tr>
 		<th>Nombre</th>
 		<th></th>
+		<th></th>
 	</tr>
 
 <% @countries.each do |country| %>
@@ -15,6 +16,9 @@
 		</td>
 		<td>
 			<%= render_index_actions [country], only: [:edit, :destroy] %>
+		</td>
+		<td>
+			<%= link_to image_tag(country.image.smaller), country.image.to_s if country.image %>
 		</td>
 	</tr>
 <% end %>

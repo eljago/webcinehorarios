@@ -71,6 +71,7 @@ export default class ShowFormBasic extends React.Component {
             <Col xs={6} md={6}>
               {formBuilder.getField('active')}
               {formBuilder.getField('rating')}
+              {formBuilder.getField('countries')}
             </Col>
           </Row>
         </Col>

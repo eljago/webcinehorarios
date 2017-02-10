@@ -134,6 +134,12 @@ export default (props) => {
         }
       }
     },
+    countries: {
+      type: 'checkboxGroup',
+      label: 'Países',
+      submitKey: 'country_ids',
+      options: props.countries,
+    },
     'delete': {
       alertMessage: "¿Eliminar Show?",
       onDelete: props.onDelete

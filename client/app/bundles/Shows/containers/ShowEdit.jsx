@@ -18,6 +18,7 @@ export default class ShowEdit extends React.Component {
     show: PropTypes.object,
     genres: PropTypes.array,
     videoTypes: PropTypes.array,
+    countries: PropTypes.array
   };
 
   constructor(props) {
@@ -37,6 +38,9 @@ export default class ShowEdit extends React.Component {
           return {value: genre.id, label: genre.name};
         }),
         videoTypes: props.videoTypes,
+        countries: props.countries.map((country) => {
+          return {value: country.id, label: country.name};
+        }),
         onDelete: this._onDelete,
         onSubmit: this._handleSubmit
       }),
