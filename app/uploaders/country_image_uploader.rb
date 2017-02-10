@@ -22,16 +22,16 @@ class CountryImageUploader < CarrierWave::Uploader::Base
     @name ||= "#{secure_filename}.jpg" if original_filename
   end
 
-  process :resize_to_limit => [512,270]
+  process :resize_to_limit => [512,512]
   process convert: 'jpg'
   process :optimize
   version :small do
-    process :resize_to_limit => [256,135]
+    process :resize_to_limit => [256,256]
     process convert: 'jpg'
     process :optimize
   end
   version :smaller do
-    process :resize_to_limit => [128,68]
+    process :resize_to_limit => [128,128]
     process convert: 'jpg'
     process :optimize
   end

@@ -32,6 +32,8 @@ ShowType = GraphQL::ObjectType.define do
     }
   end
 
+  field :countries, types[CountryType]
+
   field :cover, types.String do
     resolve ->(obj, args, ctx) {
       Rails.cache.fetch(['Show', obj.id, 'cover'], expires_in: 1.minutes) do
