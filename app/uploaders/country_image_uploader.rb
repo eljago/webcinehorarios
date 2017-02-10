@@ -11,7 +11,7 @@ class CountryImageUploader < CarrierWave::Uploader::Base
   end
 
   def store_dir
-    "uploads/images/#{model.class.to_s.underscore}/#{model.id}"
+    "uploads/covers/#{model.class.to_s.underscore}/#{model.id}"
   end
 
   def default_url
