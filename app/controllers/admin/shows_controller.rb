@@ -105,7 +105,7 @@ class Admin::ShowsController < ApplicationController
       videoTypes: video_types,
       countries: countries
     }
-    @prerender = true
+    @prerender = false
     render file: 'react/render'
   end
 
