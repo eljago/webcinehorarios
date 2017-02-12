@@ -39,6 +39,7 @@ class Admin::ShowsController < ApplicationController
   def new
     genres = Genre.order(:name).all
     video_types = Video.video_types.keys.map { |vt| {value: vt, label: vt} }
+    countries = Country.order(:name).all
 
     @title = 'Nuevo Show'
     @app_name = 'ShowEditApp'
@@ -48,7 +49,8 @@ class Admin::ShowsController < ApplicationController
       defaultVideo: Video.new,
       defaultImage: Image.new,
       genres: genres,
-      videoTypes: video_types
+      videoTypes: video_types,
+      countries: countries
     }
     @prerender = false
     render file: 'react/render'
