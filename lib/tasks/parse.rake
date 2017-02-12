@@ -14,6 +14,8 @@ def fetch_page(url_str)
     end
   rescue RestClient::ExceptionWithResponse => e
     puts "URL INVALIDA: #{url_str}" if Rails.env.development?
+    problem = {description: "URL INVALIDA: #{url_str}"}
+    NotifyProblemMailer.notify_problem(problem).deliver_later
     nil
   end
 end
@@ -26,7 +28,6 @@ namespace :parse do
     billboard = Show.joins(:functions).where(active: true, functions: {date: date}).order(:id).distinct
     coming_soon = Show.where('(debut > ? OR debut IS ?) AND active = ?', date, nil, true).order(:id).distinct
     shows = billboard|coming_soon
-    shows = Show.where(name: 'Logan')
 
     shows.each do |show|
       puts show.name if Rails.env.development?
