@@ -1,23 +1,28 @@
 require 'rest-client'
 require 'nokogiri'
 
+def notify_error url_str, description = "URL INVALIDA"
+  puts description
+  problem = {description: description}
+  NotifyProblemMailer.notify_problem(problem).deliver_later
+end
+
 def fetch_page(url_str)
   begin
     response = RestClient.get(url_str, {
       "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36"
     })
     if response.code == 200
-      Nokogiri::HTML(response.body)
+      return Nokogiri::HTML(response.body)
     else
-      puts 'nil response. Bad URL?'
-      nil
+      notify_error url_str, "URL INVALIDA ?"
     end
   rescue RestClient::ExceptionWithResponse => e
-    puts "URL INVALIDA: #{url_str}"
-    problem = {description: "URL INVALIDA: #{url_str}"}
-    NotifyProblemMailer.notify_problem(problem).deliver_later
-    nil
+    notify_error url_str, "URL INVALIDA: #{url_str}"
+  rescue Errno::ECONNREFUSED => e
+    notify_error url_str, "ERROR DE CONEXION"
   end
+  nil
 end
 
 namespace :parse do
