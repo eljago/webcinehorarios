@@ -40,7 +40,7 @@ namespace :parse do
       if show.metacritic_url.present?
         page = fetch_page(show.metacritic_url)
         if page
-          text = page.css(".main_details span[itemprop='ratingValue']").text
+          text = page.css(".main_details span[itemprop='ratingValue']").text.gsub(/[^0-9]/i, '')
           if text.present? && text.to_i != 0
             puts "\t\tmeta: #{text.to_i}"
             show.update_attribute(:metacritic_score, text.to_i)
@@ -59,7 +59,7 @@ namespace :parse do
       if show.imdb_code.present?
         page = fetch_page("http://m.imdb.com/title/#{show.imdb_code}/")
         if page
-          score = page.css("div#ratings-bar .vertically-middle").text[0..2].to_f*10.to_i
+          score = page.css("div#ratings-bar .vertically-middle").text.gsub(/[^0-9.]/i, '').to_f.round(2)*10.to_i
           unless score == 0
             puts "\t\timdb: #{score}"
             show.update_attribute(:imdb_score, score)
@@ -73,7 +73,7 @@ namespace :parse do
         if page
           span = page.css("#all-critics-numbers span.meter-value").first
           if span.present?
-            score = span.text[0..1].to_i
+            score = span.text.gsub(/[^0-9]/i, '').to_i
             if score != 0
               puts "\t\troten: #{score}"
               show.update_attribute(:rotten_tomatoes_score, score)
