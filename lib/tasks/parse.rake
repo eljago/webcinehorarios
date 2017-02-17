@@ -34,23 +34,25 @@ namespace :parse do
     coming_soon = Show.where('(debut > ? OR debut IS ?) AND active = ?', date, nil, true).order(:id).distinct
     shows = billboard|coming_soon
 
+    # shows = Show.where(name: 'En el ático')
+    # shows = Show.where(name: 'Dunkerque')
+
     shows.each do |show|
       puts show.name
-      should_save_show = false
       if show.metacritic_url.present?
         page = fetch_page(show.metacritic_url)
         if page
-          text = page.css(".main_details span[itemprop='ratingValue']").text.gsub(/[^0-9]/i, '')
-          if text.present? && text.to_i != 0
-            puts "\t\tmeta: #{text.to_i}"
-            show.update_attribute(:metacritic_score, text.to_i)
-            should_save_show = true
+          score_str = page.css(".main_details span[itemprop='ratingValue']").text.gsub(/[^0-9]/i, '')
+          if score_str.length > 0
+            score = score_str.to_i
+            puts "\t\tmeta: #{score}"
+            show.update_attribute(:metacritic_score, score)
           else
-            text = page.css("div.critics_col.inset_right.fl div.distribution div.metascore_w.larger.movie").text
-            if text.present? && text.to_i != 0
-              puts "\t\tmeta: #{text.to_i}"
-              show.update_attribute(:metacritic_score, text.to_i)
-              should_save_show = true
+            score_str = page.css("div.critics_col.inset_right.fl div.distribution div.metascore_w.larger.movie").text.gsub(/[^0-9]/i, '')
+            if score_str.length > 0
+              score = score_str.to_i
+              puts "\t\tmeta: #{score}"
+              show.update_attribute(:metacritic_score, score)
             end
           end
         end
@@ -59,11 +61,15 @@ namespace :parse do
       if show.imdb_code.present?
         page = fetch_page("http://m.imdb.com/title/#{show.imdb_code}/")
         if page
-          score = page.css("div#ratings-bar .vertically-middle").text.gsub(/[^0-9.]/i, '').to_f.round(2)*10.to_i
-          unless score == 0
-            puts "\t\timdb: #{score}"
-            show.update_attribute(:imdb_score, score)
-            should_save_show = true
+          score_text = score_str = page.css("div#ratings-bar .vertically-middle").text # 8/1086,828
+          score_splitted = score_text.split('/')
+          if score_splitted && score_splitted.length > 0
+            score_str = score_splitted.first.gsub(/[^0-9.]/i, '')
+            if score_str.present?
+              score = score_str.to_f*10.to_i
+              puts "\t\timdb: #{score}"
+              show.update_attribute(:imdb_score, score)
+            end
           end
         end
       end
@@ -73,11 +79,11 @@ namespace :parse do
         if page
           span = page.css("#all-critics-numbers span.meter-value").first
           if span.present?
-            score = span.text.gsub(/[^0-9]/i, '').to_i
-            if score != 0
+            score_str = span.text.gsub(/[^0-9]/i, '')
+            if score_str.length > 0
+              score = score_str.to_i
               puts "\t\troten: #{score}"
               show.update_attribute(:rotten_tomatoes_score, score)
-              should_save_show = true
             end
           end
         end
