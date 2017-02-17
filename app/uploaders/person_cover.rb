@@ -26,7 +26,6 @@ class PersonCover < CarrierWave::Uploader::Base
   process :resize_to_fit => [640,1136], if: :is_not_landscape?
   process convert: 'jpg'
   process :optimize
-  process :store_dimensions
   version :small do
     process :resize_to_limit => [568,320], if: :is_landscape?
     process :resize_to_limit => [320,568], if: :is_not_landscape?
@@ -64,12 +63,6 @@ class PersonCover < CarrierWave::Uploader::Base
         c.interlace "plane"
       end
       img
-    end
-  end
-
-  def store_dimensions
-    if file && model
-      model.width, model.height = ::MiniMagick::Image.open(file.file)[:dimensions]
     end
   end
 
